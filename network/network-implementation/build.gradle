@@ -1,0 +1,28 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+dependencies {
+
+    implementation(project(":network:network-api"))
+
+    // Koin
+    implementation "io.insert-koin:koin-core:$koin_version"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+
+    // Moshi
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+
+    // Halcyon OAuth
+    implementation "com.halcyonmobile.oauth-setup:oauth-setup-moshi:$halcyon_oauth"
+    implementation "com.halcyonmobile.oauth-setup:oauth-setup-storage:$halcyon_oauth"
+    implementation "com.halcyonmobile.oauth-setup:oauth-setup-dependencies:$halcyon_oauth"
+}
