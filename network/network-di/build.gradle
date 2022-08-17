@@ -21,4 +21,8 @@ dependencies {
 
     // Moshi
     implementation "com.squareup.moshi:moshi:$moshi_version"
+
+    // Halcyon OAuth
+    implementation "com.halcyonmobile.oauth-setup:oauth-setup-moshi:$halcyon_oauth"
+    implementation "com.halcyonmobile.oauth-setup:oauth-setup-storage:$halcyon_oauth"
 }

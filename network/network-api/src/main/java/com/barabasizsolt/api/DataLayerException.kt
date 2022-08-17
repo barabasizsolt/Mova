@@ -1,3 +1,3 @@
 package com.barabasizsolt.api
 
-class DataLayerException(override val message: String?, override val cause: Throwable? = null) : RuntimeException(message = message, cause = cause)
+class DataLayerException(override val message: String?, override val cause: Throwable? = null) : RuntimeException(message, cause)

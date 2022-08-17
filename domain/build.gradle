@@ -1,0 +1,20 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+dependencies {
+    implementation(project(":service:discover:discover-api"))
+    implementation(project(":service:discover:discover-di"))
+
+    // Koin
+    implementation "io.insert-koin:koin-core:$koin_version"
+
+    // Kotlin Flow
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
+}

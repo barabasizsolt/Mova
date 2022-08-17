@@ -2,6 +2,7 @@ package com.barabasizsolt.discover.implementation.model.response
 
 import com.barabasizsolt.api.DataLayerException
 import com.barabasizsolt.discover.api.model.Movie
+import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -19,6 +20,20 @@ data class MovieResponse(
     @Json(name = "release_date") val releaseDate: String?,
     @Json(name = "vote_average") val voteAverage: Double?
 )
+
+//data class MovieResponse(
+//    @SerializedName("id") val id: String?,
+//    @SerializedName("adult") val adult: Boolean?,
+//    @SerializedName("backdrop_path") val backdropPath: String?,
+//    @SerializedName("genre_ids") val genreIds: List<String>?,
+//    @SerializedName("original_language") val originalLanguage: String?,
+//    @SerializedName("original_title") val originalTitle: String?,
+//    @SerializedName("overview") val overview: String?,
+//    @SerializedName("popularity") val popularity: Double?,
+//    @SerializedName("poster_path") val posterPath: String?,
+//    @SerializedName("release_date") val releaseDate: String?,
+//    @SerializedName("vote_average") val voteAverage: Double?
+//)
 
 fun MovieResponse.toModel() : Movie {
     if (

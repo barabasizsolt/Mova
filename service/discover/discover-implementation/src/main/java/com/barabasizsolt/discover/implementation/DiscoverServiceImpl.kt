@@ -14,7 +14,19 @@ class DiscoverServiceImpl(private val remoteSource: DiscoverRemoteSource) : Disc
     private val _tvSeries = MutableStateFlow<TvSeriesDiscover?>(value = null)
     override val tvSeries: Flow<TvSeriesDiscover?> = _tvSeries
 
-    override suspend fun getMovies(): MovieDiscover = remoteSource.getMovies()
+    override suspend fun getMovies(): MovieDiscover = remoteSource.getMovies().also {
+        _movies.value = it
+    }
 
-    override suspend fun getTvSeries(): TvSeriesDiscover = remoteSource.getTvSeries()
+    override suspend fun getTvSeries(): TvSeriesDiscover = remoteSource.getTvSeries().also {
+        _tvSeries.value = it
+    }
+
+    override fun clearMovies() {
+       _movies.value = null
+    }
+
+    override fun clearTvSeries() {
+        _tvSeries.value = null
+    }
 }

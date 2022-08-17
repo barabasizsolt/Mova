@@ -13,4 +13,8 @@ interface DiscoverService {
     suspend fun getMovies() : MovieDiscover
 
     suspend fun getTvSeries() : TvSeriesDiscover
+
+    fun clearMovies()
+
+    fun clearTvSeries()
 }

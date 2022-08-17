@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'org.jetbrains.kotlin.jvm'
+    id 'kotlin-kapt'
 }
 
 java {
@@ -20,6 +21,7 @@ dependencies {
 
     // Moshi
     implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.halcyonmobile.oauth-setup:oauth-setup-moshi:$halcyon_oauth"
 
     // Halcyon OAuth
     implementation "com.halcyonmobile.oauth-setup:oauth-setup-moshi:$halcyon_oauth"
