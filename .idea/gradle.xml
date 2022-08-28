@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="Android Studio java home" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/auth" />
+            <option value="$PROJECT_DIR$/auth/auth-di" />
+            <option value="$PROJECT_DIR$/auth/auth-implementation" />
+            <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/network" />
+            <option value="$PROJECT_DIR$/network/network-api" />
+            <option value="$PROJECT_DIR$/network/network-di" />
+            <option value="$PROJECT_DIR$/network/network-implementation" />
+            <option value="$PROJECT_DIR$/service" />
+            <option value="$PROJECT_DIR$/service/discover" />
+            <option value="$PROJECT_DIR$/service/discover/discover-api" />
+            <option value="$PROJECT_DIR$/service/discover/discover-di" />
+            <option value="$PROJECT_DIR$/service/discover/discover-implementation" />
           </set>
         </option>
       </GradleProjectSettings>

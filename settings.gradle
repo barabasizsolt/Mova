@@ -8,10 +8,32 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        maven {
+            url = uri("https://maven.pkg.github.com/halcyonmobile/*")
+            credentials {
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
+//                username = extra.properties["GITHUB_USERNAME"] as String? ?: System.getenv("GITHUB_USERNAME")
+//                password = extra.properties["GITHUB_TOKEN"] as String? ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 rootProject.name = "Mova"
 include ':app'
 include ':network'
+include ':service'
+include ':service:discover'
+include ':service:discover:discover-api'
+include ':service:discover:discover-implementation'
+include ':service:discover:discover-di'
+include ':network:network-api'
+include ':network:network-implementation'
+include ':network:network-di'
+include ':domain'
+include ':auth'
+include ':auth:auth-di'
+include ':auth:auth-implementation'

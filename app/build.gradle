@@ -20,7 +20,15 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "API_KEY", "\"93697a6983d40e793bc6b81401c77e1c\"")
+            buildConfigField("String", "CLIENT_ID", "\"mova-mobile-client\"")
+        }
         release {
+            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "API_KEY", "\"93697a6983d40e793bc6b81401c77e1c\"")
+            buildConfigField("String", "CLIENT_ID", "\"mova-mobile-client\"")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -46,6 +54,12 @@ android {
 }
 
 dependencies {
+
+    // Modules
+    implementation(project(":network:network-di"))
+    implementation(project(":domain"))
+    implementation(project(":auth:auth-di"))
+    implementation(project(":service:discover:discover-api"))
 
     // Android Core
     implementation 'androidx.core:core-ktx:1.8.0'
