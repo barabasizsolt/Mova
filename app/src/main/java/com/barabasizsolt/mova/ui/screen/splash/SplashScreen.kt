@@ -8,22 +8,27 @@ import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
-import com.barabasizsolt.mova.ui.screen.auth.login.LoginScreen
-import com.barabasizsolt.mova.ui.screen.main.home.HomeScreen
+import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
+import cafe.adriel.voyager.navigator.tab.Tab
+import cafe.adriel.voyager.navigator.tab.TabOptions
+import com.barabasizsolt.mova.ui.navigation.AuthNavigation
+import com.barabasizsolt.mova.ui.navigation.MainNavigation
 
-object SplashScreen : Screen {
+object SplashScreen : Tab {
+
+    override val options: TabOptions
+        @Composable
+        get() = remember { TabOptions(index = 12u, title = "splash", icon = null) }
 
     @Composable
     override fun Content() {
 
-        val navigator = LocalNavigator.currentOrThrow
+        val navigator = LocalTabNavigator.current
         val screenModel = rememberScreenModel { SplashScreenModel() }
 
         Column(
@@ -36,9 +41,7 @@ object SplashScreen : Screen {
                 style = MaterialTheme.typography.h4
             )
             Button(
-                onClick = {
-                    navigator.replace(item = LoginScreen)
-                },
+                onClick = { navigator.current = AuthNavigation },
                 content = {
                     Text(
                         text = "Authentication",
@@ -48,9 +51,7 @@ object SplashScreen : Screen {
                 modifier = Modifier.padding(vertical = 16.dp)
             )
             Button(
-                onClick = {
-                    navigator.replace(item = HomeScreen)
-                },
+                onClick = { navigator.current = MainNavigation },
                 content = {
                     Text(
                         text = "Home",

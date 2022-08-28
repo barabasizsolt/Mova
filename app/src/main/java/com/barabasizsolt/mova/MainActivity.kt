@@ -3,7 +3,7 @@ package com.barabasizsolt.mova
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.barabasizsolt.mova.ui.screen.splash.SplashScreen
 import com.barabasizsolt.mova.ui.theme.MovaTheme
 
@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MovaTheme {
-                Navigator(screen = SplashScreen)
+                TabNavigator(tab = SplashScreen)
             }
         }
     }
