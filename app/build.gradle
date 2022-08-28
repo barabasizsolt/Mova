@@ -58,7 +58,7 @@ dependencies {
     // Modules
     implementation(project(":network:network-di"))
     implementation(project(":domain"))
-    implementation(project(":auth"))
+    implementation(project(":auth:auth-di"))
     implementation(project(":service:discover:discover-api"))
 
     // Android Core

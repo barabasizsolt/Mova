@@ -1,5 +1,7 @@
 package com.barabasizsolt.auth
 
+import com.barabasizsolt.auth.implementation.AuthenticationLocalStorageImpl
+import com.barabasizsolt.auth.implementation.SessionExpiredEventHandlerImpl
 import com.halcyonmobile.oauth.dependencies.AuthenticationLocalStorage
 import com.halcyonmobile.oauth.dependencies.SessionExpiredEventHandler
 import org.koin.dsl.module

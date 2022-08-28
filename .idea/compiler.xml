@@ -3,7 +3,8 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
       <module name="Mova.app" target="11" />
-      <module name="Mova.auth" target="11" />
+      <module name="Mova.auth.auth-di" target="11" />
+      <module name="Mova.auth.auth-implementation" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

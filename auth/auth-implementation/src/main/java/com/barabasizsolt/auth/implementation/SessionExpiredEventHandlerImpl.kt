@@ -1,4 +1,4 @@
-package com.barabasizsolt.auth
+package com.barabasizsolt.auth.implementation
 
 import com.halcyonmobile.oauth.dependencies.SessionExpiredEventHandler
 import kotlinx.coroutines.flow.Flow

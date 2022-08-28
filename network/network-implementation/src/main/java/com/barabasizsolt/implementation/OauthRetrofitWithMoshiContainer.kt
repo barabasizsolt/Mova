@@ -8,8 +8,6 @@ import com.halcyonmobile.oauthmoshi.RefreshTokenResponseWrapper
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
 class OauthRetrofitWithMoshiContainer(
@@ -29,7 +27,6 @@ class OauthRetrofitWithMoshiContainer(
     )
         .configureRetrofit {
             baseUrl(baseUrl)
-            //addConverterFactory(GsonConverterFactory.create())
         }
         .configureBothOkHttpClient {
             readTimeout(1L, TimeUnit.MINUTES)

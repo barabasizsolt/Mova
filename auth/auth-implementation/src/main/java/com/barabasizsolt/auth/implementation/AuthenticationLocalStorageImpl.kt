@@ -1,10 +1,10 @@
-package com.barabasizsolt.auth
+package com.barabasizsolt.auth.implementation
 
 import android.content.Context
-import com.halcyonmobile.oauth.dependencies.AuthenticationLocalStorage
-import com.halcyonmobile.oauthstorage.AuthenticationSharedPreferencesStorage
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.halcyonmobile.oauth.dependencies.AuthenticationLocalStorage
+import com.halcyonmobile.oauthstorage.AuthenticationSharedPreferencesStorage
 
 class AuthenticationLocalStorageImpl constructor(
     private val authenticationLocalStorage: AuthenticationLocalStorage
