@@ -13,6 +13,7 @@ buildscript {
         moshi_codegen = '1.13.0'
         kotlin_coroutines = '1.6.1'
         android_security = "1.1.0-alpha03"
+        voyager_version = "1.0.0-rc02"
     }
     repositories {
         google()
