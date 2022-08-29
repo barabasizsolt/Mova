@@ -4,9 +4,12 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
@@ -50,6 +53,14 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
     BottomNavigationItem(
         selected = tabNavigator.current == tab,
         onClick = { tabNavigator.current = tab },
-        icon = { Icon(painter = tab.options.icon!!, contentDescription = tab.options.title) }
+        icon = { Icon(painter = tab.options.icon!!, contentDescription = tab.options.title) },
+        label = {
+            Text(
+                text = tab.options.title,
+                style = MaterialTheme.typography.caption
+            )
+        },
+        selectedContentColor = MaterialTheme.colors.secondary,
+        unselectedContentColor = Color.Gray
     )
 }
