@@ -1,4 +1,4 @@
-package com.barabasizsolt.discover.api.model
+package com.barabasizsolt.tv.modell
 
 data class TvSeries(
     val id: String,

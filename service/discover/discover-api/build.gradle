@@ -10,6 +10,9 @@ java {
 
 dependencies {
 
+    implementation(project(":service:model:movie"))
+    implementation(project(":service:model:tv"))
+
     // Kotlin Flow
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
 }

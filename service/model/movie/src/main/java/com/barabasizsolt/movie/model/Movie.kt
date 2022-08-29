@@ -1,4 +1,4 @@
-package com.barabasizsolt.discover.api.model
+package com.barabasizsolt.movie.model
 
 data class Movie(
     val id: String,

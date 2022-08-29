@@ -1,7 +1,7 @@
-package com.barabasizsolt.discover.implementation.model.response
+package com.barabasizsolt.movie.dto
 
 import com.barabasizsolt.api.DataLayerException
-import com.barabasizsolt.discover.api.model.MovieDiscover
+import com.barabasizsolt.movie.model.MovieList
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -11,11 +11,11 @@ data class MovieDiscoverResponse(
     @Json(name = "results") val results: List<MovieResponse>?
 )
 
-fun MovieDiscoverResponse.toModel() : MovieDiscover {
+fun MovieDiscoverResponse.toModel() : MovieList {
     if (page == null || results == null) {
         throw DataLayerException(message = "MovieDiscoverException: $this")
     }
-    return MovieDiscover(
+    return MovieList(
         page = page,
         results = results.map { it.toModel() }
     )

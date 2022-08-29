@@ -12,9 +12,6 @@ java {
 dependencies {
 
     implementation(project(":network:network-api"))
-    implementation(project(":service:discover:discover-api"))
-    implementation(project(":service:model:movie"))
-    implementation(project(":service:model:tv"))
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -22,7 +19,4 @@ dependencies {
     // Moshi
     implementation "com.squareup.moshi:moshi:$moshi_version"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_codegen"
-
-    // Kotlin Flow
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
 }

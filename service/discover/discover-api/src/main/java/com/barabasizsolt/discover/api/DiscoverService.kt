@@ -1,18 +1,18 @@
 package com.barabasizsolt.discover.api
 
-import com.barabasizsolt.discover.api.model.MovieDiscover
-import com.barabasizsolt.discover.api.model.TvSeriesDiscover
+import com.barabasizsolt.movie.model.MovieList
+import com.barabasizsolt.tv.modell.TvSeriesList
 import kotlinx.coroutines.flow.Flow
 
 interface DiscoverService {
 
-    val movies: Flow<MovieDiscover?>
+    val movies: Flow<MovieList?>
 
-    val tvSeries: Flow<TvSeriesDiscover?>
+    val tvSeries: Flow<TvSeriesList?>
 
-    suspend fun getMovies() : MovieDiscover
+    suspend fun getMovies() : MovieList
 
-    suspend fun getTvSeries() : TvSeriesDiscover
+    suspend fun getTvSeries() : TvSeriesList
 
     fun clearMovies()
 

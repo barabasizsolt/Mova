@@ -1,52 +1,52 @@
-package com.barabasizsolt.discover.implementation.model.response
+package com.barabasizsolt.tv.dto
 
 import com.barabasizsolt.api.DataLayerException
-import com.barabasizsolt.discover.api.model.Movie
+import com.barabasizsolt.tv.modell.TvSeries
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class MovieResponse(
+data class TvSeriesResponse(
     @Json(name = "id") val id: String?,
-    @Json(name = "adult") val adult: Boolean?,
     @Json(name = "backdrop_path") val backdropPath: String?,
     @Json(name = "genre_ids") val genreIds: List<String>?,
+    @Json(name = "original_country") val originalCountry: List<String>?,
     @Json(name = "original_language") val originalLanguage: String?,
-    @Json(name = "original_title") val originalTitle: String?,
+    @Json(name = "original_name") val originalTitle: String?,
     @Json(name = "overview") val overview: String?,
     @Json(name = "popularity") val popularity: Double?,
     @Json(name = "poster_path") val posterPath: String?,
-    @Json(name = "release_date") val releaseDate: String?,
+    @Json(name = "first_air_date") val firstAirDate: String?,
     @Json(name = "vote_average") val voteAverage: Double?
 )
 
-fun MovieResponse.toModel() : Movie {
+fun TvSeriesResponse.toModel() : TvSeries {
     if (
         id == null ||
-        adult == null ||
         backdropPath == null ||
         genreIds == null ||
+        originalCountry == null ||
         originalLanguage == null ||
         originalTitle == null ||
         overview == null ||
         popularity == null ||
         posterPath == null ||
-        releaseDate == null ||
+        firstAirDate == null ||
         voteAverage == null
     ) {
-        throw DataLayerException(message = "MovieException: $this")
+        throw DataLayerException(message = "TvSeriesException: $this")
     }
-    return Movie(
+    return TvSeries(
         id = id,
-        adult = adult,
         backdropPath = backdropPath,
         genreIds = genreIds,
+        originalCountry = originalCountry,
         originalLanguage = originalLanguage,
-        originalTitle = originalTitle,
+        originalName = originalTitle,
         overview = overview,
         popularity = popularity,
         posterPath = posterPath,
-        releaseDate = releaseDate,
+        firstAirDate = firstAirDate,
         voteAverage = voteAverage
     )
 }
