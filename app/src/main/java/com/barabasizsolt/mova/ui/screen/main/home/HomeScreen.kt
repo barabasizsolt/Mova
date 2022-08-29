@@ -7,17 +7,19 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
+import cafe.adriel.voyager.koin.getScreenModel
 
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.barabasizsolt.mova.R
 
-object HomeScreen  : Tab {
+object HomeScreen : Tab {
 
     override val options: TabOptions
         @Composable
@@ -29,6 +31,9 @@ object HomeScreen  : Tab {
 
     @Composable
     override fun Content() {
+
+        val screenModel = getScreenModel<HomeScreenModel>()
+
         Box(modifier = Modifier.fillMaxSize()) {
             Text(
                 text = "Home",

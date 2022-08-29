@@ -1,15 +1,17 @@
 package com.barabasizsolt.domain.di
 
 import com.barabasizsolt.discover.di.createDiscoverModule
-import com.barabasizsolt.domain.useCase.discover.movie.DeleteMovieDiscoverUseCase
-import com.barabasizsolt.domain.useCase.discover.movie.GetMovieDiscoverFlowUseCase
-import com.barabasizsolt.domain.useCase.discover.movie.GetMovieDiscoverUseCase
-import com.barabasizsolt.domain.useCase.movie.trending.DeleteTrendingMoviesUseCase
-import com.barabasizsolt.domain.useCase.movie.trending.GetTrendingMoviesFlowUseCase
-import com.barabasizsolt.domain.useCase.movie.trending.GetTrendingMoviesUseCase
-import com.barabasizsolt.domain.useCase.movie.upcoming.DeleteUpcomingMoviesUseCase
-import com.barabasizsolt.domain.useCase.movie.upcoming.GetUpcomingMoviesFlowUseCase
-import com.barabasizsolt.domain.useCase.movie.upcoming.GetUpcomingMoviesUseCase
+import com.barabasizsolt.domain.useCase.helper.discover.movie.DeleteMovieDiscoverUseCase
+import com.barabasizsolt.domain.useCase.helper.discover.movie.GetMovieDiscoverFlowUseCase
+import com.barabasizsolt.domain.useCase.helper.discover.movie.GetMovieDiscoverUseCase
+import com.barabasizsolt.domain.useCase.helper.movie.trending.DeleteTrendingMoviesUseCase
+import com.barabasizsolt.domain.useCase.helper.movie.trending.GetTrendingMoviesFlowUseCase
+import com.barabasizsolt.domain.useCase.helper.movie.trending.GetTrendingMoviesUseCase
+import com.barabasizsolt.domain.useCase.helper.movie.upcoming.DeleteUpcomingMoviesUseCase
+import com.barabasizsolt.domain.useCase.helper.movie.upcoming.GetUpcomingMoviesFlowUseCase
+import com.barabasizsolt.domain.useCase.helper.movie.upcoming.GetUpcomingMoviesUseCase
+import com.barabasizsolt.domain.useCase.screen.home.GetHomeScreenFlowUseCase
+import com.barabasizsolt.domain.useCase.screen.home.GetHomeScreenUseCase
 import com.barabasizsolt.movie.di.createMovieModule
 import org.koin.dsl.module
 
@@ -38,4 +40,18 @@ private fun createUseCaseModules() = module {
     factory { GetUpcomingMoviesUseCase(movieService = get()) }
     factory { GetUpcomingMoviesFlowUseCase(movieService = get()) }
     factory { DeleteUpcomingMoviesUseCase(movieService = get()) }
+
+    // Home
+    factory {
+        GetHomeScreenUseCase(
+            getTrendingMoviesUseCase = get(),
+            getUpcomingMoviesUseCase = get()
+        )
+    }
+    factory {
+        GetHomeScreenFlowUseCase(
+            getTrendingMoviesFlowUseCase = get(),
+            getUpcomingMoviesFlowUseCase = get()
+        )
+    }
 }

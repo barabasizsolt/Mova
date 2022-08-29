@@ -1,4 +1,4 @@
-package com.barabasizsolt.domain.useCase.movie.upcoming
+package com.barabasizsolt.domain.useCase.helper.movie.upcoming
 
 import com.barabasizsolt.movie.api.MovieService
 

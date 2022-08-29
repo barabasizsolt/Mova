@@ -34,7 +34,7 @@ private val LightColorPalette = lightColors(
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
-    onError = Color.Red
+    onError = Color.Red,
 )
 
 @Composable

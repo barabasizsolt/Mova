@@ -1,9 +1,9 @@
-package com.barabasizsolt.domain.useCase.movie.upcoming
+package com.barabasizsolt.domain.useCase.helper.movie.upcoming
 
 import com.barabasizsolt.movie.api.MovieService
 import kotlinx.coroutines.flow.filterNotNull
 
 class GetUpcomingMoviesFlowUseCase(private val movieService: MovieService) {
 
-    suspend operator fun invoke() = movieService.upcomingMovies.filterNotNull()
+    operator fun invoke() = movieService.upcomingMovies.filterNotNull()
 }

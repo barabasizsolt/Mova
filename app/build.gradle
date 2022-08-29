@@ -87,6 +87,10 @@ dependencies {
     implementation "cafe.adriel.voyager:voyager-transitions:$voyager_version"
     implementation "cafe.adriel.voyager:voyager-koin:$voyager_version"
 
+    // Accompanist
+    // [System UI Controller]
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+
     // Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

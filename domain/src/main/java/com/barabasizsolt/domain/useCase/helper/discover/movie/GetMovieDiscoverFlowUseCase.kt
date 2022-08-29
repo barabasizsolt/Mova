@@ -1,4 +1,4 @@
-package com.barabasizsolt.domain.useCase.discover.movie
+package com.barabasizsolt.domain.useCase.helper.discover.movie
 
 import com.barabasizsolt.discover.api.DiscoverService
 import kotlinx.coroutines.flow.filterNotNull

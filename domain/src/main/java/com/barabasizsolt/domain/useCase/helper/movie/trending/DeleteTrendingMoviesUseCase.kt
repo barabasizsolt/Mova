@@ -1,4 +1,4 @@
-package com.barabasizsolt.domain.useCase.movie.trending
+package com.barabasizsolt.domain.useCase.helper.movie.trending
 
 import com.barabasizsolt.movie.api.MovieService
 

@@ -14,6 +14,7 @@ buildscript {
         kotlin_coroutines = '1.6.1'
         android_security = "1.1.0-alpha03"
         voyager_version = "1.0.0-rc02"
+        accompanist_version = "0.26.2-beta"
     }
     repositories {
         google()
