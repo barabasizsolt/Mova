@@ -6,12 +6,12 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class MovieDiscoverResponse(
+data class MovieListResponse(
     @Json(name = "page") val page: Int?,
     @Json(name = "results") val results: List<MovieResponse>?
 )
 
-fun MovieDiscoverResponse.toModel() : MovieList {
+fun MovieListResponse.toModel() : MovieList {
     if (page == null || results == null) {
         throw DataLayerException(message = "MovieDiscoverException: $this")
     }

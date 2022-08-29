@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":auth:auth-di"))
     implementation(project(":service:discover:discover-api"))
+    implementation(project(":service:movie:movie-api"))
 
     // Android Core
     implementation 'androidx.core:core-ktx:1.8.0'
