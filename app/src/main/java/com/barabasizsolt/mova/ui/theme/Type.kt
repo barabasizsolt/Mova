@@ -71,6 +71,6 @@ data class AppTypography(
     val overLine: TextStyle = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 10.sp,
-        letterSpacing = 1.5.sp
+        letterSpacing = 0.4.sp
     )
 )

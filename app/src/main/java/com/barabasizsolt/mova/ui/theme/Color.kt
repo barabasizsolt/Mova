@@ -106,7 +106,7 @@ fun lightColors(
     surface: Color = Color.White,
     error: Color = Color.Red,
     onPrimary: Color = Color.Black,
-    onSecondary: Color = Color.Black,
+    onSecondary: Color = Color.White,
     onBackground: Color = Color.Black,
     onSurface: Color = Color.Black,
     onError: Color = Color.Red,
@@ -135,7 +135,7 @@ fun darkColors(
     surface: Color = Black200,
     error: Color = Pink,
     onPrimary: Color = Color.White,
-    onSecondary: Color = Color.Black,
+    onSecondary: Color = Color.White,
     onBackground: Color = Color.White,
     onSurface: Color = Color.White,
     onError: Color = Color.Black

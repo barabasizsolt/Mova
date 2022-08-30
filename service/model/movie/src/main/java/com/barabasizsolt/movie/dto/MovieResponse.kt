@@ -10,9 +10,10 @@ data class MovieResponse(
     @Json(name = "id") val id: String?,
     @Json(name = "adult") val adult: Boolean?,
     @Json(name = "backdrop_path") val backdropPath: String?,
-    @Json(name = "genre_ids") val genreIds: List<String>?,
+    @Json(name = "genre_ids") val genreIds: List<Int>?,
     @Json(name = "original_language") val originalLanguage: String?,
     @Json(name = "original_title") val originalTitle: String?,
+    @Json(name = "title") val title: String?,
     @Json(name = "overview") val overview: String?,
     @Json(name = "popularity") val popularity: Double?,
     @Json(name = "poster_path") val posterPath: String?,
@@ -28,6 +29,7 @@ fun MovieResponse.toModel() : Movie {
         genreIds == null ||
         originalLanguage == null ||
         originalTitle == null ||
+        title == null ||
         overview == null ||
         popularity == null ||
         posterPath == null ||
@@ -43,6 +45,7 @@ fun MovieResponse.toModel() : Movie {
         genreIds = genreIds,
         originalLanguage = originalLanguage,
         originalTitle = originalTitle,
+        title = title,
         overview = overview,
         popularity = popularity.toString(),
         posterPath = posterPath,

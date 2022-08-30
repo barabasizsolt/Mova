@@ -14,7 +14,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MovaTheme {
+            MovaTheme(isDarkTheme = false) {
                 val systemUiController = rememberSystemUiController()
                 systemUiController.setStatusBarColor(color = Color.Transparent, darkIcons = isSystemInDarkTheme())
                 systemUiController.setNavigationBarColor(color = Color.Transparent, darkIcons = false)

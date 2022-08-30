@@ -11,4 +11,7 @@ interface MovieNetworkService {
 
     @GET("movie/upcoming")
     suspend fun getUpcomingMovies(@Query("page") page: Int) : MovieListResponse
+
+    @GET("movie/top_rated")
+    suspend fun getTopRatedMovies(@Query("page") page: Int) : MovieListResponse
 }

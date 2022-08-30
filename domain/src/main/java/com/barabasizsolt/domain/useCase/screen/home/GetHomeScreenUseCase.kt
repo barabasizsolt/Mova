@@ -1,5 +1,6 @@
 package com.barabasizsolt.domain.useCase.screen.home
 
+import com.barabasizsolt.domain.useCase.helper.movie.topRated.GetTopRatedMoviesUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.trending.GetTrendingMoviesUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.upcoming.GetUpcomingMoviesUseCase
 import com.barabasizsolt.domain.util.wrapToResult
@@ -9,13 +10,15 @@ import kotlinx.coroutines.awaitAll
 
 class GetHomeScreenUseCase(
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
-    private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase
+    private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
+    private val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase
 ) {
 
     suspend operator fun invoke(coroutineScope: CoroutineScope) = wrapToResult {
         listOf(
             coroutineScope.async { getTrendingMoviesUseCase() },
-            coroutineScope.async { getUpcomingMoviesUseCase() }
+            coroutineScope.async { getUpcomingMoviesUseCase() },
+            coroutineScope.async { getTopRatedMoviesUseCase() },
         ).awaitAll()
     }
 }

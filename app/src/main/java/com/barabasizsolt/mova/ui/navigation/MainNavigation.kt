@@ -1,6 +1,10 @@
 package com.barabasizsolt.mova.ui.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -9,6 +13,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
@@ -30,7 +35,11 @@ object MainNavigation : Tab {
     override fun Content() {
         TabNavigator(tab = HomeScreen) {
             Scaffold(
-                content = { CurrentTab() },
+                content = { padding ->
+                    Box(modifier = Modifier.padding(paddingValues = padding)) {
+                        CurrentTab()
+                    }
+                },
                 bottomBar = {
                     BottomNavigation(
                         backgroundColor = AppTheme.colors.background,

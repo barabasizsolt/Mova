@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 val LocalShapes = staticCompositionLocalOf { AppShapes() }
 
 data class AppShapes(
-    val small: CornerBasedShape = RoundedCornerShape(size = 4.dp),
+    val small: CornerBasedShape = RoundedCornerShape(size = 8.dp),
     val medium: CornerBasedShape = RoundedCornerShape(size = 16.dp),
     val large: CornerBasedShape = RoundedCornerShape(size = 24.dp)
 )

@@ -69,6 +69,7 @@ private fun CardCarouselHeader(
         Text(
             text = header,
             style = AppTheme.typography.h6,
+            color = AppTheme.colors.onSurface,
             overflow = TextOverflow.Ellipsis,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(weight = 1f)

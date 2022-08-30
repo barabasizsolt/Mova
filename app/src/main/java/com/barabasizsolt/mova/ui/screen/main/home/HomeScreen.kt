@@ -1,11 +1,14 @@
 package com.barabasizsolt.mova.ui.screen.main.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -30,6 +33,8 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.barabasizsolt.mova.R
 import com.barabasizsolt.mova.ui.catalog.CardCarousel
 import com.barabasizsolt.mova.ui.catalog.CardWithRating
+import com.barabasizsolt.mova.ui.catalog.WatchablePager
+import com.barabasizsolt.mova.ui.theme.AppTheme
 
 object HomeScreen : Tab {
 
@@ -46,12 +51,20 @@ object HomeScreen : Tab {
         val screenModel = getScreenModel<HomeScreenModel>()
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(space = 20.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = AppTheme.colors.primary),
+            verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
+            contentPadding = PaddingValues(bottom = AppTheme.dimens.screenPadding)
         ) {
             item {
+                WatchablePager(
+                    pagerContent = screenModel.homeContent?.upcomingMovies.orEmpty()
+                )
+            }
+            item {
                 CardCarousel(
-                    header = "Most Searched Movies",
+                    header = "Trending Movies",
                     items = screenModel.homeContent?.trendingMovies.orEmpty(),
                     onItemClick = { },
                     onHeaderClick = { },
@@ -59,8 +72,8 @@ object HomeScreen : Tab {
             }
             item {
                 CardCarousel(
-                    header = "Upcoming Movies",
-                    items = screenModel.homeContent?.upcomingMovies.orEmpty(),
+                    header = "Top Rated Movies",
+                    items = screenModel.homeContent?.topRatedMovies.orEmpty(),
                     onItemClick = { },
                     onHeaderClick = { },
                 )

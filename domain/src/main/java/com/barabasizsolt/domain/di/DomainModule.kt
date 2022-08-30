@@ -4,6 +4,9 @@ import com.barabasizsolt.discover.di.createDiscoverModule
 import com.barabasizsolt.domain.useCase.helper.discover.movie.DeleteMovieDiscoverUseCase
 import com.barabasizsolt.domain.useCase.helper.discover.movie.GetMovieDiscoverFlowUseCase
 import com.barabasizsolt.domain.useCase.helper.discover.movie.GetMovieDiscoverUseCase
+import com.barabasizsolt.domain.useCase.helper.movie.topRated.DeleteTopRatedMoviesUseCase
+import com.barabasizsolt.domain.useCase.helper.movie.topRated.GetTopRatedMoviesFlowUseCase
+import com.barabasizsolt.domain.useCase.helper.movie.topRated.GetTopRatedMoviesUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.trending.DeleteTrendingMoviesUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.trending.GetTrendingMoviesFlowUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.trending.GetTrendingMoviesUseCase
@@ -41,17 +44,24 @@ private fun createUseCaseModules() = module {
     factory { GetUpcomingMoviesFlowUseCase(movieService = get()) }
     factory { DeleteUpcomingMoviesUseCase(movieService = get()) }
 
+    // Movie [Top Rated]
+    factory { GetTopRatedMoviesUseCase(movieService = get()) }
+    factory { GetTopRatedMoviesFlowUseCase(movieService = get()) }
+    factory { DeleteTopRatedMoviesUseCase(movieService = get()) }
+
     // Home
     factory {
         GetHomeScreenUseCase(
             getTrendingMoviesUseCase = get(),
-            getUpcomingMoviesUseCase = get()
+            getUpcomingMoviesUseCase = get(),
+            getTopRatedMoviesUseCase = get()
         )
     }
     factory {
         GetHomeScreenFlowUseCase(
             getTrendingMoviesFlowUseCase = get(),
-            getUpcomingMoviesFlowUseCase = get()
+            getUpcomingMoviesFlowUseCase = get(),
+            getTopRatedMoviesFlowUseCase = get()
         )
     }
 }

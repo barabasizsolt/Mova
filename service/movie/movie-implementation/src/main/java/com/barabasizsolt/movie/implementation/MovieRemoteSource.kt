@@ -7,4 +7,6 @@ class MovieRemoteSource(private val networkService: MovieNetworkService) {
     suspend fun getTrendingMovies(page: Int) = networkService.getTrendingMovies(page = page).toModel()
 
     suspend fun getUpcomingMovies(page: Int) = networkService.getUpcomingMovies(page = page).toModel()
+
+    suspend fun getTopRatedMovies(page: Int) = networkService.getTopRatedMovies(page = page).toModel()
 }
