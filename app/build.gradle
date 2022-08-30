@@ -56,6 +56,9 @@ android {
 dependencies {
 
     // Modules
+    implementation(project(":service:model:movie"))
+    implementation(project(":service:model:tv"))
+
     implementation(project(":network:network-di"))
     implementation(project(":domain"))
     implementation(project(":auth:auth-di"))
@@ -79,6 +82,7 @@ dependencies {
 
     // Coil Image
     implementation "io.coil-kt:coil-compose:$coil_version"
+    implementation "io.coil-kt:coil-svg:$coil_version"
 
     // Voyager
     implementation "cafe.adriel.voyager:voyager-navigator:$voyager_version"

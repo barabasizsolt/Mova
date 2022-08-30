@@ -8,8 +8,8 @@ data class TvSeries(
     val originalLanguage: String,
     val originalName: String,
     val overview: String,
-    val popularity: Double,
+    val popularity: String,
     val posterPath: String,
     val firstAirDate: String,
-    val voteAverage: Double
+    val voteAverage: String
 )

@@ -19,6 +19,7 @@ import com.barabasizsolt.mova.ui.screen.main.explore.ExploreScreen
 import com.barabasizsolt.mova.ui.screen.main.favourites.FavouritesScreen
 import com.barabasizsolt.mova.ui.screen.main.home.HomeScreen
 import com.barabasizsolt.mova.ui.screen.main.profile.ProfileScreen
+import com.barabasizsolt.mova.ui.theme.AppTheme
 
 object MainNavigation : Tab {
     override val options: TabOptions
@@ -32,6 +33,7 @@ object MainNavigation : Tab {
                 content = { CurrentTab() },
                 bottomBar = {
                     BottomNavigation(
+                        backgroundColor = AppTheme.colors.background,
                         content = {
                             TabNavigationItem(tab = HomeScreen)
                             TabNavigationItem(tab = ExploreScreen)
@@ -57,10 +59,10 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
         label = {
             Text(
                 text = tab.options.title,
-                style = MaterialTheme.typography.caption
+                style = AppTheme.typography.caption
             )
         },
-        selectedContentColor = MaterialTheme.colors.secondary,
+        selectedContentColor = AppTheme.colors.secondary,
         unselectedContentColor = Color.Gray
     )
 }

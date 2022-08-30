@@ -44,9 +44,9 @@ fun TvSeriesResponse.toModel() : TvSeries {
         originalLanguage = originalLanguage,
         originalName = originalTitle,
         overview = overview,
-        popularity = popularity,
+        popularity = popularity.toString(),
         posterPath = posterPath,
         firstAirDate = firstAirDate,
-        voteAverage = voteAverage
+        voteAverage = voteAverage.toString()
     )
 }

@@ -1,6 +1,7 @@
 package com.barabasizsolt.domain.useCase.screen.home
 
 import com.barabasizsolt.domain.model.HomeScreenContent
+import com.barabasizsolt.domain.model.toWatchableItem
 import com.barabasizsolt.domain.useCase.helper.movie.trending.GetTrendingMoviesFlowUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.upcoming.GetUpcomingMoviesFlowUseCase
 import kotlinx.coroutines.flow.Flow
@@ -16,8 +17,8 @@ class GetHomeScreenFlowUseCase(
         getUpcomingMoviesFlowUseCase()
     ) { trending ,upcoming ->
         HomeScreenContent(
-            trendingMovies = trending.results,
-            upcomingMovies = upcoming.results
+            trendingMovies = trending.results.map { it.toWatchableItem() },
+            upcomingMovies = upcoming.results.map { it.toWatchableItem() }
         )
     }
 }

@@ -44,9 +44,9 @@ fun MovieResponse.toModel() : Movie {
         originalLanguage = originalLanguage,
         originalTitle = originalTitle,
         overview = overview,
-        popularity = popularity,
+        popularity = popularity.toString(),
         posterPath = posterPath,
         releaseDate = releaseDate,
-        voteAverage = voteAverage
+        voteAverage = voteAverage.toString()
     )
 }

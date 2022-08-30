@@ -8,8 +8,8 @@ data class Movie(
     val originalLanguage: String,
     val originalTitle: String,
     val overview: String,
-    val popularity: Double,
+    val popularity: String,
     val posterPath: String,
     val releaseDate: String,
-    val voteAverage: Double
+    val voteAverage: String
 )
