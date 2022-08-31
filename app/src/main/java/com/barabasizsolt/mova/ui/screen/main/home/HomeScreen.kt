@@ -16,7 +16,8 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.barabasizsolt.mova.R
-import com.barabasizsolt.mova.ui.catalog.CardCarousel
+import com.barabasizsolt.mova.ui.catalog.PeopleCarousel
+import com.barabasizsolt.mova.ui.catalog.WatchableWithRatingCarousel
 import com.barabasizsolt.mova.ui.catalog.WatchablePager
 import com.barabasizsolt.mova.ui.theme.AppTheme
 
@@ -50,25 +51,36 @@ object HomeScreen : Tab {
                 )
             }
             item {
-                CardCarousel(
+                WatchableWithRatingCarousel(
                     header = "Popular Movies",
+                    buttonText = "More Popular Movies",
                     items = screenModel.homeContent?.trendingMovies.orEmpty(),
                     onItemClick = { },
                     onHeaderClick = { },
                 )
             }
             item {
-                CardCarousel(
+                WatchableWithRatingCarousel(
                     header = "Now Playing Movies",
+                    buttonText = "More Now Playing Movies",
                     items = screenModel.homeContent?.upcomingMovies.orEmpty(),
                     onItemClick = { },
                     onHeaderClick = { },
                 )
             }
             item {
-                CardCarousel(
+                WatchableWithRatingCarousel(
                     header = "Top Rated Movies",
+                    buttonText = "More Top Rated Movies",
                     items = screenModel.homeContent?.topRatedMovies.orEmpty(),
+                    onItemClick = { },
+                    onHeaderClick = { },
+                )
+            }
+            item {
+                PeopleCarousel(
+                    header = "Popular People",
+                    items = screenModel.homeContent?.popularPeople.orEmpty(),
                     onItemClick = { },
                     onHeaderClick = { },
                 )

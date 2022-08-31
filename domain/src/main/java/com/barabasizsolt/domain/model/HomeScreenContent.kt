@@ -6,5 +6,6 @@ data class HomeScreenContent(
     val upcomingMovies: List<WatchableItem>,
     val trendingMovies: List<WatchableItem>,
     val topRatedMovies: List<WatchableItem>,
-    val nowPlayingMovies: List<Movie>
+    val nowPlayingMovies: List<Movie>,
+    val popularPeople: List<WatchableItem>
 )

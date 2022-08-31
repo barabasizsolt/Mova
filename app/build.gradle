@@ -58,12 +58,14 @@ dependencies {
     // Modules
     implementation(project(":service:model:movie"))
     implementation(project(":service:model:tv"))
+    implementation(project(":service:model:people"))
 
     implementation(project(":network:network-di"))
     implementation(project(":domain"))
     implementation(project(":auth:auth-di"))
     implementation(project(":service:discover:discover-api"))
     implementation(project(":service:movie:movie-api"))
+    implementation(project(":service:people:people-api"))
 
     // Android Core
     implementation 'androidx.core:core-ktx:1.8.0'

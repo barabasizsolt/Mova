@@ -4,4 +4,5 @@ data class People(
     val id: String,
     val adult: Boolean,
     val profilePath: String,
+    val name: String
 )

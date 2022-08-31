@@ -10,11 +10,12 @@ data class PeopleResponse(
     @Json(name = "id") val id: String?,
     @Json(name = "adult") val adult: Boolean?,
     @Json(name = "profile_path") val profilePath: String?,
+    @Json(name = "name") val name: String?
 )
 
 fun PeopleResponse.toModel() : People {
-    if (id == null || adult == null || profilePath == null){
+    if (id == null || adult == null || profilePath == null || name == null){
         throw DataLayerException(message = "PeopleException: $this")
     }
-    return People(id = id, adult = adult, profilePath = profilePath)
+    return People(id = id, adult = adult, profilePath = profilePath, name = name)
 }

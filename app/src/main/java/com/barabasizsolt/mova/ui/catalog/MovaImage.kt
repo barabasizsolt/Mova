@@ -1,6 +1,5 @@
 package com.barabasizsolt.mova.ui.catalog
 
-import android.graphics.drawable.ColorDrawable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier

@@ -16,9 +16,13 @@ import com.barabasizsolt.domain.useCase.helper.movie.trending.GetTrendingMoviesU
 import com.barabasizsolt.domain.useCase.helper.movie.upcoming.DeleteUpcomingMoviesUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.upcoming.GetUpcomingMoviesFlowUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.upcoming.GetUpcomingMoviesUseCase
+import com.barabasizsolt.domain.useCase.helper.people.DeletePopularPeopleUseCase
+import com.barabasizsolt.domain.useCase.helper.people.GetPopularPeopleFlowUseCase
+import com.barabasizsolt.domain.useCase.helper.people.GetPopularPeopleUseCase
 import com.barabasizsolt.domain.useCase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.useCase.screen.home.GetHomeScreenUseCase
 import com.barabasizsolt.movie.di.createMovieModule
+import com.barabasizsolt.people.di.createPeopleModule
 import org.koin.dsl.module
 
 fun createDomainModules() = buildList {
@@ -29,6 +33,7 @@ fun createDomainModules() = buildList {
 private fun createServiceModules() = buildList {
     add(createDiscoverModule())
     add(createMovieModule())
+    add(createPeopleModule())
 }
 
 private fun createUseCaseModules() = module {
@@ -57,13 +62,19 @@ private fun createUseCaseModules() = module {
     factory { GetNowPlayingMoviesFlowUseCase(movieService = get()) }
     factory { DeleteNowPlayingMoviesUseCase(movieService = get()) }
 
+    // People [Popular]
+    factory { GetPopularPeopleUseCase(peopleService = get()) }
+    factory { GetPopularPeopleFlowUseCase(peopleService = get()) }
+    factory { DeletePopularPeopleUseCase(peopleService = get()) }
+
     // Home
     factory {
         GetHomeScreenUseCase(
             getTrendingMoviesUseCase = get(),
             getUpcomingMoviesUseCase = get(),
             getTopRatedMoviesUseCase = get(),
-            getNowPlayingMoviesCase = get()
+            getNowPlayingMoviesCase = get(),
+            getPopularPeopleUseCase = get()
         )
     }
     factory {
@@ -71,7 +82,8 @@ private fun createUseCaseModules() = module {
             getTrendingMoviesFlowUseCase = get(),
             getUpcomingMoviesFlowUseCase = get(),
             getTopRatedMoviesFlowUseCase = get(),
-            getNowPlayingMoviesFlowCase = get()
+            getNowPlayingMoviesFlowCase = get(),
+            getPopularPeopleFlowUseCase = get()
         )
     }
 }

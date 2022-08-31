@@ -12,11 +12,14 @@ dependencies {
 
     implementation(project(":service:model:movie"))
     implementation(project(":service:model:tv"))
+    implementation(project(":service:model:people"))
 
     implementation(project(":service:discover:discover-api"))
     implementation(project(":service:discover:discover-di"))
     implementation(project(":service:movie:movie-api"))
     implementation(project(":service:movie:movie-di"))
+    implementation(project(":service:people:people-api"))
+    implementation(project(":service:people:people-di"))
 
     // Koin
     implementation "io.insert-koin:koin-core:$koin_version"

@@ -6,6 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
@@ -21,6 +23,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.mova.R
 import com.barabasizsolt.mova.ui.theme.AppTheme
@@ -101,4 +104,28 @@ fun MovaOutlinedButton(
             color = contentColor
         )
     }
+}
+
+@Composable
+fun MovaButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    onClick: () -> Unit
+) = Box(
+    modifier = modifier
+        .height(height = AppTheme.dimens.buttonSize)
+        .fillMaxWidth()
+        .clip(shape = CircleShape)
+        .background(color = AppTheme.colors.secondary)
+        .clickable { onClick() }
+) {
+    Text(
+        text = text,
+        color = Color.White,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        modifier = modifier.align(alignment = Alignment.Center),
+        style = AppTheme.typography.body1,
+        fontWeight = FontWeight.Bold
+    )
 }

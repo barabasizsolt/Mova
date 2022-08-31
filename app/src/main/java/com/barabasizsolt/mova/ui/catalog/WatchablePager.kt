@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.barabasizsolt.mova.R
 import com.barabasizsolt.mova.ui.theme.AppTheme
+import com.barabasizsolt.mova.util.ImageType
 import com.barabasizsolt.mova.util.getImageKey
 import com.barabasizsolt.mova.util.movieGenres
 import com.barabasizsolt.mova.util.withShadow
@@ -88,7 +89,7 @@ private fun PagerItem(
         .fillMaxWidth()
         .clickable { onClick() }) {
         MovaImage(
-            imageUrl = item.posterPath.getImageKey(),
+            imageUrl = item.posterPath.getImageKey(imageType = ImageType.ORIGINAL),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()

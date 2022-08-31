@@ -1,6 +1,7 @@
 package com.barabasizsolt.mova.ui.catalog
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,25 +10,82 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.mova.ui.theme.AppTheme
 
 @Composable
-fun CardCarousel(
+fun WatchableWithRatingCarousel(
     modifier: Modifier = Modifier,
     header: String,
+    buttonText: String? = null,
     items: List<WatchableItem>,
     onItemClick: (String) -> Unit,
-    onHeaderClick: () -> Unit
+    onHeaderClick: () -> Unit,
+) = CardCarousel(
+    header = header,
+    onHeaderClick = onHeaderClick,
+    buttonText = buttonText,
+    content = {
+        items(items = items) { item ->
+            WatchableWithRating(
+                imageKey = item.posterPath,
+                rating = item.secondaryInfo,
+                aspectRatio = 0.7f,
+                onClick = { onItemClick(item.id) },
+                modifier = Modifier.height(height = 220.dp)
+            )
+        }
+    },
+    modifier = modifier
+)
+
+@Composable
+fun PeopleCarousel(
+    modifier: Modifier = Modifier,
+    header: String,
+    buttonText: String? = null,
+    items: List<WatchableItem>,
+    onItemClick: (String) -> Unit,
+    onHeaderClick: () -> Unit,
+) = CardCarousel(
+    header = header,
+    onHeaderClick = onHeaderClick,
+    buttonText = buttonText,
+    itemSpacing = AppTheme.dimens.screenPadding,
+    showDivider = false,
+    content = {
+        items(items = items) { item ->
+            PersonCard(
+                person = item,
+                onClick = { onItemClick(item.id) }
+            )
+        }
+    },
+    modifier = modifier
+)
+
+@Composable
+private fun CardCarousel(
+    modifier: Modifier = Modifier,
+    header: String,
+    buttonText: String? = null,
+    showDivider: Boolean = true,
+    onHeaderClick: () -> Unit,
+    itemSpacing: Dp = AppTheme.dimens.contentPadding,
+    content: LazyListScope.() -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -41,17 +99,22 @@ fun CardCarousel(
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(horizontal = AppTheme.dimens.screenPadding),
-            horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
+            horizontalArrangement = Arrangement.spacedBy(space = itemSpacing)
         ) {
-            items(items = items) { item ->
-                CardWithRating(
-                    imageKey = item.posterPath,
-                    rating = item.rating,
-                    aspectRatio = 0.7f,
-                    onClick = { onItemClick(item.id) },
-                    modifier = Modifier.height(height = 200.dp)
-                )
-            }
+            content()
+        }
+        if (buttonText != null) {
+            MovaButton(
+                text = buttonText,
+                onClick = onHeaderClick,
+                modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
+            )
+        }
+        if (showDivider) {
+            Divider(
+                color = if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray,
+                modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
+            )
         }
     }
 }

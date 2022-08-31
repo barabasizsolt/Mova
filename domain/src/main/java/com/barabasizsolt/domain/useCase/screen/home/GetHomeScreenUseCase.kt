@@ -4,6 +4,7 @@ import com.barabasizsolt.domain.useCase.helper.movie.nowPlaying.GetNowPlayingMov
 import com.barabasizsolt.domain.useCase.helper.movie.topRated.GetTopRatedMoviesUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.trending.GetTrendingMoviesUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.upcoming.GetUpcomingMoviesUseCase
+import com.barabasizsolt.domain.useCase.helper.people.GetPopularPeopleUseCase
 import com.barabasizsolt.domain.util.wrapToResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -13,7 +14,8 @@ class GetHomeScreenUseCase(
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
-    private val getNowPlayingMoviesCase: GetNowPlayingMoviesUseCase
+    private val getNowPlayingMoviesCase: GetNowPlayingMoviesUseCase,
+    private val getPopularPeopleUseCase: GetPopularPeopleUseCase
 ) {
 
     suspend operator fun invoke(coroutineScope: CoroutineScope) = wrapToResult {
@@ -22,6 +24,7 @@ class GetHomeScreenUseCase(
             coroutineScope.async { getUpcomingMoviesUseCase() },
             coroutineScope.async { getTopRatedMoviesUseCase() },
             coroutineScope.async { getNowPlayingMoviesCase() },
+            coroutineScope.async { getPopularPeopleUseCase() },
         ).awaitAll()
     }
 }
