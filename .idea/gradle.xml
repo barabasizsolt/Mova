@@ -32,6 +32,7 @@
             <option value="$PROJECT_DIR$/service/movie/movie-api" />
             <option value="$PROJECT_DIR$/service/movie/movie-di" />
             <option value="$PROJECT_DIR$/service/movie/movie-implementation" />
+            <option value="$PROJECT_DIR$/service/people" />
           </set>
         </option>
       </GradleProjectSettings>

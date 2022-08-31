@@ -16,6 +16,9 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
     private val _topRatedMovies = MutableStateFlow<MovieList?>(value = null)
     override val topRatedMovies: Flow<MovieList?> = _topRatedMovies
 
+    private val _nowPlayingMovies = MutableStateFlow<MovieList?>(value = null)
+    override val nowPlayingMovies: Flow<MovieList?> = _nowPlayingMovies
+
     override suspend fun getTrendingMovies(page: Int): MovieList = remoteSource.getTrendingMovies(page = page).also {
         _trendingMovies.value = it
     }
@@ -28,6 +31,9 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
         _topRatedMovies.value = it
     }
 
+    override suspend fun getNowPlayingMovies(page: Int): MovieList = remoteSource.getNowPlayingMovies(page = page).also {
+        _nowPlayingMovies.value = it
+    }
     override fun clearTrendingMovies() {
         _trendingMovies.value = null
     }
@@ -38,5 +44,9 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
 
     override fun clearTopRatedMovies() {
         _topRatedMovies.value = null
+    }
+
+    override fun clearNowPlayingMovies() {
+        _nowPlayingMovies.value = null
     }
 }

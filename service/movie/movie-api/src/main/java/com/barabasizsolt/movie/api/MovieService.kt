@@ -11,15 +11,21 @@ interface MovieService {
 
     val topRatedMovies: Flow<MovieList?>
 
+    val nowPlayingMovies: Flow<MovieList?>
+
     suspend fun getTrendingMovies(page: Int): MovieList
 
     suspend fun getUpcomingMovies(page: Int): MovieList
 
     suspend fun getTopRatedMovies(page: Int): MovieList
 
+    suspend fun getNowPlayingMovies(page: Int): MovieList
+
     fun clearTrendingMovies()
 
     fun clearUpcomingMovies()
 
     fun clearTopRatedMovies()
+
+    fun clearNowPlayingMovies()
 }

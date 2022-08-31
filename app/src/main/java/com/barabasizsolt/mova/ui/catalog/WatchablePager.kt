@@ -10,26 +10,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.zIndex
 import com.barabasizsolt.mova.R
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import com.barabasizsolt.mova.util.getImageKey
@@ -47,7 +40,10 @@ import kotlinx.coroutines.delay
 @Composable
 fun WatchablePager(
     modifier: Modifier = Modifier,
-    pagerContent: List<Movie>
+    pagerContent: List<Movie>,
+    onClick: () -> Unit,
+    onPlayButtonClicked: () -> Unit,
+    onAddToFavouriteButtonClicked: () -> Unit
 ) {
     val pagerState = rememberPagerState()
     LaunchedEffect(Unit) {
@@ -67,7 +63,9 @@ fun WatchablePager(
         ) { page ->
             PagerItem(
                 item = pagerContent[page],
-                onClick = {}
+                onClick = onClick,
+                onPlayButtonClicked = onPlayButtonClicked,
+                onAddToFavouriteButtonClicked = onAddToFavouriteButtonClicked
             )
         }
         HorizontalPagerIndicator(
@@ -82,7 +80,9 @@ fun WatchablePager(
 private fun PagerItem(
     modifier: Modifier = Modifier,
     item: Movie,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onPlayButtonClicked: () -> Unit,
+    onAddToFavouriteButtonClicked: () -> Unit
 ) {
     Box(modifier = modifier
         .fillMaxWidth()
@@ -117,8 +117,8 @@ private fun PagerItem(
                     start = AppTheme.dimens.screenPadding,
                     bottom = AppTheme.dimens.screenPadding
                 ),
-            onPlayButtonClicked = {},
-            onAddToFavouriteButtonClicked = {}
+            onPlayButtonClicked = onPlayButtonClicked,
+            onAddToFavouriteButtonClicked = onAddToFavouriteButtonClicked
         )
     }
 }
