@@ -101,6 +101,12 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
 
+    // [Swipe to refresh]
+    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
+
+    // State Machine
+    implementation "com.tinder.statemachine:statemachine:$state_machine_version"
+
     // Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

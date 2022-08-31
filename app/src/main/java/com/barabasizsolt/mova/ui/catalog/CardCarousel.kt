@@ -31,6 +31,7 @@ fun WatchableWithRatingCarousel(
     modifier: Modifier = Modifier,
     header: String,
     buttonText: String? = null,
+    showDivider: Boolean = true,
     items: List<WatchableItem>,
     onItemClick: (String) -> Unit,
     onHeaderClick: () -> Unit,
@@ -38,6 +39,7 @@ fun WatchableWithRatingCarousel(
     header = header,
     onHeaderClick = onHeaderClick,
     buttonText = buttonText,
+    showDivider = showDivider,
     content = {
         items(items = items) { item ->
             WatchableWithRating(
@@ -65,7 +67,7 @@ fun PeopleCarousel(
     onHeaderClick = onHeaderClick,
     buttonText = buttonText,
     itemSpacing = AppTheme.dimens.screenPadding,
-    showDivider = false,
+    showDivider = true,
     content = {
         items(items = items) { item ->
             PersonCard(
@@ -82,7 +84,7 @@ private fun CardCarousel(
     modifier: Modifier = Modifier,
     header: String,
     buttonText: String? = null,
-    showDivider: Boolean = true,
+    showDivider: Boolean,
     onHeaderClick: () -> Unit,
     itemSpacing: Dp = AppTheme.dimens.contentPadding,
     content: LazyListScope.() -> Unit

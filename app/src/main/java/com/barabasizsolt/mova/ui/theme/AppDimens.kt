@@ -10,6 +10,6 @@ data class AppDimens(
     val screenPadding: Dp = 20.dp,
     val contentPadding: Dp = 8.dp,
     val smallPadding: Dp = 4.dp,
-    val buttonSize: Dp = 56.dp,
+    val buttonSize: Dp = 50.dp,
     val bottomNavHeight: Dp = 56.dp
 )

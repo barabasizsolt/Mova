@@ -25,16 +25,15 @@ class HomeScreenModel(
         getHomeScreenFlow().onEach {
             homeContent = it
         }.launchIn(scope = coroutineScope)
-        getScreenData()
+        getScreenData(swipeRefresh = false)
     }
 
-    private fun getScreenData() {
-        mutableState.value = State.Loading
+    fun getScreenData(swipeRefresh: Boolean) {
+        mutableState.value = if (swipeRefresh) State.SwipeRefresh else State.Loading
         coroutineScope.launch {
             when (val result = getHomeScreen(coroutineScope = this)) {
                 is Result.Failure -> {
                     mutableState.value = State.Error(message = result.exception.message.orEmpty())
-                    println("Error: ${result.exception.message.orEmpty()}")
                 }
                 is Result.Success -> {
                     mutableState.value = State.Normal
@@ -46,6 +45,8 @@ class HomeScreenModel(
     sealed class State {
         object Normal : State()
         object Loading : State()
+        object SwipeRefresh : State()
         data class Error(val message: String) : State()
+        object ShowSnackBar : State()
     }
 }
