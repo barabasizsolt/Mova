@@ -3,8 +3,14 @@ package com.barabasizsolt.mova.ui.navigation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -25,6 +31,7 @@ import com.barabasizsolt.mova.ui.screen.main.favourites.FavouritesScreen
 import com.barabasizsolt.mova.ui.screen.main.home.HomeScreen
 import com.barabasizsolt.mova.ui.screen.main.profile.ProfileScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
+import com.barabasizsolt.mova.util.navigationBarInsetDp
 
 object MainNavigation : Tab {
     override val options: TabOptions
@@ -48,7 +55,8 @@ object MainNavigation : Tab {
                             TabNavigationItem(tab = ExploreScreen)
                             TabNavigationItem(tab = FavouritesScreen)
                             TabNavigationItem(tab = ProfileScreen)
-                        }
+                        },
+                        modifier = Modifier.height(height = navigationBarInsetDp + AppTheme.dimens.bottomNavHeight)
                     )
                 }
             )
@@ -72,6 +80,7 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
             )
         },
         selectedContentColor = AppTheme.colors.secondary,
-        unselectedContentColor = Color.Gray
+        unselectedContentColor = Color.Gray,
+        modifier = Modifier.systemBarsPadding()
     )
 }

@@ -57,8 +57,7 @@ fun MovaFilledButton(
         Text(
             text = text,
             style = AppTheme.typography.subtitle1,
-            color = contentColor,
-            fontWeight = FontWeight.Bold
+            color = contentColor
         )
     }
 }
@@ -99,8 +98,7 @@ fun MovaOutlinedButton(
         Text(
             text = text,
             style = AppTheme.typography.subtitle1,
-            color = contentColor,
-            fontWeight = FontWeight.Bold
+            color = contentColor
         )
     }
 }
