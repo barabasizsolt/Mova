@@ -27,12 +27,16 @@
             <option value="$PROJECT_DIR$/service/discover/discover-implementation" />
             <option value="$PROJECT_DIR$/service/model" />
             <option value="$PROJECT_DIR$/service/model/movie" />
+            <option value="$PROJECT_DIR$/service/model/people" />
             <option value="$PROJECT_DIR$/service/model/tv" />
             <option value="$PROJECT_DIR$/service/movie" />
             <option value="$PROJECT_DIR$/service/movie/movie-api" />
             <option value="$PROJECT_DIR$/service/movie/movie-di" />
             <option value="$PROJECT_DIR$/service/movie/movie-implementation" />
             <option value="$PROJECT_DIR$/service/people" />
+            <option value="$PROJECT_DIR$/service/people/people-api" />
+            <option value="$PROJECT_DIR$/service/people/people-di" />
+            <option value="$PROJECT_DIR$/service/people/people-implementation" />
           </set>
         </option>
       </GradleProjectSettings>

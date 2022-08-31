@@ -13,7 +13,7 @@ data class MovieListResponse(
 
 fun MovieListResponse.toModel() : MovieList {
     if (page == null || results == null) {
-        throw DataLayerException(message = "MovieDiscoverException: $this")
+        throw DataLayerException(message = "MovieListException: $this")
     }
     return MovieList(
         page = page,
