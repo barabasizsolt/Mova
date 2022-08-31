@@ -41,25 +41,21 @@ object MainNavigation : Tab {
     @Composable
     override fun Content() {
         TabNavigator(tab = HomeScreen) {
-            Scaffold(
-                content = { padding ->
-                    Box(modifier = Modifier.padding(paddingValues = padding)) {
-                        CurrentTab()
-                    }
-                },
-                bottomBar = {
-                    BottomNavigation(
-                        backgroundColor = AppTheme.colors.background,
-                        content = {
-                            TabNavigationItem(tab = HomeScreen)
-                            TabNavigationItem(tab = ExploreScreen)
-                            TabNavigationItem(tab = FavouritesScreen)
-                            TabNavigationItem(tab = ProfileScreen)
-                        },
-                        modifier = Modifier.height(height = navigationBarInsetDp + AppTheme.dimens.bottomNavHeight)
-                    )
+            Column {
+                Box(modifier = Modifier.weight(weight = 1f)) {
+                    CurrentTab()
                 }
-            )
+                BottomNavigation(
+                    backgroundColor = AppTheme.colors.background,
+                    content = {
+                        TabNavigationItem(tab = HomeScreen)
+                        TabNavigationItem(tab = ExploreScreen)
+                        TabNavigationItem(tab = FavouritesScreen)
+                        TabNavigationItem(tab = ProfileScreen)
+                    },
+                    modifier = Modifier.height(height = navigationBarInsetDp + AppTheme.dimens.bottomNavHeight)
+                )
+            }
         }
     }
 

@@ -33,7 +33,7 @@ class HomeScreenModel(
         coroutineScope.launch {
             when (val result = getHomeScreen(coroutineScope = this)) {
                 is Result.Failure -> {
-                    mutableState.value = State.Error(message = result.exception.message.orEmpty())
+                    mutableState.value = if (!swipeRefresh) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
                 }
                 is Result.Success -> {
                     mutableState.value = State.Normal
