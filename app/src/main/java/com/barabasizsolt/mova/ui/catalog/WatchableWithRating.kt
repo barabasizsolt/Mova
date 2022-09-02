@@ -25,7 +25,7 @@ fun WatchableWithRating(
     modifier: Modifier = Modifier,
     imageKey: String,
     rating: String,
-    aspectRatio: Float,
+    aspectRatio: Float = 0.7f,
     onClick: () -> Unit
 ) = Box {
     MovaImage(

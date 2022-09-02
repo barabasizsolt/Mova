@@ -45,9 +45,8 @@ fun WatchableWithRatingCarousel(
             WatchableWithRating(
                 imageKey = item.posterPath,
                 rating = item.secondaryInfo,
-                aspectRatio = 0.7f,
                 onClick = { onItemClick(item.id) },
-                modifier = Modifier.height(height = 220.dp)
+                modifier = Modifier.height(height = AppTheme.dimens.watchableCardHeight)
             )
         }
     },

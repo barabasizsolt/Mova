@@ -24,7 +24,7 @@ class GetHomeScreenFlowUseCase(
         getTopRatedMoviesFlowUseCase(),
         getNowPlayingMoviesFlowCase(),
         getPopularPeopleFlowUseCase()
-    ) { trending ,upcoming, topRated, nowPlaying, popularPeople ->
+    ) { trending, upcoming, topRated, nowPlaying, popularPeople ->
         HomeScreenContent(
             trendingMovies = trending.results.map { it.toWatchableItem() },
             upcomingMovies = upcoming.results.map { it.toWatchableItem() },

@@ -5,10 +5,8 @@ import com.barabasizsolt.domain.useCase.helper.movie.topRated.GetTopRatedMoviesU
 import com.barabasizsolt.domain.useCase.helper.movie.trending.GetTrendingMoviesUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.upcoming.GetUpcomingMoviesUseCase
 import com.barabasizsolt.domain.useCase.helper.people.GetPopularPeopleUseCase
-import com.barabasizsolt.domain.util.Result
+import com.barabasizsolt.domain.util.asyncWrapToResult
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 
 class GetHomeScreenUseCase(
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
@@ -18,15 +16,14 @@ class GetHomeScreenUseCase(
     private val getPopularPeopleUseCase: GetPopularPeopleUseCase,
 ) {
 
-    suspend operator fun invoke(coroutineScope: CoroutineScope) : Result<Unit> {
-        val results = listOf(
-            coroutineScope.async { getTrendingMoviesUseCase() },
-            coroutineScope.async { getUpcomingMoviesUseCase() },
-            coroutineScope.async { getTopRatedMoviesUseCase() },
-            coroutineScope.async { getNowPlayingMoviesCase() },
-            coroutineScope.async { getPopularPeopleUseCase() }
-        ).awaitAll()
-        val exception = results.filterIsInstance<Result.Failure<Exception>>()
-        return if (exception.isEmpty()) Result.Success(data = Unit) else Result.Failure(exception = exception[0].exception)
-    }
+    suspend operator fun invoke(coroutineScope: CoroutineScope) = asyncWrapToResult(
+        scope = coroutineScope,
+        functions = listOf(
+            getTrendingMoviesUseCase(),
+            getUpcomingMoviesUseCase(),
+            getTopRatedMoviesUseCase(),
+            getNowPlayingMoviesCase(),
+            getPopularPeopleUseCase()
+        )
+    )
 }

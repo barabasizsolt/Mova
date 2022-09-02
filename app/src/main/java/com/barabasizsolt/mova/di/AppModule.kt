@@ -4,6 +4,7 @@ import com.barabasizsolt.auth.createAuthModules
 import com.barabasizsolt.di.createNetworkModule
 import com.barabasizsolt.domain.di.createDomainModules
 import com.barabasizsolt.mova.BuildConfig
+import com.barabasizsolt.mova.ui.screen.main.explore.ExploreScreenModel
 import com.barabasizsolt.mova.ui.screen.main.home.HomeScreenModel
 import org.koin.dsl.module
 
@@ -19,6 +20,12 @@ private fun createScreenModelModules() = module {
         HomeScreenModel(
             getHomeScreen = get(),
             getHomeScreenFlow = get()
+        )
+    }
+    factory {
+        ExploreScreenModel(
+            getExploreScreen = get(),
+            getExploreScreenFlow = get()
         )
     }
 }
