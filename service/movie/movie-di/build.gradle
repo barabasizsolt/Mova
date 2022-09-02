@@ -1,0 +1,21 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+dependencies {
+    implementation(project(":network:network-api"))
+    implementation(project(":service:movie:movie-api"))
+    implementation(project(":service:movie:movie-implementation"))
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+
+    // Koin
+    implementation "io.insert-koin:koin-core:$koin_version"
+}

@@ -13,6 +13,8 @@ dependencies {
 
     implementation(project(":network:network-api"))
     implementation(project(":service:discover:discover-api"))
+    implementation(project(":service:model:movie"))
+    implementation(project(":service:model:tv"))
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

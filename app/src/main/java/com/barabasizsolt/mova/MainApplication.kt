@@ -1,9 +1,7 @@
 package com.barabasizsolt.mova
 
 import android.app.Application
-import com.barabasizsolt.auth.createAuthModules
-import com.barabasizsolt.domain.di.createDomainModules
-import com.barabasizsolt.di.createNetworkModule
+import com.barabasizsolt.mova.di.createAppModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -16,13 +14,7 @@ class MainApplication : Application() {
         startKoin {
             androidLogger(level = Level.DEBUG)
             androidContext(androidContext = this@MainApplication)
-            modules(
-                modules = buildList {
-                    add(createNetworkModule(baseUrl = BuildConfig.BASE_URL, apiKey = BuildConfig.API_KEY, clientId = BuildConfig.CLIENT_ID))
-                    addAll(createAuthModules())
-                    addAll(createDomainModules())
-                }
-            )
+            modules(modules = createAppModule())
         }
     }
 }

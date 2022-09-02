@@ -1,6 +1,16 @@
 package com.barabasizsolt.mova.ui.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -9,6 +19,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
@@ -19,6 +30,8 @@ import com.barabasizsolt.mova.ui.screen.main.explore.ExploreScreen
 import com.barabasizsolt.mova.ui.screen.main.favourites.FavouritesScreen
 import com.barabasizsolt.mova.ui.screen.main.home.HomeScreen
 import com.barabasizsolt.mova.ui.screen.main.profile.ProfileScreen
+import com.barabasizsolt.mova.ui.theme.AppTheme
+import com.barabasizsolt.mova.util.navigationBarInsetDp
 
 object MainNavigation : Tab {
     override val options: TabOptions
@@ -28,19 +41,21 @@ object MainNavigation : Tab {
     @Composable
     override fun Content() {
         TabNavigator(tab = HomeScreen) {
-            Scaffold(
-                content = { CurrentTab() },
-                bottomBar = {
-                    BottomNavigation(
-                        content = {
-                            TabNavigationItem(tab = HomeScreen)
-                            TabNavigationItem(tab = ExploreScreen)
-                            TabNavigationItem(tab = FavouritesScreen)
-                            TabNavigationItem(tab = ProfileScreen)
-                        }
-                    )
+            Column {
+                Box(modifier = Modifier.weight(weight = 1f)) {
+                    CurrentTab()
                 }
-            )
+                BottomNavigation(
+                    backgroundColor = AppTheme.colors.background,
+                    content = {
+                        TabNavigationItem(tab = HomeScreen)
+                        TabNavigationItem(tab = ExploreScreen)
+                        TabNavigationItem(tab = FavouritesScreen)
+                        TabNavigationItem(tab = ProfileScreen)
+                    },
+                    modifier = Modifier.height(height = navigationBarInsetDp + AppTheme.dimens.bottomNavHeight)
+                )
+            }
         }
     }
 
@@ -57,10 +72,11 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
         label = {
             Text(
                 text = tab.options.title,
-                style = MaterialTheme.typography.caption
+                style = AppTheme.typography.caption
             )
         },
-        selectedContentColor = MaterialTheme.colors.secondary,
-        unselectedContentColor = Color.Gray
+        selectedContentColor = AppTheme.colors.secondary,
+        unselectedContentColor = Color.Gray,
+        modifier = Modifier.systemBarsPadding()
     )
 }

@@ -56,10 +56,16 @@ android {
 dependencies {
 
     // Modules
+    implementation(project(":service:model:movie"))
+    implementation(project(":service:model:tv"))
+    implementation(project(":service:model:people"))
+
     implementation(project(":network:network-di"))
     implementation(project(":domain"))
     implementation(project(":auth:auth-di"))
     implementation(project(":service:discover:discover-api"))
+    implementation(project(":service:movie:movie-api"))
+    implementation(project(":service:people:people-api"))
 
     // Android Core
     implementation 'androidx.core:core-ktx:1.8.0'
@@ -78,6 +84,7 @@ dependencies {
 
     // Coil Image
     implementation "io.coil-kt:coil-compose:$coil_version"
+    implementation "io.coil-kt:coil-svg:$coil_version"
 
     // Voyager
     implementation "cafe.adriel.voyager:voyager-navigator:$voyager_version"
@@ -85,6 +92,20 @@ dependencies {
     implementation "cafe.adriel.voyager:voyager-tab-navigator:$voyager_version"
     implementation "cafe.adriel.voyager:voyager-transitions:$voyager_version"
     implementation "cafe.adriel.voyager:voyager-koin:$voyager_version"
+
+    // Accompanist
+    // [System UI Controller]
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+
+    // [Pager]
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
+
+    // [Swipe to refresh]
+    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
+
+    // State Machine
+    implementation "com.tinder.statemachine:statemachine:$state_machine_version"
 
     // Test
     testImplementation 'junit:junit:4.13.2'
