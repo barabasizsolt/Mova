@@ -22,6 +22,14 @@ class DiscoverServiceImpl(private val remoteSource: DiscoverRemoteSource) : Disc
         _tvSeries.value = it
     }
 
+    override suspend fun searchMovies(query: String): MovieList = remoteSource.searchMovies(query = query).also {
+        _movies.value = it
+    }
+
+    override suspend fun searchTvSeries(query: String): TvSeriesList = remoteSource.searchTvSeries(query = query).also {
+        _tvSeries.value = it
+    }
+
     override fun clearMovies() {
        _movies.value = null
     }

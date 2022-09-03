@@ -23,14 +23,12 @@ data class TvSeriesResponse(
 fun TvSeriesResponse.toModel() : TvSeries {
     if (
         id == null ||
-        backdropPath == null ||
         genreIds == null ||
         originalCountry == null ||
         originalLanguage == null ||
         originalTitle == null ||
         overview == null ||
         popularity == null ||
-        posterPath == null ||
         firstAirDate == null ||
         voteAverage == null
     ) {

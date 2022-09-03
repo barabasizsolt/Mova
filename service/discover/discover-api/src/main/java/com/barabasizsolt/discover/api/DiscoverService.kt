@@ -14,6 +14,10 @@ interface DiscoverService {
 
     suspend fun getTvSeries() : TvSeriesList
 
+    suspend fun searchMovies(query: String) : MovieList
+
+    suspend fun searchTvSeries(query: String) : TvSeriesList
+
     fun clearMovies()
 
     fun clearTvSeries()

@@ -5,5 +5,7 @@ import com.barabasizsolt.domain.util.wrapToResult
 
 class GetTvDiscoverUseCase(private val discoverService: DiscoverService) {
 
-    suspend operator fun invoke() = wrapToResult { discoverService.getTvSeries() }
+    suspend operator fun invoke(query: String) = wrapToResult {
+        if (query.isEmpty()) discoverService.getTvSeries() else discoverService.searchTvSeries(query = query)
+    }
 }

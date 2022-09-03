@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import com.barabasizsolt.mova.util.ImageType
 import com.barabasizsolt.mova.util.getImageKey
@@ -23,13 +24,12 @@ import com.barabasizsolt.mova.util.getImageKey
 @Composable
 fun WatchableWithRating(
     modifier: Modifier = Modifier,
-    imageKey: String,
-    rating: String,
+    item: WatchableItem,
     aspectRatio: Float = 0.7f,
     onClick: () -> Unit
 ) = Box {
     MovaImage(
-        imageUrl = imageKey.getImageKey(imageType = ImageType.ORIGINAL),
+        imageUrl = item.posterPath.getImageKey(imageType = ImageType.ORIGINAL),
         contentScale = ContentScale.Crop,
         modifier = modifier
             .clip(shape = AppTheme.shapes.medium)
@@ -37,7 +37,7 @@ fun WatchableWithRating(
             .clickable { onClick() }
     )
     RatingHolder(
-        rating = rating,
+        rating = item.secondaryInfo,
         modifier = Modifier
             .align(alignment = Alignment.TopStart)
             .padding(all = AppTheme.dimens.contentPadding + AppTheme.dimens.smallPadding)

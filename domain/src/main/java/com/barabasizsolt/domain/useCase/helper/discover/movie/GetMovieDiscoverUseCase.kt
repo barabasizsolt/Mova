@@ -5,5 +5,7 @@ import com.barabasizsolt.domain.util.wrapToResult
 
 class GetMovieDiscoverUseCase(private val discoverService: DiscoverService) {
 
-    suspend operator fun invoke() = wrapToResult { discoverService.getMovies() }
+    suspend operator fun invoke(query: String) = wrapToResult {
+        if (query.isEmpty()) discoverService.getMovies() else discoverService.searchMovies(query = query)
+    }
 }

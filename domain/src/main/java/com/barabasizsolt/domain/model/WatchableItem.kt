@@ -15,14 +15,14 @@ fun Movie.toWatchableItem(): WatchableItem = WatchableItem(
     id = id,
     primaryInfo = originalTitle,
     secondaryInfo = voteAverage,
-    posterPath = posterPath
+    posterPath = posterPath.orEmpty()
 )
 
 fun TvSeries.toWatchableItem(): WatchableItem = WatchableItem(
     id = id,
     primaryInfo = originalName,
     secondaryInfo = voteAverage,
-    posterPath = posterPath
+    posterPath = posterPath.orEmpty()
 )
 
 fun People.toWatchableItem(): WatchableItem = WatchableItem(

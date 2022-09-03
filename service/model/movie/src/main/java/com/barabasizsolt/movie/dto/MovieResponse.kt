@@ -25,14 +25,12 @@ fun MovieResponse.toModel() : Movie {
     if (
         id == null ||
         adult == null ||
-        backdropPath == null ||
         genreIds == null ||
         originalLanguage == null ||
         originalTitle == null ||
         title == null ||
         overview == null ||
         popularity == null ||
-        posterPath == null ||
         releaseDate == null ||
         voteAverage == null
     ) {

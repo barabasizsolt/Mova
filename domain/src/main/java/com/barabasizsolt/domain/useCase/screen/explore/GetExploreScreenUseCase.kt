@@ -9,10 +9,13 @@ class GetExploreScreenUseCase(
     private val getTvDiscoverUseCase: GetTvDiscoverUseCase,
 ) {
 
-    suspend operator fun invoke(category: Category = Category.MOVIE) = wrapToResult {
+    suspend operator fun invoke(
+        category: Category = Category.MOVIE,
+        query: String
+    ) = wrapToResult {
         when (category) {
-            Category.MOVIE -> getMovieDiscoverUseCase()
-            Category.TV -> getTvDiscoverUseCase()
+            Category.MOVIE -> getMovieDiscoverUseCase(query = query)
+            Category.TV -> getTvDiscoverUseCase(query = query)
         }
     }
 }

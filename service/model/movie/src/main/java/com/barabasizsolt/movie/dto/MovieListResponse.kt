@@ -17,6 +17,6 @@ fun MovieListResponse.toModel() : MovieList {
     }
     return MovieList(
         page = page,
-        results = results.map { it.toModel() }
+        results = results.filter { movie -> movie.backdropPath?.isNotEmpty() == true && movie.posterPath?.isNotEmpty() == true }.map { it.toModel() }
     )
 }

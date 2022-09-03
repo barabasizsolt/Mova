@@ -9,6 +9,9 @@ import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.domain.useCase.screen.explore.GetExploreScreenFlowUseCase
 import com.barabasizsolt.domain.useCase.screen.explore.GetExploreScreenUseCase
 import com.barabasizsolt.domain.util.Result
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -20,20 +23,24 @@ class ExploreScreenModel(
 
     var exploreContent by mutableStateOf<List<WatchableItem>?>(value = null)
         private set
+    var query by mutableStateOf(value = "")
+        private set
 
     init {
         getExploreScreenFlow().onEach {
             exploreContent = it
-        }.launchIn(scope = coroutineScope)
-        getScreenData(swipeRefresh = false)
+        }
+            //.debounce(timeoutMillis = 250)
+            .launchIn(scope = coroutineScope)
+        getScreenData(isSearch = false)
     }
 
-   fun getScreenData(swipeRefresh: Boolean) {
-        mutableState.value = if (swipeRefresh) State.SwipeRefresh else State.Loading
+    fun getScreenData(isSearch: Boolean) {
+        mutableState.value = if (isSearch) State.Search else State.Loading
         coroutineScope.launch {
-            when (val result = getExploreScreen()) {
+            when (val result = getExploreScreen(query = query)) {
                 is Result.Failure -> {
-                    mutableState.value = if (!swipeRefresh) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
+                    mutableState.value = if (!isSearch) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
                 }
                 is Result.Success -> {
                     mutableState.value = State.Normal
@@ -42,10 +49,16 @@ class ExploreScreenModel(
         }
     }
 
+    fun onQueryChange(query: String) {
+        this.query = query
+        //println("Query: $query")
+        getScreenData(isSearch = true)
+    }
+
     sealed class State {
         object Normal : State()
         object Loading : State()
-        object SwipeRefresh : State()
+        object Search : State()
         data class Error(val message: String) : State()
         object ShowSnackBar : State()
     }
