@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -32,7 +32,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.barabasizsolt.mova.ui.catalog.MovaButton
-import com.barabasizsolt.mova.ui.catalog.MovaFilledButton
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import com.barabasizsolt.mova.util.movieGenres
 import java.util.Locale
@@ -43,6 +42,7 @@ object FilterScreen : Screen {
     override fun Content() {
         val isoCountries = Locale.getISOCountries().map { locale -> Locale("", locale) }
         val isDark: Boolean = isSystemInDarkTheme()
+        var invalidateFlag by rememberSaveable { mutableStateOf(value = false) }
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
@@ -67,34 +67,38 @@ object FilterScreen : Screen {
             item {
                 FilterCarousel(
                     header = "Categories",
-                    selectedItemPosition = 0,
+                    selectedItemPositions = listOf(0),
                     items = listOf(
+                        FilterItem(name = "All Categories", value = ""),
                         FilterItem(name = "Movie", value = "movie"),
                         FilterItem(name = "Tv Series", value = "tv")
                     ),
-                    onClick = { }
+                    onClick = { },
+                    invalidateFlag = invalidateFlag
                 )
             }
             item {
                 FilterCarousel(
                     header = "Regions",
-                    selectedItemPosition = 0,
+                    selectedItemPositions = listOf(0),
                     items = listOf(FilterItem(name = "All Regions", value = "")) + isoCountries.map { FilterItem(name = it.displayName, value = it.country) },
-                    onClick = { }
+                    onClick = { },
+                    invalidateFlag = invalidateFlag
                 )
             }
             item {
                 FilterCarousel(
                     header = "Genres",
-                    selectedItemPosition = 0,
-                    items = movieGenres.entries.map { FilterItem(name = it.value, value = it.key.toString()) },
-                    onClick = { }
+                    selectedItemPositions = listOf(0),
+                    items = listOf(FilterItem(name = "All Genres", value = "")) + movieGenres.entries.map { FilterItem(name = it.value, value = it.key.toString()) },
+                    onClick = { },
+                    invalidateFlag = invalidateFlag
                 )
             }
             item {
                 FilterCarousel(
                     header = "Time/Periods",
-                    selectedItemPosition = 0,
+                    selectedItemPositions = listOf(0),
                     items = listOf(
                         FilterItem(name = "All Periods", value = ""),
                         FilterItem(name = "2022", value = "2022"),
@@ -102,18 +106,21 @@ object FilterScreen : Screen {
                         FilterItem(name = "2020", value = "2020"),
                         FilterItem(name = "2019", value = "2019")
                     ),
-                    onClick = { }
+                    onClick = { },
+                    invalidateFlag = invalidateFlag
                 )
             }
             item {
                 FilterCarousel(
                     header = "Sort",
-                    selectedItemPosition = 0,
+                    selectedItemPositions = listOf(0),
                     items = listOf(
+                        FilterItem(name = "None", value = "none"),
                         FilterItem(name = "Popularity", value = "popularity"),
                         FilterItem(name = "Latest Release", value = "release_date")
                     ),
-                    onClick = { }
+                    onClick = { },
+                    invalidateFlag = invalidateFlag
                 )
             }
             item {
@@ -131,7 +138,7 @@ object FilterScreen : Screen {
                     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
                 ) {
                     ResetButton(
-                        onClick = {},
+                        onClick = { invalidateFlag = !invalidateFlag },
                         isDark = isDark,
                         modifier = Modifier.weight(weight = 1f)
                     )
@@ -172,14 +179,20 @@ private fun ResetButton(
 private fun FilterCarousel(
     modifier: Modifier = Modifier,
     header: String,
-    selectedItemPosition: Int,
+    selectedItemPositions: List<Int>,
     items: List<FilterItem>,
+    invalidateFlag: Boolean,
     onClick: () -> Unit
 ) = Column(
     modifier = modifier.fillMaxWidth(),
     verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2)
 ) {
-    var selectedPosition by rememberSaveable { mutableStateOf(value = selectedItemPosition) }
+    var selectedPositions by rememberSaveable { mutableStateOf(value = selectedItemPositions) }
+
+    LaunchedEffect(
+        key1 = invalidateFlag,
+        block = { selectedPositions = listOf(0) }
+    )
 
     Text(
         text = header,
@@ -197,12 +210,29 @@ private fun FilterCarousel(
         itemsIndexed(items = items) { index, item ->
             FilterItem(
                 text = item.name,
-                isSelected = index == selectedPosition,
+                isSelected = selectedPositions.contains(element = index),
                 onClick = {
-                    if (index != selectedPosition) {
-                        selectedPosition = index
-                        onClick()
+                    val oldList = selectedPositions.toMutableList()
+                    if (oldList.contains(element = index)) {
+                        oldList.remove(element = index)
+                        if (oldList.isEmpty()) {
+                            oldList.add(element = 0)
+                        }
+                    } else {
+                        when {
+                            oldList.contains(element = 0) -> {
+                                oldList.remove(element = 0)
+                                oldList.add(element = index)
+                            }
+                            index == 0 -> {
+                                oldList.clear()
+                                oldList.add(element = 0)
+                            }
+                            else -> oldList.add(element = index)
+                        }
                     }
+                    selectedPositions = oldList
+                    onClick()
                 }
             )
         }
