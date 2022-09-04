@@ -16,6 +16,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,6 +28,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.barabasizsolt.mova.R
@@ -49,20 +53,28 @@ object ExploreScreen  : Tab {
             return remember { TabOptions(index = 1u, title = title, icon = icon) }
         }
 
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {
         val screenModel = getScreenModel<ExploreScreenModel>()
         val state by screenModel.state.collectAsState()
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = AppTheme.colors.primary)
+        BottomSheetNavigator(
+            sheetShape = AppTheme.shapes.medium.copy(
+                bottomStart = CornerSize(size = 0.dp),
+                bottomEnd = CornerSize(size = 0.dp)
+            )
         ) {
-            when (state) {
-                is ExploreScreenModel.State.Error -> ErrorContent(onRetry = { screenModel.getScreenData(isSearch = false) })
-                is ExploreScreenModel.State.Loading -> LoadingContent()
-                else -> ExploreContent(screenModel = screenModel, state = state)
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = AppTheme.colors.primary)
+            ) {
+                when (state) {
+                    is ExploreScreenModel.State.Error -> ErrorContent(onRetry = { screenModel.getScreenData(isSearch = false) })
+                    is ExploreScreenModel.State.Loading -> LoadingContent()
+                    else -> ExploreContent(screenModel = screenModel, state = state)
+                }
             }
         }
     }
@@ -72,6 +84,8 @@ object ExploreScreen  : Tab {
         screenModel: ExploreScreenModel,
         state: ExploreScreenModel.State
     ) {
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+
         Column(verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),) {
             Row(
                 modifier = Modifier
@@ -88,7 +102,7 @@ object ExploreScreen  : Tab {
                     onValueChange = screenModel::onQueryChange,
                     modifier = Modifier.weight(weight = 1f)
                 )
-                FilterIcon(onClick = { })
+                FilterIcon(onClick = { bottomSheetNavigator.show(screen = FilterScreen) })
             }
             if (state is ExploreScreenModel.State.Search) {
                 LoadingContent()

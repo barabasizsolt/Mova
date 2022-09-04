@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -22,8 +23,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.mova.R
 import com.barabasizsolt.mova.ui.theme.AppTheme
@@ -35,6 +39,9 @@ fun MovaFilledButton(
     text: String,
     backgroundColor: Color = AppTheme.colors.secondary,
     contentColor: Color = Color.White,
+    horizontalPadding: Dp = AppTheme.dimens.contentPadding * 2,
+    verticalPadding: Dp = AppTheme.dimens.contentPadding,
+    textStyle: TextStyle = AppTheme.typography.subtitle1,
     onClick: () -> Unit
 ) = Box(
     modifier = modifier
@@ -45,10 +52,11 @@ fun MovaFilledButton(
     Row(
         horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(
-            horizontal = AppTheme.dimens.contentPadding * 2,
-            vertical = AppTheme.dimens.contentPadding
-        )
+        modifier = Modifier
+            .padding(
+                horizontal = horizontalPadding,
+                vertical = verticalPadding
+            )
     ) {
         if (icon != null) {
             Icon(
@@ -59,7 +67,7 @@ fun MovaFilledButton(
         }
         Text(
             text = text,
-            style = AppTheme.typography.subtitle1,
+            style = textStyle,
             color = contentColor
         )
     }
@@ -71,6 +79,9 @@ fun MovaOutlinedButton(
     icon: Painter? = null,
     text: String,
     contentColor: Color = Color.White,
+    horizontalPadding: Dp = AppTheme.dimens.contentPadding * 2,
+    verticalPadding: Dp = AppTheme.dimens.contentPadding,
+    textStyle: TextStyle = AppTheme.typography.subtitle1,
     onClick: () -> Unit
 ) = Box(
     modifier = modifier
@@ -86,10 +97,11 @@ fun MovaOutlinedButton(
     Row(
         horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(
-            horizontal = AppTheme.dimens.contentPadding * 2,
-            vertical = AppTheme.dimens.contentPadding
-        )
+        modifier = Modifier
+            .padding(
+                horizontal = horizontalPadding,
+                vertical = verticalPadding
+            )
     ) {
         if (icon != null) {
             Icon(
@@ -100,7 +112,7 @@ fun MovaOutlinedButton(
         }
         Text(
             text = text,
-            style = AppTheme.typography.subtitle1,
+            style = textStyle,
             color = contentColor
         )
     }
@@ -110,21 +122,23 @@ fun MovaOutlinedButton(
 fun MovaButton(
     modifier: Modifier = Modifier,
     text: String,
+    backgroundColor: Color = AppTheme.colors.secondary,
+    contentColor: Color = Color.White,
     onClick: () -> Unit
 ) = Box(
     modifier = modifier
         .height(height = AppTheme.dimens.buttonSize)
         .fillMaxWidth()
         .clip(shape = CircleShape)
-        .background(color = AppTheme.colors.secondary)
+        .background(color = backgroundColor)
         .clickable { onClick() }
 ) {
     Text(
         text = text,
-        color = Color.White,
+        color = contentColor,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        modifier = modifier.align(alignment = Alignment.Center),
+        modifier = Modifier.align(alignment = Alignment.Center),
         style = AppTheme.typography.body1,
         fontWeight = FontWeight.Bold
     )
