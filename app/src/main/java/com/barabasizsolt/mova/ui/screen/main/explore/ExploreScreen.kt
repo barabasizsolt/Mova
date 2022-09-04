@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,6 +30,7 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.barabasizsolt.mova.R
 import com.barabasizsolt.mova.ui.catalog.ErrorContent
+import com.barabasizsolt.mova.ui.catalog.FilterIcon
 import com.barabasizsolt.mova.ui.catalog.LoadingContent
 import com.barabasizsolt.mova.ui.catalog.MovaSearchField
 import com.barabasizsolt.mova.ui.catalog.SearchableItem
@@ -70,16 +73,23 @@ object ExploreScreen  : Tab {
         state: ExploreScreenModel.State
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),) {
-            MovaSearchField(
-                value = screenModel.query,
-                onValueChange = screenModel::onQueryChange,
+            Row(
                 modifier = Modifier
                     .padding(
                         top = statusBarInsetDp + AppTheme.dimens.screenPadding,
                         start = AppTheme.dimens.screenPadding,
                         end = AppTheme.dimens.screenPadding
-                    )
-            )
+                    ),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
+            ) {
+                MovaSearchField(
+                    value = screenModel.query,
+                    onValueChange = screenModel::onQueryChange,
+                    modifier = Modifier.weight(weight = 1f)
+                )
+                FilterIcon(onClick = { })
+            }
             if (state is ExploreScreenModel.State.Search) {
                 LoadingContent()
             } else {
