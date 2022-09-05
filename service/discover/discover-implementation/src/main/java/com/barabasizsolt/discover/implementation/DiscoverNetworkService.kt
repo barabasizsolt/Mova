@@ -8,10 +8,18 @@ import retrofit2.http.Query
 interface DiscoverNetworkService {
 
     @GET("discover/movie")
-    suspend fun getMovies() : MovieListResponse
+    suspend fun getMovies(
+        @Query("region") region: List<String>,
+        @Query("with_genres") withGenres: List<Int>,
+        @Query("sort_by") sortBy: List<String>
+    ) : MovieListResponse
 
     @GET("discover/tv")
-    suspend fun getTvSeries() : TvSeriesDiscoverResponse
+    suspend fun getTvSeries(
+        @Query("region") region: List<String>,
+        @Query("with_genres") withGenres: List<Int>,
+        @Query("sort_by") sortBy: List<String>
+    ) : TvSeriesDiscoverResponse
 
     @GET("search/movie")
     suspend fun searchMovies(@Query("query") query: String) : MovieListResponse

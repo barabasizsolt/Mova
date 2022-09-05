@@ -9,9 +9,6 @@ import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.domain.useCase.screen.explore.GetExploreScreenFlowUseCase
 import com.barabasizsolt.domain.useCase.screen.explore.GetExploreScreenUseCase
 import com.barabasizsolt.domain.util.Result
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -29,9 +26,7 @@ class ExploreScreenModel(
     init {
         getExploreScreenFlow().onEach {
             exploreContent = it
-        }
-            //.debounce(timeoutMillis = 250)
-            .launchIn(scope = coroutineScope)
+        }.launchIn(scope = coroutineScope)
         getScreenData(isSearch = false)
     }
 
@@ -51,7 +46,6 @@ class ExploreScreenModel(
 
     fun onQueryChange(query: String) {
         this.query = query
-        //println("Query: $query")
         getScreenData(isSearch = true)
     }
 

@@ -10,9 +10,9 @@ interface DiscoverService {
 
     val tvSeries: Flow<TvSeriesList?>
 
-    suspend fun getMovies() : MovieList
+    suspend fun getMovies(region: List<String>, withGenres: List<Int>, sortBy: List<String>) : MovieList
 
-    suspend fun getTvSeries() : TvSeriesList
+    suspend fun getTvSeries(region: List<String>, withGenres: List<Int>, sortBy: List<String>) : TvSeriesList
 
     suspend fun searchMovies(query: String) : MovieList
 

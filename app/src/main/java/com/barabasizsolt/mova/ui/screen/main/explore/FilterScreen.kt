@@ -97,21 +97,6 @@ object FilterScreen : Screen {
             }
             item {
                 FilterCarousel(
-                    header = "Time/Periods",
-                    selectedItemPositions = listOf(0),
-                    items = listOf(
-                        FilterItem(name = "All Periods", value = ""),
-                        FilterItem(name = "2022", value = "2022"),
-                        FilterItem(name = "2021", value = "2021"),
-                        FilterItem(name = "2020", value = "2020"),
-                        FilterItem(name = "2019", value = "2019")
-                    ),
-                    onClick = { },
-                    invalidateFlag = invalidateFlag
-                )
-            }
-            item {
-                FilterCarousel(
                     header = "Sort",
                     selectedItemPositions = listOf(0),
                     items = listOf(
