@@ -251,8 +251,3 @@ private fun FilterItem(
         )
     )
 }
-
-data class FilterItem(
-    val name: String,
-    val value: String,
-)
