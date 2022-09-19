@@ -12,15 +12,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/auth" />
-            <option value="$PROJECT_DIR$/auth/auth-di" />
-            <option value="$PROJECT_DIR$/auth/auth-implementation" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/network" />
-            <option value="$PROJECT_DIR$/network/network-api" />
-            <option value="$PROJECT_DIR$/network/network-di" />
-            <option value="$PROJECT_DIR$/network/network-implementation" />
             <option value="$PROJECT_DIR$/service" />
+            <option value="$PROJECT_DIR$/service/auth" />
+            <option value="$PROJECT_DIR$/service/auth/auth-di" />
+            <option value="$PROJECT_DIR$/service/auth/auth-implementation" />
             <option value="$PROJECT_DIR$/service/content" />
             <option value="$PROJECT_DIR$/service/content/discover" />
             <option value="$PROJECT_DIR$/service/content/discover/discover-api" />
@@ -35,23 +32,19 @@
             <option value="$PROJECT_DIR$/service/content/movie/movie-api" />
             <option value="$PROJECT_DIR$/service/content/movie/movie-di" />
             <option value="$PROJECT_DIR$/service/content/movie/movie-implementation" />
+            <option value="$PROJECT_DIR$/service/content/people" />
+            <option value="$PROJECT_DIR$/service/content/people/people-api" />
+            <option value="$PROJECT_DIR$/service/content/people/people-di" />
+            <option value="$PROJECT_DIR$/service/content/people/people-implementation" />
             <option value="$PROJECT_DIR$/service/content/tv" />
             <option value="$PROJECT_DIR$/service/discover" />
             <option value="$PROJECT_DIR$/service/discover/discover-api" />
             <option value="$PROJECT_DIR$/service/discover/discover-di" />
             <option value="$PROJECT_DIR$/service/discover/discover-implementation" />
-            <option value="$PROJECT_DIR$/service/model" />
-            <option value="$PROJECT_DIR$/service/model/movie" />
-            <option value="$PROJECT_DIR$/service/model/people" />
-            <option value="$PROJECT_DIR$/service/model/tv" />
-            <option value="$PROJECT_DIR$/service/movie" />
-            <option value="$PROJECT_DIR$/service/movie/movie-api" />
-            <option value="$PROJECT_DIR$/service/movie/movie-di" />
-            <option value="$PROJECT_DIR$/service/movie/movie-implementation" />
-            <option value="$PROJECT_DIR$/service/people" />
-            <option value="$PROJECT_DIR$/service/people/people-api" />
-            <option value="$PROJECT_DIR$/service/people/people-di" />
-            <option value="$PROJECT_DIR$/service/people/people-implementation" />
+            <option value="$PROJECT_DIR$/service/network" />
+            <option value="$PROJECT_DIR$/service/network/network-api" />
+            <option value="$PROJECT_DIR$/service/network/network-di" />
+            <option value="$PROJECT_DIR$/service/network/network-implementation" />
           </set>
         </option>
       </GradleProjectSettings>

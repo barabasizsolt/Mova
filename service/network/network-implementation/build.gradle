@@ -12,17 +12,19 @@ java {
 dependencies {
 
     implementation(project(":service:network:network-api"))
-    implementation(project(":service:content:discover:discover-api"))
-    implementation(project(":service:content:model:movie"))
-    implementation(project(":service:content:model:tv"))
+
+    // Koin
+    implementation "io.insert-koin:koin-core:$koin_version"
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
 
     // Moshi
     implementation "com.squareup.moshi:moshi:$moshi_version"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_codegen"
+    implementation "com.halcyonmobile.oauth-setup:oauth-setup-moshi:$halcyon_oauth"
 
-    // Kotlin Flow
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
+    // Halcyon OAuth
+    implementation "com.halcyonmobile.oauth-setup:oauth-setup-moshi:$halcyon_oauth"
+    implementation "com.halcyonmobile.oauth-setup:oauth-setup-storage:$halcyon_oauth"
+    implementation "com.halcyonmobile.oauth-setup:oauth-setup-dependencies:$halcyon_oauth"
 }

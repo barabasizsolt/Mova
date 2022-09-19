@@ -11,9 +11,9 @@ java {
 
 dependencies {
 
-    implementation(project(":network:network-api"))
-    implementation(project(":service:movie:movie-api"))
-    implementation(project(":service:model:movie"))
+    implementation(project(":service:network:network-api"))
+    implementation(project(":service:content:movie:movie-api"))
+    implementation(project(":service:content:model:movie"))
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

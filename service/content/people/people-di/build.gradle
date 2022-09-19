@@ -10,8 +10,8 @@ java {
 
 dependencies {
     implementation(project(":service:network:network-api"))
-    implementation(project(":service:content:discover:discover-api"))
-    implementation(project(":service:content:discover:discover-implementation"))
+    implementation(project(":service:content:people:people-api"))
+    implementation(project(":service:content:people:people-implementation"))
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

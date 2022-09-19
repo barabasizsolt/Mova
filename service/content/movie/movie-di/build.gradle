@@ -9,7 +9,7 @@ java {
 }
 
 dependencies {
-    implementation(project(":network:network-api"))
+    implementation(project(":service:network:network-api"))
     implementation(project(":service:content:movie:movie-api"))
     implementation(project(":service:content:movie:movie-implementation"))
 
