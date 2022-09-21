@@ -13,9 +13,6 @@ dependencies {
     implementation(project(":service:content:discover:discover-api"))
     implementation(project(":service:content:discover:discover-implementation"))
 
-    // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-
-    // Koin
-    implementation "io.insert-koin:koin-core:$koin_version"
+    implementation(libs.square.retrofit)
+    implementation(libs.koin.core)
 }

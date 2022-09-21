@@ -10,13 +10,9 @@ java {
 }
 
 dependencies {
+    implementation(libs.square.retrofit)
+    implementation(libs.square.moshi)
+    kapt(libs.square.moshiCodegen)
 
     implementation(project(":service:network:network-api"))
-
-    // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-
-    // Moshi
-    implementation "com.squareup.moshi:moshi:$moshi_version"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_codegen"
 }

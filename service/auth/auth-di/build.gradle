@@ -30,12 +30,8 @@ android {
 }
 
 dependencies {
-
-    // Koin
-    implementation "io.insert-koin:koin-core:$koin_version"
-
-    // Halcyon OAuth storage
-    implementation "com.halcyonmobile.oauth-setup:oauth-setup-storage:$halcyon_oauth"
-
     implementation(project(":service:auth:auth-implementation"))
+
+    implementation(libs.koin.core)
+    implementation(libs.halcyon.oauthStorage)
 }

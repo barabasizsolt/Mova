@@ -9,13 +9,10 @@ java {
 }
 
 dependencies {
+    implementation(libs.square.retrofit)
+    implementation(libs.koin.core)
+
     implementation(project(":service:network:network-api"))
     implementation(project(":service:content:movie:movie-api"))
     implementation(project(":service:content:movie:movie-implementation"))
-
-    // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-
-    // Koin
-    implementation "io.insert-koin:koin-core:$koin_version"
 }

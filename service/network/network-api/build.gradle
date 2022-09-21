@@ -9,10 +9,6 @@ java {
 }
 
 dependencies {
-
-    // Koin
-    implementation "io.insert-koin:koin-core:$koin_version"
-
-    // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation(libs.square.retrofit)
+    implementation(libs.koin.core)
 }
