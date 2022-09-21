@@ -89,22 +89,10 @@ dependencies {
     implementation(libs.koin.compose)
 
     // Coil Image
-    implementation(libs.coil)
-    implementation(libs.coilSvg)
-    implementation(libs.coilGif)
+    implementation(libs.bundles.coil)
 
     // Voyager
-    implementation(libs.voyager.navigator)
-    implementation(libs.voyager.bottomSheet)
-    implementation(libs.voyager.tab)
-    implementation(libs.voyager.transitions)
-    implementation(libs.voyager.koin)
-
-    // Accompanist
-    implementation(libs.google.accompanistSystemUiController)
-    implementation(libs.google.accompanistPager)
-    implementation(libs.google.accompanistPagerIndicators)
-    implementation(libs.google.accompanistSwipeRefresh)
+    implementation(libs.bundles.voyager)
 
     // State Machine
     implementation(libs.statemachine)

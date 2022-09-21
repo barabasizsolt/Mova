@@ -240,13 +240,18 @@ androidx-compose = [
     "google-accompanistSystemUiController",
     "google-accompanistSwipeRefresh"
 ]
-
 coil = [
     "coil",
     "coilGif",
     "coilSvg"
 ]
-
+voyager = [
+    "voyager-navigator",
+    "voyager-bottomSheet",
+    "voyager-tab",
+    "voyager-transitions",
+    "voyager-koin"
+]
 exoPlayer = [
     "exoPlayerCore",
     "exoPlayerUI"
