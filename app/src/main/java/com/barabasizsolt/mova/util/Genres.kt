@@ -40,3 +40,7 @@ val tvGenres = buildMap {
     put(key = 10768, value = "War & Politics")
     put(key = 37, value = "Western")
 }
+
+val jointGenres = (movieGenres.keys + tvGenres.keys).associateWith {
+    setOf(movieGenres[it], tvGenres[it]).filterNotNull().joinToString()
+}

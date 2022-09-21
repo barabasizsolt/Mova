@@ -4,6 +4,9 @@ import com.barabasizsolt.discover.di.createDiscoverModule
 import com.barabasizsolt.domain.useCase.helper.discover.movie.DeleteMovieDiscoverUseCase
 import com.barabasizsolt.domain.useCase.helper.discover.movie.GetMovieDiscoverFlowUseCase
 import com.barabasizsolt.domain.useCase.helper.discover.movie.GetMovieDiscoverUseCase
+import com.barabasizsolt.domain.useCase.helper.discover.tv.DeleteTvDiscoverUseCase
+import com.barabasizsolt.domain.useCase.helper.discover.tv.GetTvDiscoverFlowUseCase
+import com.barabasizsolt.domain.useCase.helper.discover.tv.GetTvDiscoverUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.nowPlaying.DeleteNowPlayingMoviesUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.nowPlaying.GetNowPlayingMoviesFlowUseCase
 import com.barabasizsolt.domain.useCase.helper.movie.nowPlaying.GetNowPlayingMoviesUseCase
@@ -19,6 +22,8 @@ import com.barabasizsolt.domain.useCase.helper.movie.upcoming.GetUpcomingMoviesU
 import com.barabasizsolt.domain.useCase.helper.people.DeletePopularPeopleUseCase
 import com.barabasizsolt.domain.useCase.helper.people.GetPopularPeopleFlowUseCase
 import com.barabasizsolt.domain.useCase.helper.people.GetPopularPeopleUseCase
+import com.barabasizsolt.domain.useCase.screen.explore.GetExploreScreenFlowUseCase
+import com.barabasizsolt.domain.useCase.screen.explore.GetExploreScreenUseCase
 import com.barabasizsolt.domain.useCase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.useCase.screen.home.GetHomeScreenUseCase
 import com.barabasizsolt.movie.di.createMovieModule
@@ -41,6 +46,11 @@ private fun createUseCaseModules() = module {
     factory { GetMovieDiscoverUseCase(discoverService = get()) }
     factory { GetMovieDiscoverFlowUseCase(discoverService = get()) }
     factory { DeleteMovieDiscoverUseCase(discoverService = get()) }
+
+    // Discover [Tv]
+    factory { GetTvDiscoverUseCase(discoverService = get()) }
+    factory { GetTvDiscoverFlowUseCase(discoverService = get()) }
+    factory { DeleteTvDiscoverUseCase(discoverService = get()) }
 
     // Movie [Trending]
     factory { GetTrendingMoviesUseCase(movieService = get()) }
@@ -84,6 +94,20 @@ private fun createUseCaseModules() = module {
             getTopRatedMoviesFlowUseCase = get(),
             getNowPlayingMoviesFlowCase = get(),
             getPopularPeopleFlowUseCase = get()
+        )
+    }
+
+    // Explore
+    factory {
+        GetExploreScreenUseCase(
+            getMovieDiscoverUseCase = get(),
+            getTvDiscoverUseCase = get()
+        )
+    }
+    factory {
+        GetExploreScreenFlowUseCase(
+            getMovieDiscoverFlowUseCase = get(),
+            getTvDiscoverFlowUseCase = get()
         )
     }
 }

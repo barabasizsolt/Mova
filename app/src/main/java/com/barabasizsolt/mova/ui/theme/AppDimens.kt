@@ -11,5 +11,6 @@ data class AppDimens(
     val contentPadding: Dp = 8.dp,
     val smallPadding: Dp = 4.dp,
     val buttonSize: Dp = 50.dp,
-    val bottomNavHeight: Dp = 56.dp
+    val bottomNavHeight: Dp = 56.dp,
+    val watchableCardHeight: Dp = 220.dp
 )

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +30,7 @@ fun PersonCard(
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
     verticalAlignment = Alignment.CenterVertically
 ) {
-    val names = person.primaryInfo.split(" ", limit = 2)
+    val names = person.title.split(" ", limit = 2)
 
     MovaImage(
         imageUrl = person.posterPath.getImageKey(imageType = ImageType.ORIGINAL),

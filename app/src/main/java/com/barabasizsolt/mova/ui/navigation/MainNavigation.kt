@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ import com.barabasizsolt.mova.ui.screen.main.favourites.FavouritesScreen
 import com.barabasizsolt.mova.ui.screen.main.home.HomeScreen
 import com.barabasizsolt.mova.ui.screen.main.profile.ProfileScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
+import com.barabasizsolt.mova.util.imeBottomInsetDp
 import com.barabasizsolt.mova.util.navigationBarInsetDp
 
 object MainNavigation : Tab {
@@ -77,6 +79,7 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
         },
         selectedContentColor = AppTheme.colors.secondary,
         unselectedContentColor = Color.Gray,
-        modifier = Modifier.systemBarsPadding()
+        modifier = Modifier
+            .systemBarsPadding()
     )
 }

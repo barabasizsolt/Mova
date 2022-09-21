@@ -3,7 +3,6 @@ package com.barabasizsolt.mova
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.navigator.tab.TabNavigator

@@ -56,62 +56,63 @@ android {
 dependencies {
 
     // Modules
-    implementation(project(":service:model:movie"))
-    implementation(project(":service:model:tv"))
-    implementation(project(":service:model:people"))
+    implementation(project(":service:content:model:movie"))
+    implementation(project(":service:content:model:tv"))
+    implementation(project(":service:content:model:people"))
 
-    implementation(project(":network:network-di"))
+    implementation(project(":service:network:network-di"))
     implementation(project(":domain"))
-    implementation(project(":auth:auth-di"))
-    implementation(project(":service:discover:discover-api"))
-    implementation(project(":service:movie:movie-api"))
-    implementation(project(":service:people:people-api"))
+    implementation(project(":service:auth:auth-di"))
+    implementation(project(":service:content:discover:discover-api"))
+    implementation(project(":service:content:movie:movie-api"))
+    implementation(project(":service:content:people:people-api"))
 
-    // Android Core
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    // Kotlin
+    implementation(libs.kotlinx.coroutines)
 
-    // Jetpack Compose
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.activity:activity-compose:1.5.1'
+    // AndroidX
+    implementation(libs.bundles.androidx.core)
+    implementation(libs.andoridx.activityCompose)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.bundles.androidx.lifecycle)
 
-    // Koin
-    implementation "io.insert-koin:koin-core:$koin_version"
-    implementation "io.insert-koin:koin-android:$koin_version"
-    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+    implementation(libs.androidx.navigationCompose)
+    implementation(libs.bundles.androidx.compose)
+    implementation(libs.androidx.preferenceDataStore)
+    implementation(libs.androidx.profileInstaller)
+
+    // Google
+    implementation(libs.google.android.material)
+
+    // Koin Libraries
+    implementation(libs.koin.core)
+    implementation(libs.koin.compose)
 
     // Coil Image
-    implementation "io.coil-kt:coil-compose:$coil_version"
-    implementation "io.coil-kt:coil-svg:$coil_version"
+    implementation(libs.bundles.coil)
 
     // Voyager
-    implementation "cafe.adriel.voyager:voyager-navigator:$voyager_version"
-    implementation "cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyager_version"
-    implementation "cafe.adriel.voyager:voyager-tab-navigator:$voyager_version"
-    implementation "cafe.adriel.voyager:voyager-transitions:$voyager_version"
-    implementation "cafe.adriel.voyager:voyager-koin:$voyager_version"
-
-    // Accompanist
-    // [System UI Controller]
-    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
-
-    // [Pager]
-    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
-    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
-
-    // [Swipe to refresh]
-    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
+    implementation(libs.bundles.voyager)
 
     // State Machine
-    implementation "com.tinder.statemachine:statemachine:$state_machine_version"
+    implementation(libs.statemachine)
 
-    // Test
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    // Test libraries
+    testImplementation(libs.test.junit4)
+    testImplementation(libs.bundles.test.junit5)
+    testRuntimeOnly(libs.test.junit5.jupiterEngine)
+    // Kotlin
+    testImplementation(libs.test.kotlin.coroutines)
+    // Robolectric
+    testImplementation(libs.bundles.test.robolectric)
+    testRuntimeOnly(libs.test.junit5.vintageEngine)
+    // Other libraries
+    testImplementation(libs.test.mockitoKotlin)
+    testImplementation(libs.test.jraska.livedata)
+    testImplementation(libs.test.square.okhttp.webserver)
+
+    // Android Test libraries
+    androidTestImplementation(libs.bundles.test.android)
+    // Kotlin
+    androidTestImplementation(libs.test.kotlin.coroutines)
 }

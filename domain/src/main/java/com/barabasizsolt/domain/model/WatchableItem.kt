@@ -6,28 +6,32 @@ import com.barabasizsolt.tv.modell.TvSeries
 
 data class WatchableItem(
     val id: String,
-    val primaryInfo: String,
-    val secondaryInfo: String,
+    val title: String,
+    val voteAverage: String,
+    val releaseDate: String,
     val posterPath: String
 )
 
 fun Movie.toWatchableItem(): WatchableItem = WatchableItem(
     id = id,
-    primaryInfo = originalTitle,
-    secondaryInfo = voteAverage,
-    posterPath = posterPath
+    title = originalTitle,
+    voteAverage = voteAverage,
+    releaseDate = releaseDate,
+    posterPath = posterPath.orEmpty()
 )
 
 fun TvSeries.toWatchableItem(): WatchableItem = WatchableItem(
     id = id,
-    primaryInfo = originalName,
-    secondaryInfo = voteAverage,
-    posterPath = posterPath
+    title = originalName,
+    voteAverage = voteAverage,
+    releaseDate = firstAirDate,
+    posterPath = posterPath.orEmpty()
 )
 
 fun People.toWatchableItem(): WatchableItem = WatchableItem(
     id = id,
-    primaryInfo = name,
-    secondaryInfo = "",
+    title = name,
+    voteAverage = "",
+    releaseDate = "",
     posterPath = profilePath
 )

@@ -1,6 +1,7 @@
 package com.barabasizsolt.mova.util
 
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
@@ -17,4 +18,10 @@ val statusBarInsetDp: Dp
     @Composable
     get() = with(LocalDensity.current) {
         WindowInsets.statusBars.getTop(density = this).toDp()
+    }
+
+val imeBottomInsetDp: Dp
+    @Composable
+    get() = with(LocalDensity.current) {
+        WindowInsets.ime.getBottom(density = this).toDp()
     }
