@@ -45,6 +45,13 @@
             <option value="$PROJECT_DIR$/service/network/network-api" />
             <option value="$PROJECT_DIR$/service/network/network-di" />
             <option value="$PROJECT_DIR$/service/network/network-implementation" />
+            <option value="$PROJECT_DIR$/ui" />
+            <option value="$PROJECT_DIR$/ui/catalog" />
+            <option value="$PROJECT_DIR$/ui/navigation" />
+            <option value="$PROJECT_DIR$/ui/screen" />
+            <option value="$PROJECT_DIR$/ui/screen/auth" />
+            <option value="$PROJECT_DIR$/ui/screen/auth/login" />
+            <option value="$PROJECT_DIR$/ui/theme" />
           </set>
         </option>
       </GradleProjectSettings>
