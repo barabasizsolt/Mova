@@ -279,6 +279,10 @@ test-android = [
 ]
 
 [plugins]
-com-android-application = "com.android.application:7.2.2"
-com-android-library = "com.android.library:7.2.2"
-com-github-ben-manes-versions = "com.github.ben-manes.versions:0.41.0"
+android-application = { id = "com.android.application", version = "7.2.2" }
+android-library = { id = "com.android.library", version = "7.2.2" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.7.10" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "1.7.10" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.7.10" }
+github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.41.0" }
+littlerobots = { id = "nl.littlerobots.version-catalog-update", version = "0.6.1" }
