@@ -34,7 +34,6 @@ import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MovaSearchField
 import com.barabasizsolt.catalog.SearchableItem
 import com.barabasizsolt.catalog.WatchableWithRating
-import com.barabasizsolt.home.R
 import com.barabasizsolt.theme.attributes.AppTheme
 import com.barabasizsolt.util.imeBottomInsetDp
 import com.barabasizsolt.util.statusBarInsetDp

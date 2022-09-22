@@ -52,11 +52,14 @@
             <option value="$PROJECT_DIR$/ui/screen" />
             <option value="$PROJECT_DIR$/ui/screen/auth" />
             <option value="$PROJECT_DIR$/ui/screen/auth/login" />
+            <option value="$PROJECT_DIR$/ui/screen/lib" />
             <option value="$PROJECT_DIR$/ui/screen/main" />
             <option value="$PROJECT_DIR$/ui/screen/main/explore" />
             <option value="$PROJECT_DIR$/ui/screen/main/favourites" />
             <option value="$PROJECT_DIR$/ui/screen/main/home" />
             <option value="$PROJECT_DIR$/ui/screen/main/profile" />
+            <option value="$PROJECT_DIR$/ui/screen/screen-di" />
+            <option value="$PROJECT_DIR$/ui/screen/splash" />
             <option value="$PROJECT_DIR$/ui/theme" />
             <option value="$PROJECT_DIR$/ui/util" />
           </set>

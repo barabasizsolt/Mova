@@ -20,6 +20,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.androidx.composeCompiler.get()
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -32,9 +38,11 @@ android {
 dependencies {
     implementation(project(":ui:catalog"))
     implementation(project(":ui:theme"))
+    implementation(project(":domain"))
 
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.voyager)
+    implementation(libs.koin.core)
 
     implementation(libs.bundles.androidx.core)
     implementation(libs.androidx.appcompat)

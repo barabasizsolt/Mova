@@ -4,28 +4,26 @@ import com.barabasizsolt.auth.createAuthModules
 import com.barabasizsolt.di.createNetworkModule
 import com.barabasizsolt.domain.di.createDomainModules
 import com.barabasizsolt.mova.BuildConfig
-import com.barabasizsolt.mova.ui.screen.main.explore.ExploreScreenModel
-import com.barabasizsolt.mova.ui.screen.main.home.HomeScreenModel
-import org.koin.dsl.module
+import com.barabasizsolt.navigation.di.createScreenModules
 
 fun createAppModule() = buildList {
     add(createNetworkModule(baseUrl = BuildConfig.BASE_URL, apiKey = BuildConfig.API_KEY, clientId = BuildConfig.CLIENT_ID))
     addAll(createAuthModules())
     addAll(createDomainModules())
-    add(createScreenModelModules())
+    add(createScreenModules())
 }
 
-private fun createScreenModelModules() = module {
-    factory {
-        HomeScreenModel(
-            getHomeScreen = get(),
-            getHomeScreenFlow = get()
-        )
-    }
-    factory {
-        ExploreScreenModel(
-            getExploreScreen = get(),
-            getExploreScreenFlow = get()
-        )
-    }
-}
+//private fun createScreenModelModules() = module {
+//    factory {
+//        HomeScreenModel(
+//            getHomeScreen = get(),
+//            getHomeScreenFlow = get()
+//        )
+//    }
+//    factory {
+//        ExploreScreenModel(
+//            getExploreScreen = get(),
+//            getExploreScreenFlow = get()
+//        )
+//    }
+//}

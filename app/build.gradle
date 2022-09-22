@@ -60,8 +60,9 @@ dependencies {
     implementation(project(":service:content:model:tv"))
     implementation(project(":service:content:model:people"))
 
-    implementation(project(":service:network:network-di"))
+    implementation(project(":ui:navigation"))
     implementation(project(":domain"))
+    implementation(project(":service:network:network-di"))
     implementation(project(":service:auth:auth-di"))
     implementation(project(":service:content:discover:discover-api"))
     implementation(project(":service:content:movie:movie-api"))
