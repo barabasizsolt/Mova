@@ -4,7 +4,7 @@ kotlin = "1.7.10" # https://kotlinlang.org/docs/releases.html#release-details
 kotlinx-coroutines = "1.6.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
 
 # Android tools
-androidBuildTools = "7.2.1" # https://developer.android.com/studio/releases/gradle-plugin
+androidBuildTools = "7.2.2" # https://developer.android.com/studio/releases/gradle-plugin
 
 # AndroidX libraries
 # AndroidX releases: https://developer.android.com/jetpack/androidx/versions#version-table
@@ -279,10 +279,10 @@ test-android = [
 ]
 
 [plugins]
-android-application = { id = "com.android.application", version = "7.2.2" }
-android-library = { id = "com.android.library", version = "7.2.2" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.7.10" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "1.7.10" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.7.10" }
+android-application = { id = "com.android.application", version.ref = "androidBuildTools" }
+android-library = { id = "com.android.library", version.ref = "androidBuildTools" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.41.0" }
 littlerobots = { id = "nl.littlerobots.version-catalog-update", version = "0.6.1" }
