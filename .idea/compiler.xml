@@ -9,6 +9,7 @@
       <module name="Mova.ui.navigation" target="11" />
       <module name="Mova.ui.screen.auth.login" target="11" />
       <module name="Mova.ui.theme" target="11" />
+      <module name="Mova.ui.util" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

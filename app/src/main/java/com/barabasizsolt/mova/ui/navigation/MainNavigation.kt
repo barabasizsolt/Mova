@@ -3,20 +3,11 @@ package com.barabasizsolt.mova.ui.navigation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -32,7 +23,6 @@ import com.barabasizsolt.mova.ui.screen.main.favourites.FavouritesScreen
 import com.barabasizsolt.mova.ui.screen.main.home.HomeScreen
 import com.barabasizsolt.mova.ui.screen.main.profile.ProfileScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
-import com.barabasizsolt.mova.util.imeBottomInsetDp
 import com.barabasizsolt.mova.util.navigationBarInsetDp
 
 object MainNavigation : Tab {

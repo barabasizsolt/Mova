@@ -52,6 +52,7 @@
             <option value="$PROJECT_DIR$/ui/screen/auth" />
             <option value="$PROJECT_DIR$/ui/screen/auth/login" />
             <option value="$PROJECT_DIR$/ui/theme" />
+            <option value="$PROJECT_DIR$/ui/util" />
           </set>
         </option>
       </GradleProjectSettings>
