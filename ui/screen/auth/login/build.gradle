@@ -40,9 +40,11 @@ dependencies {
     implementation(project(":ui:theme"))
     implementation(project(":ui:util"))
     implementation(project(":domain:domain-usecase"))
+    implementation(project(":service:auth:firebase:firebase-api"))
 
     implementation(libs.bundles.voyager)
     implementation(libs.bundles.androidx.compose)
+    implementation(libs.koin.compose)
 
     implementation(libs.bundles.androidx.core)
     implementation(libs.androidx.appcompat)

@@ -18,7 +18,7 @@ class MainApplication : Application() {
             androidLogger(level = Level.DEBUG)
             androidContext(androidContext = this@MainApplication)
             modules(modules = createAppModule())
-            //authService.initialize(context = this@MainApplication)
+            authService.initialize(context = this@MainApplication)
         }
     }
 }

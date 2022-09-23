@@ -14,10 +14,18 @@
       },
       "oauth_client": [
         {
+          "client_id": "693786424707-9kbd60fp60h8gdkd5qodlgvtfnl92iju.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.barabasizsolt.firebase.implementation",
+            "certificate_hash": "f63d7d2d8ddb13496ced8a5b8e02f50bd1e5daf5"
+          }
+        },
+        {
           "client_id": "693786424707-uc2eqs5unr9t97gd89iakvndkkm643p7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.barabasizsolt.mova",
+            "package_name": "com.barabasizsolt.firebase.implementation",
             "certificate_hash": "a1bab9bbbc1bb6a568aee7c07ff7c04a76c1608d"
           }
         },
@@ -45,3 +53,4 @@
   ],
   "configuration_version": "1"
 }
+
