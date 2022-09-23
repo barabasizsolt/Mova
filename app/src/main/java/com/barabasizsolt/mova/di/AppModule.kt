@@ -12,18 +12,3 @@ fun createAppModule() = buildList {
     addAll(createDomainModules())
     add(createScreenModules())
 }
-
-//private fun createScreenModelModules() = module {
-//    factory {
-//        HomeScreenModel(
-//            getHomeScreen = get(),
-//            getHomeScreenFlow = get()
-//        )
-//    }
-//    factory {
-//        ExploreScreenModel(
-//            getExploreScreen = get(),
-//            getExploreScreenFlow = get()
-//        )
-//    }
-//}

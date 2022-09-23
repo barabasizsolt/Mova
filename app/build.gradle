@@ -61,6 +61,7 @@ dependencies {
     implementation(project(":service:content:model:people"))
 
     implementation(project(":ui:navigation"))
+    implementation(project(":ui:theme"))
     implementation(project(":domain"))
     implementation(project(":service:network:network-di"))
     implementation(project(":service:auth:auth-di"))
