@@ -4,18 +4,25 @@ plugins {
 }
 
 android {
+
     compileSdk 33
 
     defaultConfig {
         applicationId "com.barabasizsolt.mova"
         minSdk 23
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary true
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("release.keystore")
+            keyAlias = "Mova"
+            keyPassword = "android"
+            storePassword = "android"
         }
     }
 
@@ -25,12 +32,18 @@ android {
             buildConfigField("String", "API_KEY", "\"93697a6983d40e793bc6b81401c77e1c\"")
             buildConfigField("String", "CLIENT_ID", "\"mova-mobile-client\"")
         }
+
         release {
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+
             buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
             buildConfigField("String", "API_KEY", "\"93697a6983d40e793bc6b81401c77e1c\"")
             buildConfigField("String", "CLIENT_ID", "\"mova-mobile-client\"")
-            minifyEnabled false
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
