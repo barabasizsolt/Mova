@@ -1,0 +1,51 @@
+plugins {
+    alias libs.plugins.android.library
+    alias libs.plugins.kotlin.android
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        minSdk 23
+        targetSdk 32
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.androidx.composeCompiler.get()
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation(project(":ui:catalog"))
+    implementation(project(":ui:theme"))
+
+    implementation(libs.bundles.androidx.compose)
+    implementation(libs.bundles.voyager)
+    implementation(libs.koin.core)
+
+    implementation(libs.bundles.androidx.core)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.google.android.material)
+    testImplementation(libs.test.junit4)
+    androidTestImplementation(libs.bundles.test.android)
+}

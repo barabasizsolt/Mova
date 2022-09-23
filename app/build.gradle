@@ -1,6 +1,4 @@
 plugins {
-//    id 'com.android.application'
-//    id 'org.jetbrains.kotlin.android'
     alias libs.plugins.android.application
     alias libs.plugins.kotlin.android
 }
@@ -46,7 +44,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_compiler_version
+        kotlinCompilerExtensionVersion libs.versions.androidx.composeCompiler.get()
     }
     packagingOptions {
         resources {
@@ -62,8 +60,10 @@ dependencies {
     implementation(project(":service:content:model:tv"))
     implementation(project(":service:content:model:people"))
 
-    implementation(project(":service:network:network-di"))
+    implementation(project(":ui:navigation"))
+    implementation(project(":ui:theme"))
     implementation(project(":domain"))
+    implementation(project(":service:network:network-di"))
     implementation(project(":service:auth:auth-di"))
     implementation(project(":service:content:discover:discover-api"))
     implementation(project(":service:content:movie:movie-api"))

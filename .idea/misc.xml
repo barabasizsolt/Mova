@@ -7,6 +7,8 @@
         <entry key="../../../../../layout/compose-model-1660743860410.xml" value="0.36462093862815886" />
         <entry key="app/src/main/res/drawable/explore-48px.xml" value="0.145" />
         <entry key="app/src/main/res/drawable/ic_sad_face.xml" value="0.1" />
+        <entry key="ui/catalog/src/main/res/drawable/ic_explore.xml" value="0.1" />
+        <entry key="ui/screen/main/explore/src/main/res/drawable/ic_explore.xml" value="0.1" />
       </map>
     </option>
   </component>

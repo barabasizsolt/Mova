@@ -5,9 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
-import cafe.adriel.voyager.navigator.tab.TabNavigator
-import com.barabasizsolt.mova.ui.screen.splash.SplashScreen
-import com.barabasizsolt.mova.ui.theme.MovaTheme
+import com.barabasizsolt.navigation.navigation.AppNavigation
+import com.barabasizsolt.theme.attributes.MovaTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {
@@ -17,13 +16,11 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            //MovaTheme(isDarkTheme = false) {
             MovaTheme {
                 val systemUiController = rememberSystemUiController()
                 systemUiController.setStatusBarColor(color = Color.Transparent, darkIcons = false)
                 systemUiController.setNavigationBarColor(color = Color.Transparent, darkIcons = false)
-
-                TabNavigator(tab = SplashScreen)
+                AppNavigation()
             }
         }
     }

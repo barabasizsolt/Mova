@@ -21,8 +21,6 @@ dependencies {
     implementation(project(":service:content:people:people-di"))
 
     // Koin
-    implementation "io.insert-koin:koin-core:$koin_version"
-
-    // Kotlin Flow
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
+    implementation(libs.koin.core)
+    implementation(libs.kotlinx.coroutines)
 }

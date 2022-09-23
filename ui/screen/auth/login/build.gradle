@@ -20,6 +20,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.androidx.composeCompiler.get()
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -30,18 +36,12 @@ android {
 }
 
 dependencies {
-    // Voyager
     implementation(libs.bundles.voyager)
+    implementation(libs.bundles.androidx.compose)
 
     implementation(libs.bundles.androidx.core)
     implementation(libs.androidx.appcompat)
     implementation(libs.google.android.material)
     testImplementation(libs.test.junit4)
     androidTestImplementation(libs.bundles.test.android)
-
-    // Jetpack Compose
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.activity:activity-compose:1.5.1'
 }
