@@ -36,7 +36,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain"))
+    implementation(project(":domain:domain-model"))
     implementation(project(":ui:theme"))
     implementation(project(":ui:util"))
     implementation(project(":service:content:model:movie"))

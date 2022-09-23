@@ -1,0 +1,21 @@
+plugins {
+    alias libs.plugins.kotlin.jvm
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+dependencies {
+    implementation(project(":domain:domain-usecase"))
+
+    implementation(project(":service:content:discover:discover-di"))
+    implementation(project(":service:content:discover:discover-api"))
+    implementation(project(":service:content:movie:movie-di"))
+    implementation(project(":service:content:movie:movie-api"))
+    implementation(project(":service:content:people:people-di"))
+    implementation(project(":service:content:people:people-api"))
+
+    implementation(libs.koin.core)
+}

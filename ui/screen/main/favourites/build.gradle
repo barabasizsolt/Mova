@@ -38,6 +38,9 @@ android {
 dependencies {
     implementation(project(":ui:catalog"))
     implementation(project(":ui:theme"))
+    implementation(project(":domain:domain-model"))
+    implementation(project(":domain:domain-util"))
+    implementation(project(":domain:domain-usecase"))
 
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.voyager)

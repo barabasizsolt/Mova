@@ -8,10 +8,8 @@ java {
 }
 
 dependencies {
-
-    implementation(project(":service:content:model:movie"))
-    implementation(project(":service:content:model:tv"))
-    implementation(project(":service:content:model:people"))
+    implementation(project(":domain:domain-util"))
+    implementation(project(":domain:domain-model"))
 
     implementation(project(":service:content:discover:discover-api"))
     implementation(project(":service:content:discover:discover-di"))
@@ -20,7 +18,6 @@ dependencies {
     implementation(project(":service:content:people:people-api"))
     implementation(project(":service:content:people:people-di"))
 
-    // Koin
     implementation(libs.koin.core)
     implementation(libs.kotlinx.coroutines)
 }
