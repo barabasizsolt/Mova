@@ -24,7 +24,7 @@ object AppNavigationTab : Tab {
 
     override val options: TabOptions
         @Composable
-        get() = remember { TabOptions(index = 12u, title = "splash", icon = null) }
+        get() = remember { TabOptions(index = 0u, title = "splash", icon = null) }
 
     @Composable
     override fun Content() {

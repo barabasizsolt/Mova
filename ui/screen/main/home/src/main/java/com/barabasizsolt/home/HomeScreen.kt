@@ -38,7 +38,7 @@ object HomeScreen : Tab {
         get() {
             val title = stringResource(id = R.string.home_tab)
             val icon = rememberVectorPainter(image = Icons.Default.Home)
-            return remember { TabOptions(index = 0u, title = title, icon = icon) }
+            return remember { TabOptions(index = 3u, title = title, icon = icon) }
         }
 
     @Composable

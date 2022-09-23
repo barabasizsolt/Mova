@@ -22,7 +22,7 @@ object ProfileScreen : Tab {
         get() {
             val title = stringResource(id = R.string.profile_tab)
             val icon = rememberVectorPainter(image = Icons.Default.Person)
-            return remember { TabOptions(index = 3u, title = title, icon = icon) }
+            return remember { TabOptions(index = 6u, title = title, icon = icon) }
         }
 
     @Composable

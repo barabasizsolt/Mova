@@ -45,7 +45,7 @@ object ExploreScreen  : Tab {
         get() {
             val title = stringResource(id = R.string.explore_tab)
             val icon = painterResource(id = R.drawable.ic_explore)
-            return remember { TabOptions(index = 1u, title = title, icon = icon) }
+            return remember { TabOptions(index = 4u, title = title, icon = icon) }
         }
 
     @OptIn(ExperimentalMaterialApi::class)

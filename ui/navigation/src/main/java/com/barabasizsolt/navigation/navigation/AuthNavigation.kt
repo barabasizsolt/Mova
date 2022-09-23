@@ -10,7 +10,7 @@ import com.barabasizsolt.login.LoginScreen
 object AuthNavigation : Tab {
     override val options: TabOptions
         @Composable
-        get() = remember { TabOptions(index = 11u, title = "auth", icon = null) }
+        get() = remember { TabOptions(index = 1u, title = "auth", icon = null) }
 
     @Composable
     override fun Content() {

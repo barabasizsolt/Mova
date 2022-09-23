@@ -28,7 +28,7 @@ import com.barabasizsolt.util.navigationBarInsetDp
 object MainNavigation : Tab {
     override val options: TabOptions
         @Composable
-        get() = remember { TabOptions(index = 10u, title = "main", icon = null) }
+        get() = remember { TabOptions(index = 2u, title = "main", icon = null) }
 
     @Composable
     override fun Content() {

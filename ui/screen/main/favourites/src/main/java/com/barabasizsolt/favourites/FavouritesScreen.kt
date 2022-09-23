@@ -22,7 +22,7 @@ object FavouritesScreen : Tab {
         get() {
             val title = stringResource(id = R.string.favourites_tab)
             val icon = rememberVectorPainter(image = Icons.Default.Favorite)
-            return remember { TabOptions(index = 2u, title = title, icon = icon) }
+            return remember { TabOptions(index = 5u, title = title, icon = icon) }
         }
 
     @Composable
