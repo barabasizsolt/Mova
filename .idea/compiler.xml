@@ -5,6 +5,9 @@
       <module name="Mova.app" target="11" />
       <module name="Mova.service.auth.auth-di" target="11" />
       <module name="Mova.service.auth.auth-implementation" target="11" />
+      <module name="Mova.service.auth.firebase.firebase-api" target="11" />
+      <module name="Mova.service.auth.firebase.firebase-di" target="11" />
+      <module name="Mova.service.auth.firebase.firebase-implementation" target="11" />
       <module name="Mova.ui.catalog" target="11" />
       <module name="Mova.ui.navigation" target="11" />
       <module name="Mova.ui.screen.auth.login" target="11" />
