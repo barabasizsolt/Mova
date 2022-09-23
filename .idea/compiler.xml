@@ -3,6 +3,8 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
       <module name="Mova.app" target="11" />
+      <module name="Mova.domain.domain-di" target="11" />
+      <module name="Mova.domain.domain-usecase" target="11" />
       <module name="Mova.service.auth.auth-di" target="11" />
       <module name="Mova.service.auth.auth-implementation" target="11" />
       <module name="Mova.service.auth.firebase.firebase-api" target="11" />

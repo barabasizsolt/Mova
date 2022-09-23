@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.barabasizsolt.domain.model.HomeScreenContent
-import com.barabasizsolt.domain.useCase.screen.home.GetHomeScreenFlowUseCase
-import com.barabasizsolt.domain.useCase.screen.home.GetHomeScreenUseCase
+import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenFlowUseCase
+import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenUseCase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch

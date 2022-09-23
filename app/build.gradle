@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":domain:domain-usecase"))
     implementation(project(":service:network:network-di"))
     implementation(project(":service:auth:auth-di"))
+    implementation(project(":service:auth:firebase:firebase-api"))
 
     // Kotlin
     implementation(libs.kotlinx.coroutines)

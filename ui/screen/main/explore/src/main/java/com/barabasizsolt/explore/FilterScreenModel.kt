@@ -1,9 +1,9 @@
 package com.barabasizsolt.explore
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import com.barabasizsolt.domain.useCase.helper.discover.movie.GetMovieDiscoverUseCase
-import com.barabasizsolt.domain.useCase.helper.discover.tv.GetTvDiscoverUseCase
-import com.barabasizsolt.domain.useCase.screen.explore.Category
+import com.barabasizsolt.domain.usecase.helper.discover.movie.GetMovieDiscoverUseCase
+import com.barabasizsolt.domain.usecase.helper.discover.tv.GetTvDiscoverUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.Category
 import com.barabasizsolt.domain.util.FilterType
 import com.barabasizsolt.util.movieGenres
 import java.util.Locale

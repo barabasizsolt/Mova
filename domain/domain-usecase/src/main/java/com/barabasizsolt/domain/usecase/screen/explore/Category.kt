@@ -1,3 +1,3 @@
-package com.barabasizsolt.domain.useCase.screen.explore
+package com.barabasizsolt.domain.usecase.screen.explore
 
 enum class Category { MOVIE, TV }

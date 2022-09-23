@@ -30,9 +30,7 @@ class AuthenticationServiceImpl : AuthenticationService {
         firebaseAuth = FirebaseAuth.getInstance()
     }
 
-    override fun isLogged(): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun isLogged(): Boolean = firebaseAuth.currentUser != null
 
     override fun loginWithEmailAndPassword(email: String, password: String): Flow<AuthResult> = consumeTask(
         task = firebaseAuth.signInWithEmailAndPassword(email, password)

@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:693786424707:android:be108b65bdf4f0a1bef2b6",
         "android_client_info": {
-          "package_name": "com.barabasizsolt.mova"
+          "package_name": "com.barabasizsolt.firebase.implementation"
         }
       },
       "oauth_client": [

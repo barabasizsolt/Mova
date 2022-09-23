@@ -1,4 +1,4 @@
-package com.barabasizsolt.domain.useCase.helper.movie.topRated
+package com.barabasizsolt.domain.usecase.helper.movie.topRated
 
 import com.barabasizsolt.movie.api.MovieService
 

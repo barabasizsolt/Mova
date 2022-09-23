@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.barabasizsolt.domain.model.WatchableItem
-import com.barabasizsolt.domain.useCase.screen.explore.GetExploreScreenFlowUseCase
-import com.barabasizsolt.domain.useCase.screen.explore.GetExploreScreenUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.GetExploreScreenFlowUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.GetExploreScreenUseCase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
