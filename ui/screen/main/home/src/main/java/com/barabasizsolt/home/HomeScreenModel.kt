@@ -8,10 +8,10 @@ import cafe.adriel.voyager.core.model.coroutineScope
 import com.barabasizsolt.domain.model.HomeScreenContent
 import com.barabasizsolt.domain.useCase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.useCase.screen.home.GetHomeScreenUseCase
-import com.barabasizsolt.domain.util.Result
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import com.barabasizsolt.domain.util.Result
 
 class HomeScreenModel(
     private val getHomeScreen: GetHomeScreenUseCase,

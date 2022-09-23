@@ -44,7 +44,7 @@ dependencies {
 
     implementation(project(":ui:theme"))
     implementation(project(":ui:util"))
-    implementation(project(":domain"))
+    implementation(project(":domain:domain-usecase"))
 
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.voyager)

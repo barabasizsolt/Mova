@@ -54,20 +54,12 @@ android {
 }
 
 dependencies {
-
-    // Modules
-    implementation(project(":service:content:model:movie"))
-    implementation(project(":service:content:model:tv"))
-    implementation(project(":service:content:model:people"))
-
     implementation(project(":ui:navigation"))
     implementation(project(":ui:theme"))
-    implementation(project(":domain"))
+    implementation(project(":domain:domain-di"))
+    implementation(project(":domain:domain-usecase"))
     implementation(project(":service:network:network-di"))
     implementation(project(":service:auth:auth-di"))
-    implementation(project(":service:content:discover:discover-api"))
-    implementation(project(":service:content:movie:movie-api"))
-    implementation(project(":service:content:people:people-api"))
 
     // Kotlin
     implementation(libs.kotlinx.coroutines)
