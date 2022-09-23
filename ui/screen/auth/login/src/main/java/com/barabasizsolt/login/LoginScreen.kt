@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import com.barabasizsolt.catalog.MovaButton
 import com.barabasizsolt.theme.attributes.AppTheme
 
@@ -19,6 +20,7 @@ object LoginScreen  : Screen {
     @Composable
     override fun Content() {
         val screenModel = getScreenModel<LoginScreenModel>()
+        val tabNavigator = LocalTabNavigator.current
 
         val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val data = result.data
@@ -26,6 +28,13 @@ object LoginScreen  : Screen {
                 screenModel.loginWithGoogle(intent = data)
             }
         }
+
+        /*TODO: resolve navigation between modules*/
+//        when(screenModel.action) {
+//            is LoginScreenModel.Action.NavigateToHome -> tabNavigator.current =
+//            is LoginScreenModel.Action.NavigateToRegister -> TODO()
+//            else -> Unit
+//        }
 
         Box(modifier = Modifier.fillMaxSize()) {
             MovaButton(
