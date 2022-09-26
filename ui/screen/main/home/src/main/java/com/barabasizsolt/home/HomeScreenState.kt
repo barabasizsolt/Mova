@@ -1,10 +1,11 @@
 package com.barabasizsolt.home
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
 import com.barabasizsolt.domain.model.HomeScreenContent
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenUseCase
@@ -12,31 +13,49 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.Result
+import kotlinx.coroutines.CoroutineScope
+import org.koin.androidx.compose.get
 
-class HomeScreenModel(
+@Composable
+fun rememberHomeScreenState(
+    scope: CoroutineScope = rememberCoroutineScope(),
+    getHomeScreen: GetHomeScreenUseCase = get(),
+    getHomeScreenFlow: GetHomeScreenFlowUseCase = get()
+): HomeScreenState = remember {
+    HomeScreenState(
+        scope = scope,
+        getHomeScreen = getHomeScreen,
+        getHomeScreenFlow = getHomeScreenFlow
+    )
+}
+
+class HomeScreenState(
+    private val scope: CoroutineScope,
     private val getHomeScreen: GetHomeScreenUseCase,
     private val getHomeScreenFlow: GetHomeScreenFlowUseCase
-) : StateScreenModel<HomeScreenModel.State>(initialState = State.Normal) {
+) {
 
+    var state by mutableStateOf<State>(value = State.Normal)
+        private set
     var homeContent by mutableStateOf<HomeScreenContent?>(value = null)
         private set
 
     init {
         getHomeScreenFlow().onEach {
             homeContent = it
-        }.launchIn(scope = coroutineScope)
+        }.launchIn(scope = scope)
         getScreenData(swipeRefresh = false)
     }
 
     fun getScreenData(swipeRefresh: Boolean) {
-        mutableState.value = if (swipeRefresh) State.SwipeRefresh else State.Loading
-        coroutineScope.launch {
-            when (val result = getHomeScreen(coroutineScope = this)) {
+        state = if (swipeRefresh) State.SwipeRefresh else State.Loading
+        scope.launch {
+            state = when (val result = getHomeScreen(coroutineScope = this)) {
                 is Result.Failure -> {
-                    mutableState.value = if (!swipeRefresh) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
+                    if (!swipeRefresh) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
                 }
                 is Result.Success -> {
-                    mutableState.value = State.Normal
+                    State.Normal
                 }
             }
         }

@@ -1,14 +1,27 @@
 package com.barabasizsolt.explore
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import cafe.adriel.voyager.core.model.ScreenModel
 import com.barabasizsolt.domain.usecase.helper.discover.movie.GetMovieDiscoverUseCase
 import com.barabasizsolt.domain.usecase.helper.discover.tv.GetTvDiscoverUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.Category
 import com.barabasizsolt.domain.util.FilterType
 import com.barabasizsolt.util.movieGenres
+import org.koin.androidx.compose.get
 import java.util.Locale
 
-class FilterScreenModel(
+@Composable
+fun rememberFilterScreenState(
+    getMovieDiscoverUseCase: GetMovieDiscoverUseCase = get(),
+    getTvDiscoverUseCase: GetTvDiscoverUseCase = get(),
+): FilterScreenState = remember {
+    FilterScreenState(
+        getMovieDiscoverUseCase = getMovieDiscoverUseCase,
+        getTvDiscoverUseCase = getTvDiscoverUseCase
+    )
+}
+class FilterScreenState(
     private val getMovieDiscoverUseCase: GetMovieDiscoverUseCase,
     private val getTvDiscoverUseCase: GetTvDiscoverUseCase,
 ) : ScreenModel {

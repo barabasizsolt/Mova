@@ -30,108 +30,104 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.Screen
 import com.barabasizsolt.catalog.MovaButton
 import com.barabasizsolt.theme.attributes.AppTheme
 import com.barabasizsolt.util.movieGenres
 import java.util.Locale
 
-object FilterScreen : Screen {
+@Composable
+fun FilterScreen() {
+    val isoCountries = Locale.getISOCountries().map { locale -> Locale("", locale) }
+    val isDark: Boolean = isSystemInDarkTheme()
+    var invalidateFlag by rememberSaveable { mutableStateOf(value = false) }
 
-    @Composable
-    override fun Content() {
-        val isoCountries = Locale.getISOCountries().map { locale -> Locale("", locale) }
-        val isDark: Boolean = isSystemInDarkTheme()
-        var invalidateFlag by rememberSaveable { mutableStateOf(value = false) }
-
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
-            contentPadding = PaddingValues(vertical = AppTheme.dimens.screenPadding),
-            modifier = Modifier.background(color = AppTheme.colors.background)
-        ) {
-            item {
-                Text(
-                    text = "Sort & Filter",
-                    color = AppTheme.colors.secondary,
-                    style = AppTheme.typography.h5,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
+        contentPadding = PaddingValues(vertical = AppTheme.dimens.screenPadding),
+        modifier = Modifier.background(color = AppTheme.colors.background)
+    ) {
+        item {
+            Text(
+                text = "Sort & Filter",
+                color = AppTheme.colors.secondary,
+                style = AppTheme.typography.h5,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        item {
+            Divider(
+                modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding),
+                color = if (isDark) Color.DarkGray else Color.LightGray
+            )
+        }
+        item {
+            FilterCarousel(
+                header = "Categories",
+                selectedItemPositions = listOf(0),
+                items = listOf(
+                    FilterItem(name = "All Categories", value = ""),
+                    FilterItem(name = "Movie", value = "movie"),
+                    FilterItem(name = "Tv Series", value = "tv")
+                ),
+                onClick = { },
+                invalidateFlag = invalidateFlag
+            )
+        }
+        item {
+            FilterCarousel(
+                header = "Regions",
+                selectedItemPositions = listOf(0),
+                items = listOf(FilterItem(name = "All Regions", value = "")) + isoCountries.map { FilterItem(name = it.displayName, value = it.country) },
+                onClick = { },
+                invalidateFlag = invalidateFlag
+            )
+        }
+        item {
+            FilterCarousel(
+                header = "Genres",
+                selectedItemPositions = listOf(0),
+                items = listOf(FilterItem(name = "All Genres", value = "")) + movieGenres.entries.map { FilterItem(name = it.value, value = it.key.toString()) },
+                onClick = { },
+                invalidateFlag = invalidateFlag
+            )
+        }
+        item {
+            FilterCarousel(
+                header = "Sort",
+                selectedItemPositions = listOf(0),
+                items = listOf(
+                    FilterItem(name = "None", value = "none"),
+                    FilterItem(name = "Popularity", value = "popularity"),
+                    FilterItem(name = "Latest Release", value = "release_date")
+                ),
+                onClick = { },
+                invalidateFlag = invalidateFlag
+            )
+        }
+        item {
+            Divider(
+                modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding),
+                color = if (isDark) Color.DarkGray else Color.LightGray
+            )
+        }
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.dimens.screenPadding),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
+            ) {
+                ResetButton(
+                    onClick = { invalidateFlag = !invalidateFlag },
+                    isDark = isDark,
+                    modifier = Modifier.weight(weight = 1f)
                 )
-            }
-            item {
-                Divider(
-                    modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding),
-                    color = if (isDark) Color.DarkGray else Color.LightGray
+                ApplyButton(
+                    onClick = {},
+                    modifier = Modifier.weight(weight = 1f)
                 )
-            }
-            item {
-                FilterCarousel(
-                    header = "Categories",
-                    selectedItemPositions = listOf(0),
-                    items = listOf(
-                        FilterItem(name = "All Categories", value = ""),
-                        FilterItem(name = "Movie", value = "movie"),
-                        FilterItem(name = "Tv Series", value = "tv")
-                    ),
-                    onClick = { },
-                    invalidateFlag = invalidateFlag
-                )
-            }
-            item {
-                FilterCarousel(
-                    header = "Regions",
-                    selectedItemPositions = listOf(0),
-                    items = listOf(FilterItem(name = "All Regions", value = "")) + isoCountries.map { FilterItem(name = it.displayName, value = it.country) },
-                    onClick = { },
-                    invalidateFlag = invalidateFlag
-                )
-            }
-            item {
-                FilterCarousel(
-                    header = "Genres",
-                    selectedItemPositions = listOf(0),
-                    items = listOf(FilterItem(name = "All Genres", value = "")) + movieGenres.entries.map { FilterItem(name = it.value, value = it.key.toString()) },
-                    onClick = { },
-                    invalidateFlag = invalidateFlag
-                )
-            }
-            item {
-                FilterCarousel(
-                    header = "Sort",
-                    selectedItemPositions = listOf(0),
-                    items = listOf(
-                        FilterItem(name = "None", value = "none"),
-                        FilterItem(name = "Popularity", value = "popularity"),
-                        FilterItem(name = "Latest Release", value = "release_date")
-                    ),
-                    onClick = { },
-                    invalidateFlag = invalidateFlag
-                )
-            }
-            item {
-                Divider(
-                    modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding),
-                    color = if (isDark) Color.DarkGray else Color.LightGray
-                )
-            }
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = AppTheme.dimens.screenPadding),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
-                ) {
-                    ResetButton(
-                        onClick = { invalidateFlag = !invalidateFlag },
-                        isDark = isDark,
-                        modifier = Modifier.weight(weight = 1f)
-                    )
-                    ApplyButton(
-                        onClick = {},
-                        modifier = Modifier.weight(weight = 1f)
-                    )
-                }
             }
         }
     }

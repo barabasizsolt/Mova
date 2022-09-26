@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthenticationService {
 
-    fun initialize(context: Context)
-
     fun isLogged(): Boolean
+
+    fun initialize(context: Context)
 
     fun loginWithEmailAndPassword(email: String, password: String): Flow<AuthResult>
 

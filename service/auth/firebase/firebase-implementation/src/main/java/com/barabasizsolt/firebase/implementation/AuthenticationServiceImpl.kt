@@ -19,6 +19,8 @@ class AuthenticationServiceImpl : AuthenticationService {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var googleAuth: GoogleSignInClient
 
+    override fun isLogged(): Boolean = firebaseAuth.currentUser != null
+
     override fun initialize(context: Context) {
 
         val request = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -29,8 +31,6 @@ class AuthenticationServiceImpl : AuthenticationService {
         googleAuth = GoogleSignIn.getClient(context, request)
         firebaseAuth = FirebaseAuth.getInstance()
     }
-
-    override fun isLogged(): Boolean = firebaseAuth.currentUser != null
 
     override fun loginWithEmailAndPassword(email: String, password: String): Flow<AuthResult> = consumeTask(
         task = firebaseAuth.signInWithEmailAndPassword(email, password)
