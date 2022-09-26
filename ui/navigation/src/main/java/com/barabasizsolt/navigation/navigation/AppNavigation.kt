@@ -47,7 +47,8 @@ fun AppNavigation() {
                     LaunchedEffect(
                         key1 = Unit,
                         block = {
-                            navController.navigate(route = if (isLoggedInUseCase()) Route.Main.route else Route.Authentication.route)
+                            //navController.navigate(route = if (isLoggedInUseCase()) Route.Main.route else Route.Authentication.route)
+                            if (isLoggedInUseCase()) navController.navigateToMain() else navController.navigateToAuth()
                         }
                     )
                 }
@@ -79,11 +80,11 @@ fun AppNavigation() {
                             modifier = Modifier.systemBarsPadding(),
                             onClick = {
                                 navController.navigate(route = item.route) {
-                                    popUpTo(id = navController.graph.findStartDestination().id) {
-                                        saveState = true
+                                    popUpTo(route = Route.Main.HOME) {
+                                       saveState = true
                                     }
-                                    launchSingleTop = true
                                     restoreState = true
+                                    launchSingleTop = true
                                 }
                             }
                         )
@@ -119,4 +120,31 @@ sealed class BottomNavItem(
         title = "Profile",
         icon = Icons.Default.Person
     )
+}
+
+fun NavHostController.navigateToAuth(popUpToRoute: String = Route.Splash.route) {
+    navigate(route = Route.Authentication.route) {
+        launchSingleTop = true
+        popUpTo(popUpToRoute) {
+            inclusive = true
+        }
+    }
+}
+
+fun NavHostController.navigateToMain(popUpToRoute: String = Route.Splash.route) {
+    navigate(route = Route.Main.route) {
+        launchSingleTop = true
+        popUpTo(route = popUpToRoute) {
+            inclusive = true
+        }
+    }
+}
+
+fun NavHostController.navigateToHome(popUpToRoute: String = Route.Authentication.route) {
+    navigate(route = Route.Main.HOME) {
+        launchSingleTop = true
+        popUpTo(route = popUpToRoute) {
+            inclusive = true
+        }
+    }
 }
