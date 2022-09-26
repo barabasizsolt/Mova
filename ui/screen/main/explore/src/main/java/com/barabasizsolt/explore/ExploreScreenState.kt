@@ -34,7 +34,9 @@ fun rememberExploreScreenState(
         scope = scope,
         getExploreScreen = getExploreScreen,
         getExploreScreenFlow = getExploreScreenFlow
-    )
+    ).apply {
+        getScreenData(isSearch = false)
+    }
 }
 
 class ExploreScreenState(

@@ -26,7 +26,9 @@ fun rememberHomeScreenState(
         scope = scope,
         getHomeScreen = getHomeScreen,
         getHomeScreenFlow = getHomeScreenFlow
-    )
+    ).apply {
+        getScreenData(swipeRefresh = false)
+    }
 }
 
 class HomeScreenState(
@@ -35,7 +37,7 @@ class HomeScreenState(
     private val getHomeScreenFlow: GetHomeScreenFlowUseCase
 ) {
 
-    var state by mutableStateOf<State>(value = State.Normal)
+    var state by mutableStateOf<State>(value = State.Loading)
         private set
     var homeContent by mutableStateOf<HomeScreenContent?>(value = null)
         private set

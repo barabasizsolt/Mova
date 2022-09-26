@@ -90,7 +90,11 @@ private fun ScreenContent(
             FilterIcon(
                 onClick = {
                     scope.launch {
-                        bottomSheetScaffoldState.bottomSheetState.expand()
+                        if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+                            bottomSheetScaffoldState.bottomSheetState.collapse()
+                        } else {
+                            bottomSheetScaffoldState.bottomSheetState.expand()
+                        }
                     }
                 }
             )

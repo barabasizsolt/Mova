@@ -19,19 +19,19 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
     private val _nowPlayingMovies = MutableStateFlow<MovieList?>(value = null)
     override val nowPlayingMovies: Flow<MovieList?> = _nowPlayingMovies
 
-    override suspend fun getTrendingMovies(page: Int): MovieList = remoteSource.getTrendingMovies(page = page).also {
+    override suspend fun getTrendingMovies(page: Int): MovieList = _trendingMovies.value ?: remoteSource.getTrendingMovies(page = page).also {
         _trendingMovies.value = it
     }
 
-    override suspend fun getUpcomingMovies(page: Int): MovieList = remoteSource.getUpcomingMovies(page = page).also {
+    override suspend fun getUpcomingMovies(page: Int): MovieList = _upcomingMovies.value ?: remoteSource.getUpcomingMovies(page = page).also {
         _upcomingMovies.value = it
     }
 
-    override suspend fun getTopRatedMovies(page: Int): MovieList = remoteSource.getTopRatedMovies(page = page).also {
+    override suspend fun getTopRatedMovies(page: Int): MovieList = _topRatedMovies.value ?: remoteSource.getTopRatedMovies(page = page).also {
         _topRatedMovies.value = it
     }
 
-    override suspend fun getNowPlayingMovies(page: Int): MovieList = remoteSource.getNowPlayingMovies(page = page).also {
+    override suspend fun getNowPlayingMovies(page: Int): MovieList = _nowPlayingMovies.value ?: remoteSource.getNowPlayingMovies(page = page).also {
         _nowPlayingMovies.value = it
     }
     override fun clearTrendingMovies() {

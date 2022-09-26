@@ -10,7 +10,7 @@ class PeopleServiceImpl(private val remoteSource: PeopleRemoteSource) : PeopleSe
     private val _popularPeople = MutableStateFlow<PeopleList?>(value = null)
     override val popularPeople: Flow<PeopleList?> = _popularPeople
 
-    override suspend fun getPopularPeople(page: Int): PeopleList = remoteSource.getPopularPeople(page = page).also {
+    override suspend fun getPopularPeople(page: Int): PeopleList = _popularPeople.value ?: remoteSource.getPopularPeople(page = page).also {
         _popularPeople.value = it
     }
 
