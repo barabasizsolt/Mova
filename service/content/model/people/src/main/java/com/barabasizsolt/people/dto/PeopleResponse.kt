@@ -1,6 +1,5 @@
 package com.barabasizsolt.people.dto
 
-import com.barabasizsolt.api.DataLayerException
 import com.barabasizsolt.people.model.People
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -13,9 +12,9 @@ data class PeopleResponse(
     @Json(name = "name") val name: String?
 )
 
-fun PeopleResponse.toModel() : People {
+fun PeopleResponse.toModel() : People? {
     if (id == null || adult == null || profilePath == null || name == null){
-        throw DataLayerException(message = "PeopleException: $this")
+        return null
     }
     return People(id = id, adult = adult, profilePath = profilePath, name = name)
 }

@@ -17,6 +17,6 @@ fun TvSeriesDiscoverResponse.toModel() : TvSeriesList {
     }
     return TvSeriesList(
         page = page,
-        results = results.filter { tv -> tv.backdropPath?.isNotEmpty() == true && tv.posterPath?.isNotEmpty() == true }.map { it.toModel() }
+        results = results.mapNotNull { it.toModel() }
     )
 }

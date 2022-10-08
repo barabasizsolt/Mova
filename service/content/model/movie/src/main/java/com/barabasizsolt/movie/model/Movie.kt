@@ -3,7 +3,7 @@ package com.barabasizsolt.movie.model
 data class Movie(
     val id: String,
     val adult: Boolean,
-    val backdropPath: String?,
+    val backdropPath: String,
     val genreIds: List<Int>,
     val originalLanguage: String,
     val originalTitle: String,

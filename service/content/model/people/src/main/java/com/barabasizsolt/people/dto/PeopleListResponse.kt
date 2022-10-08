@@ -17,6 +17,6 @@ fun PeopleListResponse.toModel() : PeopleList {
     }
     return PeopleList(
         page = page,
-        results = results.map { it.toModel() }
+        results = results.mapNotNull { it.toModel() }
     )
 }

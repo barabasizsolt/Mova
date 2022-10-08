@@ -45,7 +45,7 @@ fun AppNavigation() {
 fun NavHostController.navigateToAuth(popUpToRoute: String = Route.Splash.route) {
     navigate(route = Route.Authentication.route) {
         launchSingleTop = true
-        popUpTo(popUpToRoute) {
+        popUpTo(route = popUpToRoute) {
             inclusive = true
         }
     }

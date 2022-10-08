@@ -32,8 +32,11 @@ fun HomeScreen(screenState: HomeScreenState) {
                 .background(color = AppTheme.colors.primary)
                 .padding(paddingValues = it)
         ) {
-            when (screenState.state) {
-                is HomeScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(swipeRefresh = false) })
+            when (val state = screenState.state) {
+                is HomeScreenState.State.Error -> {
+                    println("Error: ${state.message}")
+                    ErrorContent(onRetry = { screenState.getScreenData(swipeRefresh = false) })
+                }
                 is HomeScreenState.State.Loading -> LoadingContent()
                 else -> ScreenContent(screenState = screenState)
             }

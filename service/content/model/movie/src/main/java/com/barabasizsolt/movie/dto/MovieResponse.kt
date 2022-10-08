@@ -21,10 +21,11 @@ data class MovieResponse(
     @Json(name = "vote_average") val voteAverage: Double?
 )
 
-fun MovieResponse.toModel() : Movie {
+fun MovieResponse.toModel() : Movie? {
     if (
         id == null ||
         adult == null ||
+        backdropPath == null ||
         genreIds == null ||
         originalLanguage == null ||
         originalTitle == null ||
@@ -34,7 +35,7 @@ fun MovieResponse.toModel() : Movie {
         releaseDate == null ||
         voteAverage == null
     ) {
-        throw DataLayerException(message = "MovieException: $this")
+        return null
     }
     return Movie(
         id = id,
