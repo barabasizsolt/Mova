@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -14,12 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.barabasizsolt.api.AuthenticationState
-import com.barabasizsolt.domain.usecase.auth.IsLoggedInUseCase
 import com.barabasizsolt.navigation.navigation.appNav.rememberAppNavigationState
 import com.barabasizsolt.navigation.navigation.bottomNav.BottomNavHolder
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import org.koin.androidx.compose.inject
 
 @Composable
 fun AppNavigation() {
