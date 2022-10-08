@@ -53,23 +53,6 @@ fun AppNavigation() {
     )
 }
 
-//private fun NavHostController.onLogout() {
-//    navigate(Route.Login.path) {
-//        popUpTo(this@onLogout.graph.id) {
-//            inclusive = true
-//        }
-//    }
-//}
-//
-//private fun NavHostController.onLogin() {
-//    navigate(Route.Home.path) {
-//        popUpTo(this@onLogin.graph.id) {
-//            inclusive = true
-//        }
-//    }
-//}
-
-
 fun NavHostController.navigateToAuth() {
     navigate(route = Route.Authentication.route) {
         popUpTo(id = this@navigateToAuth.graph.id) {
