@@ -4,9 +4,15 @@ import android.content.Context
 import android.content.Intent
 import kotlinx.coroutines.flow.Flow
 
+sealed class AuthenticationState {
+    object Idle : AuthenticationState()
+    object Logged : AuthenticationState()
+    object NotLogged : AuthenticationState()
+}
+
 interface AuthenticationService {
 
-    fun isLogged(): Boolean
+    val authenticationState: Flow<AuthenticationState>
 
     fun initialize(context: Context)
 

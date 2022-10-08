@@ -1,8 +1,11 @@
 package com.barabasizsolt.navigation.navigation
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -10,29 +13,26 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.barabasizsolt.api.AuthenticationState
 import com.barabasizsolt.domain.usecase.auth.IsLoggedInUseCase
+import com.barabasizsolt.navigation.navigation.appNav.rememberAppNavigationState
 import com.barabasizsolt.navigation.navigation.bottomNav.BottomNavHolder
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.compose.inject
 
 @Composable
 fun AppNavigation() {
     val navController: NavHostController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val appNavigationState = rememberAppNavigationState()
 
     Column {
         NavHost(
             navController = navController,
             startDestination = Route.Splash.route,
             builder = {
-                composable(route = Route.Splash.route) {
-                    val isLoggedInUseCase by inject<IsLoggedInUseCase>()
-                    LaunchedEffect(
-                        key1 = Unit,
-                        block = {
-                            if (isLoggedInUseCase()) navController.navigateToMain() else navController.navigateToAuth()
-                        }
-                    )
-                }
+                composable(route = Route.Splash.route) { Spacer(modifier = Modifier.fillMaxSize()) }
                 authNavigation(navController = navController)
                 mainNavigation(navController = navController)
             },
@@ -40,30 +40,55 @@ fun AppNavigation() {
         )
         BottomNavHolder(navController = navController, navBackStackEntry = navBackStackEntry)
     }
+
+    LaunchedEffect(
+        key1 = appNavigationState.authState,
+        block = {
+            when (appNavigationState.authState) {
+                AuthenticationState.Logged -> navController.navigateToMain()
+                AuthenticationState.NotLogged -> navController.navigateToAuth()
+                else -> Unit
+            }
+        }
+    )
 }
 
-fun NavHostController.navigateToAuth(popUpToRoute: String = Route.Splash.route) {
+//private fun NavHostController.onLogout() {
+//    navigate(Route.Login.path) {
+//        popUpTo(this@onLogout.graph.id) {
+//            inclusive = true
+//        }
+//    }
+//}
+//
+//private fun NavHostController.onLogin() {
+//    navigate(Route.Home.path) {
+//        popUpTo(this@onLogin.graph.id) {
+//            inclusive = true
+//        }
+//    }
+//}
+
+
+fun NavHostController.navigateToAuth() {
     navigate(route = Route.Authentication.route) {
-        launchSingleTop = true
-        popUpTo(route = popUpToRoute) {
+        popUpTo(id = this@navigateToAuth.graph.id) {
             inclusive = true
         }
     }
 }
 
-fun NavHostController.navigateToMain(popUpToRoute: String = Route.Splash.route) {
+fun NavHostController.navigateToMain() {
     navigate(route = Route.Main.route) {
-        launchSingleTop = true
-        popUpTo(route = popUpToRoute) {
+        popUpTo(id = this@navigateToMain.graph.id) {
             inclusive = true
         }
     }
 }
 
-fun NavHostController.navigateToHome(popUpToRoute: String = Route.Authentication.route) {
+fun NavHostController.navigateToHome() {
     navigate(route = Route.Main.HOME) {
-        launchSingleTop = true
-        popUpTo(route = popUpToRoute) {
+        popUpTo(id = this@navigateToHome.graph.id) {
             inclusive = true
         }
     }
