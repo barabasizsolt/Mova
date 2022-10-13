@@ -27,7 +27,10 @@ fun AppNavigation() {
             navController = navController,
             startDestination = Route.Splash.route,
             builder = {
-                composable(route = Route.Splash.route) { Spacer(modifier = Modifier.fillMaxSize()) }
+                composable(route = Route.Splash.route) {
+                    /**TODO: Add some fancy splash screen*/
+                    Spacer(modifier = Modifier.fillMaxSize())
+                }
                 authNavigation(navController = navController)
                 mainNavigation(navController = navController)
             },
@@ -62,4 +65,8 @@ fun NavHostController.navigateToMain() {
             inclusive = true
         }
     }
+}
+
+fun NavHostController.navigateToLogin() {
+    navigate(route = Route.Authentication.LOGIN)
 }

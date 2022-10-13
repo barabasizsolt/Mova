@@ -17,7 +17,9 @@ import com.barabasizsolt.theme.attributes.AppTheme
 
 @Composable
 fun LoginScreen(screenState: LoginScreenState) {
-    val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
         val data = result.data
         if (result.resultCode == Activity.RESULT_OK && data != null) {
             screenState.loginWithGoogle(intent = data)

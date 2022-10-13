@@ -94,21 +94,10 @@ private fun PagerItem(
                 .fillMaxWidth()
                 .aspectRatio(ratio = .7f)
         )
-        Box(modifier = Modifier.matchParentSize()) {
-            Spacer(
-                modifier = Modifier
-                    .align(alignment = Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .fillMaxHeight(fraction = 0.5f)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent, AppTheme.colors.primary, AppTheme.colors.primary
-                            )
-                        )
-                    )
-            )
-        }
+        GradientOverlay(
+            maxHeightFraction = 0.5f,
+            colors = listOf(Color.Transparent, AppTheme.colors.primary, AppTheme.colors.primary)
+        )
         PagerItemInfo(
             item = item,
             modifier = Modifier
