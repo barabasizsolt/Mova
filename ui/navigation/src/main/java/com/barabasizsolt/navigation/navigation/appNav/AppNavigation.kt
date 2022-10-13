@@ -63,11 +63,3 @@ fun NavHostController.navigateToMain() {
         }
     }
 }
-
-fun NavHostController.navigateToHome() {
-    navigate(route = Route.Main.HOME) {
-        popUpTo(id = this@navigateToHome.graph.id) {
-            inclusive = true
-        }
-    }
-}

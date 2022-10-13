@@ -16,7 +16,7 @@ fun NavGraphBuilder.authNavigation(navController: NavHostController) {
         composable(route = Route.Authentication.LOGIN) {
             LoginScreen(screenState = rememberLoginScreenState().apply {
                 when(action?.consume()) {
-                    is LoginScreenState.Action.NavigateToHome -> navController.navigateToHome()
+                    is LoginScreenState.Action.NavigateToHome -> navController.navigateToMain()
                     is LoginScreenState.Action.NavigateToRegister -> {
                         //TODO: register screen
                     }
