@@ -13,6 +13,7 @@
       <module name="Mova.ui.catalog" target="11" />
       <module name="Mova.ui.navigation" target="11" />
       <module name="Mova.ui.screen.auth.login" target="11" />
+      <module name="Mova.ui.screen.auth.welcome" target="11" />
       <module name="Mova.ui.screen.main.explore" target="11" />
       <module name="Mova.ui.screen.main.favourites" target="11" />
       <module name="Mova.ui.screen.main.home" target="11" />
