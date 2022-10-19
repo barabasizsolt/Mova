@@ -1,4 +1,4 @@
-package com.barabasizsolt.welcome
+package com.barabasizsolt.auth.socialLogin
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -8,9 +8,9 @@ import androidx.compose.runtime.setValue
 import com.barabasizsolt.util.Event
 
 @Composable
-fun rememberWelcomeScreenState() = remember { WelcomeScreenState() }
+fun rememberSocialLoginScreenState() = remember { SocialLoginScreenState() }
 
-class WelcomeScreenState {
+class SocialLoginScreenState {
 
     var action by mutableStateOf<Event<Action>?>(value = null)
         private set
@@ -20,6 +20,7 @@ class WelcomeScreenState {
     }
 
     sealed class Action {
+        object Authenticate: Action()
         object NavigateToAuth : Action()
     }
 }

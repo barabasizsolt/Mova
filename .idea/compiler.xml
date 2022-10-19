@@ -12,7 +12,7 @@
       <module name="Mova.service.auth.firebase.firebase-implementation" target="11" />
       <module name="Mova.ui.catalog" target="11" />
       <module name="Mova.ui.navigation" target="11" />
-      <module name="Mova.ui.screen.auth.login" target="11" />
+      <module name="Mova.ui.screen.auth.login-register" target="11" />
       <module name="Mova.ui.screen.auth.welcome" target="11" />
       <module name="Mova.ui.screen.main.explore" target="11" />
       <module name="Mova.ui.screen.main.favourites" target="11" />

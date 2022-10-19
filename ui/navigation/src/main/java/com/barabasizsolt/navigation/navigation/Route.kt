@@ -10,7 +10,8 @@ sealed class Route {
     object Authentication : Route() {
         override val route: String = "Authentication"
         const val WELCOME: String = "Welcome"
-        const val LOGIN: String = "login"
+        const val SOCIAL_LOGIN: String = "socialLogin"
+        const val AUTH: String = "auth"
     }
 
     object Main : Route() {

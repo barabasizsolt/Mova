@@ -1,4 +1,4 @@
-package com.barabasizsolt.login
+package com.barabasizsolt.auth
 
 import android.app.Activity
 import android.content.Intent

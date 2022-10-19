@@ -59,7 +59,7 @@
             <option value="$PROJECT_DIR$/ui/navigation" />
             <option value="$PROJECT_DIR$/ui/screen" />
             <option value="$PROJECT_DIR$/ui/screen/auth" />
-            <option value="$PROJECT_DIR$/ui/screen/auth/login" />
+            <option value="$PROJECT_DIR$/ui/screen/auth/login-register" />
             <option value="$PROJECT_DIR$/ui/screen/auth/welcome" />
             <option value="$PROJECT_DIR$/ui/screen/lib" />
             <option value="$PROJECT_DIR$/ui/screen/main" />

@@ -1,4 +1,4 @@
-package com.barabasizsolt.login
+package com.barabasizsolt.auth
 
 import android.content.Intent
 import androidx.compose.runtime.Composable

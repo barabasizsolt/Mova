@@ -63,7 +63,7 @@ fun MovaOutlinedButton(
         width = 2.dp
     ),
     colors = ButtonDefaults.buttonColors(
-        backgroundColor = Color.Transparent
+        backgroundColor = AppTheme.colors.background
     ),
     content = {
         ButtonContent(

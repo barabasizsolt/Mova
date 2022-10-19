@@ -44,7 +44,7 @@ fun WelcomeScreen(screenState: WelcomeScreenState) {
                 .align(alignment = Alignment.BottomCenter)
                 .navigationBarsPadding()
                 .padding(bottom = AppTheme.dimens.screenPadding * 3),
-            onGetStartedClicked = screenState::navigateToLogin
+            onGetStartedClicked = screenState::navigateToAuth
         )
     }
 }
