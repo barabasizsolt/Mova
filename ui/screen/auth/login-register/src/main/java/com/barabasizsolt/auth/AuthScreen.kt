@@ -16,7 +16,7 @@ import com.barabasizsolt.catalog.MovaButton
 import com.barabasizsolt.theme.attributes.AppTheme
 
 @Composable
-fun LoginScreen(screenState: LoginScreenState) {
+fun LoginScreen(screenState: AuthScreenState) {
     val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -27,7 +27,7 @@ fun LoginScreen(screenState: LoginScreenState) {
     }
 
     when(screenState.state) {
-        is LoginScreenState.State.Loading -> {
+        is AuthScreenState.State.Loading -> {
             //TODO: implement it
         }
         else -> ScreenContent(
@@ -37,7 +37,7 @@ fun LoginScreen(screenState: LoginScreenState) {
     }
 
     when(screenState.state) {
-        is LoginScreenState.State.Error -> {
+        is AuthScreenState.State.Error -> {
             //TODO: Implement it
         }
         else -> Unit
@@ -46,7 +46,7 @@ fun LoginScreen(screenState: LoginScreenState) {
 
 @Composable
 private fun ScreenContent(
-    screenState: LoginScreenState,
+    screenState: AuthScreenState,
     activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>
 ) {
     Box(modifier = Modifier.fillMaxSize()) {

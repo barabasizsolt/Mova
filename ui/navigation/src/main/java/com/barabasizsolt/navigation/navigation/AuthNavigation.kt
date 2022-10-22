@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.barabasizsolt.auth.LoginScreen
-import com.barabasizsolt.auth.LoginScreenState
-import com.barabasizsolt.auth.rememberLoginScreenState
+import com.barabasizsolt.auth.AuthScreenState
+import com.barabasizsolt.auth.rememberAuthScreenState
 import com.barabasizsolt.auth.socialLogin.SocialLoginScreen
 import com.barabasizsolt.auth.socialLogin.SocialLoginScreenState
 import com.barabasizsolt.auth.socialLogin.rememberSocialLoginScreenState
@@ -31,7 +31,7 @@ fun NavGraphBuilder.authNavigation(navController: NavHostController) {
         composable(route = Route.Authentication.SOCIAL_LOGIN) {
             SocialLoginScreen(screenState = rememberSocialLoginScreenState().apply {
                 when (action?.consume()) {
-                    is SocialLoginScreenState.Action.Authenticate -> {}
+                    is SocialLoginScreenState.Action.NavigateToHome -> {}
                     is SocialLoginScreenState.Action.NavigateToAuth -> navController.navigateToAuthentication()
                     else -> Unit
                 }
@@ -39,10 +39,10 @@ fun NavGraphBuilder.authNavigation(navController: NavHostController) {
         }
 
         composable(route = Route.Authentication.AUTH) {
-            LoginScreen(screenState = rememberLoginScreenState().apply {
+            LoginScreen(screenState = rememberAuthScreenState().apply {
                 when (action?.consume()) {
-                    is LoginScreenState.Action.NavigateToHome -> navController.navigateToMain()
-                    is LoginScreenState.Action.NavigateToRegister -> {
+                    is AuthScreenState.Action.NavigateToHome -> navController.navigateToMain()
+                    is AuthScreenState.Action.NavigateToRegister -> {
                         //TODO: register screen
                     }
                     else -> Unit

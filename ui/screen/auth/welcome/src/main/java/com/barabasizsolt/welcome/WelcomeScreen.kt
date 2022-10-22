@@ -25,6 +25,7 @@ import com.barabasizsolt.theme.attributes.AppTheme
 import com.barabasizsolt.util.withShadow
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.delay
@@ -82,8 +83,14 @@ private fun WelcomeScreenPager(
         ) { page ->
             WelcomeScreenPagerContent(pagerData = pagerContent[page])
         }
+        HorizontalPagerIndicator(
+            pagerState = pagerState,
+            activeColor = AppTheme.colors.secondary,
+            inactiveColor = Color.White,
+        )
         MovaButton(
-            text = "Get Started", onClick = onGetStartedClicked,
+            text = "Get Started",
+            onClick = onGetStartedClicked,
             modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
         )
     }

@@ -1,5 +1,11 @@
 package com.barabasizsolt.auth.socialLogin
 
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.IdRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -13,29 +19,28 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
-import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.barabasizsolt.catalog.MovaButton
 import com.barabasizsolt.login.R
 import com.barabasizsolt.theme.attributes.AppTheme
@@ -43,7 +48,49 @@ import com.google.accompanist.insets.statusBarsPadding
 
 @Composable
 fun SocialLoginScreen(screenState: SocialLoginScreenState) {
+    val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val data = result.data
+        if (result.resultCode == Activity.RESULT_OK && data != null) {
+            screenState.loginWithGoogle(intent = data)
+        }
+    }
+    val scaffoldState = rememberScaffoldState()
 
+    Scaffold(scaffoldState = scaffoldState) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = AppTheme.colors.primary)
+                .padding(paddingValues = it)
+                .navigationBarsPadding()
+        ) {
+            ScreenContent(
+                screenState = screenState,
+                activityResultLauncher = loginWithGoogleAccountLauncher
+            )
+
+            LaunchedEffect(
+                key1 = screenState.state,
+                block = {
+                    if (screenState.state is SocialLoginScreenState.State.Error) {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = "Oops, something went wrong.",
+                            actionLabel = "Try again"
+                        )
+                    }
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun ScreenContent(
+    screenState: SocialLoginScreenState,
+    activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -60,13 +107,21 @@ fun SocialLoginScreen(screenState: SocialLoginScreenState) {
                 modifier = Modifier.padding(bottom = AppTheme.dimens.contentPadding * 2)
             )
         }
-        item { GoogleLoginOption(onClick = {}) }
+        item {
+            GoogleLoginOption(
+                onClick = {
+                    val intent = screenState.getIntentForGoogleLogin()
+                    activityResultLauncher.launch(intent)
+                }
+            )
+        }
         item { SocialLoginDelimiter(modifier = Modifier.padding(vertical = AppTheme.dimens.contentPadding * 4)) }
         item {
             MovaButton(
                 text = "Sign in with password",
-                onClick = screenState::navigateToAuth,
-                modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding)
+                onClick = screenState::onAuthenticationClicked,
+                isLoading = screenState.state is SocialLoginScreenState.State.Loading,
+                modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding),
             )
         }
         item { SocialLoginFooter(onSignUpClick = {}) }

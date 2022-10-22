@@ -1,13 +1,16 @@
 package com.barabasizsolt.catalog
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -63,7 +66,9 @@ fun MovaOutlinedButton(
         width = 2.dp
     ),
     colors = ButtonDefaults.buttonColors(
-        backgroundColor = AppTheme.colors.background
+        backgroundColor = AppTheme.colors.primary.copy(
+            alpha = if (isSystemInDarkTheme()) 0f else 0.7f
+        )
     ),
     content = {
         ButtonContent(
@@ -81,6 +86,7 @@ fun MovaButton(
     text: String,
     backgroundColor: Color = AppTheme.colors.secondary,
     contentColor: Color = Color.White,
+    isLoading: Boolean = false,
     onClick: () -> Unit
 ) = Button(
     modifier = modifier
@@ -88,18 +94,27 @@ fun MovaButton(
         .fillMaxWidth(),
     onClick = onClick,
     colors = ButtonDefaults.buttonColors(
-        backgroundColor = backgroundColor
+        backgroundColor = backgroundColor,
+        disabledBackgroundColor = backgroundColor
     ),
-    shape = CircleShape
+    shape = CircleShape,
+    enabled = !isLoading
 ) {
-    Text(
-        text = text,
-        color = contentColor,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        style = AppTheme.typography.body1,
-        fontWeight = FontWeight.Bold
-    )
+    if (isLoading) {
+        CircularProgressIndicator(
+            color = contentColor,
+            modifier = Modifier.size(size = 36.dp)
+        )
+    } else {
+        Text(
+            text = text,
+            color = contentColor,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            style = AppTheme.typography.body1,
+            fontWeight = FontWeight.Bold
+        )
+    }
 }
 
 @Composable

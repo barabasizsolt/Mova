@@ -20,25 +20,25 @@ import org.koin.androidx.compose.get
 import com.barabasizsolt.util.Event
 
 @Composable
-fun rememberLoginScreenState(
+fun rememberAuthScreenState(
     scope: CoroutineScope = rememberCoroutineScope(),
     getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase = get(),
     loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase = get()
-): LoginScreenState = rememberSaveable(
-    saver = LoginScreenState.getSaver(
+): AuthScreenState = rememberSaveable(
+    saver = AuthScreenState.getSaver(
         scope = scope,
         getIntentForGoogleAccountLogin = getIntentForGoogleAccountLogin,
         loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase
     )
 ) {
-    LoginScreenState(
+    AuthScreenState(
         scope = scope,
         getIntentForGoogleAccountLogin = getIntentForGoogleAccountLogin,
         loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase
     )
 }
 
-class LoginScreenState(
+class AuthScreenState(
     private val scope: CoroutineScope,
     private val getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase,
     private val loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase
@@ -91,10 +91,10 @@ class LoginScreenState(
             scope: CoroutineScope,
             getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase,
             loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase
-        ): Saver<LoginScreenState, *> = mapSaver(
+        ): Saver<AuthScreenState, *> = mapSaver(
             save = { mapOf(EMAIL_KEY to it.email, PASSWORD_KEY to it.password) },
             restore = {
-                LoginScreenState(
+                AuthScreenState(
                     scope = scope,
                     getIntentForGoogleAccountLogin = getIntentForGoogleAccountLogin,
                     loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase
