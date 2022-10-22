@@ -10,15 +10,15 @@ sealed class Route {
     object Authentication : Route() {
         override val route: String = "Authentication"
         const val WELCOME: String = "Welcome"
-        const val SOCIAL_LOGIN: String = "socialLogin"
-        const val AUTH: String = "auth"
+        const val SOCIAL_LOGIN: String = "SocialLogin"
+        const val AUTH: String = "Auth/{screenType}"
     }
 
     object Main : Route() {
         override val route: String = "Main"
-        const val HOME: String = "home"
-        const val EXPLORE: String = "explore"
-        const val FAVOURITES: String = "favourites"
-        const val PROFILE: String = "profile"
+        const val HOME: String = "Home"
+        const val EXPLORE: String = "Explore"
+        const val FAVOURITES: String = "Favourites"
+        const val PROFILE: String = "Profile"
     }
 }

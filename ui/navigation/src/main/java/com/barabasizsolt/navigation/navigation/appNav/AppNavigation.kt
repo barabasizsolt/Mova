@@ -71,6 +71,6 @@ fun NavHostController.navigateToSocialLogin() {
     navigate(route = Route.Authentication.SOCIAL_LOGIN)
 }
 
-fun NavHostController.navigateToAuthentication() {
-    navigate(route = Route.Authentication.AUTH)
+fun NavHostController.navigateToAuthentication(screenType: String) {
+    navigate(route = "Auth/${screenType}")
 }

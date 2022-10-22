@@ -87,6 +87,7 @@ fun MovaButton(
     backgroundColor: Color = AppTheme.colors.secondary,
     contentColor: Color = Color.White,
     isLoading: Boolean = false,
+    isEnabled: Boolean = true,
     onClick: () -> Unit
 ) = Button(
     modifier = modifier
@@ -95,10 +96,10 @@ fun MovaButton(
     onClick = onClick,
     colors = ButtonDefaults.buttonColors(
         backgroundColor = backgroundColor,
-        disabledBackgroundColor = backgroundColor
+        disabledBackgroundColor = if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray
     ),
     shape = CircleShape,
-    enabled = !isLoading
+    enabled = isEnabled
 ) {
     if (isLoading) {
         CircularProgressIndicator(

@@ -60,8 +60,12 @@ class SocialLoginScreenState(
 
     fun getIntentForGoogleLogin(): Intent = getIntentForGoogleAccountLogin()
 
-    fun onAuthenticationClicked() {
-        action = Event(data = Action.NavigateToAuth)
+    fun onSignInClicked() {
+        action = Event(data = Action.NavigateToLogin)
+    }
+
+    fun onSignUpClicked() {
+        action = Event(data = Action.NavigateToRegister)
     }
 
     sealed class State {
@@ -72,6 +76,7 @@ class SocialLoginScreenState(
 
     sealed class Action {
         object NavigateToHome: Action()
-        object NavigateToAuth : Action() //TODO: add state (login/register)
+        object NavigateToLogin : Action()
+        object NavigateToRegister : Action()
     }
 }

@@ -134,6 +134,7 @@ google-services = { module = "com.google.gms:google-services", version.ref = "go
 google-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "google-play-services" }
 # Material components
 google-android-material = { module = "com.google.android.material:material", version.ref = "google-android-material" }
+google-android-material-icon = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidx-compose" }
 # Firebase
 google-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "google-firebase-bom" } # Provides versions for firebase dependencies
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
@@ -244,7 +245,8 @@ androidx-compose = [
     "google-accompanistPagerIndicators",
     "google-accompanistPermissions",
     "google-accompanistSystemUiController",
-    "google-accompanistSwipeRefresh"
+    "google-accompanistSwipeRefresh",
+    "google-android-material-icon"
 ]
 coil = [
     "coil",

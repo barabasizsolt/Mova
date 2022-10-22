@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.barabasizsolt.auth.LoginScreen
 import com.barabasizsolt.auth.AuthScreenState
+import com.barabasizsolt.auth.ScreenType
 import com.barabasizsolt.auth.rememberAuthScreenState
 import com.barabasizsolt.auth.socialLogin.SocialLoginScreen
 import com.barabasizsolt.auth.socialLogin.SocialLoginScreenState
@@ -32,19 +33,29 @@ fun NavGraphBuilder.authNavigation(navController: NavHostController) {
             SocialLoginScreen(screenState = rememberSocialLoginScreenState().apply {
                 when (action?.consume()) {
                     is SocialLoginScreenState.Action.NavigateToHome -> {}
-                    is SocialLoginScreenState.Action.NavigateToAuth -> navController.navigateToAuthentication()
+                    is SocialLoginScreenState.Action.NavigateToLogin -> navController.navigateToAuthentication(
+                        screenType = ScreenType.LOGIN.name
+                    )
+                    is SocialLoginScreenState.Action.NavigateToRegister -> navController.navigateToAuthentication(
+                        screenType = ScreenType.REGISTER.name
+                    )
                     else -> Unit
                 }
             })
         }
 
-        composable(route = Route.Authentication.AUTH) {
-            LoginScreen(screenState = rememberAuthScreenState().apply {
+        composable(route = Route.Authentication.AUTH) { backstackEntry ->
+            val screenType = backstackEntry.arguments?.getString("screenType") as String
+
+            LoginScreen(screenState = rememberAuthScreenState(screenType = screenType).apply {
                 when (action?.consume()) {
                     is AuthScreenState.Action.NavigateToHome -> navController.navigateToMain()
-                    is AuthScreenState.Action.NavigateToRegister -> {
-                        //TODO: register screen
-                    }
+                    is AuthScreenState.Action.NavigateToLogin -> navController.navigateToAuthentication(
+                        screenType = ScreenType.LOGIN.name
+                    )
+                    is AuthScreenState.Action.NavigateToRegister -> navController.navigateToAuthentication(
+                        screenType = ScreenType.REGISTER.name
+                    )
                     else -> Unit
                 }
             })
