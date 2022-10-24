@@ -12,15 +12,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.AuthScreenDelimiter
 import com.barabasizsolt.catalog.MovaButton
+import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.SocialAuthFooter
 import com.barabasizsolt.catalog.SocialLoginOption
 import com.barabasizsolt.login.R
@@ -46,34 +47,33 @@ fun SocialLoginScreen(screenState: SocialLoginScreenState) {
             screenState.loginWithGoogle(intent = data)
         }
     }
-    val scaffoldState = rememberScaffoldState()
+    val snackBarHostState = remember { SnackbarHostState() }
 
-    Scaffold(scaffoldState = scaffoldState) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = AppTheme.colors.primary)
-                .padding(paddingValues = it)
-                .navigationBarsPadding()
-        ) {
-            ScreenContent(
-                screenState = screenState,
-                activityResultLauncher = loginWithGoogleAccountLauncher
-            )
-
-            LaunchedEffect(
-                key1 = screenState.state,
-                block = {
-                    if (screenState.state is SocialLoginScreenState.State.Error) {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = "Oops, something went wrong.",
-                            actionLabel = "Try again"
-                        )
-                    }
-                }
-            )
-        }
+    Box {
+        ScreenContent(screenState = screenState, activityResultLauncher = loginWithGoogleAccountLauncher)
+        MovaSnackBar(
+            snackBarHostState = snackBarHostState,
+            onDismiss = {
+                snackBarHostState.currentSnackbarData?.dismiss()
+                screenState.resetState()
+            },
+            modifier = Modifier.align(alignment = Alignment.BottomCenter)
+        )
     }
+
+    LaunchedEffect(
+        key1 = screenState.state,
+        block = {
+            if (screenState.state is SocialLoginScreenState.State.Error) {
+                snackBarHostState.showSnackbar(
+                    message = (screenState.state as SocialLoginScreenState.State.Error).message,
+                    actionLabel = "Dismiss",
+                    duration = SnackbarDuration.Long
+                )
+                screenState.resetState()
+            }
+        }
+    )
 }
 
 @Composable

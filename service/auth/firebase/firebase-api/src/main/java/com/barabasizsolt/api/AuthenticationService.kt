@@ -25,6 +25,8 @@ interface AuthenticationService {
 
     fun getIntentForGoogleAccountLogin(): Intent
 
+    fun registerFacebookCallbackManager(requestCode: Int, resultCode: Int, data: Intent?)
+
     fun loginWithFacebookAccount(): Flow<AuthResult>
 
     fun logOut()

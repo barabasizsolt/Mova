@@ -50,12 +50,8 @@ class SocialLoginScreenState(
         scope.launch {
             loginWithFacebookAccountUseCase().onEach { result ->
                 state = when (result) {
-                    is AuthResult.Success -> {
-                        State.Normal
-                    }
-                    is AuthResult.Failure -> {
-                        State.Error(message = "Google Login failed: ${result.error}")
-                    }
+                    is AuthResult.Failure -> State.Error(message = result.error)
+                    is AuthResult.Success, is AuthResult.Dismissed -> State.Normal
                 }
             }.stateIn(scope = this)
         }
@@ -66,12 +62,8 @@ class SocialLoginScreenState(
         scope.launch {
             loginWithGoogleAccountUseCase(intent = intent).onEach { result ->
                 state = when (result) {
-                    is AuthResult.Success -> {
-                        State.Normal
-                    }
-                    is AuthResult.Failure -> {
-                        State.Error(message = "Google Login failed: ${result.error}")
-                    }
+                    is AuthResult.Failure -> State.Error(message = result.error)
+                    is AuthResult.Success, is AuthResult.Dismissed -> State.Normal
                 }
             }.stateIn(scope = this)
         }
@@ -86,6 +78,8 @@ class SocialLoginScreenState(
     fun onSignUpClicked() {
         action = Event(data = Action.NavigateToRegister)
     }
+
+    fun resetState() { state = State.Normal }
 
     sealed class State {
         object Normal: State()

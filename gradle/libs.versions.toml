@@ -43,7 +43,7 @@ google-firebase-auth = "21.0.8"
 google-play-services = "20.2.0"
 
 # Firebase-Facebook
-firebase-facebook = "9.1.1"
+firebase-facebook = "15.0.2"
 
 # Accompanist
 google-accompanist = "0.23.1" # https://github.com/google/accompanist/releases

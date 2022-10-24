@@ -25,9 +25,11 @@ import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.transform
 
 class AuthenticationServiceImpl(private val activityProvider: ActivityProvider) : AuthenticationService {
+
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var googleAuth: GoogleSignInClient
     private val facebookAuthManager: CallbackManager by lazy { CallbackManager.Factory.create() }
@@ -61,36 +63,41 @@ class AuthenticationServiceImpl(private val activityProvider: ActivityProvider) 
         return googleAuth.signInIntent
     }
 
+    override fun registerFacebookCallbackManager(requestCode: Int, resultCode: Int, data: Intent?) {
+        facebookAuthManager.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun loginWithFacebookAccount(): Flow<AuthResult> = callbackFlow<AuthWithResult<String>> {
-        LoginManager.getInstance().logInWithReadPermissions(activityProvider.get(), listOf("public_profiles"))
+        LoginManager.getInstance().logInWithReadPermissions(activityProvider.get(), listOf("public_profile", "email"))
         LoginManager.getInstance().registerCallback(
             facebookAuthManager,
             object : FacebookCallback<LoginResult> {
-                override fun onSuccess(result: LoginResult?) {
-                    println("Success")
-                    trySendBlocking(element = AuthWithResult.Success(data = result?.accessToken?.token.orEmpty()))
+                override fun onError(error: FacebookException) {
+                    trySendBlocking(element = AuthWithResult.Failure(error = error.message.orEmpty())).isFailure
+                }
+
+                override fun onSuccess(result: LoginResult) {
+                    trySendBlocking(element = AuthWithResult.Success(data = result.accessToken.token))
                 }
 
                 override fun onCancel() {
-                    trySendBlocking(element = AuthWithResult.Failure(error = "Login Cancelled"))
-                }
-
-                override fun onError(error: FacebookException?) {
-                    trySendBlocking(element = AuthWithResult.Failure(error = error?.message.orEmpty())).isFailure
+                    trySendBlocking(element = AuthWithResult.Dismissed())
                 }
             }
         )
         awaitClose { }
-
     }.transform { result ->
         when (result) {
-            is AuthWithResult.Success ->
+            is AuthWithResult.Success -> {
                 consumeTask(
                     task = firebaseAuth.signInWithCredential(FacebookAuthProvider.getCredential(result.data)),
                     sideEffect = { _authenticationState.value = AuthenticationState.Logged }
-                )
+                ).collect { res -> emit(value = res) }
+            }
             is AuthWithResult.Failure ->
                 emit(value = AuthResult.Failure(error = result.error))
+            is AuthWithResult.Dismissed ->
+                emit(value = AuthResult.Dismissed)
         }
     }
 
@@ -103,9 +110,11 @@ class AuthenticationServiceImpl(private val activityProvider: ActivityProvider) 
                 consumeTask(
                     task = firebaseAuth.signInWithCredential(result.data),
                     sideEffect = { _authenticationState.value = AuthenticationState.Logged }
-                ).collect { res -> emit(res) }
+                ).collect { res -> emit(value = res) }
             is AuthWithResult.Failure ->
                 emit(value = AuthResult.Failure(error = result.error))
+            is AuthWithResult.Dismissed ->
+                emit(value = AuthResult.Dismissed)
         }
     }
 

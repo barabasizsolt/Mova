@@ -93,7 +93,7 @@ fun AuthScreen(screenState: AuthScreenState) {
             if (screenState.state is AuthScreenState.State.Error) {
                 snackBarHostState.showSnackbar(
                     message = (screenState.state as AuthScreenState.State.Error).message,
-                    actionLabel = "Try again"
+                    actionLabel = "Dismiss"
                 )
                 screenState.resetState()
             }
