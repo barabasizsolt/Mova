@@ -1,5 +1,11 @@
 package com.barabasizsolt.auth
 
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -60,9 +66,17 @@ import com.barabasizsolt.catalog.SocialLoginOption
 @Composable
 fun AuthScreen(screenState: AuthScreenState) {
     val snackBarHostState = remember { SnackbarHostState() }
+    val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val data = result.data
+        if (result.resultCode == Activity.RESULT_OK && data != null) {
+            screenState.authenticateWithGoogle(intent = data)
+        }
+    }
 
     Box {
-        ScreenContent(screenState = screenState)
+        ScreenContent(screenState = screenState, activityResultLauncher = loginWithGoogleAccountLauncher)
         MovaSnackBar(
             snackBarHostState = snackBarHostState,
             onDismiss = {
@@ -89,7 +103,10 @@ fun AuthScreen(screenState: AuthScreenState) {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun ScreenContent(screenState: AuthScreenState) {
+private fun ScreenContent(
+    screenState: AuthScreenState,
+    activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
     LazyColumn(
@@ -152,8 +169,11 @@ private fun ScreenContent(screenState: AuthScreenState) {
         }
         item {
             SocialItemHolder(
-                onGoogleClicked = { },
-                onFacebookClicked = { },
+                onGoogleClicked = {
+                    val intent = screenState.getIntentForGoogleLogin()
+                    activityResultLauncher.launch(intent)
+                },
+                onFacebookClicked = { /*TODO: Implement it */ },
                 modifier = Modifier.padding(bottom = AppTheme.dimens.contentPadding * 3)
             )
         }

@@ -1,5 +1,6 @@
 package com.barabasizsolt.auth
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -10,7 +11,10 @@ import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.api.AuthResult
+import com.barabasizsolt.auth.socialLogin.SocialLoginScreenState
+import com.barabasizsolt.domain.usecase.auth.GetIntentForGoogleAccountLoginUseCase
 import com.barabasizsolt.domain.usecase.auth.LoginWithEmailAndPasswordUseCase
+import com.barabasizsolt.domain.usecase.auth.LoginWithGoogleAccountUseCase
 import com.barabasizsolt.domain.usecase.auth.RegisterWithEmailAndPasswordUseCase
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.get
@@ -28,20 +32,26 @@ fun rememberAuthScreenState(
     screenType: String,
     scope: CoroutineScope = rememberCoroutineScope(),
     loginWithEmailAndPassword: LoginWithEmailAndPasswordUseCase = get(),
-    registerWithEmailAndPassword: RegisterWithEmailAndPasswordUseCase = get()
+    registerWithEmailAndPassword: RegisterWithEmailAndPasswordUseCase = get(),
+    getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase = get(),
+    loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase = get()
 ): AuthScreenState = rememberSaveable(
     saver = AuthScreenState.getSaver(
         screenType = screenType,
         scope = scope,
         loginWithEmailAndPassword = loginWithEmailAndPassword,
-        registerWithEmailAndPassword = registerWithEmailAndPassword
+        registerWithEmailAndPassword = registerWithEmailAndPassword,
+        getIntentForGoogleAccountLogin = getIntentForGoogleAccountLogin,
+        loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase
     )
 ) {
     AuthScreenState(
         screenType = screenType,
         scope = scope,
         loginWithEmailAndPassword = loginWithEmailAndPassword,
-        registerWithEmailAndPassword = registerWithEmailAndPassword
+        registerWithEmailAndPassword = registerWithEmailAndPassword,
+        getIntentForGoogleAccountLogin = getIntentForGoogleAccountLogin,
+        loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase
     )
 }
 
@@ -49,7 +59,9 @@ class AuthScreenState(
     val screenType: String,
     private val scope: CoroutineScope,
     private val loginWithEmailAndPassword: LoginWithEmailAndPasswordUseCase,
-    private val registerWithEmailAndPassword: RegisterWithEmailAndPasswordUseCase
+    private val registerWithEmailAndPassword: RegisterWithEmailAndPasswordUseCase,
+    private val getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase,
+    private val loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase
 ) {
 
     var state by mutableStateOf<State>(value = State.Normal)
@@ -92,6 +104,24 @@ class AuthScreenState(
             }
         }
     }
+
+    fun authenticateWithGoogle(intent: Intent) {
+        state = State.Loading
+        scope.launch {
+            loginWithGoogleAccountUseCase(intent = intent).onEach { result ->
+                state = when (result) {
+                    is AuthResult.Success -> {
+                        State.Normal
+                    }
+                    is AuthResult.Failure -> {
+                        State.Error(message = "Google Login failed: ${result.error}")
+                    }
+                }
+            }.stateIn(scope = this)
+        }
+    }
+
+    fun getIntentForGoogleLogin(): Intent = getIntentForGoogleAccountLogin()
 
     fun changeAuthScreen() {
         screenProperty = if (screenProperty is ScreenProperty.Login) ScreenProperty.Register else ScreenProperty.Login
@@ -140,7 +170,9 @@ class AuthScreenState(
             screenType: String,
             scope: CoroutineScope,
             loginWithEmailAndPassword: LoginWithEmailAndPasswordUseCase,
-            registerWithEmailAndPassword: RegisterWithEmailAndPasswordUseCase
+            registerWithEmailAndPassword: RegisterWithEmailAndPasswordUseCase,
+            getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase,
+            loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase
         ): Saver<AuthScreenState, *> = mapSaver(
             save = { mapOf(EMAIL_KEY to it.email, PASSWORD_KEY to it.password) },
             restore = {
@@ -148,7 +180,9 @@ class AuthScreenState(
                     screenType = screenType,
                     scope = scope,
                     loginWithEmailAndPassword = loginWithEmailAndPassword,
-                    registerWithEmailAndPassword = registerWithEmailAndPassword
+                    registerWithEmailAndPassword = registerWithEmailAndPassword,
+                    getIntentForGoogleAccountLogin = getIntentForGoogleAccountLogin,
+                    loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase
                 ).apply {
                     email = it[EMAIL_KEY] as String
                     password = it[PASSWORD_KEY] as String

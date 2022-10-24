@@ -45,13 +45,12 @@ class SocialLoginScreenState(
         state = State.Loading
         scope.launch {
             loginWithGoogleAccountUseCase(intent = intent).onEach { result ->
-                when (result) {
+                state = when (result) {
                     is AuthResult.Success -> {
-                        state = State.Normal
-                        action = Event(Action.NavigateToHome)
+                        State.Normal
                     }
                     is AuthResult.Failure -> {
-                        state = State.Error(message = "Google Login failed: ${result.error}")
+                        State.Error(message = "Google Login failed: ${result.error}")
                     }
                 }
             }.stateIn(scope = this)
@@ -75,7 +74,6 @@ class SocialLoginScreenState(
     }
 
     sealed class Action {
-        object NavigateToHome: Action()
         object NavigateToLogin : Action()
         object NavigateToRegister : Action()
     }

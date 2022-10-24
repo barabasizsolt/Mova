@@ -31,7 +31,6 @@ fun NavGraphBuilder.authNavigation(navController: NavHostController) {
         composable(route = Route.Authentication.SOCIAL_LOGIN) {
             SocialLoginScreen(screenState = rememberSocialLoginScreenState().apply {
                 when (action?.consume()) {
-                    is SocialLoginScreenState.Action.NavigateToHome -> {}
                     is SocialLoginScreenState.Action.NavigateToLogin -> navController.navigateToAuthentication(
                         screenType = ScreenType.LOGIN.name
                     )
