@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.voyager)
     implementation(libs.koin.core)
+    implementation(libs.koin.compose)
 
     implementation(libs.bundles.androidx.core)
     implementation(libs.androidx.appcompat)

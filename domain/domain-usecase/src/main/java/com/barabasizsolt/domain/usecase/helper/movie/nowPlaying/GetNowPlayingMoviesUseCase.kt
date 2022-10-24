@@ -1,4 +1,4 @@
-package com.barabasizsolt.domain.useCase.helper.movie.nowPlaying
+package com.barabasizsolt.domain.usecase.helper.movie.nowPlaying
 
 import com.barabasizsolt.domain.util.wrapToResult
 import com.barabasizsolt.movie.api.MovieService

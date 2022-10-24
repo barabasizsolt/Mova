@@ -20,9 +20,10 @@ data class TvSeriesResponse(
     @Json(name = "vote_average") val voteAverage: Double?
 )
 
-fun TvSeriesResponse.toModel() : TvSeries {
+fun TvSeriesResponse.toModel() : TvSeries? {
     if (
         id == null ||
+        backdropPath == null ||
         genreIds == null ||
         originalCountry == null ||
         originalLanguage == null ||
@@ -32,7 +33,7 @@ fun TvSeriesResponse.toModel() : TvSeries {
         firstAirDate == null ||
         voteAverage == null
     ) {
-        throw DataLayerException(message = "TvSeriesException: $this")
+        return null
     }
     return TvSeries(
         id = id,

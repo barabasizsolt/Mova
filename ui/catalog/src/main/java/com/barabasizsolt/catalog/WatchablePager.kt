@@ -46,14 +46,14 @@ fun WatchablePager(
     onAddToFavouriteButtonClicked: () -> Unit
 ) {
     val pagerState = rememberPagerState()
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(timeMillis = 5000)
-            if (pagerState.pageCount > 0) {
-                pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % (pagerState.pageCount))
-            }
-        }
-    }
+//    LaunchedEffect(Unit) {
+//        while (true) {
+//            delay(timeMillis = 5000)
+//            if (pagerState.pageCount > 0) {
+//                pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % (pagerState.pageCount))
+//            }
+//        }
+//    }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         HorizontalPager(
@@ -92,23 +92,17 @@ private fun PagerItem(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(ratio = .7f)
+                .aspectRatio(ratio = 0.7f)
         )
-        Box(modifier = Modifier.matchParentSize()) {
-            Spacer(
-                modifier = Modifier
-                    .align(alignment = Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .fillMaxHeight(fraction = 0.5f)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent, AppTheme.colors.primary, AppTheme.colors.primary
-                            )
-                        )
-                    )
+        GradientOverlay(
+            maxHeightFraction = 0.5f,
+            colors = listOf(
+                Color.Transparent,
+                Color.Transparent,
+                AppTheme.colors.primary.copy(alpha = 0.8f),
+                AppTheme.colors.primary
             )
-        }
+        )
         PagerItemInfo(
             item = item,
             modifier = Modifier

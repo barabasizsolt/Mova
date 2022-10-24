@@ -1,6 +1,6 @@
 package com.barabasizsolt.util
 
-private val basePath: String = "https://image.tmdb.org/t/p"
+private const val basePath: String = "https://image.tmdb.org/t/p"
 
 enum class ImageType { ORIGINAL, PROFILE }
 

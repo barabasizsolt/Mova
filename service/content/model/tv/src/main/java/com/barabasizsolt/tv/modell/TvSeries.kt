@@ -2,7 +2,7 @@ package com.barabasizsolt.tv.modell
 
 data class TvSeries(
     val id: String,
-    val backdropPath: String?,
+    val backdropPath: String,
     val genreIds: List<String>,
     val originalCountry: List<String>,
     val originalLanguage: String,

@@ -1,12 +1,12 @@
-package com.barabasizsolt.domain.useCase.screen.home
+package com.barabasizsolt.domain.usecase.screen.home
 
 import com.barabasizsolt.domain.model.HomeScreenContent
 import com.barabasizsolt.domain.model.toWatchableItem
-import com.barabasizsolt.domain.useCase.helper.movie.nowPlaying.GetNowPlayingMoviesFlowUseCase
-import com.barabasizsolt.domain.useCase.helper.movie.topRated.GetTopRatedMoviesFlowUseCase
-import com.barabasizsolt.domain.useCase.helper.movie.trending.GetTrendingMoviesFlowUseCase
-import com.barabasizsolt.domain.useCase.helper.movie.upcoming.GetUpcomingMoviesFlowUseCase
-import com.barabasizsolt.domain.useCase.helper.people.GetPopularPeopleFlowUseCase
+import com.barabasizsolt.domain.usecase.helper.movie.nowPlaying.GetNowPlayingMoviesFlowUseCase
+import com.barabasizsolt.domain.usecase.helper.movie.topRated.GetTopRatedMoviesFlowUseCase
+import com.barabasizsolt.domain.usecase.helper.movie.trending.GetTrendingMoviesFlowUseCase
+import com.barabasizsolt.domain.usecase.helper.movie.upcoming.GetUpcomingMoviesFlowUseCase
+import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleFlowUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 

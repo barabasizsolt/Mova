@@ -36,7 +36,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":ui:screen:auth:login"))
+    implementation(project(":ui:screen:auth:welcome"))
+    implementation implementation(project(':ui:screen:auth:login-register',))
     implementation(project(":ui:screen:main:home"))
     implementation(project(":ui:screen:main:explore"))
     implementation(project(":ui:screen:main:favourites"))
@@ -45,10 +46,12 @@ dependencies {
     implementation(project(":ui:theme"))
     implementation(project(":ui:util"))
     implementation(project(":domain:domain-usecase"))
+    implementation(project(":service:auth:firebase:firebase-api"))
 
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.voyager)
     implementation(libs.koin.core)
+    implementation(libs.koin.compose)
 
     implementation(libs.bundles.androidx.core)
     implementation(libs.androidx.appcompat)

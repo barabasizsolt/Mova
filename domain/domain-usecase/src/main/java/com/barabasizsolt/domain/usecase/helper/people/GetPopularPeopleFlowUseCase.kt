@@ -1,4 +1,4 @@
-package com.barabasizsolt.domain.useCase.helper.people
+package com.barabasizsolt.domain.usecase.helper.people
 
 import com.barabasizsolt.people.api.PeopleService
 import kotlinx.coroutines.flow.filterNotNull

@@ -23,6 +23,10 @@
             <option value="$PROJECT_DIR$/service/auth" />
             <option value="$PROJECT_DIR$/service/auth/auth-di" />
             <option value="$PROJECT_DIR$/service/auth/auth-implementation" />
+            <option value="$PROJECT_DIR$/service/auth/firebase" />
+            <option value="$PROJECT_DIR$/service/auth/firebase/firebase-api" />
+            <option value="$PROJECT_DIR$/service/auth/firebase/firebase-di" />
+            <option value="$PROJECT_DIR$/service/auth/firebase/firebase-implementation" />
             <option value="$PROJECT_DIR$/service/content" />
             <option value="$PROJECT_DIR$/service/content/discover" />
             <option value="$PROJECT_DIR$/service/content/discover/discover-api" />
@@ -55,7 +59,8 @@
             <option value="$PROJECT_DIR$/ui/navigation" />
             <option value="$PROJECT_DIR$/ui/screen" />
             <option value="$PROJECT_DIR$/ui/screen/auth" />
-            <option value="$PROJECT_DIR$/ui/screen/auth/login" />
+            <option value="$PROJECT_DIR$/ui/screen/auth/login-register" />
+            <option value="$PROJECT_DIR$/ui/screen/auth/welcome" />
             <option value="$PROJECT_DIR$/ui/screen/lib" />
             <option value="$PROJECT_DIR$/ui/screen/main" />
             <option value="$PROJECT_DIR$/ui/screen/main/explore" />
