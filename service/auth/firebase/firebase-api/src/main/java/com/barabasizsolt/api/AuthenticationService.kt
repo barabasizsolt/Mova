@@ -24,7 +24,7 @@ interface AuthenticationService {
 
     fun getIntentForGoogleAccountLogin(): Intent
 
-    fun logOut(): Flow<AuthResult>
+    fun logOut()
 
     fun resetPassword(email: String): Flow<AuthResult>
 }

@@ -4,8 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.barabasizsolt.auth.LoginScreen
-import com.barabasizsolt.auth.AuthScreenState
+import com.barabasizsolt.auth.AuthScreen
 import com.barabasizsolt.auth.ScreenType
 import com.barabasizsolt.auth.rememberAuthScreenState
 import com.barabasizsolt.auth.socialLogin.SocialLoginScreen
@@ -47,18 +46,7 @@ fun NavGraphBuilder.authNavigation(navController: NavHostController) {
         composable(route = Route.Authentication.AUTH) { backstackEntry ->
             val screenType = backstackEntry.arguments?.getString("screenType") as String
 
-            LoginScreen(screenState = rememberAuthScreenState(screenType = screenType).apply {
-                when (action?.consume()) {
-                    is AuthScreenState.Action.NavigateToHome -> navController.navigateToMain()
-                    is AuthScreenState.Action.NavigateToLogin -> navController.navigateToAuthentication(
-                        screenType = ScreenType.LOGIN.name
-                    )
-                    is AuthScreenState.Action.NavigateToRegister -> navController.navigateToAuthentication(
-                        screenType = ScreenType.REGISTER.name
-                    )
-                    else -> Unit
-                }
-            })
+            AuthScreen(screenState = rememberAuthScreenState(screenType = screenType))
         }
     }
 }

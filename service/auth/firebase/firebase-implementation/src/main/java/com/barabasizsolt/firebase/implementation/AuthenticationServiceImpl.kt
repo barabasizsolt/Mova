@@ -17,6 +17,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.transform
 
 class AuthenticationServiceImpl : AuthenticationService {
@@ -39,13 +40,13 @@ class AuthenticationServiceImpl : AuthenticationService {
     }
 
     override fun loginWithEmailAndPassword(email: String, password: String): Flow<AuthResult> = consumeTask(
-        task = firebaseAuth.signInWithEmailAndPassword(email, password)
-    ).also {
-        _authenticationState.value = AuthenticationState.NotLogged
-    }
+        task = firebaseAuth.signInWithEmailAndPassword(email, password),
+        sideEffect = { _authenticationState.value = AuthenticationState.Logged }
+    )
 
     override fun registerWithEmailAndPassWord(email: String, password: String): Flow<AuthResult> = consumeTask(
-        task = firebaseAuth.createUserWithEmailAndPassword(email, password)
+        task = firebaseAuth.createUserWithEmailAndPassword(email, password),
+        sideEffect = { _authenticationState.value = AuthenticationState.Logged }
     )
 
     override fun getIntentForGoogleAccountLogin(): Intent {
@@ -58,19 +59,19 @@ class AuthenticationServiceImpl : AuthenticationService {
     ).transform { result ->
         when (result) {
             is AuthWithResult.Success ->
-                consumeTask(task = firebaseAuth.signInWithCredential(result.data)).collect { res -> emit(res) }
+                consumeTask(
+                    task = firebaseAuth.signInWithCredential(result.data),
+                    sideEffect = { _authenticationState.value = AuthenticationState.Logged }
+                ).collect { res -> emit(res) }
             is AuthWithResult.Failure ->
                 emit(value = AuthResult.Failure(error = result.error))
         }
-    }.also {
-        _authenticationState.value = AuthenticationState.Logged
     }
 
-    override fun logOut(): Flow<AuthResult> = consumeTask(
-        task = googleAuth.signOut()
-    ).also {
-        _authenticationState.value = AuthenticationState.NotLogged
+    override fun logOut() {
+        googleAuth.signOut()
         firebaseAuth.signOut()
+        _authenticationState.value = AuthenticationState.NotLogged
     }
 
     override fun resetPassword(email: String): Flow<AuthResult> = consumeTask(

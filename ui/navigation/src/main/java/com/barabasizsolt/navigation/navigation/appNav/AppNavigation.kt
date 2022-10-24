@@ -72,5 +72,7 @@ fun NavHostController.navigateToSocialLogin() {
 }
 
 fun NavHostController.navigateToAuthentication(screenType: String) {
-    navigate(route = "Auth/${screenType}")
+    navigate(route = "Auth/${screenType}") {
+        launchSingleTop = true
+    }
 }

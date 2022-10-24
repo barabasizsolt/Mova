@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.filterNotNull
 
 class LogOutUseCase(private val service: AuthenticationService) {
 
-    operator fun invoke() = service.logOut().filterNotNull()
+    operator fun invoke() = service.logOut()
 }

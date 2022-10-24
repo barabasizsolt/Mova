@@ -12,9 +12,15 @@ sealed class AuthResult {
     data class Failure(val error: String) : AuthResult()
 }
 
-fun <T>consumeTask(task: Task<T>): Flow<AuthResult> = callbackFlow {
+fun <T>consumeTask(
+    task: Task<T>,
+    sideEffect: () -> Unit = { }
+): Flow<AuthResult> = callbackFlow {
     task
-        .addOnSuccessListener { trySend(element = AuthResult.Success).isSuccess }
+        .addOnSuccessListener {
+            trySend(element = AuthResult.Success).isSuccess
+            sideEffect()
+        }
         .addOnFailureListener { error -> trySend(element = AuthResult.Failure(error = error.message.orEmpty())).isFailure }
     awaitClose { }
 }

@@ -35,7 +35,7 @@ fun MovaSnackBar(
                     TextButton(onClick = onDismiss) {
                         Text(
                             text = actionLabel,
-                            color= AppTheme.colors.primary,
+                            color= AppTheme.colors.secondary,
                             style = AppTheme.typography.body2
                         )
                     }

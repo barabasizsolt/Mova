@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,16 +19,15 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,51 +50,48 @@ import com.google.accompanist.insets.statusBarsPadding
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.SocialLoginOption
-import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(screenState: AuthScreenState) {
-    val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
+fun AuthScreen(screenState: AuthScreenState) {
+    val snackBarHostState = remember { SnackbarHostState() }
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-        snackbarHost = { scaffoldState.snackbarHostState }
-    ) {
-        Box(modifier = Modifier.padding(paddingValues = it)) {
-            ScreenContent(screenState = screenState)
-            MovaSnackBar(
-                snackBarHostState = scaffoldState.snackbarHostState,
-                onDismiss = {
-                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                    screenState.resetState()
-                },
-                modifier = Modifier.align(alignment = Alignment.BottomCenter)
-            )
-        }
-
-        when (val state = screenState.state) {
-            is AuthScreenState.State.Error -> {
-                println("Here")
-                scope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = state.message,
-                        actionLabel = "Try again"
-                    )
-                    screenState.resetState()
-                }
-            }
-            else -> Unit
-        }
+    Box {
+        ScreenContent(screenState = screenState)
+        MovaSnackBar(
+            snackBarHostState = snackBarHostState,
+            onDismiss = {
+                snackBarHostState.currentSnackbarData?.dismiss()
+                screenState.resetState()
+            },
+            modifier = Modifier.align(alignment = Alignment.BottomCenter)
+        )
     }
+
+    LaunchedEffect(
+        key1 = screenState.state,
+        block = {
+            if (screenState.state is AuthScreenState.State.Error) {
+                snackBarHostState.showSnackbar(
+                    message = (screenState.state as AuthScreenState.State.Error).message,
+                    actionLabel = "Try again"
+                )
+                screenState.resetState()
+            }
+        }
+    )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ScreenContent(screenState: AuthScreenState) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -131,14 +126,20 @@ private fun ScreenContent(screenState: AuthScreenState) {
             PasswordInput(
                 password = screenState.password,
                 onPasswordChange = screenState::onPasswordChange,
-                keyboardActions = screenState::authenticate,
+                keyboardActions = {
+                    screenState.authenticate()
+                    keyboardController?.hide()
+                },
                 modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding * 2)
             )
         }
         item {
             MovaButton(
                 text = screenState.screenProperty?.authButtonText.orEmpty(),
-                onClick = screenState::authenticate,
+                onClick = {
+                    screenState.authenticate()
+                    keyboardController?.hide()
+                },
                 isLoading = screenState.state is AuthScreenState.State.Loading,
                 isEnabled = screenState.isAuthEnabled
             )
@@ -158,7 +159,7 @@ private fun ScreenContent(screenState: AuthScreenState) {
         }
         item {
             SocialAuthFooter(
-                text = "Don't have an account?",
+                text = screenState.screenProperty?.authFooterQuestion.orEmpty(),
                 clickableText = screenState.screenProperty?.authFooterText.orEmpty(),
                 onSignUpClick = screenState::changeAuthScreen
             )

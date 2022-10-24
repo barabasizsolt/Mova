@@ -15,9 +15,6 @@ import com.barabasizsolt.domain.usecase.auth.RegisterWithEmailAndPasswordUseCase
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.get
 import com.barabasizsolt.util.Event
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -57,8 +54,6 @@ class AuthScreenState(
 
     var state by mutableStateOf<State>(value = State.Normal)
         private set
-    var action by mutableStateOf<Event<Action>?>(value = null)
-        private set
     var screenProperty by mutableStateOf<ScreenProperty?>(value = null)
         private set
     var email by mutableStateOf(value = "")
@@ -80,29 +75,26 @@ class AuthScreenState(
     }
 
     fun authenticate() {
-        scope.launch {
-            if (screenProperty is ScreenProperty.Login) {
-                loginWithEmailAndPassword(email = email, password = password)
-            } else {
-                registerWithEmailAndPassword(email = email, password = password)
-            }.onEach { authResult ->
-                when (authResult) {
-                    is AuthResult.Failure -> {
-                        println("Here1")
-                        state = State.Error(message = authResult.error)
+        if (isAuthEnabled) {
+            state = State.Loading
+            scope.launch {
+                if (screenProperty is ScreenProperty.Login) {
+                    loginWithEmailAndPassword(email = email, password = password)
+                } else {
+                    registerWithEmailAndPassword(email = email, password = password)
+                }.onEach { authResult ->
+                    state = when (authResult) {
+                        is AuthResult.Failure -> State.Error(message = authResult.error)
+                        is AuthResult.Success -> State.Normal
                     }
-                    is AuthResult.Success -> {
-                        state = State.Normal
-                        action = Event(data = Action.NavigateToHome)
-                    }
-                }
 
-            }.stateIn(scope = this)
+                }.stateIn(scope = this)
+            }
         }
     }
 
     fun changeAuthScreen() {
-        action = Event(data = if (screenProperty is ScreenProperty.Login) Action.NavigateToRegister else Action.NavigateToLogin)
+        screenProperty = if (screenProperty is ScreenProperty.Login) ScreenProperty.Register else ScreenProperty.Login
     }
 
     fun onEmailChange(value: String) { email = value }
@@ -117,26 +109,23 @@ class AuthScreenState(
         data class Error(val message: String) : State()
     }
 
-    sealed class Action {
-        object NavigateToHome: Action()
-        object NavigateToRegister: Action()
-        object NavigateToLogin: Action()
-    }
-
     sealed class ScreenProperty {
         abstract val screenTitle: String
         abstract val authButtonText: String
+        abstract val authFooterQuestion: String
         abstract val authFooterText: String
 
         object Login : ScreenProperty() {
             override val screenTitle: String = "Login to Your Account"
             override val authButtonText: String = SIGN_IN
+            override val authFooterQuestion: String = "Don't have an account?"
             override val authFooterText: String = SIGN_UP
         }
 
         object Register : ScreenProperty() {
             override val screenTitle: String = "Create Your Account"
             override val authButtonText: String = SIGN_UP
+            override val authFooterQuestion: String = "Already have an account?"
             override val authFooterText: String = SIGN_IN
         }
     }
