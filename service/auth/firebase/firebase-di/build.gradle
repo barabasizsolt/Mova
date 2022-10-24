@@ -32,6 +32,7 @@ android {
 dependencies {
     implementation(project(":service:auth:firebase:firebase-api"))
     implementation(project(":service:auth:firebase:firebase-implementation"))
+    implementation(project(":service:activityprovider:activityprovider-api"))
 
     implementation(libs.koin.core)
 

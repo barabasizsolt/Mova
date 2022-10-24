@@ -2,6 +2,7 @@ package com.barabasizsolt.api
 
 import android.content.Context
 import android.content.Intent
+import com.facebook.AccessToken
 import kotlinx.coroutines.flow.Flow
 
 sealed class AuthenticationState {
@@ -23,6 +24,8 @@ interface AuthenticationService {
     fun loginWithGoogleAccount(intent: Intent): Flow<AuthResult>
 
     fun getIntentForGoogleAccountLogin(): Intent
+
+    fun loginWithFacebookAccount(): Flow<AuthResult>
 
     fun logOut()
 

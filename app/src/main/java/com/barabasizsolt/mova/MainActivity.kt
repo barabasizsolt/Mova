@@ -5,11 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
+import com.barabasizsolt.activityprovider.api.ActivitySetter
 import com.barabasizsolt.navigation.navigation.AppNavigation
 import com.barabasizsolt.theme.attributes.MovaTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
+
+    private val activitySetter by inject<ActivitySetter>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,4 +29,15 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        activitySetter.set(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activitySetter.clear()
+    }
+
 }

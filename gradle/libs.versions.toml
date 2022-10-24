@@ -41,6 +41,10 @@ google-firebase-bom = "30.4.1" # https://firebase.google.com/support/release-not
 google-firebase-crashlyticsGradle = "2.9.1" # https://firebase.google.com/support/release-notes/android
 google-firebase-auth = "21.0.8"
 google-play-services = "20.2.0"
+
+# Firebase-Facebook
+firebase-facebook = "9.1.1"
+
 # Accompanist
 google-accompanist = "0.23.1" # https://github.com/google/accompanist/releases
 
@@ -141,6 +145,8 @@ google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-k
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 google-firebase-crashlyticsGradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "google-firebase-crashlyticsGradle" }
 google-firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "google-firebase-auth" }
+# Firebase-Facebook
+firebase-facebook = { module = "com.facebook.android:facebook-android-sdk", version.ref = "firebase-facebook" }
 
 # Halcyon
 halcyon-oauthMoshi = { module = "com.halcyonmobile.oauth-setup:oauth-setup-moshi", version.ref = "halcyon-oauth" }

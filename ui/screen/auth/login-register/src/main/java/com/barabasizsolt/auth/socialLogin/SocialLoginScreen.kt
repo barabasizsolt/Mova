@@ -93,7 +93,9 @@ private fun ScreenContent(
         item { SocialLoginScreenTitle(modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding * 2)) }
         item {
             FacebookLoginOption(
-                onClick = { /*TODO: Implement it */ },
+                onClick = {
+                    screenState.loginWithFacebook()
+                },
                 modifier = Modifier.padding(bottom = AppTheme.dimens.contentPadding * 2)
             )
         }

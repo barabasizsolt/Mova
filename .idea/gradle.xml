@@ -20,6 +20,10 @@
             <option value="$PROJECT_DIR$/main" />
             <option value="$PROJECT_DIR$/network" />
             <option value="$PROJECT_DIR$/service" />
+            <option value="$PROJECT_DIR$/service/activityprovider" />
+            <option value="$PROJECT_DIR$/service/activityprovider/activityprovider-api" />
+            <option value="$PROJECT_DIR$/service/activityprovider/activityprovider-di" />
+            <option value="$PROJECT_DIR$/service/activityprovider/activityprovider-implementation" />
             <option value="$PROJECT_DIR$/service/auth" />
             <option value="$PROJECT_DIR$/service/auth/auth-di" />
             <option value="$PROJECT_DIR$/service/auth/auth-implementation" />

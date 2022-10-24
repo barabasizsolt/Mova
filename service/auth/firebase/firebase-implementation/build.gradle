@@ -32,9 +32,11 @@ android {
 
 dependencies {
     implementation(project(":service:auth:firebase:firebase-api"))
+    implementation(project(":service:activityprovider:activityprovider-api"))
 
     implementation(libs.google.firebase.auth)
     implementation(libs.google.firebase.bom)
+    implementation(libs.firebase.facebook)
     implementation(libs.google.services.auth)
     implementation(libs.kotlinx.coroutines)
 

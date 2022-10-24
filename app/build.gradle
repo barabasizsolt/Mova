@@ -74,6 +74,8 @@ dependencies {
     implementation(project(":service:network:network-di"))
     implementation(project(":service:auth:auth-di"))
     implementation(project(":service:auth:firebase:firebase-api"))
+    implementation(project(":service:activityprovider:activityprovider-api"))
+    implementation(project(":service:activityprovider:activityprovider-di"))
 
     // Kotlin
     implementation(libs.kotlinx.coroutines)

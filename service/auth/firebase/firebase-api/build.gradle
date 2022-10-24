@@ -32,6 +32,7 @@ android {
 dependencies {
     implementation(libs.google.firebase.auth)
     implementation(libs.google.firebase.bom)
+    implementation(libs.firebase.facebook)
     implementation(libs.kotlinx.coroutines)
 
     implementation(libs.bundles.androidx.core)
