@@ -10,6 +10,8 @@ sealed class AuthResult {
     object Success : AuthResult()
 
     data class Failure(val error: String) : AuthResult()
+
+    object Dismissed : AuthResult()
 }
 
 fun <T>consumeTask(
@@ -30,6 +32,8 @@ sealed class AuthWithResult<T> {
     data class Success<T>(val data: T) : AuthWithResult<T>()
 
     data class Failure<T>(val error: String) : AuthWithResult<T>()
+
+    data class Dismissed<T>(val nothing: T? = null) : AuthWithResult<T>()
 }
 
 fun <P, T>consumeTaskWithResult(task: Task<T>, taskConverter: (T) -> P): Flow<AuthWithResult<P>> = callbackFlow {

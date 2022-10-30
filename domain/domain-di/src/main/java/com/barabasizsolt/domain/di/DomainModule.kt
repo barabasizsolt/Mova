@@ -5,6 +5,7 @@ import com.barabasizsolt.domain.usecase.auth.GetIntentForGoogleAccountLoginUseCa
 import com.barabasizsolt.domain.usecase.auth.IsLoggedInUseCase
 import com.barabasizsolt.domain.usecase.auth.LogOutUseCase
 import com.barabasizsolt.domain.usecase.auth.LoginWithEmailAndPasswordUseCase
+import com.barabasizsolt.domain.usecase.auth.LoginWithFacebookAccountUseCase
 import com.barabasizsolt.domain.usecase.auth.LoginWithGoogleAccountUseCase
 import com.barabasizsolt.domain.usecase.auth.RegisterWithEmailAndPasswordUseCase
 import com.barabasizsolt.domain.usecase.auth.ResetPasswordUseCase
@@ -57,6 +58,7 @@ private fun createUseCaseModules() = module {
     factory { IsLoggedInUseCase(service = get()) }
     factory { LoginWithEmailAndPasswordUseCase(service = get()) }
     factory { LoginWithGoogleAccountUseCase(service = get()) }
+    factory { LoginWithFacebookAccountUseCase(service = get()) }
     factory { LogOutUseCase(service = get()) }
     factory { RegisterWithEmailAndPasswordUseCase(service = get()) }
     factory { ResetPasswordUseCase(service = get()) }

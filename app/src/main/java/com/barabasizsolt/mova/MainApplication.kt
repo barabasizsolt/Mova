@@ -10,6 +10,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
 class MainApplication : Application() {
+
     private val authService: AuthenticationService by inject()
 
     override fun onCreate() {

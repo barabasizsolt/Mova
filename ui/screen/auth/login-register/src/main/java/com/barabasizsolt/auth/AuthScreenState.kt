@@ -97,7 +97,7 @@ class AuthScreenState(
                 }.onEach { authResult ->
                     state = when (authResult) {
                         is AuthResult.Failure -> State.Error(message = authResult.error)
-                        is AuthResult.Success -> State.Normal
+                        is AuthResult.Success, is AuthResult.Dismissed -> State.Normal
                     }
 
                 }.stateIn(scope = this)
@@ -110,12 +110,8 @@ class AuthScreenState(
         scope.launch {
             loginWithGoogleAccountUseCase(intent = intent).onEach { result ->
                 state = when (result) {
-                    is AuthResult.Success -> {
-                        State.Normal
-                    }
-                    is AuthResult.Failure -> {
-                        State.Error(message = "Google Login failed: ${result.error}")
-                    }
+                    is AuthResult.Failure -> State.Error(message = result.error)
+                    is AuthResult.Success, is AuthResult.Dismissed -> State.Normal
                 }
             }.stateIn(scope = this)
         }
