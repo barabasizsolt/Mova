@@ -1,8 +1,0 @@
-com.barabasizsolt.activityprovider.di.activityprovider-di-pngs-0 /Users/barabasizsolt/Documents/GitHub/Mova/service/activityprovider/activityprovider-di/build/generated/res/pngs/debug
-com.barabasizsolt.activityprovider.di.activityprovider-di-resValues-1 /Users/barabasizsolt/Documents/GitHub/Mova/service/activityprovider/activityprovider-di/build/generated/res/resValues/debug
-com.barabasizsolt.activityprovider.di.activityprovider-di-rs-2 /Users/barabasizsolt/Documents/GitHub/Mova/service/activityprovider/activityprovider-di/build/generated/res/rs/debug
-com.barabasizsolt.activityprovider.di.activityprovider-di-packageDebugResources-3 /Users/barabasizsolt/Documents/GitHub/Mova/service/activityprovider/activityprovider-di/build/intermediates/incremental/debug/packageDebugResources/merged.dir
-com.barabasizsolt.activityprovider.di.activityprovider-di-packageDebugResources-4 /Users/barabasizsolt/Documents/GitHub/Mova/service/activityprovider/activityprovider-di/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
-com.barabasizsolt.activityprovider.di.activityprovider-di-merged_res-5 /Users/barabasizsolt/Documents/GitHub/Mova/service/activityprovider/activityprovider-di/build/intermediates/merged_res/debug
-com.barabasizsolt.activityprovider.di.activityprovider-di-debug-6 /Users/barabasizsolt/Documents/GitHub/Mova/service/activityprovider/activityprovider-di/src/debug/res
-com.barabasizsolt.activityprovider.di.activityprovider-di-main-7 /Users/barabasizsolt/Documents/GitHub/Mova/service/activityprovider/activityprovider-di/src/main/res
