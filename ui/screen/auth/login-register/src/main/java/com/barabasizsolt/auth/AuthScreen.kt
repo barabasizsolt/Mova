@@ -173,7 +173,7 @@ private fun ScreenContent(
                     val intent = screenState.getIntentForGoogleLogin()
                     activityResultLauncher.launch(intent)
                 },
-                onFacebookClicked = { /*TODO: Implement it */ },
+                onFacebookClicked = screenState::authenticateWithFacebook,
                 modifier = Modifier.padding(bottom = AppTheme.dimens.contentPadding * 3)
             )
         }

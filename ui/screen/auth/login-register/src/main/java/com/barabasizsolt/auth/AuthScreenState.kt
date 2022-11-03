@@ -11,14 +11,13 @@ import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.api.AuthResult
-import com.barabasizsolt.auth.socialLogin.SocialLoginScreenState
 import com.barabasizsolt.domain.usecase.auth.GetIntentForGoogleAccountLoginUseCase
 import com.barabasizsolt.domain.usecase.auth.LoginWithEmailAndPasswordUseCase
+import com.barabasizsolt.domain.usecase.auth.LoginWithFacebookAccountUseCase
 import com.barabasizsolt.domain.usecase.auth.LoginWithGoogleAccountUseCase
 import com.barabasizsolt.domain.usecase.auth.RegisterWithEmailAndPasswordUseCase
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.get
-import com.barabasizsolt.util.Event
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -34,7 +33,8 @@ fun rememberAuthScreenState(
     loginWithEmailAndPassword: LoginWithEmailAndPasswordUseCase = get(),
     registerWithEmailAndPassword: RegisterWithEmailAndPasswordUseCase = get(),
     getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase = get(),
-    loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase = get()
+    loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase = get(),
+    loginWithFacebookAccountUseCase: LoginWithFacebookAccountUseCase = get()
 ): AuthScreenState = rememberSaveable(
     saver = AuthScreenState.getSaver(
         screenType = screenType,
@@ -42,7 +42,8 @@ fun rememberAuthScreenState(
         loginWithEmailAndPassword = loginWithEmailAndPassword,
         registerWithEmailAndPassword = registerWithEmailAndPassword,
         getIntentForGoogleAccountLogin = getIntentForGoogleAccountLogin,
-        loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase
+        loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase,
+        loginWithFacebookAccountUseCase = loginWithFacebookAccountUseCase
     )
 ) {
     AuthScreenState(
@@ -51,7 +52,8 @@ fun rememberAuthScreenState(
         loginWithEmailAndPassword = loginWithEmailAndPassword,
         registerWithEmailAndPassword = registerWithEmailAndPassword,
         getIntentForGoogleAccountLogin = getIntentForGoogleAccountLogin,
-        loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase
+        loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase,
+        loginWithFacebookAccountUseCase = loginWithFacebookAccountUseCase
     )
 }
 
@@ -61,7 +63,8 @@ class AuthScreenState(
     private val loginWithEmailAndPassword: LoginWithEmailAndPasswordUseCase,
     private val registerWithEmailAndPassword: RegisterWithEmailAndPasswordUseCase,
     private val getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase,
-    private val loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase
+    private val loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase,
+    private val loginWithFacebookAccountUseCase: LoginWithFacebookAccountUseCase
 ) {
 
     var state by mutableStateOf<State>(value = State.Normal)
@@ -102,6 +105,18 @@ class AuthScreenState(
 
                 }.stateIn(scope = this)
             }
+        }
+    }
+
+    fun authenticateWithFacebook() {
+        state = State.Loading
+        scope.launch {
+            loginWithFacebookAccountUseCase().onEach { result ->
+                state = when (result) {
+                    is AuthResult.Failure -> State.Error(message = result.error)
+                    is AuthResult.Success, is AuthResult.Dismissed -> State.Normal
+                }
+            }.stateIn(scope = this)
         }
     }
 
@@ -168,7 +183,8 @@ class AuthScreenState(
             loginWithEmailAndPassword: LoginWithEmailAndPasswordUseCase,
             registerWithEmailAndPassword: RegisterWithEmailAndPasswordUseCase,
             getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase,
-            loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase
+            loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase,
+            loginWithFacebookAccountUseCase: LoginWithFacebookAccountUseCase
         ): Saver<AuthScreenState, *> = mapSaver(
             save = { mapOf(EMAIL_KEY to it.email, PASSWORD_KEY to it.password) },
             restore = {
@@ -178,7 +194,8 @@ class AuthScreenState(
                     loginWithEmailAndPassword = loginWithEmailAndPassword,
                     registerWithEmailAndPassword = registerWithEmailAndPassword,
                     getIntentForGoogleAccountLogin = getIntentForGoogleAccountLogin,
-                    loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase
+                    loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase,
+                    loginWithFacebookAccountUseCase = loginWithFacebookAccountUseCase
                 ).apply {
                     email = it[EMAIL_KEY] as String
                     password = it[PASSWORD_KEY] as String
