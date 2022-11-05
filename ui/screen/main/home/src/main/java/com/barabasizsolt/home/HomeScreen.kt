@@ -80,7 +80,7 @@ private fun ScreenContent(screenState: HomeScreenState) {
                     buttonText = "More Popular Movies",
                     items = screenState.homeContent?.trendingMovies.orEmpty(),
                     onItemClick = { },
-                    onHeaderClick = { },
+                    onHeaderClick = screenState::onSeeAllPopularMoviesClicked,
                 )
             }
             item {
@@ -88,7 +88,7 @@ private fun ScreenContent(screenState: HomeScreenState) {
                     header = "Popular People",
                     items = screenState.homeContent?.popularPeople.orEmpty(),
                     onItemClick = { },
-                    onHeaderClick = { },
+                    onHeaderClick = screenState::onSeeAllPopularPeopleClicked,
                 )
             }
             item {
@@ -97,7 +97,7 @@ private fun ScreenContent(screenState: HomeScreenState) {
                     buttonText = "More Now Playing Movies",
                     items = screenState.homeContent?.upcomingMovies.orEmpty(),
                     onItemClick = { },
-                    onHeaderClick = { },
+                    onHeaderClick = screenState::onSeeAllNowPlayingMoviesClicked,
                 )
             }
             item {
@@ -106,7 +106,7 @@ private fun ScreenContent(screenState: HomeScreenState) {
                     buttonText = "More Top Rated Movies",
                     items = screenState.homeContent?.topRatedMovies.orEmpty(),
                     onItemClick = { },
-                    onHeaderClick = { },
+                    onHeaderClick = screenState::onSeeAllTopRatedMoviesClicked,
                     showDivider = false
                 )
             }

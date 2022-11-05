@@ -1,6 +1,7 @@
 package com.barabasizsolt.tv.dto
 
 import com.barabasizsolt.api.DataLayerException
+import com.barabasizsolt.tv.modell.TvSeries
 import com.barabasizsolt.tv.modell.TvSeriesList
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -11,12 +12,9 @@ data class TvSeriesDiscoverResponse(
     @Json(name = "results") val results: List<TvSeriesResponse>?
 )
 
-fun TvSeriesDiscoverResponse.toModel() : TvSeriesList {
+fun TvSeriesDiscoverResponse.toModel() : List<TvSeries> {
     if (page == null || results == null) {
         throw DataLayerException(message = "TvSeriesDiscoverException: $this")
     }
-    return TvSeriesList(
-        page = page,
-        results = results.mapNotNull { it.toModel() }
-    )
+    return results.mapNotNull { it.toModel() }
 }

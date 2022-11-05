@@ -2,7 +2,6 @@ package com.barabasizsolt.domain.usecase.screen.explore
 
 import com.barabasizsolt.domain.usecase.helper.discover.movie.GetMovieDiscoverUseCase
 import com.barabasizsolt.domain.usecase.helper.discover.tv.GetTvDiscoverUseCase
-import com.barabasizsolt.domain.usecase.screen.explore.Category
 import com.barabasizsolt.domain.util.wrapToResult
 
 class GetExploreScreenUseCase(

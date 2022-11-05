@@ -1,6 +1,7 @@
 package com.barabasizsolt.movie.dto
 
 import com.barabasizsolt.api.DataLayerException
+import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.movie.model.MovieList
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -11,12 +12,9 @@ data class MovieListResponse(
     @Json(name = "results") val results: List<MovieResponse>?
 )
 
-fun MovieListResponse.toModel() : MovieList {
+fun MovieListResponse.toModel() : List<Movie> {
     if (page == null || results == null) {
         throw DataLayerException(message = "MovieListException: $this")
     }
-    return MovieList(
-        page = page,
-        results = results.mapNotNull { it.toModel() }
-    )
+    return results.mapNotNull { it.toModel() }
 }

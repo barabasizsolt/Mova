@@ -26,7 +26,7 @@ data class AppTypography(
     val h4: TextStyle = TextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 34.sp,
-        letterSpacing = 0.25.sp
+        letterSpacing = 0.25.sp,
     ),
     val h5: TextStyle = TextStyle(
         fontWeight = FontWeight.Normal,

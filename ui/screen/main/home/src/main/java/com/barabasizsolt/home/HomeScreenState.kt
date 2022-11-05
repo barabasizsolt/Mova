@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.Result
+import com.barabasizsolt.util.Event
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.get
 
@@ -34,10 +35,12 @@ fun rememberHomeScreenState(
 class HomeScreenState(
     private val scope: CoroutineScope,
     private val getHomeScreen: GetHomeScreenUseCase,
-    private val getHomeScreenFlow: GetHomeScreenFlowUseCase
+    private val getHomeScreenFlow: GetHomeScreenFlowUseCase,
 ) {
 
     var state by mutableStateOf<State>(value = State.Loading)
+        private set
+    var action by mutableStateOf<Event<Action>?>(value = null)
         private set
     var homeContent by mutableStateOf<HomeScreenContent?>(value = null)
         private set
@@ -63,11 +66,34 @@ class HomeScreenState(
         }
     }
 
+    fun onSeeAllPopularMoviesClicked() {
+        action = Event(data = Action.SeeAllPopularMovies)
+    }
+
+    fun onSeeAllPopularPeopleClicked() {
+        action = Event(data = Action.SeeAllPopularPeople)
+    }
+
+    fun onSeeAllNowPlayingMoviesClicked() {
+        action = Event(data = Action.SeeAllNowPlayingMovies)
+    }
+
+    fun onSeeAllTopRatedMoviesClicked() {
+        action = Event(data = Action.SeeAllTopRatedMovies)
+    }
+
     sealed class State {
         object Normal : State()
         object Loading : State()
         object SwipeRefresh : State()
         data class Error(val message: String) : State()
         object ShowSnackBar : State()
+    }
+
+    sealed class Action {
+        object SeeAllPopularMovies : Action()
+        object SeeAllPopularPeople : Action()
+        object SeeAllNowPlayingMovies : Action()
+        object SeeAllTopRatedMovies : Action()
     }
 }

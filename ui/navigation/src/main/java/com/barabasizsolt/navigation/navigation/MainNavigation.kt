@@ -1,23 +1,39 @@
 package com.barabasizsolt.navigation.navigation
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.barabasizsolt.explore.ExploreScreen
 import com.barabasizsolt.explore.rememberExploreScreenState
 import com.barabasizsolt.favourites.FavouritesScreen
 import com.barabasizsolt.home.HomeScreen
+import com.barabasizsolt.home.HomeScreenState
 import com.barabasizsolt.home.rememberHomeScreenState
 import com.barabasizsolt.profile.ProfileScreen
+import com.barabasizsolt.seeall.ContentType
+import com.barabasizsolt.seeall.SeeAllScreen
+import com.barabasizsolt.seeall.rememberSeeAllScreenState
 
-fun NavGraphBuilder.mainNavigation(navController: NavController) {
+fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
     navigation(
         startDestination = Route.Main.HOME,
         route = Route.Main.route
     ) {
         composable(route = Route.Main.HOME) {
-            HomeScreen(screenState = rememberHomeScreenState())
+            HomeScreen(screenState = rememberHomeScreenState().apply {
+                when (action?.consume()) {
+                    is HomeScreenState.Action.SeeAllNowPlayingMovies ->
+                        navController.navigateToSeeAll(contentType = ContentType.NOW_PLAYING_MOVIES.name)
+                    is HomeScreenState.Action.SeeAllPopularMovies ->
+                        navController.navigateToSeeAll(contentType = ContentType.POPULAR_MOVIES.name)
+                    is HomeScreenState.Action.SeeAllPopularPeople ->
+                        navController.navigateToSeeAll(contentType = ContentType.POPULAR_PEOPLE.name)
+                    is HomeScreenState.Action.SeeAllTopRatedMovies ->
+                        navController.navigateToSeeAll(contentType = ContentType.TOP_RATED_MOVIES.name)
+                    else -> Unit
+                }
+            })
         }
 
         composable(route = Route.Main.EXPLORE) {
@@ -31,5 +47,15 @@ fun NavGraphBuilder.mainNavigation(navController: NavController) {
         composable(route = Route.Main.PROFILE) {
             ProfileScreen()
         }
+
+        composable(route = Route.Main.SEE_ALL) { backstackEntry ->
+            val contentType = backstackEntry.arguments?.getString("contentType") as String
+
+            SeeAllScreen(screenState = rememberSeeAllScreenState(contentType = contentType))
+        }
     }
+}
+
+fun NavHostController.navigateToSeeAll(contentType: String) {
+    navigate(route = "SeeAll/${contentType}")
 }
