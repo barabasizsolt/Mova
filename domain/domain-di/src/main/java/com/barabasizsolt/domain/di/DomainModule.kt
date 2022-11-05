@@ -34,6 +34,8 @@ import com.barabasizsolt.domain.usecase.screen.explore.GetExploreScreenFlowUseCa
 import com.barabasizsolt.domain.usecase.screen.explore.GetExploreScreenUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenUseCase
+import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenFlowUseCase
+import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenUseCase
 import com.barabasizsolt.firebase.di.createAuthenticationModule
 
 import com.barabasizsolt.movie.di.createMovieModule
@@ -129,6 +131,24 @@ private fun createUseCaseModules() = module {
         GetExploreScreenFlowUseCase(
             getMovieDiscoverFlowUseCase = get(),
             getTvDiscoverFlowUseCase = get()
+        )
+    }
+
+    // See All
+    factory {
+        GetSeeAllScreenUseCase(
+            getPopularMoviesUseCase = get(),
+            getTopRatedMoviesUseCase = get(),
+            getNowPlayingMoviesCase = get(),
+            getPopularPeopleUseCase = get()
+        )
+    }
+    factory {
+        GetSeeAllScreenFlowUseCase(
+            getPopularMoviesFlowUseCase = get(),
+            getTopRatedMoviesFlowUseCase = get(),
+            getNowPlayingMoviesFlowCase = get(),
+            getPopularPeopleFlowUseCase = get()
         )
     }
 }

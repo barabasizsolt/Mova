@@ -2,7 +2,7 @@ package com.barabasizsolt.domain.usecase.helper.movie.trending
 
 import com.barabasizsolt.domain.util.wrapToResult
 import com.barabasizsolt.movie.api.MovieService
-import com.barabasizsolt.movie.api.RefreshType
+import com.barabasizsolt.util.RefreshType
 
 class GetPopularMoviesUseCase(private val movieService: MovieService) {
 

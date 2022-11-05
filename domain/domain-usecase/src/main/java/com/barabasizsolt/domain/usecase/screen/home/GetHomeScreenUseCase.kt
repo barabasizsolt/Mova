@@ -6,7 +6,7 @@ import com.barabasizsolt.domain.usecase.helper.movie.trending.GetPopularMoviesUs
 import com.barabasizsolt.domain.usecase.helper.movie.upcoming.GetUpcomingMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleUseCase
 import com.barabasizsolt.domain.util.asyncWrapToResult
-import com.barabasizsolt.movie.api.RefreshType
+import com.barabasizsolt.util.RefreshType
 import kotlinx.coroutines.CoroutineScope
 
 class GetHomeScreenUseCase(

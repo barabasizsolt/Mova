@@ -1,8 +1,8 @@
 package com.barabasizsolt.movie.implementation
 
 import com.barabasizsolt.movie.api.MovieService
-import com.barabasizsolt.movie.api.RefreshType
 import com.barabasizsolt.movie.model.Movie
+import com.barabasizsolt.util.RefreshType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -29,7 +29,9 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
         }
         RefreshType.NEXT_PAGE -> {
             val moviesOnCurrentPage = remoteSource.getPopularMovies(page = popularMoviePage++)
-            _popularMovies.value.plus(moviesOnCurrentPage)
+            _popularMovies.value = _popularMovies.value.plus(moviesOnCurrentPage)
+            println("Size: ${_popularMovies.value.size}")
+            _popularMovies.value
         }
         RefreshType.FORCE_REFRESH -> {
             remoteSource.getPopularMovies(page = 1).also {

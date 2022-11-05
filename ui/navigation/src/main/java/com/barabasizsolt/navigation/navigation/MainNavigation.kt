@@ -11,7 +11,7 @@ import com.barabasizsolt.home.HomeScreen
 import com.barabasizsolt.home.HomeScreenState
 import com.barabasizsolt.home.rememberHomeScreenState
 import com.barabasizsolt.profile.ProfileScreen
-import com.barabasizsolt.seeall.ContentType
+import com.barabasizsolt.domain.usecase.screen.seeall.SeeAllContentType
 import com.barabasizsolt.seeall.SeeAllScreen
 import com.barabasizsolt.seeall.rememberSeeAllScreenState
 
@@ -24,13 +24,13 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             HomeScreen(screenState = rememberHomeScreenState().apply {
                 when (action?.consume()) {
                     is HomeScreenState.Action.SeeAllNowPlayingMovies ->
-                        navController.navigateToSeeAll(contentType = ContentType.NOW_PLAYING_MOVIES.name)
+                        navController.navigateToSeeAll(contentType = SeeAllContentType.NOW_PLAYING_MOVIES.name)
                     is HomeScreenState.Action.SeeAllPopularMovies ->
-                        navController.navigateToSeeAll(contentType = ContentType.POPULAR_MOVIES.name)
+                        navController.navigateToSeeAll(contentType = SeeAllContentType.POPULAR_MOVIES.name)
                     is HomeScreenState.Action.SeeAllPopularPeople ->
-                        navController.navigateToSeeAll(contentType = ContentType.POPULAR_PEOPLE.name)
+                        navController.navigateToSeeAll(contentType = SeeAllContentType.POPULAR_PEOPLE.name)
                     is HomeScreenState.Action.SeeAllTopRatedMovies ->
-                        navController.navigateToSeeAll(contentType = ContentType.TOP_RATED_MOVIES.name)
+                        navController.navigateToSeeAll(contentType = SeeAllContentType.TOP_RATED_MOVIES.name)
                     else -> Unit
                 }
             })

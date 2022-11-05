@@ -1,4 +1,4 @@
-package com.barabasizsolt.movie.api
+package com.barabasizsolt.util
 
 enum class RefreshType {
     CACHE_IF_POSSIBLE,
