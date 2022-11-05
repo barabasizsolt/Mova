@@ -10,7 +10,6 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
 
     private val _popularMovies = MutableStateFlow<List<Movie>>(value = emptyList())
     override val popularMovies: Flow<List<Movie>> = _popularMovies
-    private var popularMoviePage = 1
 
     private val _upcomingMovies = MutableStateFlow<List<Movie>>(value = emptyList())
     override val upcomingMovies: Flow<List<Movie>> = _upcomingMovies
@@ -21,38 +20,30 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
     private val _nowPlayingMovies = MutableStateFlow<List<Movie>>(value = emptyList())
     override val nowPlayingMovies: Flow<List<Movie>> = _nowPlayingMovies
 
-    override suspend fun getPopularMovies(refreshType: RefreshType): List<Movie> = when (refreshType) {
-        RefreshType.CACHE_IF_POSSIBLE -> {
-            _popularMovies.value.ifEmpty {
-                remoteSource.getPopularMovies(page = 1).also { _popularMovies.value = it }
-            }
-        }
-        RefreshType.NEXT_PAGE -> {
-            remoteSource.getPopularMovies(page = popularMoviePage++).let {
-                val newMovies = _popularMovies.value + it
-                _popularMovies.value = newMovies
-                newMovies
-            }
-        }
-        RefreshType.FORCE_REFRESH -> {
-            remoteSource.getPopularMovies(page = 1).also {
-                _popularMovies.value = it
-                popularMoviePage = 1
-            }
-        }
-    }
-
-    override suspend fun getUpcomingMovies(refreshType: RefreshType): List<Movie> = _upcomingMovies.value.ifEmpty {
+    override suspend fun getUpcomingMovies(): List<Movie> = _upcomingMovies.value.ifEmpty {
         remoteSource.getUpcomingMovies(page = 1).also { _upcomingMovies.value = it }
     }
 
-    override suspend fun getTopRatedMovies(refreshType: RefreshType): List<Movie> = _topRatedMovies.value.ifEmpty {
-        remoteSource.getTopRatedMovies(page = 1).also { _topRatedMovies.value = it }
-    }
+    override suspend fun getPopularMovies(refreshType: RefreshType): List<Movie> = pagination(
+        refreshType = refreshType,
+        flow = _popularMovies,
+        getRemoteContent = { page -> remoteSource.getPopularMovies(page = page) },
+        counter = POPULAR_MOVIES_CTR++
+    )
 
-    override suspend fun getNowPlayingMovies(refreshType: RefreshType): List<Movie> = _nowPlayingMovies.value.ifEmpty {
-        remoteSource.getNowPlayingMovies(page = 1).also { _nowPlayingMovies.value = it }
-    }
+    override suspend fun getTopRatedMovies(refreshType: RefreshType): List<Movie> = pagination(
+        refreshType = refreshType,
+        flow = _topRatedMovies,
+        getRemoteContent = { page -> remoteSource.getTopRatedMovies(page = page) },
+        counter = TOP_RATED_MOVIES_CTR++
+    )
+
+    override suspend fun getNowPlayingMovies(refreshType: RefreshType): List<Movie> = pagination(
+        refreshType = refreshType,
+        flow = _nowPlayingMovies,
+        getRemoteContent = { page -> remoteSource.getNowPlayingMovies(page = page) },
+        counter = NOW_PLAYING_MOVIES_CTR++
+    )
 
     override fun clearPopularMovies() {
         _popularMovies.value = emptyList()
@@ -68,5 +59,32 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
 
     override fun clearNowPlayingMovies() {
         _nowPlayingMovies.value = emptyList()
+    }
+
+    private suspend fun<T> pagination(
+        refreshType: RefreshType,
+        flow: MutableStateFlow<List<T>>,
+        getRemoteContent: suspend (ctr: Int) -> List<T>,
+        counter: Int
+    ): List<T> = when (refreshType) {
+        RefreshType.CACHE_IF_POSSIBLE -> {
+            flow.value.ifEmpty { getRemoteContent(1).also { flow.value = it } }
+        }
+        RefreshType.NEXT_PAGE -> {
+            getRemoteContent(counter).let {
+                val newContent = flow.value + it
+                flow.value = newContent
+                newContent
+            }
+        }
+        RefreshType.FORCE_REFRESH -> {
+            getRemoteContent(1).also { flow.value = it }
+        }
+    }
+
+    companion object {
+        private var POPULAR_MOVIES_CTR: Int = 1
+        private var NOW_PLAYING_MOVIES_CTR: Int = 1
+        private var TOP_RATED_MOVIES_CTR: Int = 1
     }
 }

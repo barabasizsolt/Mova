@@ -99,13 +99,8 @@ private fun ScreenContent(
                 items = items,
                 key = { _, item -> item.id }
             ) { index, item ->
-                WatchableWithRating(item = item, onClick = { })
-                if (index == items.lastIndex) {
-                    SideEffect {
-                        println("<<here")
-                        onLoadMoreItem()
-                    }
-                }
+                WatchableWithRating(item = item, onClick = { /*TODO: Implement it*/ })
+                if (index == items.lastIndex) { SideEffect { onLoadMoreItem() } }
             }
             item(span = { GridItemSpan(currentLineSpan = 2) }) {
                 LoadingContent(modifier = Modifier

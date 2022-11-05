@@ -19,17 +19,17 @@ class GetHomeScreenFlowUseCase(
 ) {
 
     operator fun invoke(): Flow<HomeScreenContent> = combine(
-        getPopularMoviesFlowUseCase(),
         getUpcomingMoviesFlowUseCase(),
+        getPopularMoviesFlowUseCase(),
         getTopRatedMoviesFlowUseCase(),
         getNowPlayingMoviesFlowCase(),
         getPopularPeopleFlowUseCase()
-    ) { trending, upcoming, topRated, nowPlaying, popularPeople ->
+    ) { upcoming, popular, topRated, nowPlaying, popularPeople ->
         HomeScreenContent(
-            trendingMovies = trending.take(n = MAX_ITEM).map { it.toWatchableItem() },
-            upcomingMovies = upcoming.take(n = MAX_ITEM).map { it.toWatchableItem() },
+            upcomingMovies = upcoming,
+            popularMovies = popular.take(n = MAX_ITEM).map { it.toWatchableItem() },
+            nowPlayingMovies = nowPlaying.take(n = MAX_ITEM).map { it.toWatchableItem() },
             topRatedMovies = topRated.take(n = MAX_ITEM).map { it.toWatchableItem() },
-            nowPlayingMovies = nowPlaying.take(n = MAX_ITEM),
             popularPeople = popularPeople.results.map { it.toWatchableItem() }
         )
     }

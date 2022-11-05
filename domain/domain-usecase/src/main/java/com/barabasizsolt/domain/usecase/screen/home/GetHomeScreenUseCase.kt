@@ -20,8 +20,8 @@ class GetHomeScreenUseCase(
     suspend operator fun invoke(coroutineScope: CoroutineScope) = asyncWrapToResult(
         scope = coroutineScope,
         functions = listOf(
+            getUpcomingMoviesUseCase(),
             getPopularMoviesUseCase(refreshType = RefreshType.CACHE_IF_POSSIBLE),
-            getUpcomingMoviesUseCase(refreshType = RefreshType.CACHE_IF_POSSIBLE),
             getTopRatedMoviesUseCase(refreshType = RefreshType.CACHE_IF_POSSIBLE),
             getNowPlayingMoviesCase(refreshType = RefreshType.CACHE_IF_POSSIBLE),
             getPopularPeopleUseCase()

@@ -14,9 +14,9 @@ interface MovieService {
 
     val nowPlayingMovies: Flow<List<Movie>>
 
-    suspend fun getPopularMovies(refreshType: RefreshType): List<Movie>
+    suspend fun getUpcomingMovies(): List<Movie>
 
-    suspend fun getUpcomingMovies(refreshType: RefreshType): List<Movie>
+    suspend fun getPopularMovies(refreshType: RefreshType): List<Movie>
 
     suspend fun getTopRatedMovies(refreshType: RefreshType): List<Movie>
 

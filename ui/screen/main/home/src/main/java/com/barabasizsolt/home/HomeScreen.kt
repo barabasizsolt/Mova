@@ -68,7 +68,7 @@ private fun ScreenContent(screenState: HomeScreenState) {
         ) {
             item {
                 WatchablePager(
-                    pagerContent = screenState.homeContent?.nowPlayingMovies.orEmpty(),
+                    pagerContent = screenState.homeContent?.upcomingMovies.orEmpty(),
                     onClick = { },
                     onPlayButtonClicked = { },
                     onAddToFavouriteButtonClicked = { }
@@ -78,7 +78,7 @@ private fun ScreenContent(screenState: HomeScreenState) {
                 WatchableWithRatingCarousel(
                     header = "Popular Movies",
                     buttonText = "More Popular Movies",
-                    items = screenState.homeContent?.trendingMovies.orEmpty(),
+                    items = screenState.homeContent?.popularMovies.orEmpty(),
                     onItemClick = { },
                     onHeaderClick = screenState::onSeeAllPopularMoviesClicked,
                 )
@@ -95,7 +95,7 @@ private fun ScreenContent(screenState: HomeScreenState) {
                 WatchableWithRatingCarousel(
                     header = "Now Playing Movies",
                     buttonText = "More Now Playing Movies",
-                    items = screenState.homeContent?.upcomingMovies.orEmpty(),
+                    items = screenState.homeContent?.nowPlayingMovies.orEmpty(),
                     onItemClick = { },
                     onHeaderClick = screenState::onSeeAllNowPlayingMoviesClicked,
                 )

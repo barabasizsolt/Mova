@@ -51,7 +51,7 @@ class SeeAllScreenState(
     init {
         getSeeAllScreenFlowUseCase(contentType = contentType).onEach { content ->
             watchableItems = when (contentType) {
-                SeeAllContentType.POPULAR_MOVIES.name, SeeAllContentType.NOW_PLAYING_MOVIES.name, SeeAllContentType.NOW_PLAYING_MOVIES.name ->
+                SeeAllContentType.POPULAR_MOVIES.name, SeeAllContentType.NOW_PLAYING_MOVIES.name, SeeAllContentType.TOP_RATED_MOVIES.name ->
                    (content as List<*>).map { (it as Movie).toWatchableItem() }
                 SeeAllContentType.POPULAR_PEOPLE.name ->
                     (content as List<*>).map { (it as People).toWatchableItem() }
