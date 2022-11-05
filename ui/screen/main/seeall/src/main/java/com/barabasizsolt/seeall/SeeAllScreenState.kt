@@ -37,7 +37,7 @@ fun rememberSeeAllScreenState(
 }
 
 class SeeAllScreenState(
-    val contentType: String,
+    private val contentType: String,
     private val scope: CoroutineScope,
     private val getSeeAllScreenUseCase: GetSeeAllScreenUseCase,
     private val getSeeAllScreenFlowUseCase: GetSeeAllScreenFlowUseCase
@@ -45,9 +45,8 @@ class SeeAllScreenState(
 
     var state by mutableStateOf<State>(value = State.Normal)
         private set
-    var items by mutableStateOf<List<SeeAllListItem>>(value = emptyList())
+    var watchableItems by mutableStateOf<List<WatchableItem>>(value = emptyList())
         private set
-    private var watchableItems by mutableStateOf<List<WatchableItem>>(value = emptyList())
 
     init {
         getSeeAllScreenFlowUseCase(contentType = contentType).onEach { content ->
@@ -58,15 +57,13 @@ class SeeAllScreenState(
                     (content as List<*>).map { (it as People).toWatchableItem() }
                 else -> emptyList()
             }
-            items = watchableItems.map { SeeAllListItem.Item(watchableItem = it) } + SeeAllListItem.LoadMore()
         }.launchIn(scope = scope)
-        getScreenData(swipeRefresh = false)
     }
 
     fun getScreenData(swipeRefresh: Boolean) {
-        if (state !is State.Loading) {
+        if (state !in listOf(State.Loading, State.SwipeRefresh)) {
             scope.launch {
-                state = if (swipeRefresh) State.SwipeRefresh else State.Loading
+                state = if (swipeRefresh) State.SwipeRefresh else State.Normal
                 state = when (
                     val result = getSeeAllScreenUseCase(
                         contentType = contentType,

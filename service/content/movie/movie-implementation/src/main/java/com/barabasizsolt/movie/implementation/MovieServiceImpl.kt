@@ -28,10 +28,11 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
             }
         }
         RefreshType.NEXT_PAGE -> {
-            val moviesOnCurrentPage = remoteSource.getPopularMovies(page = popularMoviePage++)
-            _popularMovies.value = _popularMovies.value.plus(moviesOnCurrentPage)
-            println("Size: ${_popularMovies.value.size}")
-            _popularMovies.value
+            remoteSource.getPopularMovies(page = popularMoviePage++).let {
+                val newMovies = _popularMovies.value + it
+                _popularMovies.value = newMovies
+                newMovies
+            }
         }
         RefreshType.FORCE_REFRESH -> {
             remoteSource.getPopularMovies(page = 1).also {

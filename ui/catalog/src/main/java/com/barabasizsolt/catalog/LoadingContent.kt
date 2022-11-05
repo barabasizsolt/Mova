@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import com.barabasizsolt.theme.attributes.AppTheme
 
 @Composable
-fun LoadingContent() {
-    Box(modifier = Modifier.fillMaxSize()) {
+fun LoadingContent(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize()) {
         CircularProgressIndicator(
             modifier = Modifier.align(alignment = Alignment.Center),
             color = AppTheme.colors.secondary

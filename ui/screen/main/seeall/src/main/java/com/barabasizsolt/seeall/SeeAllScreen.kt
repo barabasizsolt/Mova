@@ -5,32 +5,35 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.ErrorContent
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.theme.attributes.AppTheme
-import com.barabasizsolt.util.imeBottomInsetDp
+import com.barabasizsolt.util.navigationBarInsetDp
+import com.barabasizsolt.util.statusBarInsetDp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun SeeAllScreen(screenState: SeeAllScreenState) {
     val scaffoldState = rememberScaffoldState()
-    println("State: ${screenState.state}")
 
     Scaffold(scaffoldState = scaffoldState) {
         Box(
@@ -42,7 +45,12 @@ fun SeeAllScreen(screenState: SeeAllScreenState) {
             when (screenState.state) {
                 is SeeAllScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(swipeRefresh = false) })
                 is SeeAllScreenState.State.Loading -> LoadingContent()
-                else -> ScreenContent(screenState = screenState)
+                else -> ScreenContent(
+                    isRefreshing = screenState.state is SeeAllScreenState.State.SwipeRefresh,
+                    onRefresh = { screenState.getScreenData(swipeRefresh = true) },
+                    items = screenState.watchableItems,
+                    onLoadMoreItem = { screenState.getScreenData(swipeRefresh = false) }
+                )
             }
 
             LaunchedEffect(
@@ -61,13 +69,18 @@ fun SeeAllScreen(screenState: SeeAllScreenState) {
 }
 
 @Composable
-private fun ScreenContent(screenState: SeeAllScreenState) {
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = screenState.state is SeeAllScreenState.State.SwipeRefresh)
+private fun ScreenContent(
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
+    items: List<WatchableItem>,
+    onLoadMoreItem: () -> Unit
+) {
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
     val gridState: LazyGridState = rememberLazyGridState()
 
     SwipeRefresh(
         state = swipeRefreshState,
-        onRefresh = { screenState.getScreenData(swipeRefresh = true) }
+        onRefresh = onRefresh
     ) {
         LazyVerticalGrid(
             state = gridState,
@@ -77,24 +90,27 @@ private fun ScreenContent(screenState: SeeAllScreenState) {
             contentPadding = PaddingValues(
                 start = AppTheme.dimens.screenPadding,
                 end = AppTheme.dimens.screenPadding,
-                bottom = AppTheme.dimens.screenPadding + imeBottomInsetDp
+                bottom = AppTheme.dimens.screenPadding + navigationBarInsetDp,
+                top = AppTheme.dimens.screenPadding + statusBarInsetDp
             ),
             modifier = Modifier.fillMaxSize()
         ) {
-            items(
-                items = screenState.items,
-                key = { it.id }
-            ) { item ->
-                when (item) {
-                    is SeeAllListItem.Item -> WatchableWithRating(
-                        item = item.watchableItem,
-                        onClick = { }
-                    )
-                    is SeeAllListItem.LoadMore -> {
-                        //TODO: Implement it (loading circular)
-                        screenState.getScreenData(swipeRefresh = false)
+            itemsIndexed(
+                items = items,
+                key = { _, item -> item.id }
+            ) { index, item ->
+                WatchableWithRating(item = item, onClick = { })
+                if (index == items.lastIndex) {
+                    SideEffect {
+                        println("<<here")
+                        onLoadMoreItem()
                     }
                 }
+            }
+            item(span = { GridItemSpan(currentLineSpan = 2) }) {
+                LoadingContent(modifier = Modifier
+                    .height(height = 80.dp)
+                    .fillMaxWidth())
             }
         }
     }
