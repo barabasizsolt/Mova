@@ -1,6 +1,6 @@
-package com.barabasizsolt.seeall
+package com.barabasizsolt.domain.usecase.screen.seeall
 
-enum class ContentType {
+enum class SeeAllContentType {
     POPULAR_MOVIES,
     POPULAR_PEOPLE,
     NOW_PLAYING_MOVIES,

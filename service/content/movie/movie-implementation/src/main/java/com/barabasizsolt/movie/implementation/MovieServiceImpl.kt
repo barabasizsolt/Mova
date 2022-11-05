@@ -39,16 +39,16 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
         }
     }
 
-    override suspend fun getUpcomingMovies(page: Int): List<Movie> = _upcomingMovies.value.ifEmpty {
-        remoteSource.getUpcomingMovies(page = page).also { _upcomingMovies.value = it }
+    override suspend fun getUpcomingMovies(refreshType: RefreshType): List<Movie> = _upcomingMovies.value.ifEmpty {
+        remoteSource.getUpcomingMovies(page = 1).also { _upcomingMovies.value = it }
     }
 
-    override suspend fun getTopRatedMovies(page: Int): List<Movie> = _topRatedMovies.value.ifEmpty {
-        remoteSource.getTopRatedMovies(page = page).also { _topRatedMovies.value = it }
+    override suspend fun getTopRatedMovies(refreshType: RefreshType): List<Movie> = _topRatedMovies.value.ifEmpty {
+        remoteSource.getTopRatedMovies(page = 1).also { _topRatedMovies.value = it }
     }
 
-    override suspend fun getNowPlayingMovies(page: Int): List<Movie> = _nowPlayingMovies.value.ifEmpty {
-        remoteSource.getNowPlayingMovies(page = page).also { _nowPlayingMovies.value = it }
+    override suspend fun getNowPlayingMovies(refreshType: RefreshType): List<Movie> = _nowPlayingMovies.value.ifEmpty {
+        remoteSource.getNowPlayingMovies(page = 1).also { _nowPlayingMovies.value = it }
     }
 
     override fun clearPopularMovies() {

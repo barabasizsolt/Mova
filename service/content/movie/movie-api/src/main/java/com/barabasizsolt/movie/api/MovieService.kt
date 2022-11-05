@@ -15,11 +15,11 @@ interface MovieService {
 
     suspend fun getPopularMovies(refreshType: RefreshType): List<Movie>
 
-    suspend fun getUpcomingMovies(page: Int): List<Movie>
+    suspend fun getUpcomingMovies(refreshType: RefreshType): List<Movie>
 
-    suspend fun getTopRatedMovies(page: Int): List<Movie>
+    suspend fun getTopRatedMovies(refreshType: RefreshType): List<Movie>
 
-    suspend fun getNowPlayingMovies(page: Int): List<Movie>
+    suspend fun getNowPlayingMovies(refreshType: RefreshType): List<Movie>
 
     fun clearPopularMovies()
 
