@@ -6,5 +6,7 @@ import com.barabasizsolt.util.RefreshType
 
 class GetPopularPeopleUseCase(private val peopleService: PeopleService) {
 
-    suspend operator fun invoke(refreshType: RefreshType) = wrapToResult { peopleService.getPopularPeople(refreshType = refreshType) }
+    suspend operator fun invoke(refreshType: RefreshType) = wrapToResult {
+        peopleService.getPopularPeople(refreshType = refreshType).distinctBy { it.id }
+    }
 }

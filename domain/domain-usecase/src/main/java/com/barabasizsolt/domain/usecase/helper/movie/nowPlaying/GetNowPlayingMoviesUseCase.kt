@@ -6,5 +6,7 @@ import com.barabasizsolt.util.RefreshType
 
 class GetNowPlayingMoviesUseCase(private val movieService: MovieService) {
 
-    suspend operator fun invoke(refreshType: RefreshType) = wrapToResult { movieService.getNowPlayingMovies(refreshType = refreshType) }
+    suspend operator fun invoke(refreshType: RefreshType) = wrapToResult {
+        movieService.getNowPlayingMovies(refreshType = refreshType).distinctBy { it.id }
+    }
 }
