@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHostState
@@ -57,7 +58,7 @@ fun SocialLoginScreen(screenState: SocialLoginScreenState) {
                 snackBarHostState.currentSnackbarData?.dismiss()
                 screenState.resetState()
             },
-            modifier = Modifier.align(alignment = Alignment.BottomCenter)
+            modifier = Modifier.systemBarsPadding()
         )
     }
 
