@@ -22,7 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.ErrorContent
 import com.barabasizsolt.catalog.LoadingContent
+import com.barabasizsolt.catalog.MediumPersonCard
 import com.barabasizsolt.catalog.MovaSnackBar
+import com.barabasizsolt.catalog.PersonCard
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.theme.attributes.AppTheme
@@ -86,7 +88,7 @@ private fun ScreenContent(
     ) {
         LazyVerticalGrid(
             state = gridState,
-            columns = GridCells.Fixed(count = 2),
+            columns = GridCells.Fixed(count = 6),
             verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
             horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
             contentPadding = PaddingValues(
@@ -98,12 +100,22 @@ private fun ScreenContent(
         ) {
             itemsIndexed(
                 items = items,
-                key = { _, item -> item.id }
+                key = { _, item -> item.id },
+                span = { _, item -> GridItemSpan(currentLineSpan = if (item is WatchableItem.People) 2 else 3) }
             ) { index, item ->
-                WatchableWithRating(item = item, onClick = { /*TODO: Implement it*/ })
+                when (item) {
+                    is WatchableItem.Movie, is WatchableItem.TvSeries -> WatchableWithRating(
+                        item = item,
+                        onClick = { /*TODO: Implement it*/ }
+                    )
+                    is WatchableItem.People -> MediumPersonCard(
+                        item = item,
+                        onClick = { /*TODO: Implement it*/ }
+                    )
+                }
                 if (index == items.lastIndex) { SideEffect { onLoadMoreItem() } }
             }
-            item(span = { GridItemSpan(currentLineSpan = 2) }) {
+            item(span = { GridItemSpan(currentLineSpan = 6) }) {
                 LoadingContent(modifier = Modifier
                     .height(height = 80.dp)
                     .fillMaxWidth())
