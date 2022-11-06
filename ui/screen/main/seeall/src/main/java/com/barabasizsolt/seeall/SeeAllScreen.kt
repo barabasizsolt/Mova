@@ -24,7 +24,6 @@ import com.barabasizsolt.catalog.ErrorContent
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MediumPersonCard
 import com.barabasizsolt.catalog.MovaSnackBar
-import com.barabasizsolt.catalog.PersonCard
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.theme.attributes.AppTheme
@@ -32,6 +31,8 @@ import com.barabasizsolt.util.navigationBarInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+
+/*TODO: Handle pagination edge case (themovidedb supports max 500 page)*/
 
 @Composable
 fun SeeAllScreen(screenState: SeeAllScreenState) {
