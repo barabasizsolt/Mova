@@ -61,11 +61,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.SocialLoginOption
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AuthScreen(screenState: AuthScreenState) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     val snackBarHostState = remember { SnackbarHostState() }
     val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -77,7 +80,25 @@ fun AuthScreen(screenState: AuthScreenState) {
     }
 
     Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
-        ScreenContent(screenState = screenState, activityResultLauncher = loginWithGoogleAccountLauncher)
+        ScreenContent(
+            screenTitle = screenState.screenProperty?.screenTitle.orEmpty(),
+            authButtonText = screenState.screenProperty?.authButtonText.orEmpty(),
+            authFooterText = screenState.screenProperty?.authFooterText.orEmpty(),
+            authFooterQuestion = screenState.screenProperty?.authFooterQuestion.orEmpty(),
+            email = screenState.email,
+            onEmailChange = screenState::onEmailChange,
+            password = screenState.password,
+            onPasswordChange = screenState::onPasswordChange,
+            authenticate = screenState::authenticate,
+            getIntentForGoogleLogin = screenState::getIntentForGoogleLogin,
+            authenticateWithFacebook = screenState::authenticateWithFacebook,
+            changeAuthScreen = screenState::changeAuthScreen,
+            isLoading = screenState.state is AuthScreenState.State.Loading,
+            isEnabled = screenState.isAuthEnabled,
+            activityResultLauncher = loginWithGoogleAccountLauncher,
+            keyboardController = keyboardController
+        )
+
         MovaSnackBar(
             snackBarHostState = snackBarHostState,
             onDismiss = {
@@ -105,11 +126,23 @@ fun AuthScreen(screenState: AuthScreenState) {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ScreenContent(
-    screenState: AuthScreenState,
-    activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>
+    screenTitle: String,
+    authButtonText: String,
+    authFooterText: String,
+    authFooterQuestion: String,
+    email: String,
+    onEmailChange: (String) -> Unit,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    authenticate: () -> Unit,
+    getIntentForGoogleLogin: () -> Intent,
+    authenticateWithFacebook: () -> Unit,
+    changeAuthScreen: () -> Unit,
+    isLoading: Boolean,
+    isEnabled: Boolean,
+    activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+    keyboardController: SoftwareKeyboardController?
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -128,23 +161,23 @@ private fun ScreenContent(
         }
         item {
             AuthScreenTitle(
-                title = screenState.screenProperty?.screenTitle.orEmpty(),
+                title = screenTitle,
                 modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding * 2)
             )
         }
         item {
             EmailInput(
-                email = screenState.email,
-                onEmailChange = screenState::onEmailChange,
+                email = email,
+                onEmailChange = onEmailChange,
                 modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding)
             )
         }
         item {
             PasswordInput(
-                password = screenState.password,
-                onPasswordChange = screenState::onPasswordChange,
+                password = password,
+                onPasswordChange = onPasswordChange,
                 keyboardActions = {
-                    screenState.authenticate()
+                    authenticate()
                     keyboardController?.hide()
                 },
                 modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding * 2)
@@ -152,13 +185,13 @@ private fun ScreenContent(
         }
         item {
             MovaButton(
-                text = screenState.screenProperty?.authButtonText.orEmpty(),
+                text = authButtonText,
                 onClick = {
-                    screenState.authenticate()
+                    authenticate()
                     keyboardController?.hide()
                 },
-                isLoading = screenState.state is AuthScreenState.State.Loading,
-                isEnabled = screenState.isAuthEnabled
+                isLoading = isLoading,
+                isEnabled = isEnabled
             )
         }
         item {
@@ -169,19 +202,16 @@ private fun ScreenContent(
         }
         item {
             SocialItemHolder(
-                onGoogleClicked = {
-                    val intent = screenState.getIntentForGoogleLogin()
-                    activityResultLauncher.launch(intent)
-                },
-                onFacebookClicked = screenState::authenticateWithFacebook,
+                onGoogleClicked = { activityResultLauncher.launch(getIntentForGoogleLogin()) },
+                onFacebookClicked = authenticateWithFacebook,
                 modifier = Modifier.padding(bottom = AppTheme.dimens.contentPadding * 3)
             )
         }
         item {
             SocialAuthFooter(
-                text = screenState.screenProperty?.authFooterQuestion.orEmpty(),
-                clickableText = screenState.screenProperty?.authFooterText.orEmpty(),
-                onSignUpClick = screenState::changeAuthScreen
+                text = authFooterQuestion,
+                clickableText = authFooterText,
+                onSignUpClick = changeAuthScreen
             )
         }
     }

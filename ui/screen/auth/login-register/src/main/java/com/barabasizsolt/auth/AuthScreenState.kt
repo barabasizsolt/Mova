@@ -114,7 +114,8 @@ class AuthScreenState(
             loginWithFacebookAccountUseCase().onEach { result ->
                 state = when (result) {
                     is AuthResult.Failure -> State.Error(message = result.error)
-                    is AuthResult.Success, is AuthResult.Dismissed -> State.Normal
+                    is AuthResult.Dismissed -> State.Error(message = result.error.orEmpty())
+                    is AuthResult.Success -> State.Normal
                 }
             }.stateIn(scope = this)
         }

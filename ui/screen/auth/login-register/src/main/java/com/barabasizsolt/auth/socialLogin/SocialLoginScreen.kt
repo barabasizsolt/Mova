@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHostState
@@ -50,14 +51,21 @@ fun SocialLoginScreen(screenState: SocialLoginScreenState) {
     val snackBarHostState = remember { SnackbarHostState() }
 
     Box {
-        ScreenContent(screenState = screenState, activityResultLauncher = loginWithGoogleAccountLauncher)
+        ScreenContent(
+            loginWithFacebook = screenState::loginWithFacebook,
+            getIntentForGoogleLogin = screenState::getIntentForGoogleLogin,
+            onSignInClicked = screenState::onSignInClicked,
+            onSignUpClicked = screenState::onSignUpClicked,
+            isLoading = screenState.state is SocialLoginScreenState.State.Loading,
+            activityResultLauncher = loginWithGoogleAccountLauncher
+        )
         MovaSnackBar(
             snackBarHostState = snackBarHostState,
             onDismiss = {
                 snackBarHostState.currentSnackbarData?.dismiss()
                 screenState.resetState()
             },
-            modifier = Modifier.align(alignment = Alignment.BottomCenter)
+            modifier = Modifier.systemBarsPadding()
         )
     }
 
@@ -78,7 +86,11 @@ fun SocialLoginScreen(screenState: SocialLoginScreenState) {
 
 @Composable
 private fun ScreenContent(
-    screenState: SocialLoginScreenState,
+    loginWithFacebook: () -> Unit,
+    getIntentForGoogleLogin: () -> Intent,
+    onSignInClicked: () -> Unit,
+    onSignUpClicked: () -> Unit,
+    isLoading: Boolean,
     activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>
 ) {
     LazyColumn(
@@ -93,18 +105,13 @@ private fun ScreenContent(
         item { SocialLoginScreenTitle(modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding * 2)) }
         item {
             FacebookLoginOption(
-                onClick = {
-                    screenState.loginWithFacebook()
-                },
+                onClick = loginWithFacebook,
                 modifier = Modifier.padding(bottom = AppTheme.dimens.contentPadding * 2)
             )
         }
         item {
             GoogleLoginOption(
-                onClick = {
-                    val intent = screenState.getIntentForGoogleLogin()
-                    activityResultLauncher.launch(intent)
-                }
+                onClick = { activityResultLauncher.launch(getIntentForGoogleLogin()) }
             )
         }
         item {
@@ -116,8 +123,8 @@ private fun ScreenContent(
         item {
             MovaButton(
                 text = "Sign in with password",
-                onClick = screenState::onSignInClicked,
-                isLoading = screenState.state is SocialLoginScreenState.State.Loading,
+                onClick = onSignInClicked,
+                isLoading = isLoading,
                 modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding),
             )
         }
@@ -125,7 +132,7 @@ private fun ScreenContent(
             SocialAuthFooter(
                 text = "Don't have an account?",
                 clickableText = "Sign up",
-                onSignUpClick = screenState::onSignUpClicked
+                onSignUpClick = onSignUpClicked
             )
         }
     }

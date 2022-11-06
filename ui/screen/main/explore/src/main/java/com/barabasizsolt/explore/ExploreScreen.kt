@@ -28,6 +28,7 @@ import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MovaSearchField
 import com.barabasizsolt.catalog.SearchableItem
 import com.barabasizsolt.catalog.WatchableWithRating
+import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.theme.attributes.AppTheme
 import com.barabasizsolt.util.imeBottomInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
@@ -44,9 +45,7 @@ fun ExploreScreen(screenState: ExploreScreenState) {
             bottomStart = CornerSize(size = 0.dp),
             bottomEnd = CornerSize(size = 0.dp)
         ),
-        sheetContent = {
-            FilterScreen()
-        },
+        sheetContent = { FilterScreen() },
         sheetPeekHeight = 0.dp
     ) {
         Box(
@@ -57,7 +56,13 @@ fun ExploreScreen(screenState: ExploreScreenState) {
             when (screenState.state) {
                 is ExploreScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(isSearch = false) })
                 is ExploreScreenState.State.Loading -> LoadingContent()
-                else -> ScreenContent(screenState = screenState, bottomSheetScaffoldState = bottomSheetScaffoldState)
+                else -> ScreenContent(
+                    query = screenState.query,
+                    onQueryChange = screenState::onQueryChange,
+                    items = screenState.exploreContent.orEmpty(),
+                    isLoading = screenState.state is ExploreScreenState.State.Search,
+                    bottomSheetScaffoldState = bottomSheetScaffoldState
+                )
             }
         }
     }
@@ -66,7 +71,10 @@ fun ExploreScreen(screenState: ExploreScreenState) {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun ScreenContent(
-    screenState: ExploreScreenState,
+    query: String,
+    onQueryChange: (String) -> Unit,
+    items: List<WatchableItem>,
+    isLoading: Boolean,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
 ) {
     val scope = rememberCoroutineScope()
@@ -83,8 +91,8 @@ private fun ScreenContent(
             horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
         ) {
             MovaSearchField(
-                value = screenState.query,
-                onValueChange = screenState::onQueryChange,
+                value = query,
+                onValueChange = onQueryChange,
                 modifier = Modifier.weight(weight = 1f)
             )
             FilterIcon(
@@ -99,7 +107,7 @@ private fun ScreenContent(
                 }
             )
         }
-        if (screenState.state is ExploreScreenState.State.Search) {
+        if (isLoading) {
             LoadingContent()
         } else {
             LazyVerticalGrid(
@@ -113,21 +121,21 @@ private fun ScreenContent(
                 ),
                 modifier = Modifier.fillMaxSize()
             ) {
-                if (screenState.query.isNotEmpty()) {
+                if (query.isNotEmpty()) {
                     items(
-                        items = screenState.exploreContent.orEmpty(),
+                        items = items,
                         span = { GridItemSpan(currentLineSpan = 2) }
                     ) { item ->
                         SearchableItem(
                             item = item,
-                            onClick = { }
+                            onClick = { /*TODO: Implement it*/ }
                         )
                     }
                 } else {
-                    items(items = screenState.exploreContent.orEmpty()) { item ->
+                    items(items = items) { item ->
                         WatchableWithRating(
                             item = item,
-                            onClick = { }
+                            onClick = { /*TODO: Implement it*/ }
                         )
                     }
                 }
