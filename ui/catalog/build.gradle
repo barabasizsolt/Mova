@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":ui:theme"))
     implementation(project(":ui:util"))
     implementation(project(":service:content:model:movie"))
+    implementation(project(":service:content:util"))
 
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.coil)

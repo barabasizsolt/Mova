@@ -17,4 +17,5 @@ dependencies {
     implementation(project(":service:network:network-api"))
     implementation(project(":service:content:people:people-api"))
     implementation(project(":service:content:model:people"))
+    implementation(project(":service:content:util"))
 }

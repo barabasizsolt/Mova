@@ -1,7 +1,9 @@
 package com.barabasizsolt.movie.model
 
+import com.barabasizsolt.util.PagingItem
+
 data class Movie(
-    val id: String,
+    override val id: String,
     val adult: Boolean,
     val backdropPath: String,
     val genreIds: List<Int>,
@@ -13,4 +15,4 @@ data class Movie(
     val posterPath: String?,
     val releaseDate: String,
     val voteAverage: String
-)
+) : PagingItem()

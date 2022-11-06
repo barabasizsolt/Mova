@@ -1,6 +1,7 @@
 package com.barabasizsolt.catalog
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +21,11 @@ fun ErrorContent(
     modifier: Modifier = Modifier,
     onRetry: () -> Unit
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = AppTheme.colors.primary)
+    ) {
         Column(
             modifier = Modifier
                 .align(alignment = Alignment.Center)

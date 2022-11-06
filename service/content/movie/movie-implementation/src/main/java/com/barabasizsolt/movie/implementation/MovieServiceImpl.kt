@@ -1,52 +1,76 @@
 package com.barabasizsolt.movie.implementation
 
 import com.barabasizsolt.movie.api.MovieService
-import com.barabasizsolt.movie.model.MovieList
+import com.barabasizsolt.util.PagingItem
+import com.barabasizsolt.util.RefreshType
+import com.barabasizsolt.util.pagination
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieService {
 
-    private val _trendingMovies = MutableStateFlow<MovieList?>(value = null)
-    override val trendingMovies: Flow<MovieList?> = _trendingMovies
+    private val _popularMovies = MutableStateFlow<List<PagingItem>>(value = emptyList())
+    override val popularMovies: Flow<List<PagingItem>> = _popularMovies
 
-    private val _upcomingMovies = MutableStateFlow<MovieList?>(value = null)
-    override val upcomingMovies: Flow<MovieList?> = _upcomingMovies
+    private val _upcomingMovies = MutableStateFlow<List<PagingItem>>(value = emptyList())
+    override val upcomingMovies: Flow<List<PagingItem>> = _upcomingMovies
 
-    private val _topRatedMovies = MutableStateFlow<MovieList?>(value = null)
-    override val topRatedMovies: Flow<MovieList?> = _topRatedMovies
+    private val _topRatedMovies = MutableStateFlow<List<PagingItem>>(value = emptyList())
+    override val topRatedMovies: Flow<List<PagingItem>> = _topRatedMovies
 
-    private val _nowPlayingMovies = MutableStateFlow<MovieList?>(value = null)
-    override val nowPlayingMovies: Flow<MovieList?> = _nowPlayingMovies
+    private val _nowPlayingMovies = MutableStateFlow<List<PagingItem>>(value = emptyList())
+    override val nowPlayingMovies: Flow<List<PagingItem>> = _nowPlayingMovies
 
-    override suspend fun getTrendingMovies(page: Int): MovieList = _trendingMovies.value ?: remoteSource.getTrendingMovies(page = page).also {
-        _trendingMovies.value = it
-    }
+    override suspend fun getUpcomingMovies(refreshType: RefreshType): List<PagingItem> = pagination(
+        refreshType = refreshType,
+        flow = _upcomingMovies,
+        getRemoteContent = { page -> remoteSource.getUpcomingMovies(page = page) },
+        counter = UPCOMING_MOVIES_CTR++
+    )
 
-    override suspend fun getUpcomingMovies(page: Int): MovieList = _upcomingMovies.value ?: remoteSource.getUpcomingMovies(page = page).also {
-        _upcomingMovies.value = it
-    }
+    override suspend fun getPopularMovies(refreshType: RefreshType): List<PagingItem> = pagination(
+        refreshType = refreshType,
+        flow = _popularMovies,
+        getRemoteContent = { page -> remoteSource.getPopularMovies(page = page) },
+        counter = POPULAR_MOVIES_CTR++
+    )
 
-    override suspend fun getTopRatedMovies(page: Int): MovieList = _topRatedMovies.value ?: remoteSource.getTopRatedMovies(page = page).also {
-        _topRatedMovies.value = it
-    }
+    override suspend fun getTopRatedMovies(refreshType: RefreshType): List<PagingItem> = pagination(
+        refreshType = refreshType,
+        flow = _topRatedMovies,
+        getRemoteContent = { page -> remoteSource.getTopRatedMovies(page = page) },
+        counter = TOP_RATED_MOVIES_CTR++
+    )
 
-    override suspend fun getNowPlayingMovies(page: Int): MovieList = _nowPlayingMovies.value ?: remoteSource.getNowPlayingMovies(page = page).also {
-        _nowPlayingMovies.value = it
-    }
-    override fun clearTrendingMovies() {
-        _trendingMovies.value = null
+    override suspend fun getNowPlayingMovies(refreshType: RefreshType): List<PagingItem> = pagination(
+        refreshType = refreshType,
+        flow = _nowPlayingMovies,
+        getRemoteContent = { page -> remoteSource.getNowPlayingMovies(page = page) },
+        counter = NOW_PLAYING_MOVIES_CTR++
+    )
+
+    override fun clearPopularMovies() {
+        _popularMovies.value = emptyList()
     }
 
     override fun clearUpcomingMovies() {
-        _upcomingMovies.value = null
+        _upcomingMovies.value = emptyList()
     }
 
     override fun clearTopRatedMovies() {
-        _topRatedMovies.value = null
+        _topRatedMovies.value = emptyList()
     }
 
     override fun clearNowPlayingMovies() {
-        _nowPlayingMovies.value = null
+        _nowPlayingMovies.value = emptyList()
+    }
+
+    private
+
+    companion object {
+        private var UPCOMING_MOVIES_CTR: Int = 1
+        private var POPULAR_MOVIES_CTR: Int = 1
+        private var NOW_PLAYING_MOVIES_CTR: Int = 1
+        private var TOP_RATED_MOVIES_CTR: Int = 1
     }
 }

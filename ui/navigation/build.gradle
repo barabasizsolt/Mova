@@ -42,6 +42,7 @@ dependencies {
     implementation(project(":ui:screen:main:explore"))
     implementation(project(":ui:screen:main:favourites"))
     implementation(project(":ui:screen:main:profile"))
+    implementation(project(":ui:screen:main:seeall"))
 
     implementation(project(":ui:theme"))
     implementation(project(":ui:util"))

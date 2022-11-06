@@ -14,7 +14,7 @@ class GetExploreScreenFlowUseCase(
 ) {
 
     operator fun invoke(category: Category = Category.MOVIE): Flow<List<WatchableItem>> = when (category) {
-        Category.MOVIE -> getMovieDiscoverFlowUseCase().map { flow -> flow.results.map { it.toWatchableItem() } }.filterNotNull()
-        Category.TV -> getTvDiscoverFlowUseCase().map { flow -> flow.results.map { it.toWatchableItem() } }.filterNotNull()
+        Category.MOVIE -> getMovieDiscoverFlowUseCase().map { movie -> movie.map { it.toWatchableItem() } }.filterNotNull()
+        Category.TV -> getTvDiscoverFlowUseCase().map { tv -> tv.map { it.toWatchableItem() } }.filterNotNull()
     }
 }

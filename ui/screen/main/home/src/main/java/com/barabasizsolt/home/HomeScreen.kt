@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.barabasizsolt.catalog.ErrorContent
 import com.barabasizsolt.catalog.LoadingContent
+import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.PeopleCarousel
 import com.barabasizsolt.catalog.WatchablePager
 import com.barabasizsolt.catalog.WatchableWithRatingCarousel
@@ -23,33 +26,31 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun HomeScreen(screenState: HomeScreenState) {
-    val scaffoldState = rememberScaffoldState()
+    val snackBarHostState = remember { SnackbarHostState() }
 
-    Scaffold(scaffoldState = scaffoldState) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = AppTheme.colors.primary)
-                .padding(paddingValues = it)
-        ) {
-            when (screenState.state) {
-                is HomeScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(swipeRefresh = false) })
-                is HomeScreenState.State.Loading -> LoadingContent()
-                else -> ScreenContent(screenState = screenState)
-            }
-
-            LaunchedEffect(
-                key1 = screenState.state,
-                block = {
-                    if (screenState.state is HomeScreenState.State.ShowSnackBar) {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = "Oops, something went wrong.",
-                            actionLabel = "Try again"
-                        )
-                    }
-                }
-            )
+    Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
+        when (screenState.state) {
+            is HomeScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(swipeRefresh = false) })
+            is HomeScreenState.State.Loading -> LoadingContent()
+            else -> ScreenContent(screenState = screenState)
         }
+
+        MovaSnackBar(
+            snackBarHostState = snackBarHostState,
+            onDismiss = { snackBarHostState.currentSnackbarData?.dismiss() }
+        )
+
+        LaunchedEffect(
+            key1 = screenState.state,
+            block = {
+                if (screenState.state is HomeScreenState.State.ShowSnackBar) {
+                    snackBarHostState.showSnackbar(
+                        message = "Oops, something went wrong.",
+                        actionLabel = "Try again"
+                    )
+                }
+            }
+        )
     }
 }
 
@@ -68,36 +69,36 @@ private fun ScreenContent(screenState: HomeScreenState) {
         ) {
             item {
                 WatchablePager(
-                    pagerContent = screenState.homeContent?.nowPlayingMovies.orEmpty(),
-                    onClick = { },
-                    onPlayButtonClicked = { },
-                    onAddToFavouriteButtonClicked = { }
+                    pagerContent = screenState.homeContent?.upcomingMovies.orEmpty(),
+                    onClick = { /*TODO: Implement it*/ },
+                    onPlayButtonClicked = { /*TODO: Implement it*/ },
+                    onAddToFavouriteButtonClicked = { /*TODO: Implement it*/ }
                 )
             }
             item {
                 WatchableWithRatingCarousel(
                     header = "Popular Movies",
                     buttonText = "More Popular Movies",
-                    items = screenState.homeContent?.trendingMovies.orEmpty(),
-                    onItemClick = { },
-                    onHeaderClick = { },
+                    items = screenState.homeContent?.popularMovies.orEmpty(),
+                    onItemClick = { /*TODO: Implement it*/ },
+                    onHeaderClick = screenState::onSeeAllPopularMoviesClicked,
                 )
             }
             item {
                 PeopleCarousel(
                     header = "Popular People",
                     items = screenState.homeContent?.popularPeople.orEmpty(),
-                    onItemClick = { },
-                    onHeaderClick = { },
+                    onItemClick = { /*TODO: Implement it*/ },
+                    onHeaderClick = screenState::onSeeAllPopularPeopleClicked,
                 )
             }
             item {
                 WatchableWithRatingCarousel(
                     header = "Now Playing Movies",
                     buttonText = "More Now Playing Movies",
-                    items = screenState.homeContent?.upcomingMovies.orEmpty(),
-                    onItemClick = { },
-                    onHeaderClick = { },
+                    items = screenState.homeContent?.nowPlayingMovies.orEmpty(),
+                    onItemClick = { /*TODO: Implement it*/ },
+                    onHeaderClick = screenState::onSeeAllNowPlayingMoviesClicked,
                 )
             }
             item {
@@ -105,8 +106,8 @@ private fun ScreenContent(screenState: HomeScreenState) {
                     header = "Top Rated Movies",
                     buttonText = "More Top Rated Movies",
                     items = screenState.homeContent?.topRatedMovies.orEmpty(),
-                    onItemClick = { },
-                    onHeaderClick = { },
+                    onItemClick = { /*TODO: Implement it*/ },
+                    onHeaderClick = screenState::onSeeAllTopRatedMoviesClicked,
                     showDivider = false
                 )
             }

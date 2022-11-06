@@ -1,7 +1,7 @@
 package com.barabasizsolt.people.dto
 
 import com.barabasizsolt.api.DataLayerException
-import com.barabasizsolt.people.model.PeopleList
+import com.barabasizsolt.people.model.People
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -11,12 +11,9 @@ data class PeopleListResponse(
     @Json(name = "results") val results: List<PeopleResponse>?
 )
 
-fun PeopleListResponse.toModel() : PeopleList {
+fun PeopleListResponse.toModel() : List<People> {
     if (page == null || results == null) {
         throw DataLayerException(message = "PeopleListException: $this")
     }
-    return PeopleList(
-        page = page,
-        results = results.mapNotNull { it.toModel() }
-    )
+    return results.mapNotNull { it.toModel() }
 }

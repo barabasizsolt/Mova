@@ -1,27 +1,29 @@
 package com.barabasizsolt.movie.api
 
-import com.barabasizsolt.movie.model.MovieList
+import com.barabasizsolt.movie.model.Movie
+import com.barabasizsolt.util.PagingItem
+import com.barabasizsolt.util.RefreshType
 import kotlinx.coroutines.flow.Flow
 
 interface MovieService {
 
-    val trendingMovies: Flow<MovieList?>
+    val popularMovies: Flow<List<PagingItem>>
 
-    val upcomingMovies: Flow<MovieList?>
+    val upcomingMovies: Flow<List<PagingItem>>
 
-    val topRatedMovies: Flow<MovieList?>
+    val topRatedMovies: Flow<List<PagingItem>>
 
-    val nowPlayingMovies: Flow<MovieList?>
+    val nowPlayingMovies: Flow<List<PagingItem>>
 
-    suspend fun getTrendingMovies(page: Int): MovieList
+    suspend fun getUpcomingMovies(refreshType: RefreshType): List<PagingItem>
 
-    suspend fun getUpcomingMovies(page: Int): MovieList
+    suspend fun getPopularMovies(refreshType: RefreshType): List<PagingItem>
 
-    suspend fun getTopRatedMovies(page: Int): MovieList
+    suspend fun getTopRatedMovies(refreshType: RefreshType): List<PagingItem>
 
-    suspend fun getNowPlayingMovies(page: Int): MovieList
+    suspend fun getNowPlayingMovies(refreshType: RefreshType): List<PagingItem>
 
-    fun clearTrendingMovies()
+    fun clearPopularMovies()
 
     fun clearUpcomingMovies()
 

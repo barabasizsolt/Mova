@@ -4,14 +4,16 @@ import com.barabasizsolt.domain.model.HomeScreenContent
 import com.barabasizsolt.domain.model.toWatchableItem
 import com.barabasizsolt.domain.usecase.helper.movie.nowPlaying.GetNowPlayingMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.topRated.GetTopRatedMoviesFlowUseCase
-import com.barabasizsolt.domain.usecase.helper.movie.trending.GetTrendingMoviesFlowUseCase
+import com.barabasizsolt.domain.usecase.helper.movie.trending.GetPopularMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.upcoming.GetUpcomingMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleFlowUseCase
+import com.barabasizsolt.movie.model.Movie
+import com.barabasizsolt.people.model.People
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
 class GetHomeScreenFlowUseCase(
-    private val getTrendingMoviesFlowUseCase: GetTrendingMoviesFlowUseCase,
+    private val getPopularMoviesFlowUseCase: GetPopularMoviesFlowUseCase,
     private val getUpcomingMoviesFlowUseCase: GetUpcomingMoviesFlowUseCase,
     private val getTopRatedMoviesFlowUseCase: GetTopRatedMoviesFlowUseCase,
     private val getNowPlayingMoviesFlowCase: GetNowPlayingMoviesFlowUseCase,
@@ -19,18 +21,22 @@ class GetHomeScreenFlowUseCase(
 ) {
 
     operator fun invoke(): Flow<HomeScreenContent> = combine(
-        getTrendingMoviesFlowUseCase(),
         getUpcomingMoviesFlowUseCase(),
+        getPopularMoviesFlowUseCase(),
         getTopRatedMoviesFlowUseCase(),
         getNowPlayingMoviesFlowCase(),
         getPopularPeopleFlowUseCase()
-    ) { trending, upcoming, topRated, nowPlaying, popularPeople ->
+    ) { upcoming, popular, topRated, nowPlaying, popularPeople ->
         HomeScreenContent(
-            trendingMovies = trending.results.map { it.toWatchableItem() },
-            upcomingMovies = upcoming.results.map { it.toWatchableItem() },
-            topRatedMovies = topRated.results.map { it.toWatchableItem() },
-            nowPlayingMovies = nowPlaying.results,
-            popularPeople = popularPeople.results.map { it.toWatchableItem() }
+            upcomingMovies = upcoming.map { it as Movie },
+            popularMovies = popular.take(n = MAX_ITEM).map { (it as Movie).toWatchableItem() },
+            nowPlayingMovies = nowPlaying.take(n = MAX_ITEM).map { (it as Movie).toWatchableItem() },
+            topRatedMovies = topRated.take(n = MAX_ITEM).map { (it as Movie).toWatchableItem() },
+            popularPeople = popularPeople.map { (it as People).toWatchableItem() }
         )
+    }
+
+    companion object {
+        private const val MAX_ITEM: Int = 20
     }
 }
