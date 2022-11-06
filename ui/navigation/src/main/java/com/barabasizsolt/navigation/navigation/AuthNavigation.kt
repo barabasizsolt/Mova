@@ -49,3 +49,13 @@ fun NavGraphBuilder.authNavigation(navController: NavHostController) {
         }
     }
 }
+
+fun NavHostController.navigateToSocialLogin() {
+    navigate(route = Route.Authentication.SOCIAL_LOGIN)
+}
+
+fun NavHostController.navigateToAuthentication(screenType: String) {
+    navigate(route = "Auth/${screenType}") {
+        launchSingleTop = true
+    }
+}

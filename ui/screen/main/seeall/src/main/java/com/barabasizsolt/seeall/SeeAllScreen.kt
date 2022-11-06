@@ -1,5 +1,6 @@
 package com.barabasizsolt.seeall
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -37,6 +39,8 @@ import com.barabasizsolt.util.navigationBarInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 /*TODO: Handle pagination edge case (themovidedb supports max 500 page)*/
 
@@ -92,6 +96,13 @@ private fun ScreenContent(
 ) {
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
     val gridState: LazyGridState = rememberLazyGridState()
+    val scope: CoroutineScope = rememberCoroutineScope()
+
+    BackHandler(enabled = gridState.firstVisibleItemScrollOffset > 0) {
+        scope.launch {
+            gridState.scrollToItem(index = 0, scrollOffset = 0)
+        }
+    }
 
     SwipeRefresh(
         state = swipeRefreshState,

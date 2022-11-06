@@ -43,6 +43,7 @@ dependencies {
     implementation(project(":domain:domain-util"))
     implementation(project(":domain:domain-usecase"))
     implementation(project(":service:content:util"))
+    implementation(project(":service:content:model:movie"))
 
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.voyager)
