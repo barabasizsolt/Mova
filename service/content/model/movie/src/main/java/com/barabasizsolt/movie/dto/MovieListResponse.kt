@@ -2,7 +2,6 @@ package com.barabasizsolt.movie.dto
 
 import com.barabasizsolt.api.DataLayerException
 import com.barabasizsolt.movie.model.Movie
-import com.barabasizsolt.movie.model.MovieList
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

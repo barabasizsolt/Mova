@@ -14,7 +14,7 @@ class GetSeeAllScreenUseCase(
 ) {
     suspend operator fun invoke(refreshType: RefreshType, contentType: String) = when (contentType) {
         SeeAllContentType.POPULAR_MOVIES.name -> getPopularMoviesUseCase(refreshType = refreshType)
-        SeeAllContentType.POPULAR_PEOPLE.name -> getPopularPeopleUseCase()
+        SeeAllContentType.POPULAR_PEOPLE.name -> getPopularPeopleUseCase(refreshType = refreshType)
         SeeAllContentType.NOW_PLAYING_MOVIES.name -> getNowPlayingMoviesCase(refreshType = refreshType)
         SeeAllContentType.TOP_RATED_MOVIES.name -> getTopRatedMoviesUseCase(refreshType = refreshType)
         else -> throw IllegalStateException("Invalid SeeAllContentType: $contentType")

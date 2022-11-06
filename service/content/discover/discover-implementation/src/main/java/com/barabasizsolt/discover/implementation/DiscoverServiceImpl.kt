@@ -2,9 +2,7 @@ package com.barabasizsolt.discover.implementation
 
 import com.barabasizsolt.discover.api.DiscoverService
 import com.barabasizsolt.movie.model.Movie
-import com.barabasizsolt.movie.model.MovieList
 import com.barabasizsolt.tv.modell.TvSeries
-import com.barabasizsolt.tv.modell.TvSeriesList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 

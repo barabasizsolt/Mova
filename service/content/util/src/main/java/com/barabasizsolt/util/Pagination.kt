@@ -2,12 +2,16 @@ package com.barabasizsolt.util
 
 import kotlinx.coroutines.flow.MutableStateFlow
 
-suspend fun<T> pagination(
+abstract class PagingItem {
+    abstract val id: String
+}
+
+suspend fun pagination(
     refreshType: RefreshType,
-    flow: MutableStateFlow<List<T>>,
-    getRemoteContent: suspend (ctr: Int) -> List<T>,
+    flow: MutableStateFlow<List<PagingItem>>,
+    getRemoteContent: suspend (ctr: Int) -> List<PagingItem>,
     counter: Int
-): List<T> = when (refreshType) {
+): List<PagingItem> = when (refreshType) {
     RefreshType.CACHE_IF_POSSIBLE -> flow.value.ifEmpty {
         getRemoteContent(1).also {
             flow.value = it

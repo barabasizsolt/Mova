@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.Result
 import com.barabasizsolt.util.Event
+import com.barabasizsolt.util.RefreshType
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.get
 
@@ -55,11 +56,14 @@ class HomeScreenState(
     fun getScreenData(swipeRefresh: Boolean) {
         state = if (swipeRefresh) State.SwipeRefresh else State.Loading
         scope.launch {
-            state = when (val result = getHomeScreen(coroutineScope = this)) {
+            state = when (
+                val result = getHomeScreen(
+                    coroutineScope = this,
+                    refreshType = if (swipeRefresh) RefreshType.FORCE_REFRESH else RefreshType.CACHE_IF_POSSIBLE
+                )
+            ) {
                 is Result.Failure -> if (!swipeRefresh) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
-                is Result.Success -> State.Normal.also {
-                    println("<<Res: ${result.data}")
-                }
+                is Result.Success -> State.Normal
             }
         }
     }

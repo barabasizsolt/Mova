@@ -1,9 +1,7 @@
 package com.barabasizsolt.discover.api
 
 import com.barabasizsolt.movie.model.Movie
-import com.barabasizsolt.movie.model.MovieList
 import com.barabasizsolt.tv.modell.TvSeries
-import com.barabasizsolt.tv.modell.TvSeriesList
 import kotlinx.coroutines.flow.Flow
 
 interface DiscoverService {

@@ -17,14 +17,17 @@ class GetHomeScreenUseCase(
     private val getPopularPeopleUseCase: GetPopularPeopleUseCase,
 ) {
 
-    suspend operator fun invoke(coroutineScope: CoroutineScope) = asyncWrapToResult(
+    suspend operator fun invoke(
+        coroutineScope: CoroutineScope,
+        refreshType: RefreshType
+    ) = asyncWrapToResult(
         scope = coroutineScope,
         functions = listOf(
-            getUpcomingMoviesUseCase(),
-            getPopularMoviesUseCase(refreshType = RefreshType.CACHE_IF_POSSIBLE),
-            getTopRatedMoviesUseCase(refreshType = RefreshType.CACHE_IF_POSSIBLE),
-            getNowPlayingMoviesCase(refreshType = RefreshType.CACHE_IF_POSSIBLE),
-            getPopularPeopleUseCase()
+            getUpcomingMoviesUseCase(refreshType = refreshType),
+            getPopularMoviesUseCase(refreshType = refreshType),
+            getTopRatedMoviesUseCase(refreshType = refreshType),
+            getNowPlayingMoviesCase(refreshType = refreshType),
+            getPopularPeopleUseCase(refreshType = refreshType)
         )
     )
 }

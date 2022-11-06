@@ -7,6 +7,8 @@ import com.barabasizsolt.domain.usecase.helper.movie.topRated.GetTopRatedMoviesF
 import com.barabasizsolt.domain.usecase.helper.movie.trending.GetPopularMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.upcoming.GetUpcomingMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleFlowUseCase
+import com.barabasizsolt.movie.model.Movie
+import com.barabasizsolt.people.model.People
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
@@ -26,11 +28,11 @@ class GetHomeScreenFlowUseCase(
         getPopularPeopleFlowUseCase()
     ) { upcoming, popular, topRated, nowPlaying, popularPeople ->
         HomeScreenContent(
-            upcomingMovies = upcoming,
-            popularMovies = popular.take(n = MAX_ITEM).map { it.toWatchableItem() },
-            nowPlayingMovies = nowPlaying.take(n = MAX_ITEM).map { it.toWatchableItem() },
-            topRatedMovies = topRated.take(n = MAX_ITEM).map { it.toWatchableItem() },
-            popularPeople = popularPeople.results.map { it.toWatchableItem() }
+            upcomingMovies = upcoming.map { it as Movie },
+            popularMovies = popular.take(n = MAX_ITEM).map { (it as Movie).toWatchableItem() },
+            nowPlayingMovies = nowPlaying.take(n = MAX_ITEM).map { (it as Movie).toWatchableItem() },
+            topRatedMovies = topRated.take(n = MAX_ITEM).map { (it as Movie).toWatchableItem() },
+            popularPeople = popularPeople.map { (it as People).toWatchableItem() }
         )
     }
 

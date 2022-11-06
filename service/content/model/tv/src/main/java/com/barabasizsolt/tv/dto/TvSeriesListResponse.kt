@@ -2,7 +2,6 @@ package com.barabasizsolt.tv.dto
 
 import com.barabasizsolt.api.DataLayerException
 import com.barabasizsolt.tv.modell.TvSeries
-import com.barabasizsolt.tv.modell.TvSeriesList
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

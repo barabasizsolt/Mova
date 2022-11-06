@@ -1,8 +1,10 @@
 package com.barabasizsolt.people.model
 
+import com.barabasizsolt.util.PagingItem
+
 data class People(
-    val id: String,
+    override val id: String,
     val adult: Boolean,
     val profilePath: String,
     val name: String
-)
+) : PagingItem()
