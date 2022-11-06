@@ -35,6 +35,8 @@ import com.barabasizsolt.theme.attributes.AppTheme
 import com.barabasizsolt.util.movieGenres
 import java.util.Locale
 
+/*TODO: Refactor*/
+
 @Composable
 fun FilterScreen() {
     val isoCountries = Locale.getISOCountries().map { locale -> Locale("", locale) }
