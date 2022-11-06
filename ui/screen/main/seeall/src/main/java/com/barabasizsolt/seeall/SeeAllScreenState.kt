@@ -74,11 +74,19 @@ class SeeAllScreenState(
                         }
                     )
                 ) {
-                    is Result.Failure -> if (!swipeRefresh) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
+                    is Result.Failure -> when {
+                        swipeRefresh -> State.ShowSnackBar
+                        watchableItems.isNotEmpty() -> State.Normal
+                        else -> State.Error(message = result.exception.message.orEmpty())
+                    }
                     is Result.Success -> State.Normal
                 }
             }
         }
+    }
+
+    fun resetState() {
+        state = State.Normal
     }
 
     sealed class State {

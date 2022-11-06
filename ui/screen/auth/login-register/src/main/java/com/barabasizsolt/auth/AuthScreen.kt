@@ -82,8 +82,7 @@ fun AuthScreen(screenState: AuthScreenState) {
             onDismiss = {
                 snackBarHostState.currentSnackbarData?.dismiss()
                 screenState.resetState()
-            },
-            modifier = Modifier.align(alignment = Alignment.BottomCenter)
+            }
         )
     }
 

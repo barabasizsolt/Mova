@@ -69,9 +69,9 @@ private fun ScreenContent(screenState: HomeScreenState) {
             item {
                 WatchablePager(
                     pagerContent = screenState.homeContent?.upcomingMovies.orEmpty(),
-                    onClick = { },
-                    onPlayButtonClicked = { },
-                    onAddToFavouriteButtonClicked = { }
+                    onClick = { /*TODO: Implement it*/ },
+                    onPlayButtonClicked = { /*TODO: Implement it*/ },
+                    onAddToFavouriteButtonClicked = { /*TODO: Implement it*/ }
                 )
             }
             item {
@@ -79,7 +79,7 @@ private fun ScreenContent(screenState: HomeScreenState) {
                     header = "Popular Movies",
                     buttonText = "More Popular Movies",
                     items = screenState.homeContent?.popularMovies.orEmpty(),
-                    onItemClick = { },
+                    onItemClick = { /*TODO: Implement it*/ },
                     onHeaderClick = screenState::onSeeAllPopularMoviesClicked,
                 )
             }
@@ -87,8 +87,8 @@ private fun ScreenContent(screenState: HomeScreenState) {
                 PeopleCarousel(
                     header = "Popular People",
                     items = screenState.homeContent?.popularPeople.orEmpty(),
-                    onItemClick = { },
-                    onHeaderClick = screenState::onSeeAllPopularPeopleClicked,
+                    onItemClick = { /*TODO: Implement it*/ },
+                    onHeaderClick = { /*TODO: Implement it*/ },
                 )
             }
             item {
@@ -96,7 +96,7 @@ private fun ScreenContent(screenState: HomeScreenState) {
                     header = "Now Playing Movies",
                     buttonText = "More Now Playing Movies",
                     items = screenState.homeContent?.nowPlayingMovies.orEmpty(),
-                    onItemClick = { },
+                    onItemClick = { /*TODO: Implement it*/ },
                     onHeaderClick = screenState::onSeeAllNowPlayingMoviesClicked,
                 )
             }
@@ -105,7 +105,7 @@ private fun ScreenContent(screenState: HomeScreenState) {
                     header = "Top Rated Movies",
                     buttonText = "More Top Rated Movies",
                     items = screenState.homeContent?.topRatedMovies.orEmpty(),
-                    onItemClick = { },
+                    onItemClick = { /*TODO: Implement it*/ },
                     onHeaderClick = screenState::onSeeAllTopRatedMoviesClicked,
                     showDivider = false
                 )

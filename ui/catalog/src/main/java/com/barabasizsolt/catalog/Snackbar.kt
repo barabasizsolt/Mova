@@ -1,5 +1,6 @@
 package com.barabasizsolt.catalog
 
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -15,7 +16,7 @@ import androidx.compose.ui.Modifier
 import com.barabasizsolt.theme.attributes.AppTheme
 
 @Composable
-fun MovaSnackBar(
+fun BoxScope.MovaSnackBar(
     snackBarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = { }
@@ -23,7 +24,7 @@ fun MovaSnackBar(
     hostState = snackBarHostState,
     snackbar = { data ->
         Snackbar(
-            modifier = Modifier.padding(all = AppTheme.dimens.contentPadding * 2),
+            modifier = modifier.padding(all = AppTheme.dimens.contentPadding * 2),
             content = {
                 Text(
                     text = data.message,
@@ -43,8 +44,9 @@ fun MovaSnackBar(
             }
         )
     },
-    modifier = modifier
+    modifier = Modifier
         .fillMaxWidth()
+        .align(alignment = Alignment.BottomCenter)
         .wrapContentHeight(align = Alignment.Bottom)
         .systemBarsPadding()
 )

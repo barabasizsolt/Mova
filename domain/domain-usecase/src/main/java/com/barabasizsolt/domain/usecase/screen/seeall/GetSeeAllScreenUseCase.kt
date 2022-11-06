@@ -4,7 +4,6 @@ import com.barabasizsolt.domain.usecase.helper.movie.nowPlaying.GetNowPlayingMov
 import com.barabasizsolt.domain.usecase.helper.movie.topRated.GetTopRatedMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.trending.GetPopularMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleUseCase
-import com.barabasizsolt.domain.util.wrapToResult
 import com.barabasizsolt.util.RefreshType
 
 class GetSeeAllScreenUseCase(
@@ -13,13 +12,11 @@ class GetSeeAllScreenUseCase(
     private val getNowPlayingMoviesCase: GetNowPlayingMoviesUseCase,
     private val getPopularPeopleUseCase: GetPopularPeopleUseCase
 ) {
-    suspend operator fun invoke(refreshType: RefreshType, contentType: String) = wrapToResult {
-        when (contentType) {
-            SeeAllContentType.POPULAR_MOVIES.name -> getPopularMoviesUseCase(refreshType = refreshType)
-            SeeAllContentType.POPULAR_PEOPLE.name -> getPopularPeopleUseCase()
-            SeeAllContentType.NOW_PLAYING_MOVIES.name -> getNowPlayingMoviesCase(refreshType = refreshType)
-            SeeAllContentType.TOP_RATED_MOVIES.name -> getTopRatedMoviesUseCase(refreshType = refreshType)
-            else -> throw IllegalStateException("Invalid SeeAllContentType: $contentType")
-        }
+    suspend operator fun invoke(refreshType: RefreshType, contentType: String) = when (contentType) {
+        SeeAllContentType.POPULAR_MOVIES.name -> getPopularMoviesUseCase(refreshType = refreshType)
+        SeeAllContentType.POPULAR_PEOPLE.name -> getPopularPeopleUseCase()
+        SeeAllContentType.NOW_PLAYING_MOVIES.name -> getNowPlayingMoviesCase(refreshType = refreshType)
+        SeeAllContentType.TOP_RATED_MOVIES.name -> getTopRatedMoviesUseCase(refreshType = refreshType)
+        else -> throw IllegalStateException("Invalid SeeAllContentType: $contentType")
     }
 }

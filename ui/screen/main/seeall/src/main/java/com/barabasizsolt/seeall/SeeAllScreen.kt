@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -15,14 +16,18 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.ErrorContent
 import com.barabasizsolt.catalog.LoadingContent
+import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.theme.attributes.AppTheme
@@ -33,38 +38,39 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun SeeAllScreen(screenState: SeeAllScreenState) {
-    val scaffoldState = rememberScaffoldState()
+    val snackBarHostState = remember { SnackbarHostState() }
 
-    Scaffold(scaffoldState = scaffoldState) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = AppTheme.colors.primary)
-                .padding(paddingValues = it)
-        ) {
-            when (screenState.state) {
-                is SeeAllScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(swipeRefresh = false) })
-                is SeeAllScreenState.State.Loading -> LoadingContent()
-                else -> ScreenContent(
-                    isRefreshing = screenState.state is SeeAllScreenState.State.SwipeRefresh,
-                    onRefresh = { screenState.getScreenData(swipeRefresh = true) },
-                    items = screenState.watchableItems,
-                    onLoadMoreItem = { screenState.getScreenData(swipeRefresh = false) }
-                )
-            }
-
-            LaunchedEffect(
-                key1 = screenState.state,
-                block = {
-                    if (screenState.state is SeeAllScreenState.State.ShowSnackBar) {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = "Oops, something went wrong.",
-                            actionLabel = "Try again"
-                        )
-                    }
-                }
+    Box {
+        when (screenState.state) {
+            is SeeAllScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(swipeRefresh = false) })
+            is SeeAllScreenState.State.Loading -> LoadingContent()
+            else -> ScreenContent(
+                isRefreshing = screenState.state is SeeAllScreenState.State.SwipeRefresh,
+                onRefresh = { screenState.getScreenData(swipeRefresh = true) },
+                items = screenState.watchableItems,
+                onLoadMoreItem = { screenState.getScreenData(swipeRefresh = false) }
             )
         }
+
+        MovaSnackBar(
+            snackBarHostState = snackBarHostState,
+            onDismiss = {
+                snackBarHostState.currentSnackbarData?.dismiss()
+                screenState.resetState()
+            }
+        )
+
+        LaunchedEffect(
+            key1 = screenState.state,
+            block = {
+                if (screenState.state is SeeAllScreenState.State.ShowSnackBar) {
+                    snackBarHostState.showSnackbar(
+                        message = "Oops, something went wrong.",
+                        actionLabel = "Try again"
+                    )
+                }
+            }
+        )
     }
 }
 
@@ -93,7 +99,7 @@ private fun ScreenContent(
                 bottom = AppTheme.dimens.screenPadding + navigationBarInsetDp,
                 top = AppTheme.dimens.screenPadding + statusBarInsetDp
             ),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.background(color = AppTheme.colors.primary)
         ) {
             itemsIndexed(
                 items = items,

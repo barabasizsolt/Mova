@@ -3,6 +3,7 @@ package com.barabasizsolt.movie.implementation
 import com.barabasizsolt.movie.api.MovieService
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.util.RefreshType
+import com.barabasizsolt.util.pagination
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -61,26 +62,7 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
         _nowPlayingMovies.value = emptyList()
     }
 
-    private suspend fun<T> pagination(
-        refreshType: RefreshType,
-        flow: MutableStateFlow<List<T>>,
-        getRemoteContent: suspend (ctr: Int) -> List<T>,
-        counter: Int
-    ): List<T> = when (refreshType) {
-        RefreshType.CACHE_IF_POSSIBLE -> {
-            flow.value.ifEmpty { getRemoteContent(1).also { flow.value = it } }
-        }
-        RefreshType.NEXT_PAGE -> {
-            getRemoteContent(counter).let {
-                val newContent = flow.value + it
-                flow.value = newContent
-                newContent
-            }
-        }
-        RefreshType.FORCE_REFRESH -> {
-            getRemoteContent(1).also { flow.value = it }
-        }
-    }
+    private
 
     companion object {
         private var POPULAR_MOVIES_CTR: Int = 1

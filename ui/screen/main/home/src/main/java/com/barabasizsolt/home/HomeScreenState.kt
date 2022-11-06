@@ -56,11 +56,9 @@ class HomeScreenState(
         state = if (swipeRefresh) State.SwipeRefresh else State.Loading
         scope.launch {
             state = when (val result = getHomeScreen(coroutineScope = this)) {
-                is Result.Failure -> {
-                    if (!swipeRefresh) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
-                }
-                is Result.Success -> {
-                    State.Normal
+                is Result.Failure -> if (!swipeRefresh) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
+                is Result.Success -> State.Normal.also {
+                    println("<<Res: ${result.data}")
                 }
             }
         }
