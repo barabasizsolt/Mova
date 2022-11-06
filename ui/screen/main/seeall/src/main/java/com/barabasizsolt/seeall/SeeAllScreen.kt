@@ -1,6 +1,7 @@
 package com.barabasizsolt.seeall
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,19 +18,26 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.ErrorContent
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MediumPersonCard
+import com.barabasizsolt.catalog.MovaFilledButton
 import com.barabasizsolt.catalog.MovaHeader
 import com.barabasizsolt.catalog.MovaSnackBar
+import com.barabasizsolt.catalog.ScrollToTopItem
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.domain.usecase.screen.seeall.SeeAllContentType
@@ -97,31 +105,52 @@ private fun ScreenContent(
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
     val gridState: LazyGridState = rememberLazyGridState()
     val scope: CoroutineScope = rememberCoroutineScope()
+    val scrollToUpIsVisible = rememberSaveable { mutableStateOf(value = false) }
 
-    BackHandler(enabled = gridState.firstVisibleItemScrollOffset > 0) {
-        scope.launch {
-            gridState.scrollToItem(index = 0, scrollOffset = 0)
+    LaunchedEffect(
+        key1 = gridState.firstVisibleItemIndex,
+        block = {
+            if (gridState.firstVisibleItemIndex > 20) {
+                scrollToUpIsVisible.value = true
+            }
+            if (gridState.firstVisibleItemIndex < 1) {
+                scrollToUpIsVisible.value = false
+            }
         }
-    }
+    )
 
-    SwipeRefresh(
-        state = swipeRefreshState,
-        onRefresh = onRefresh
-    ) {
-        LazyVerticalGrid(
-            state = gridState,
-            columns = GridCells.Fixed(count = 6),
-            verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-            horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-            contentPadding = PaddingValues(
-                start = AppTheme.dimens.screenPadding,
-                end = AppTheme.dimens.screenPadding,
-                bottom = AppTheme.dimens.screenPadding + navigationBarInsetDp,
-                top = AppTheme.dimens.screenPadding + statusBarInsetDp
-            )
+    Box {
+        SwipeRefresh(
+            state = swipeRefreshState,
+            onRefresh = onRefresh
         ) {
-            header(contentType = contentType, onClick = onUpClicked)
-            content(items = items, onLoadMoreItem = onLoadMoreItem)
+            LazyVerticalGrid(
+                state = gridState,
+                columns = GridCells.Fixed(count = 6),
+                verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
+                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
+                contentPadding = PaddingValues(
+                    start = AppTheme.dimens.screenPadding,
+                    end = AppTheme.dimens.screenPadding,
+                    bottom = AppTheme.dimens.screenPadding + navigationBarInsetDp,
+                    top = AppTheme.dimens.screenPadding + statusBarInsetDp
+                )
+            ) {
+                header(contentType = contentType, onClick = onUpClicked)
+                content(items = items, onLoadMoreItem = onLoadMoreItem)
+            }
+        }
+
+        AnimatedVisibility(
+            visible = scrollToUpIsVisible.value,
+            modifier = Modifier
+                .align(alignment = Alignment.TopCenter)
+                .padding(top = AppTheme.dimens.screenPadding * 2)
+        ) {
+            ScrollToTopItem(
+                text = stringResource(id = com.barabasizsolt.seeall.R.string.scroll_up),
+                onClick = { scope.launch { gridState.scrollToItem(index = 0, scrollOffset = 0) } },
+            )
         }
     }
 }

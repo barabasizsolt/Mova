@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.theme.attributes.AppTheme
 
@@ -28,6 +29,7 @@ import com.barabasizsolt.theme.attributes.AppTheme
 fun MovaFilledButton(
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
+    iconSize: Dp = 24.dp,
     text: String? = null,
     backgroundColor: Color = AppTheme.colors.secondary,
     contentColor: Color = Color.White,
@@ -45,7 +47,8 @@ fun MovaFilledButton(
             icon = icon,
             text = text.orEmpty(),
             contentColor = contentColor,
-            textStyle = textStyle
+            textStyle = textStyle,
+            iconSize = iconSize
         )
     }
 )
@@ -125,12 +128,14 @@ private fun ButtonContent(
     text: String,
     contentColor: Color,
     textStyle: TextStyle,
+    iconSize: Dp = 24.dp
 ) {
     if (icon != null) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = contentColor
+            tint = contentColor,
+            modifier = Modifier.size(size = iconSize)
         )
     }
     Spacer(modifier = Modifier.width(width = AppTheme.dimens.contentPadding))
