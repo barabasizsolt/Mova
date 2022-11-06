@@ -96,7 +96,7 @@ class AuthenticationServiceImpl(private val activityProvider: ActivityProvider) 
             is AuthWithResult.Failure ->
                 emit(value = AuthResult.Failure(error = result.error))
             is AuthWithResult.Dismissed ->
-                emit(value = AuthResult.Dismissed)
+                emit(value = AuthResult.Dismissed(error = "Oops, something went wrong."))
         }
     }
 
@@ -113,7 +113,7 @@ class AuthenticationServiceImpl(private val activityProvider: ActivityProvider) 
             is AuthWithResult.Failure ->
                 emit(value = AuthResult.Failure(error = result.error))
             is AuthWithResult.Dismissed ->
-                emit(value = AuthResult.Dismissed)
+                emit(value = AuthResult.Dismissed())
         }
     }
 
