@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
@@ -75,14 +76,15 @@ fun AuthScreen(screenState: AuthScreenState) {
         }
     }
 
-    Box {
+    Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
         ScreenContent(screenState = screenState, activityResultLauncher = loginWithGoogleAccountLauncher)
         MovaSnackBar(
             snackBarHostState = snackBarHostState,
             onDismiss = {
                 snackBarHostState.currentSnackbarData?.dismiss()
                 screenState.resetState()
-            }
+            },
+            modifier = Modifier.systemBarsPadding()
         )
     }
 
@@ -111,7 +113,6 @@ private fun ScreenContent(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = AppTheme.colors.primary)
             .statusBarsPadding()
             .imePadding(),
         horizontalAlignment = Alignment.CenterHorizontally,

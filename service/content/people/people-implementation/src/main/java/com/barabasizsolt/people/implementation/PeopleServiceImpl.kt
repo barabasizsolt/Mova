@@ -1,7 +1,6 @@
 package com.barabasizsolt.people.implementation
 
 import com.barabasizsolt.people.api.PeopleService
-import com.barabasizsolt.people.model.People
 import com.barabasizsolt.util.PagingItem
 import com.barabasizsolt.util.RefreshType
 import com.barabasizsolt.util.pagination

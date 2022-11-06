@@ -1,7 +1,6 @@
 package com.barabasizsolt.movie.implementation
 
 import com.barabasizsolt.movie.api.MovieService
-import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.util.PagingItem
 import com.barabasizsolt.util.RefreshType
 import com.barabasizsolt.util.pagination
