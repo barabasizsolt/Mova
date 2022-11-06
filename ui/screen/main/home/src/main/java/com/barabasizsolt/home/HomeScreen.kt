@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.barabasizsolt.catalog.ErrorContent
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MovaSnackBar
@@ -77,8 +78,8 @@ private fun ScreenContent(screenState: HomeScreenState) {
             }
             item {
                 WatchableWithRatingCarousel(
-                    header = "Popular Movies",
-                    buttonText = "More Popular Movies",
+                    header = stringResource(id = com.barabasizsolt.util.R.string.popular_movies),
+                    buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_popular_movies),
                     items = screenState.homeContent?.popularMovies.orEmpty(),
                     onItemClick = { /*TODO: Implement it*/ },
                     onHeaderClick = screenState::onSeeAllPopularMoviesClicked,
@@ -86,7 +87,7 @@ private fun ScreenContent(screenState: HomeScreenState) {
             }
             item {
                 PeopleCarousel(
-                    header = "Popular People",
+                    header = stringResource(id = com.barabasizsolt.util.R.string.popular_people),
                     items = screenState.homeContent?.popularPeople.orEmpty(),
                     onItemClick = { /*TODO: Implement it*/ },
                     onHeaderClick = screenState::onSeeAllPopularPeopleClicked,
@@ -94,8 +95,8 @@ private fun ScreenContent(screenState: HomeScreenState) {
             }
             item {
                 WatchableWithRatingCarousel(
-                    header = "Now Playing Movies",
-                    buttonText = "More Now Playing Movies",
+                    header = stringResource(id = com.barabasizsolt.util.R.string.now_playing_movies),
+                    buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_now_playing_movies),
                     items = screenState.homeContent?.nowPlayingMovies.orEmpty(),
                     onItemClick = { /*TODO: Implement it*/ },
                     onHeaderClick = screenState::onSeeAllNowPlayingMoviesClicked,
@@ -103,8 +104,8 @@ private fun ScreenContent(screenState: HomeScreenState) {
             }
             item {
                 WatchableWithRatingCarousel(
-                    header = "Top Rated Movies",
-                    buttonText = "More Top Rated Movies",
+                    header = stringResource(id = com.barabasizsolt.util.R.string.top_rated_movies),
+                    buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_top_rated_movies),
                     items = screenState.homeContent?.topRatedMovies.orEmpty(),
                     onItemClick = { /*TODO: Implement it*/ },
                     onHeaderClick = screenState::onSeeAllTopRatedMoviesClicked,
