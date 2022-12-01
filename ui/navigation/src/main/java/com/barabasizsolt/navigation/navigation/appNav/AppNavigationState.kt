@@ -34,7 +34,6 @@ class AppNavigationState(
     init {
         scope.launch {
             isLoggedInUseCase().collect {
-                println("AuthState: ${it.toString()}")
                 authState = it
             }
         }

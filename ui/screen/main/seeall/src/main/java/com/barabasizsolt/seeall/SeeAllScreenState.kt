@@ -14,6 +14,7 @@ import com.barabasizsolt.domain.usecase.screen.seeall.SeeAllContentType
 import com.barabasizsolt.domain.util.Result
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.people.model.People
+import com.barabasizsolt.util.Event
 import com.barabasizsolt.util.RefreshType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
@@ -37,13 +38,15 @@ fun rememberSeeAllScreenState(
 }
 
 class SeeAllScreenState(
-    private val contentType: String,
+    val contentType: String,
     private val scope: CoroutineScope,
     private val getSeeAllScreenUseCase: GetSeeAllScreenUseCase,
     private val getSeeAllScreenFlowUseCase: GetSeeAllScreenFlowUseCase
 ) {
 
     var state by mutableStateOf<State>(value = State.Normal)
+        private set
+    var action by mutableStateOf<Event<Action>?>(value = null)
         private set
     var watchableItems by mutableStateOf<List<WatchableItem>>(value = emptyList())
         private set
@@ -89,11 +92,19 @@ class SeeAllScreenState(
         state = State.Normal
     }
 
+    fun onUpClicked() {
+        action = Event(data = Action.NavigateUp)
+    }
+
     sealed class State {
         object Normal : State()
         object Loading : State()
         object SwipeRefresh : State()
         data class Error(val message: String) : State()
         object ShowSnackBar : State()
+    }
+
+    sealed class Action {
+        object NavigateUp : Action()
     }
 }

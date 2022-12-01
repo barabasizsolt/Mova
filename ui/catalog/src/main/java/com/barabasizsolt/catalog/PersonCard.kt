@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -43,7 +44,7 @@ fun MediumPersonCard(
     Text(
         text = item.title,
         style = AppTheme.typography.body2.withShadow(),
-        color = AppTheme.colors.onBackground,
+        color = Color.White,
         textAlign = TextAlign.Center,
         modifier = Modifier
             .align(alignment = Alignment.BottomCenter)

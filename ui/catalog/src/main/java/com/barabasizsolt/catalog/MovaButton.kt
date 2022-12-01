@@ -17,17 +17,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.theme.attributes.AppTheme
 
 @Composable
 fun MovaFilledButton(
     modifier: Modifier = Modifier,
-    icon: Painter? = null,
-    text: String,
+    icon: ImageVector? = null,
+    iconSize: Dp = 24.dp,
+    text: String? = null,
     backgroundColor: Color = AppTheme.colors.secondary,
     contentColor: Color = Color.White,
     textStyle: TextStyle = AppTheme.typography.subtitle1,
@@ -42,9 +45,10 @@ fun MovaFilledButton(
     content = {
         ButtonContent(
             icon = icon,
-            text = text,
+            text = text.orEmpty(),
             contentColor = contentColor,
-            textStyle = textStyle
+            textStyle = textStyle,
+            iconSize = iconSize
         )
     }
 )
@@ -52,7 +56,7 @@ fun MovaFilledButton(
 @Composable
 fun MovaOutlinedButton(
     modifier: Modifier = Modifier,
-    icon: Painter? = null,
+    icon: ImageVector? = null,
     text: String,
     contentColor: Color = Color.White,
     textStyle: TextStyle = AppTheme.typography.subtitle1,
@@ -120,16 +124,18 @@ fun MovaButton(
 
 @Composable
 private fun ButtonContent(
-    icon: Painter?,
+    icon: ImageVector?,
     text: String,
     contentColor: Color,
     textStyle: TextStyle,
+    iconSize: Dp = 24.dp
 ) {
     if (icon != null) {
         Icon(
-            painter = icon,
+            imageVector = icon,
             contentDescription = null,
-            tint = contentColor
+            tint = contentColor,
+            modifier = Modifier.size(size = iconSize)
         )
     }
     Spacer(modifier = Modifier.width(width = AppTheme.dimens.contentPadding))

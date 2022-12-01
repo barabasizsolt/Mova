@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import com.barabasizsolt.activityprovider.api.ActivitySetter
 import com.barabasizsolt.api.AuthenticationService
-import com.barabasizsolt.navigation.navigation.AppNavigation
+import com.barabasizsolt.navigation.navigation.appNav.AppNavigation
 import com.barabasizsolt.theme.attributes.MovaTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.android.ext.android.inject

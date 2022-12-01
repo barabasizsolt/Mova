@@ -1,4 +1,4 @@
-package com.barabasizsolt.navigation.navigation
+package com.barabasizsolt.navigation.navigation.appNav
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,8 +13,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.barabasizsolt.api.AuthenticationState
-import com.barabasizsolt.navigation.navigation.appNav.rememberAppNavigationState
+import com.barabasizsolt.navigation.navigation.Route
+import com.barabasizsolt.navigation.navigation.authNavigation
 import com.barabasizsolt.navigation.navigation.bottomNav.BottomNavHolder
+import com.barabasizsolt.navigation.navigation.mainNavigation
 
 @Composable
 fun AppNavigation() {
@@ -64,15 +66,5 @@ fun NavHostController.navigateToMain() {
         popUpTo(id = this@navigateToMain.graph.id) {
             inclusive = true
         }
-    }
-}
-
-fun NavHostController.navigateToSocialLogin() {
-    navigate(route = Route.Authentication.SOCIAL_LOGIN)
-}
-
-fun NavHostController.navigateToAuthentication(screenType: String) {
-    navigate(route = "Auth/${screenType}") {
-        launchSingleTop = true
     }
 }

@@ -25,7 +25,6 @@ import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.transform
 
 class AuthenticationServiceImpl(private val activityProvider: ActivityProvider) : AuthenticationService {

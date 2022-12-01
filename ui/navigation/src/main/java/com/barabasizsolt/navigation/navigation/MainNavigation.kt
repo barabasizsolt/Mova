@@ -13,6 +13,7 @@ import com.barabasizsolt.home.rememberHomeScreenState
 import com.barabasizsolt.profile.ProfileScreen
 import com.barabasizsolt.domain.usecase.screen.seeall.SeeAllContentType
 import com.barabasizsolt.seeall.SeeAllScreen
+import com.barabasizsolt.seeall.SeeAllScreenState
 import com.barabasizsolt.seeall.rememberSeeAllScreenState
 
 fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
@@ -51,7 +52,12 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         composable(route = Route.Main.SEE_ALL) { backstackEntry ->
             val contentType = backstackEntry.arguments?.getString("contentType") as String
 
-            SeeAllScreen(screenState = rememberSeeAllScreenState(contentType = contentType))
+            SeeAllScreen(screenState = rememberSeeAllScreenState(contentType = contentType).apply {
+                when (action?.consume()) {
+                    is SeeAllScreenState.Action.NavigateUp -> navController.navigateUp()
+                    else -> Unit
+                }
+            })
         }
     }
 }

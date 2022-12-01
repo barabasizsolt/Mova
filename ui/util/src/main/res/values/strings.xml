@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="more_popular_movies">More Popular Movies</string>
+    <string name="popular_people">Popular People</string>
+    <string name="more_popular_people">More Popular People</string>
+    <string name="now_playing_movies">Now Playing Movies</string>
+    <string name="more_now_playing_movies">More Now Playing Movies</string>
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="more_top_rated_movies">More Top Rated Movies</string>
+
+    <string name="all_content">All Content</string>
+</resources>
