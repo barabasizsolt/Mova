@@ -1,6 +1,5 @@
 package com.barabasizsolt.seeall
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,8 +17,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -34,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.ErrorContent
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MediumPersonCard
-import com.barabasizsolt.catalog.MovaFilledButton
 import com.barabasizsolt.catalog.MovaHeader
 import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.ScrollToTopItem
@@ -55,6 +51,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SeeAllScreen(screenState: SeeAllScreenState) {
     val snackBarHostState = remember { SnackbarHostState() }
+    val snackBarErrorMessage = stringResource(id = R.string.snackbar_error_message)
+    val snackBarErrorActionLabel = stringResource(id = R.string.snackbar_action_label)
 
     Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
         when (screenState.state) {
@@ -84,8 +82,8 @@ fun SeeAllScreen(screenState: SeeAllScreenState) {
             block = {
                 if (screenState.state is SeeAllScreenState.State.ShowSnackBar) {
                     snackBarHostState.showSnackbar(
-                        message = "Oops, something went wrong.",
-                        actionLabel = "Try again"
+                        message = snackBarErrorMessage,
+                        actionLabel = snackBarErrorActionLabel
                     )
                 }
             }

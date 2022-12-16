@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.barabasizsolt.catalog.GradientOverlay
@@ -89,7 +90,7 @@ private fun WelcomeScreenPager(
             inactiveColor = Color.White,
         )
         MovaButton(
-            text = "Get Started",
+            text = stringResource(id = R.string.get_started),
             onClick = onGetStartedClicked,
             modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
         )
@@ -126,18 +127,19 @@ private fun WelcomeScreenPagerContent(
 
 private data class WelcomeScreenPagerData(val title: String, val subtitle: String) {
     companion object {
+        @Composable
         fun getPagerData() = listOf(
             WelcomeScreenPagerData(
-                title = "Welcome to Mova",
-                subtitle = "The best movie streaming app of the century to make your day great!"
+                title = stringResource(id = R.string.page_title1),
+                subtitle = stringResource(id = R.string.page_subtitle1)
             ),
             WelcomeScreenPagerData(
-                title = "Lorem Ipsum",
-                subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                title = stringResource(id = R.string.page_title2),
+                subtitle = stringResource(id = R.string.page_subtitle2)
             ),
             WelcomeScreenPagerData(
-                title = "Ipsum Lorem",
-                subtitle = "Morbi tempus consequat lectus, quis tincidunt diam efficitur non."
+                title = stringResource(id = R.string.page_title3),
+                subtitle = stringResource(id = R.string.page_subtitle3)
             )
         )
     }
