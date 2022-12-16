@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -49,6 +50,7 @@ fun SocialLoginScreen(screenState: SocialLoginScreenState) {
         }
     }
     val snackBarHostState = remember { SnackbarHostState() }
+    val dismissText = stringResource(id = R.string.dismiss)
 
     Box {
         ScreenContent(
@@ -75,7 +77,7 @@ fun SocialLoginScreen(screenState: SocialLoginScreenState) {
             if (screenState.state is SocialLoginScreenState.State.Error) {
                 snackBarHostState.showSnackbar(
                     message = (screenState.state as SocialLoginScreenState.State.Error).message,
-                    actionLabel = "Dismiss",
+                    actionLabel = dismissText,
                     duration = SnackbarDuration.Long
                 )
                 screenState.resetState()
@@ -116,13 +118,13 @@ private fun ScreenContent(
         }
         item {
             AuthScreenDelimiter(
-                text = "or",
+                text = stringResource(id = R.string.or),
                 modifier = Modifier.padding(vertical = AppTheme.dimens.contentPadding * 4)
             )
         }
         item {
             MovaButton(
-                text = "Sign in with password",
+                text = stringResource(id = R.string.sign_in_with_password),
                 onClick = onSignInClicked,
                 isLoading = isLoading,
                 modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding),
@@ -130,8 +132,8 @@ private fun ScreenContent(
         }
         item {
             SocialAuthFooter(
-                text = "Don't have an account?",
-                clickableText = "Sign up",
+                text = stringResource(id = R.string.dont_have_an_account),
+                clickableText = stringResource(id = R.string.sign_up),
                 onSignUpClick = onSignUpClicked
             )
         }
@@ -152,7 +154,7 @@ private fun SocialLoginScreenLogo(
 private fun SocialLoginScreenTitle(
     modifier: Modifier = Modifier
 ) = Text(
-    text = "Let's you in",
+    text = stringResource(id = R.string.lets_you_in),
     style = AppTheme.typography.h3,
     fontWeight = FontWeight.Bold,
     textAlign = TextAlign.Center,
@@ -166,7 +168,7 @@ private fun GoogleLoginOption(
     onClick: () -> Unit
 ) = SocialLoginOption(
     onClick = onClick,
-    text = "Continue with Google",
+    text = stringResource(id = R.string.continue_with_google),
     iconId = R.drawable.google_ic,
     modifier = modifier.fillMaxWidth()
 )
@@ -177,7 +179,7 @@ private fun FacebookLoginOption(
     onClick: () -> Unit
 ) = SocialLoginOption(
     onClick = onClick,
-    text = "Continue with Facebook",
+    text = stringResource(id = R.string.continue_with_facebook),
     iconId = R.drawable.facebook_ic,
     modifier = modifier.fillMaxWidth()
 )

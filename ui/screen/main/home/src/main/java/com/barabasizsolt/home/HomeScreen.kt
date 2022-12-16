@@ -6,13 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -36,6 +33,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(screenState: HomeScreenState) {
     val snackBarHostState = remember { SnackbarHostState() }
+    val snackBarErrorMessage = stringResource(id = com.barabasizsolt.util.R.string.snackbar_error_message)
+    val snackBarErrorActionLabel = stringResource(id = com.barabasizsolt.util.R.string.snackbar_action_label)
 
     Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
         when (screenState.state) {
@@ -66,8 +65,8 @@ fun HomeScreen(screenState: HomeScreenState) {
             block = {
                 if (screenState.state is HomeScreenState.State.ShowSnackBar) {
                     snackBarHostState.showSnackbar(
-                        message = "Oops, something went wrong.",
-                        actionLabel = "Try again"
+                        message = snackBarErrorMessage,
+                        actionLabel = snackBarErrorActionLabel
                     )
                 }
             }

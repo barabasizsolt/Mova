@@ -62,6 +62,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.SocialLoginOption
 
@@ -78,6 +79,7 @@ fun AuthScreen(screenState: AuthScreenState) {
             screenState.authenticateWithGoogle(intent = data)
         }
     }
+    val dismissText = stringResource(id = com.barabasizsolt.login.R.string.dismiss)
 
     Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
         ScreenContent(
@@ -115,7 +117,7 @@ fun AuthScreen(screenState: AuthScreenState) {
             if (screenState.state is AuthScreenState.State.Error) {
                 snackBarHostState.showSnackbar(
                     message = (screenState.state as AuthScreenState.State.Error).message,
-                    actionLabel = "Dismiss"
+                    actionLabel = dismissText
                 )
                 screenState.resetState()
             }
@@ -196,7 +198,7 @@ private fun ScreenContent(
         }
         item {
             AuthScreenDelimiter(
-                text = "or continue with",
+                text = stringResource(id = com.barabasizsolt.login.R.string.or_continue_with),
                 modifier = Modifier.padding(vertical = AppTheme.dimens.contentPadding * 4)
             )
         }
@@ -248,7 +250,7 @@ private fun EmailInput(
 ) = AuthInputField(
     value = email,
     onValueChange = onEmailChange,
-    placeholder = "Email",
+    placeholder = stringResource(id = com.barabasizsolt.login.R.string.email),
     leadingIcon = Icons.Default.Email,
     keyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Email,
@@ -269,7 +271,7 @@ private fun PasswordInput(
     AuthInputField(
         value = password,
         onValueChange = onPasswordChange,
-        placeholder = "Password",
+        placeholder = stringResource(id = com.barabasizsolt.login.R.string.password),
         leadingIcon = Icons.Default.Lock,
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(
