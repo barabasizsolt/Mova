@@ -65,6 +65,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.SocialLoginOption
+import com.barabasizsolt.util.BeagleModules
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -123,6 +124,12 @@ fun AuthScreen(screenState: AuthScreenState) {
             }
         }
     )
+
+    BeagleModules(modules = createBeagleModules { user ->
+        screenState.onEmailChange(user.email)
+        screenState.onPasswordChange(user.password)
+        screenState.authenticate()
+    })
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
