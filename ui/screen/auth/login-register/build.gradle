@@ -47,6 +47,9 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.compose)
 
+    releaseImplementation(libs.beagle.noop)
+    debugImplementation(libs.beagle.uiDrawer)
+
     implementation(libs.bundles.androidx.core)
     implementation(libs.androidx.appcompat)
     implementation(libs.google.android.material)

@@ -57,7 +57,7 @@ halcyon-recylerTypedAdapter = '1.0.1' # releases page is unmaintained: https://g
 koin = "3.2.1" # https://insert-koin.io/docs/setup/v3
 koin-compose = "3.2.0" # https://search.maven.org/search?q=io.insert-koin
 leakcanary = "2.9.1" # https://square.github.io/leakcanary/getting_started/
-beagle = "2.8.3" # https://github.com/pandulapeter/beagle/releases
+beagle = "2.9.0" # https://github.com/pandulapeter/beagle/releases
 coil = "2.2.1" # https://github.com/coil-kt/coil/releases
 square-okhttp = "4.9.1" # https://square.github.io/okhttp/changelog/
 square-moshi = "1.12.0" # https://github.com/square/moshi/blob/master/CHANGELOG.md

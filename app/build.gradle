@@ -125,4 +125,13 @@ dependencies {
     androidTestImplementation(libs.bundles.test.android)
     // Kotlin
     androidTestImplementation(libs.test.kotlin.coroutines)
+
+    // Beagle
+    debugImplementation(libs.beagle.uiDrawer)
+    debugImplementation(libs.beagle.okHttp)
+    releaseImplementation(libs.beagle.noop)
+    releaseImplementation(libs.beagle.okHttpNoop)
+
+    // Leakcanary
+    debugImplementation(libs.leakcanary)
 }
