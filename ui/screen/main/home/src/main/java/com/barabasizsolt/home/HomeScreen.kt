@@ -24,7 +24,7 @@ import com.barabasizsolt.catalog.WatchablePager
 import com.barabasizsolt.catalog.WatchableWithRatingCarousel
 import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.movie.model.Movie
-import com.barabasizsolt.theme.attributes.AppTheme
+import com.barabasizsolt.theme.AppTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.CoroutineScope

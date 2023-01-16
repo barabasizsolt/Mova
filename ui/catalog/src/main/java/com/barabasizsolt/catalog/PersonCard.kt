@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.domain.model.WatchableItem
-import com.barabasizsolt.theme.attributes.AppTheme
+import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.ImageType
 import com.barabasizsolt.util.getImageKey
 import com.barabasizsolt.util.withShadow

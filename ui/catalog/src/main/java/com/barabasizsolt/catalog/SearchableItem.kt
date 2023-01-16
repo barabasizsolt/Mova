@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.barabasizsolt.domain.model.WatchableItem
-import com.barabasizsolt.theme.attributes.AppTheme
+import com.barabasizsolt.theme.AppTheme
 
 @Composable
 fun SearchableItem(
@@ -36,14 +36,12 @@ fun SearchableItem(
         Text(
             text = item.title,
             style = AppTheme.typography.body1,
-            color = AppTheme.colors.onBackground,
             overflow = TextOverflow.Ellipsis,
             fontWeight = FontWeight.Bold
         )
         Text(
             text = item.releaseDate,
             style = AppTheme.typography.body2,
-            color = AppTheme.colors.onBackground,
             overflow = TextOverflow.Ellipsis,
             fontWeight = FontWeight.Bold
         )
