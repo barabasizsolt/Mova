@@ -177,7 +177,7 @@ private fun LazyGridScope.content(
 ) {
     itemsIndexed(
         items = items,
-        key = { _, item -> item.id },
+        key = { index, item -> item.id + index },
         span = { _, item -> GridItemSpan(currentLineSpan = if (item is WatchableItem.People) 2 else 3) }
     ) { index, item ->
         when (item) {
