@@ -36,7 +36,7 @@ import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.SocialAuthFooter
 import com.barabasizsolt.catalog.SocialLoginOption
 import com.barabasizsolt.login.R
-import com.barabasizsolt.theme.attributes.AppTheme
+import com.barabasizsolt.theme.AppTheme
 import com.google.accompanist.insets.statusBarsPadding
 
 @Composable
@@ -158,7 +158,6 @@ private fun SocialLoginScreenTitle(
     style = AppTheme.typography.h3,
     fontWeight = FontWeight.Bold,
     textAlign = TextAlign.Center,
-    color = AppTheme.colors.onPrimary,
     modifier = modifier.fillMaxWidth()
 )
 

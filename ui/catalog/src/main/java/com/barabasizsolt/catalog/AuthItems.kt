@@ -36,7 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.barabasizsolt.theme.attributes.AppTheme
+import com.barabasizsolt.theme.AppTheme
 
 @Composable
 fun AuthScreenDelimiter(
@@ -90,7 +90,6 @@ fun SocialLoginOption(
             text = text,
             style = AppTheme.typography.body1,
             fontWeight = FontWeight.Bold,
-            color = AppTheme.colors.onBackground,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1
         )

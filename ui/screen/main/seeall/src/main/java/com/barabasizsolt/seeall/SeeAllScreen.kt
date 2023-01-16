@@ -37,7 +37,7 @@ import com.barabasizsolt.catalog.ScrollToTopItem
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.domain.usecase.screen.seeall.SeeAllContentType
-import com.barabasizsolt.theme.attributes.AppTheme
+import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.R
 import com.barabasizsolt.util.navigationBarInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
@@ -177,7 +177,7 @@ private fun LazyGridScope.content(
 ) {
     itemsIndexed(
         items = items,
-        key = { _, item -> item.id },
+        key = { index, item -> item.id + index },
         span = { _, item -> GridItemSpan(currentLineSpan = if (item is WatchableItem.People) 2 else 3) }
     ) { index, item ->
         when (item) {

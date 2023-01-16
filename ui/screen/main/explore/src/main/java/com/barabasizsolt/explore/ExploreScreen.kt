@@ -29,7 +29,7 @@ import com.barabasizsolt.catalog.MovaSearchField
 import com.barabasizsolt.catalog.SearchableItem
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.WatchableItem
-import com.barabasizsolt.theme.attributes.AppTheme
+import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.imeBottomInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
 import kotlinx.coroutines.launch

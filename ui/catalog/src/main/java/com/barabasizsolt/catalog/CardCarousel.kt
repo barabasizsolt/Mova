@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import com.barabasizsolt.domain.model.WatchableItem
-import com.barabasizsolt.theme.attributes.AppTheme
+import com.barabasizsolt.theme.AppTheme
 
 @Composable
 fun WatchableWithRatingCarousel(
@@ -131,7 +131,6 @@ private fun CardCarouselHeader(
         Text(
             text = header,
             style = AppTheme.typography.h6,
-            color = AppTheme.colors.onSurface,
             overflow = TextOverflow.Ellipsis,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(weight = 1f)

@@ -22,7 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.barabasizsolt.movie.model.Movie
-import com.barabasizsolt.theme.attributes.AppTheme
+import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.ImageType
 import com.barabasizsolt.util.getImageKey
 import com.barabasizsolt.util.movieGenres

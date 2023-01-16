@@ -12,7 +12,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.barabasizsolt.theme.attributes.AppTheme
+import com.barabasizsolt.theme.AppTheme
 
 @Composable
 fun BoxScope.MovaSnackBar(
@@ -40,7 +40,8 @@ fun BoxScope.MovaSnackBar(
                         )
                     }
                 }
-            }
+            },
+            backgroundColor = AppTheme.colors.background
         )
     },
     modifier = modifier

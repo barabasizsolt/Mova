@@ -51,7 +51,6 @@ import com.barabasizsolt.catalog.AuthInputField
 import com.barabasizsolt.catalog.AuthScreenDelimiter
 import com.barabasizsolt.catalog.MovaButton
 import com.barabasizsolt.catalog.SocialAuthFooter
-import com.barabasizsolt.theme.attributes.AppTheme
 import com.barabasizsolt.util.R
 import com.google.accompanist.insets.statusBarsPadding
 import androidx.compose.runtime.setValue
@@ -65,6 +64,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.SocialLoginOption
+import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.BeagleModules
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -245,7 +245,6 @@ private fun AuthScreenTitle(
     style = AppTheme.typography.h5,
     fontWeight = FontWeight.Bold,
     textAlign = TextAlign.Center,
-    color = AppTheme.colors.onPrimary,
     modifier = modifier.fillMaxWidth()
 )
 

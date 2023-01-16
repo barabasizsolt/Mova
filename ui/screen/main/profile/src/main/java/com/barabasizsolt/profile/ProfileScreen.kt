@@ -8,7 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.barabasizsolt.catalog.MovaButton
 import com.barabasizsolt.domain.usecase.auth.LogOutUseCase
-import com.barabasizsolt.theme.attributes.AppTheme
+import com.barabasizsolt.theme.AppTheme
 import org.koin.androidx.compose.inject
 
 @Composable

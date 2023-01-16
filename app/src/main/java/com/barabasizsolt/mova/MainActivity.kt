@@ -24,7 +24,6 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
         setContent {
             MovaTheme {
                 val systemUiController = rememberSystemUiController()
