@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.Result
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import org.koin.androidx.compose.get
 
 @Composable
@@ -58,9 +59,10 @@ class ExploreScreenState(
         getScreenData(isSearch = false)
     }
 
-    fun getScreenData(isSearch: Boolean) {
+    fun getScreenData(isSearch: Boolean, delay: Long = 0) {
         state = if (isSearch) State.Search else State.Loading
         scope.launch {
+            delay(timeMillis = delay)
             state = when (val result = getExploreScreen(query = query)) {
                 is Result.Failure -> {
                     if (!isSearch) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
@@ -74,7 +76,7 @@ class ExploreScreenState(
 
     fun onQueryChange(query: String) {
         this.query = query
-        getScreenData(isSearch = true)
+        getScreenData(isSearch = true, delay = 500)
     }
 
     sealed class State {
