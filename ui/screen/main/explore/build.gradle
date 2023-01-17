@@ -39,6 +39,7 @@ dependencies {
     implementation(project(":ui:catalog"))
     implementation(project(":ui:theme"))
     implementation(project(":ui:util"))
+    implementation(project(":ui:screen:main:base"))
     implementation(project(":domain:domain-model"))
     implementation(project(":domain:domain-util"))
     implementation(project(":domain:domain-usecase"))

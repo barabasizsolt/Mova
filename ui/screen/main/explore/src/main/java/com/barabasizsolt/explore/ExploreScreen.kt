@@ -22,7 +22,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.barabasizsolt.catalog.ErrorContent
+import com.barabasizsolt.base.BaseScreen
+import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.catalog.FilterIcon
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MovaSearchField
@@ -36,37 +37,36 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ExploreScreen(screenState: ExploreScreenState) {
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
+    screenState = screenState,
+    content = {
+        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
 
-    BottomSheetScaffold(
-        scaffoldState = bottomSheetScaffoldState,
-        sheetShape = AppTheme.shapes.medium.copy(
-            bottomStart = CornerSize(size = 0.dp),
-            bottomEnd = CornerSize(size = 0.dp)
-        ),
-        sheetContent = { FilterScreen() },
-        sheetPeekHeight = 0.dp
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = AppTheme.colors.primary)
+        BottomSheetScaffold(
+            scaffoldState = bottomSheetScaffoldState,
+            sheetShape = AppTheme.shapes.medium.copy(
+                bottomStart = CornerSize(size = 0.dp),
+                bottomEnd = CornerSize(size = 0.dp)
+            ),
+            sheetContent = { FilterScreen() },
+            sheetPeekHeight = 0.dp
         ) {
-            when (screenState.state) {
-                is ExploreScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(isSearch = false) })
-                is ExploreScreenState.State.Loading -> LoadingContent()
-                else -> ScreenContent(
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = AppTheme.colors.primary)
+            ) {
+                ScreenContent(
                     query = screenState.query,
                     onQueryChange = screenState::onQueryChange,
                     items = screenState.exploreContent.orEmpty(),
-                    isLoading = screenState.state is ExploreScreenState.State.Search,
+                    isLoading = screenState.state is BaseScreenState.State.UserAction,
                     bottomSheetScaffoldState = bottomSheetScaffoldState
                 )
             }
         }
     }
-}
+)
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

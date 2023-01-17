@@ -1,24 +1,18 @@
 package com.barabasizsolt.home
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.barabasizsolt.catalog.ErrorContent
-import com.barabasizsolt.catalog.LoadingContent
-import com.barabasizsolt.catalog.MovaSnackBar
+import com.barabasizsolt.base.BaseScreen
+import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.catalog.PeopleCarousel
 import com.barabasizsolt.catalog.WatchablePager
 import com.barabasizsolt.catalog.WatchableWithRatingCarousel
@@ -31,48 +25,25 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(screenState: HomeScreenState) {
-    val snackBarHostState = remember { SnackbarHostState() }
-    val snackBarErrorMessage = stringResource(id = com.barabasizsolt.util.R.string.snackbar_error_message)
-    val snackBarErrorActionLabel = stringResource(id = com.barabasizsolt.util.R.string.snackbar_action_label)
-
-    Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
-        when (screenState.state) {
-            is HomeScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(swipeRefresh = false) })
-            is HomeScreenState.State.Loading -> LoadingContent()
-            else -> ScreenContent(
-                isRefreshing = screenState.state is HomeScreenState.State.SwipeRefresh,
-                onRefresh = { screenState.getScreenData(swipeRefresh = true) },
-                upcomingMovies = screenState.homeContent?.upcomingMovies.orEmpty(),
-                popularMovies = screenState.homeContent?.popularMovies.orEmpty(),
-                onSeeAllPopularMoviesClicked = screenState::onSeeAllPopularMoviesClicked,
-                popularPeople = screenState.homeContent?.popularPeople.orEmpty(),
-                onSeeAllPopularPeopleClicked = screenState::onSeeAllPopularPeopleClicked,
-                nowPlayingMovies = screenState.homeContent?.nowPlayingMovies.orEmpty(),
-                onSeeAllNowPlayingMoviesClicked = screenState::onSeeAllNowPlayingMoviesClicked,
-                topRatedMovies = screenState.homeContent?.topRatedMovies.orEmpty(),
-                onSeeAllTopRatedMoviesClicked = screenState::onSeeAllTopRatedMoviesClicked
-            )
-        }
-
-        MovaSnackBar(
-            snackBarHostState = snackBarHostState,
-            onDismiss = { snackBarHostState.currentSnackbarData?.dismiss() }
-        )
-
-        LaunchedEffect(
-            key1 = screenState.state,
-            block = {
-                if (screenState.state is HomeScreenState.State.ShowSnackBar) {
-                    snackBarHostState.showSnackbar(
-                        message = snackBarErrorMessage,
-                        actionLabel = snackBarErrorActionLabel
-                    )
-                }
-            }
+fun HomeScreen(screenState: HomeScreenState) = BaseScreen(
+    screenState = screenState,
+    onSnackBarDismissed = { screenState.getScreenData(isUserAction = false) },
+    content = {
+        ScreenContent(
+            isRefreshing = screenState.state is BaseScreenState.State.UserAction,
+            onRefresh = { screenState.getScreenData(isUserAction = true) },
+            upcomingMovies = screenState.homeContent?.upcomingMovies.orEmpty(),
+            popularMovies = screenState.homeContent?.popularMovies.orEmpty(),
+            onSeeAllPopularMoviesClicked = screenState::onSeeAllPopularMoviesClicked,
+            popularPeople = screenState.homeContent?.popularPeople.orEmpty(),
+            onSeeAllPopularPeopleClicked = screenState::onSeeAllPopularPeopleClicked,
+            nowPlayingMovies = screenState.homeContent?.nowPlayingMovies.orEmpty(),
+            onSeeAllNowPlayingMoviesClicked = screenState::onSeeAllNowPlayingMoviesClicked,
+            topRatedMovies = screenState.homeContent?.topRatedMovies.orEmpty(),
+            onSeeAllTopRatedMoviesClicked = screenState::onSeeAllTopRatedMoviesClicked
         )
     }
-}
+)
 
 @Composable
 private fun ScreenContent(

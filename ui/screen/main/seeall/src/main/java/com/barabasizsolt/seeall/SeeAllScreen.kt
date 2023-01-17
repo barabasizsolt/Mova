@@ -1,7 +1,6 @@
 package com.barabasizsolt.seeall
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,23 +15,21 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.barabasizsolt.catalog.ErrorContent
+import com.barabasizsolt.base.BaseScreen
+import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MediumPersonCard
 import com.barabasizsolt.catalog.MovaHeader
-import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.ScrollToTopItem
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.WatchableItem
@@ -49,47 +46,21 @@ import kotlinx.coroutines.launch
 /*TODO: Handle pagination edge case (themovidedb supports max 500 page)*/
 
 @Composable
-fun SeeAllScreen(screenState: SeeAllScreenState) {
-    val snackBarHostState = remember { SnackbarHostState() }
-    val snackBarErrorMessage = stringResource(id = R.string.snackbar_error_message)
-    val snackBarErrorActionLabel = stringResource(id = R.string.snackbar_action_label)
-
-    Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
-        when (screenState.state) {
-            is SeeAllScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(swipeRefresh = false) })
-            is SeeAllScreenState.State.Loading -> LoadingContent()
-            else -> ScreenContent(
-                isRefreshing = screenState.state is SeeAllScreenState.State.SwipeRefresh,
-                onRefresh = { screenState.getScreenData(swipeRefresh = true) },
-                items = screenState.watchableItems,
-                onLoadMoreItem = { screenState.getScreenData(swipeRefresh = false) },
-                onUpClicked = screenState::onUpClicked,
-                contentType = screenState.contentType
-            )
-        }
-
-        MovaSnackBar(
-            snackBarHostState = snackBarHostState,
-            onDismiss = {
-                snackBarHostState.currentSnackbarData?.dismiss()
-                screenState.resetState()
-            },
-            modifier = Modifier.systemBarsPadding()
-        )
-
-        LaunchedEffect(
-            key1 = screenState.state,
-            block = {
-                if (screenState.state is SeeAllScreenState.State.ShowSnackBar) {
-                    snackBarHostState.showSnackbar(
-                        message = snackBarErrorMessage,
-                        actionLabel = snackBarErrorActionLabel
-                    )
-                }
-            }
+fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
+    screenState = screenState,
+    onSnackBarDismissed = { screenState.getScreenData(isUserAction = false) },
+    snackBarModifier = Modifier.systemBarsPadding(),
+    content = {
+        ScreenContent(
+            isRefreshing = screenState.state is BaseScreenState.State.UserAction,
+            onRefresh = { screenState.getScreenData(isUserAction = true) },
+            items = screenState.watchableItems,
+            onLoadMoreItem = { screenState.getScreenData(isUserAction = false) },
+            onUpClicked = screenState::onUpClicked,
+            contentType = screenState.contentType
         )
     }
-}
+)
 
 @Composable
 private fun ScreenContent(

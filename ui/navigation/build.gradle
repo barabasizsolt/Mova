@@ -37,7 +37,8 @@ android {
 
 dependencies {
     implementation(project(":ui:screen:auth:welcome"))
-    implementation implementation(project(':ui:screen:auth:login-register',))
+    implementation implementation(project(':ui:screen:auth:login-register'))
+    implementation(project(":ui:screen:main:base"))
     implementation(project(":ui:screen:main:home"))
     implementation(project(":ui:screen:main:explore"))
     implementation(project(":ui:screen:main:favourites"))
