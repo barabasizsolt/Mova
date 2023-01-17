@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.domain.model.HomeScreenContent
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenUseCase
@@ -15,17 +15,14 @@ import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.Result
 import com.barabasizsolt.util.Event
 import com.barabasizsolt.util.RefreshType
-import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.get
 
 @Composable
 fun rememberHomeScreenState(
-    scope: CoroutineScope = rememberCoroutineScope(),
     getHomeScreen: GetHomeScreenUseCase = get(),
     getHomeScreenFlow: GetHomeScreenFlowUseCase = get()
 ): HomeScreenState = remember {
     HomeScreenState(
-        scope = scope,
         getHomeScreen = getHomeScreen,
         getHomeScreenFlow = getHomeScreenFlow
     ).apply {
@@ -34,13 +31,10 @@ fun rememberHomeScreenState(
 }
 
 class HomeScreenState(
-    private val scope: CoroutineScope,
     private val getHomeScreen: GetHomeScreenUseCase,
     private val getHomeScreenFlow: GetHomeScreenFlowUseCase,
-) {
+) : BaseScreenState() {
 
-    var state by mutableStateOf<State>(value = State.Loading)
-        private set
     var action by mutableStateOf<Event<Action>?>(value = null)
         private set
     var homeContent by mutableStateOf<HomeScreenContent?>(value = null)
@@ -53,7 +47,7 @@ class HomeScreenState(
         getScreenData(swipeRefresh = false)
     }
 
-    fun getScreenData(swipeRefresh: Boolean) {
+    override fun getScreenData(swipeRefresh: Boolean) {
         state = if (swipeRefresh) State.SwipeRefresh else State.Loading
         scope.launch {
             state = when (
@@ -82,14 +76,6 @@ class HomeScreenState(
 
     fun onSeeAllTopRatedMoviesClicked() {
         action = Event(data = Action.SeeAllTopRatedMovies)
-    }
-
-    sealed class State {
-        object Normal : State()
-        object Loading : State()
-        object SwipeRefresh : State()
-        data class Error(val message: String) : State()
-        object ShowSnackBar : State()
     }
 
     sealed class Action {
