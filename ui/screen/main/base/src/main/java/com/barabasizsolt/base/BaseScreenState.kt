@@ -19,20 +19,20 @@ abstract class BaseScreenState : CoroutineScope {
     var state by mutableStateOf<State>(value = State.Normal)
         protected set
 
-    abstract fun getScreenData(swipeRefresh: Boolean)
+    abstract fun getScreenData(isUserAction: Boolean, delay: Long = 0)
 
     fun onClear() = coroutineContext.cancelChildren()
 
     sealed class State {
         object Normal : State()
         object Loading : State()
-        object SwipeRefresh : State()
+        object UserAction : State()
         data class Error(val message: String) : State()
         object ShowSnackBar : State()
     }
 
     companion object {
-        inline fun <reified T : BaseScreenState> getSaver(
+        inline fun <reified T : BaseScreenState> getBaseSaver(
             noinline save: SaverScope.(value: T) -> Map<String, Any?>,
             noinline restore: (Map<String, Any?>) -> T?
         ) : Saver<T, *> = mapSaver(save = save, restore = restore)

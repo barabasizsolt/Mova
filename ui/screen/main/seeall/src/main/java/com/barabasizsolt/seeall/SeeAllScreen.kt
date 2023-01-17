@@ -48,14 +48,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
     screenState = screenState,
-    onSnackBarDismissed = { screenState.getScreenData(swipeRefresh = false) },
+    onSnackBarDismissed = { screenState.getScreenData(isUserAction = false) },
     snackBarModifier = Modifier.systemBarsPadding(),
     content = {
         ScreenContent(
-            isRefreshing = screenState.state is BaseScreenState.State.SwipeRefresh,
-            onRefresh = { screenState.getScreenData(swipeRefresh = true) },
+            isRefreshing = screenState.state is BaseScreenState.State.UserAction,
+            onRefresh = { screenState.getScreenData(isUserAction = true) },
             items = screenState.watchableItems,
-            onLoadMoreItem = { screenState.getScreenData(swipeRefresh = false) },
+            onLoadMoreItem = { screenState.getScreenData(isUserAction = false) },
             onUpClicked = screenState::onUpClicked,
             contentType = screenState.contentType
         )

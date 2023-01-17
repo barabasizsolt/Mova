@@ -28,7 +28,7 @@ fun BaseScreen(
 
     Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
         when (screenState.state) {
-            is BaseScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(swipeRefresh = false) })
+            is BaseScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(isUserAction = false) })
             is BaseScreenState.State.Loading -> LoadingContent()
             else -> content()
         }

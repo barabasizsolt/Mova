@@ -57,22 +57,22 @@ class SeeAllScreenState(
         }.launchIn(scope = scope)
     }
 
-    override fun getScreenData(swipeRefresh: Boolean) {
-        if (state !in listOf(State.Loading, State.SwipeRefresh)) {
+    override fun getScreenData(isUserAction: Boolean, delay: Long) {
+        if (state !in listOf(State.Loading, State.UserAction)) {
             scope.launch {
-                state = if (swipeRefresh) State.SwipeRefresh else State.Normal
+                state = if (isUserAction) State.UserAction else State.Normal
                 state = when (
                     val result = getSeeAllScreenUseCase(
                         contentType = contentType,
                         refreshType = when {
-                            swipeRefresh -> RefreshType.FORCE_REFRESH
+                            isUserAction -> RefreshType.FORCE_REFRESH
                             watchableItems.isEmpty() -> RefreshType.CACHE_IF_POSSIBLE
                             else -> RefreshType.NEXT_PAGE
                         }
                     )
                 ) {
                     is Result.Failure -> when {
-                        swipeRefresh -> State.ShowSnackBar
+                        isUserAction -> State.ShowSnackBar
                         watchableItems.isNotEmpty() -> State.Normal
                         else -> State.Error(message = result.exception.message.orEmpty())
                     }

@@ -26,7 +26,7 @@ fun rememberHomeScreenState(
         getHomeScreen = getHomeScreen,
         getHomeScreenFlow = getHomeScreenFlow
     ).apply {
-        getScreenData(swipeRefresh = false)
+        getScreenData(isUserAction = false)
     }
 }
 
@@ -44,19 +44,19 @@ class HomeScreenState(
         getHomeScreenFlow().onEach {
             homeContent = it
         }.launchIn(scope = scope)
-        getScreenData(swipeRefresh = false)
+        getScreenData(isUserAction = false)
     }
 
-    override fun getScreenData(swipeRefresh: Boolean) {
-        state = if (swipeRefresh) State.SwipeRefresh else State.Loading
+    override fun getScreenData(isUserAction: Boolean, delay: Long) {
+        state = if (isUserAction) State.UserAction else State.Loading
         scope.launch {
             state = when (
                 val result = getHomeScreen(
                     coroutineScope = this,
-                    refreshType = if (swipeRefresh) RefreshType.FORCE_REFRESH else RefreshType.CACHE_IF_POSSIBLE
+                    refreshType = if (isUserAction) RefreshType.FORCE_REFRESH else RefreshType.CACHE_IF_POSSIBLE
                 )
             ) {
-                is Result.Failure -> if (!swipeRefresh) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
+                is Result.Failure -> if (!isUserAction) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
                 is Result.Success -> State.Normal
             }
         }

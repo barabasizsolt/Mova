@@ -46,7 +46,8 @@ fun FilterScreen() {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
         contentPadding = PaddingValues(vertical = AppTheme.dimens.screenPadding),
-        modifier = Modifier.background(color = AppTheme.colors.background)
+        // TODO[MID]: fix this
+        modifier = Modifier.background(color = if (isSystemInDarkTheme()) Color(color = 0xFF121212) else Color.White)
     ) {
         item {
             Text(

@@ -1,5 +1,6 @@
 package com.barabasizsolt.catalog
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,7 +13,9 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.barabasizsolt.theme.AppTheme
+import com.barabasizsolt.theme.attributes.AppColor
 
 @Composable
 fun BoxScope.MovaSnackBar(
@@ -41,7 +44,8 @@ fun BoxScope.MovaSnackBar(
                     }
                 }
             },
-            backgroundColor = AppTheme.colors.background
+            // TODO[MID]: fix this
+            backgroundColor = if (isSystemInDarkTheme()) Color(color = 0xFF121212) else Color.White
         )
     },
     modifier = modifier

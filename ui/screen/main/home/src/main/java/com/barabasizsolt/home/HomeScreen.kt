@@ -27,11 +27,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(screenState: HomeScreenState) = BaseScreen(
     screenState = screenState,
-    onSnackBarDismissed = { screenState.getScreenData(swipeRefresh = false) },
+    onSnackBarDismissed = { screenState.getScreenData(isUserAction = false) },
     content = {
         ScreenContent(
-            isRefreshing = screenState.state is BaseScreenState.State.SwipeRefresh,
-            onRefresh = { screenState.getScreenData(swipeRefresh = true) },
+            isRefreshing = screenState.state is BaseScreenState.State.UserAction,
+            onRefresh = { screenState.getScreenData(isUserAction = true) },
             upcomingMovies = screenState.homeContent?.upcomingMovies.orEmpty(),
             popularMovies = screenState.homeContent?.popularMovies.orEmpty(),
             onSeeAllPopularMoviesClicked = screenState::onSeeAllPopularMoviesClicked,
