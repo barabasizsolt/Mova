@@ -14,17 +14,14 @@ class GetMovieDiscoverUseCase(private val discoverService: DiscoverService) {
         sortBy: List<String> = listOf(FilterType.DEFAULT.value),
         refreshType: RefreshType
     ) = wrapToResult {
-        if (query.isEmpty()) {
-            println("<<Get")
-            discoverService.getMovies(
-                region = region,
-                withGenres = withGenres,
-                sortBy = sortBy,
-                refreshType = refreshType
-            )
-        } else {
-            println("<<Search")
-            discoverService.searchMovies(query = query, refreshType = refreshType)
-        }
+        if (query.isEmpty()) discoverService.getMovies(
+            region = region,
+            withGenres = withGenres,
+            sortBy = sortBy,
+            refreshType = refreshType
+        ) else discoverService.searchMovies(
+            query = query,
+            refreshType = refreshType
+        )
     }
 }

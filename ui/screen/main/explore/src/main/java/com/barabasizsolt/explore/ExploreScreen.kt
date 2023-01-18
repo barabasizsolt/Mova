@@ -19,6 +19,7 @@ import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -113,9 +114,12 @@ private fun ScreenContent(
             )
         }
         if (isLoading) {
+            LaunchedEffect(
+                key1 = Unit,
+                block = { gridState.scrollToItem(index = 0, scrollOffset = 0) }
+            )
             LoadingContent()
         } else {
-            // TODO [MID] before search reset the scroll position.
             // TODO [MID] if the search returns empty list show some dialog
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 2),
