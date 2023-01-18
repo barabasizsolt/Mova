@@ -9,24 +9,30 @@ class DiscoverRemoteSource(private val networkService: DiscoverNetworkService) {
     suspend fun getMovies(
         region: List<String>,
         withGenres: List<Int>,
-        sortBy: List<String>
+        sortBy: List<String>,
+        page: Int,
     ) = networkService.getMovies(
         region = region,
         withGenres = withGenres,
-        sortBy = sortBy
+        sortBy = sortBy,
+        page = page
     ).toModel()
 
     suspend fun getTvSeries(
         region: List<String>,
         withGenres: List<Int>,
-        sortBy: List<String>
+        sortBy: List<String>,
+        page: Int
     ) = networkService.getTvSeries(
         region = region,
         withGenres = withGenres,
-        sortBy = sortBy
+        sortBy = sortBy,
+        page = page
     ).toModel()
 
-    suspend fun searchMovies(query: String): List<Movie> = networkService.searchMovies(query = query).toModel()
+    suspend fun searchMovies(query: String, page: Int): List<Movie> =
+        networkService.searchMovies(query = query, page = page).toModel()
 
-    suspend fun searchTvSeries(query: String) = networkService.searchTvSeries(query = query).toModel()
+    suspend fun searchTvSeries(query: String, page: Int) =
+        networkService.searchTvSeries(query = query, page = page).toModel()
 }

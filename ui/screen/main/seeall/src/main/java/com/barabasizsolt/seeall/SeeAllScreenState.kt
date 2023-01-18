@@ -7,13 +7,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.domain.model.WatchableItem
-import com.barabasizsolt.domain.model.toWatchableItem
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenUseCase
-import com.barabasizsolt.domain.usecase.screen.seeall.SeeAllContentType
 import com.barabasizsolt.domain.util.Result
-import com.barabasizsolt.movie.model.Movie
-import com.barabasizsolt.people.model.People
 import com.barabasizsolt.util.Event
 import com.barabasizsolt.util.RefreshType
 import kotlinx.coroutines.flow.launchIn
@@ -46,14 +42,8 @@ class SeeAllScreenState(
         private set
 
     init {
-        getSeeAllScreenFlowUseCase(contentType = contentType).onEach { content ->
-            watchableItems = when (contentType) {
-                SeeAllContentType.POPULAR_MOVIES.name, SeeAllContentType.NOW_PLAYING_MOVIES.name, SeeAllContentType.TOP_RATED_MOVIES.name ->
-                   (content as List<*>).map { (it as Movie).toWatchableItem() }
-                SeeAllContentType.POPULAR_PEOPLE.name ->
-                    (content as List<*>).map { (it as People).toWatchableItem() }
-                else -> emptyList()
-            }
+        getSeeAllScreenFlowUseCase(contentType = contentType).onEach {
+            watchableItems = it
         }.launchIn(scope = scope)
     }
 

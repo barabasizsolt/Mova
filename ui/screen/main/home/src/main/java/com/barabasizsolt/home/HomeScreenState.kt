@@ -25,9 +25,7 @@ fun rememberHomeScreenState(
     HomeScreenState(
         getHomeScreen = getHomeScreen,
         getHomeScreenFlow = getHomeScreenFlow
-    ).apply {
-        getScreenData(isUserAction = false)
-    }
+    )
 }
 
 class HomeScreenState(

@@ -6,6 +6,7 @@ abstract class PagingItem {
     abstract val id: String
 }
 
+//TODO [HIGH] fix if the pagination arrived toi the last page
 suspend fun pagination(
     refreshType: RefreshType,
     flow: MutableStateFlow<List<PagingItem>>,
@@ -17,12 +18,18 @@ suspend fun pagination(
             flow.value = it
         }
     }
-    RefreshType.NEXT_PAGE -> getRemoteContent(counter).let {
-        val newContent = flow.value + it
-        flow.value = newContent
-        newContent
+    RefreshType.NEXT_PAGE -> if (counter > MAX_PAGE) {
+        flow.value
+    } else {
+        getRemoteContent(counter).let {
+            val newContent = flow.value + it
+            flow.value = newContent
+            newContent
+        }
     }
     RefreshType.FORCE_REFRESH -> getRemoteContent(1).also {
         flow.value = it
     }
 }
+
+private const val MAX_PAGE: Int = 500

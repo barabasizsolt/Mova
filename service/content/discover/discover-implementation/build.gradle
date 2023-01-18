@@ -18,4 +18,5 @@ dependencies {
     implementation(project(":service:content:discover:discover-api"))
     implementation(project(":service:content:model:movie"))
     implementation(project(":service:content:model:tv"))
+    implementation(project(":service:content:util"))
 }

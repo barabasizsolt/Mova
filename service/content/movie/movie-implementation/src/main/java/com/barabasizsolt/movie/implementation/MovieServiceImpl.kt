@@ -65,8 +65,6 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
         _nowPlayingMovies.value = emptyList()
     }
 
-    private
-
     companion object {
         private var UPCOMING_MOVIES_CTR: Int = 1
         private var POPULAR_MOVIES_CTR: Int = 1

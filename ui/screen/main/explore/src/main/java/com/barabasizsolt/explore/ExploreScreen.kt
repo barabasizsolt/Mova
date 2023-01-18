@@ -10,8 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetScaffoldState
@@ -29,6 +30,7 @@ import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MovaSearchField
 import com.barabasizsolt.catalog.SearchableItem
 import com.barabasizsolt.catalog.WatchableWithRating
+import com.barabasizsolt.catalog.paginatedItemsIndexed
 import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.imeBottomInsetDp
@@ -59,9 +61,10 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
                 ScreenContent(
                     query = screenState.query,
                     onQueryChange = screenState::onQueryChange,
-                    items = screenState.exploreContent.orEmpty(),
+                    items = screenState.exploreContent,
                     isLoading = screenState.state is BaseScreenState.State.UserAction,
-                    bottomSheetScaffoldState = bottomSheetScaffoldState
+                    bottomSheetScaffoldState = bottomSheetScaffoldState,
+                    onLoadMoreItem = { screenState.getScreenData(isUserAction = false) }
                 )
             }
         }
@@ -76,8 +79,10 @@ private fun ScreenContent(
     items: List<WatchableItem>,
     isLoading: Boolean,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
+    onLoadMoreItem: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
+    val gridState: LazyGridState = rememberLazyGridState()
 
     Column(verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),) {
         Row(
@@ -110,6 +115,8 @@ private fun ScreenContent(
         if (isLoading) {
             LoadingContent()
         } else {
+            // TODO [MID] before search reset the scroll position.
+            // TODO [MID] if the search returns empty list show some dialog
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = 2),
                 verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
@@ -119,20 +126,27 @@ private fun ScreenContent(
                     end = AppTheme.dimens.screenPadding,
                     bottom = AppTheme.dimens.screenPadding + imeBottomInsetDp
                 ),
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                state = gridState
             ) {
                 if (query.isNotEmpty()) {
-                    items(
+                    paginatedItemsIndexed(
                         items = items,
-                        span = { GridItemSpan(currentLineSpan = 2) }
-                    ) { item ->
+                        key = { index, item -> item.id + index },
+                        span = { _, _ -> GridItemSpan(currentLineSpan = 2) },
+                        onLoadMoreItem = onLoadMoreItem
+                    ) { _, item ->
                         SearchableItem(
                             item = item,
                             onClick = { /*TODO: Implement it*/ }
                         )
                     }
                 } else {
-                    items(items = items) { item ->
+                    paginatedItemsIndexed(
+                        items = items,
+                        key = { index, item -> item.id + index },
+                        onLoadMoreItem = onLoadMoreItem
+                    ) { _, item ->
                         WatchableWithRating(
                             item = item,
                             onClick = { /*TODO: Implement it*/ }

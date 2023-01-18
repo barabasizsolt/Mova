@@ -11,19 +11,27 @@ interface DiscoverNetworkService {
     suspend fun getMovies(
         @Query("region") region: List<String>,
         @Query("with_genres") withGenres: List<Int>,
-        @Query("sort_by") sortBy: List<String>
+        @Query("sort_by") sortBy: List<String>,
+        @Query("page") page: Int
     ) : MovieListResponse
 
     @GET("discover/tv")
     suspend fun getTvSeries(
         @Query("region") region: List<String>,
         @Query("with_genres") withGenres: List<Int>,
-        @Query("sort_by") sortBy: List<String>
+        @Query("sort_by") sortBy: List<String>,
+        @Query("page") page: Int
     ) : TvSeriesDiscoverResponse
 
     @GET("search/movie")
-    suspend fun searchMovies(@Query("query") query: String) : MovieListResponse
+    suspend fun searchMovies(
+        @Query("query") query: String,
+        @Query("page") page: Int
+    ) : MovieListResponse
 
     @GET("search/tv")
-    suspend fun searchTvSeries(@Query("query") query: String) : TvSeriesDiscoverResponse
+    suspend fun searchTvSeries(
+        @Query("query") query: String,
+        @Query("page") page: Int
+    ) : TvSeriesDiscoverResponse
 }
