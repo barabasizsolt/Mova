@@ -36,6 +36,7 @@ import com.barabasizsolt.domain.model.WatchableItem
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.imeBottomInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -44,6 +45,8 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
     screenState = screenState,
     content = {
         val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+        val scope = rememberCoroutineScope()
+        val gridState: LazyGridState = rememberLazyGridState()
 
         BottomSheetScaffold(
             scaffoldState = bottomSheetScaffoldState,
@@ -65,7 +68,9 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
                     items = screenState.exploreContent,
                     isLoading = screenState.state is BaseScreenState.State.UserAction,
                     bottomSheetScaffoldState = bottomSheetScaffoldState,
-                    onLoadMoreItem = { screenState.getScreenData(isUserAction = false) }
+                    onLoadMoreItem = { screenState.getScreenData(isUserAction = false) },
+                    scope = scope,
+                    gridState = gridState
                 )
             }
         }
@@ -80,11 +85,10 @@ private fun ScreenContent(
     items: List<WatchableItem>,
     isLoading: Boolean,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
-    onLoadMoreItem: () -> Unit
+    onLoadMoreItem: () -> Unit,
+    scope: CoroutineScope,
+    gridState: LazyGridState
 ) {
-    val scope = rememberCoroutineScope()
-    val gridState: LazyGridState = rememberLazyGridState()
-
     Column(verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),) {
         Row(
             modifier = Modifier
