@@ -36,6 +36,7 @@ import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.catalog.FilterIcon
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MovaSearchField
+import com.barabasizsolt.catalog.ScrollUpWrapper
 import com.barabasizsolt.catalog.SearchableItem
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.ContentItem
@@ -131,58 +132,63 @@ private fun ScreenContent(
             LoadingContent()
         } else {
             // TODO [MID] if the search returns empty list show some dialog
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(count = 2),
-                verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-                contentPadding = PaddingValues(
-                    start = AppTheme.dimens.screenPadding,
-                    end = AppTheme.dimens.screenPadding,
-                    bottom = AppTheme.dimens.screenPadding + imeBottomInsetDp
-                ),
-                modifier = Modifier.fillMaxSize(),
-                state = gridState
-            ) {
-                if (query.isNotEmpty()) {
-                    searchableItemsIndexed(
-                        items = items,
-                        key = { index, item -> item.id + index },
-                        span = { _, item ->
-                            GridItemSpan(
-                                currentLineSpan = when (item) {
-                                    is ContentItem.ItemTail -> 6
-                                    else -> 2
-                                }
-                            )
-                        },
-                        onLoadMoreItem = onLoadMoreItem
-                    ) { _, item ->
-                        SearchableItem(
-                            item = item as ContentItem.Watchable,
-                            onClick = { /*TODO: Implement it*/ }
-                        )
-                    }
-                } else {
-                    searchableItemsIndexed(
-                        items = items,
-                        key = { index, item -> item.id + index },
-                        span = { _, item ->
-                            GridItemSpan(
-                                currentLineSpan = when (item) {
-                                    is ContentItem.ItemTail -> 6
-                                    else -> 1
-                                }
-                            )
-                        },
-                        onLoadMoreItem = onLoadMoreItem
-                    ) { _, item ->
-                        WatchableWithRating(
-                            item = item as ContentItem.Watchable,
-                            onClick = { /*TODO: Implement it*/ }
-                        )
+            ScrollUpWrapper(
+                gridState = gridState,
+                content = {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(count = 2),
+                        verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
+                        horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
+                        contentPadding = PaddingValues(
+                            start = AppTheme.dimens.screenPadding,
+                            end = AppTheme.dimens.screenPadding,
+                            bottom = AppTheme.dimens.screenPadding + imeBottomInsetDp
+                        ),
+                        modifier = Modifier.fillMaxSize(),
+                        state = gridState
+                    ) {
+                        if (query.isNotEmpty()) {
+                            searchableItemsIndexed(
+                                items = items,
+                                key = { index, item -> item.id + index },
+                                span = { _, item ->
+                                    GridItemSpan(
+                                        currentLineSpan = when (item) {
+                                            is ContentItem.ItemTail -> 6
+                                            else -> 2
+                                        }
+                                    )
+                                },
+                                onLoadMoreItem = onLoadMoreItem
+                            ) { _, item ->
+                                SearchableItem(
+                                    item = item as ContentItem.Watchable,
+                                    onClick = { /*TODO: Implement it*/ }
+                                )
+                            }
+                        } else {
+                            searchableItemsIndexed(
+                                items = items,
+                                key = { index, item -> item.id + index },
+                                span = { _, item ->
+                                    GridItemSpan(
+                                        currentLineSpan = when (item) {
+                                            is ContentItem.ItemTail -> 6
+                                            else -> 1
+                                        }
+                                    )
+                                },
+                                onLoadMoreItem = onLoadMoreItem
+                            ) { _, item ->
+                                WatchableWithRating(
+                                    item = item as ContentItem.Watchable,
+                                    onClick = { /*TODO: Implement it*/ }
+                                )
+                            }
+                        }
                     }
                 }
-            }
+            )
         }
     }
 }
@@ -202,7 +208,9 @@ private inline fun LazyGridScope.searchableItemsIndexed(
 ) { index, item ->
     when (item) {
         is ContentItem.ItemTail -> if (item.loadMore) {
-            LoadingContent(modifier = Modifier.height(height = 80.dp).fillMaxWidth())
+            LoadingContent(modifier = Modifier
+                .height(height = 80.dp)
+                .fillMaxWidth())
             SideEffect { onLoadMoreItem() }
         }
         else -> itemContent(index, item)

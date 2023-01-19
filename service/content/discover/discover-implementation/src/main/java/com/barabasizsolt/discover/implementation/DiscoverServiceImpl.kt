@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class DiscoverServiceImpl(private val remoteSource: DiscoverRemoteSource) : DiscoverService {
 
+    // TODO [HIGH] separate discovery + search movies/tvSeries
     private val _movies = MutableStateFlow<List<PagingItem>>(value = emptyList())
     override val movies: Flow<List<PagingItem>> = _movies
 
