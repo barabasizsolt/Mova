@@ -7,7 +7,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
-import com.barabasizsolt.domain.model.WatchableItem
+import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.helper.discover.movie.DeleteMovieDiscoverUseCase
 import com.barabasizsolt.domain.usecase.helper.discover.tv.DeleteTvDiscoverUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.Category
@@ -49,7 +49,7 @@ class ExploreScreenState(
     private val deleteMovieDiscoverUseCase: DeleteMovieDiscoverUseCase,
     private val deleteTvDiscoverUseCase: DeleteTvDiscoverUseCase
 ) : BaseScreenState() {
-    var exploreContent by mutableStateOf<List<WatchableItem>>(value = emptyList())
+    var exploreContent by mutableStateOf<List<ContentItem>>(value = emptyList())
         private set
     var query by mutableStateOf(value = "")
         private set
@@ -57,6 +57,7 @@ class ExploreScreenState(
 
     init {
         getExploreScreenFlow(category = category).onEach {
+            //exploreContent = if (it.isEmpty() || it[it.lastIndex].isLastItem) it else it.plus(ContentItem.LoadMore())
             exploreContent = it
         }.launchIn(scope = scope)
         getScreenData(isUserAction = false)

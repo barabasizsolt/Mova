@@ -4,6 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -11,23 +13,26 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.barabasizsolt.base.BaseScreen
 import com.barabasizsolt.base.BaseScreenState
+import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MediumPersonCard
 import com.barabasizsolt.catalog.MovaHeader
 import com.barabasizsolt.catalog.ScrollToTopItem
 import com.barabasizsolt.catalog.WatchableWithRating
-import com.barabasizsolt.catalog.paginatedItemsIndexed
-import com.barabasizsolt.domain.model.WatchableItem
+import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.screen.seeall.SeeAllContentType
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.R
@@ -59,7 +64,7 @@ fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
 private fun ScreenContent(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
-    items: List<WatchableItem>,
+    items: List<ContentItem>,
     onLoadMoreItem: () -> Unit,
     onUpClicked: () -> Unit,
     contentType: String,
@@ -136,22 +141,33 @@ private fun LazyGridScope.header(
 }
 
 private fun LazyGridScope.content(
-    items: List<WatchableItem>,
+    items: List<ContentItem>,
     onLoadMoreItem: () -> Unit
-) = paginatedItemsIndexed(
+) = itemsIndexed(
     items = items,
     key = { index, item -> item.id + index },
-    span = { _, item -> GridItemSpan(currentLineSpan = if (item is WatchableItem.People) 2 else 3) },
-    onLoadMoreItem = onLoadMoreItem
+    span = { _, item ->
+        GridItemSpan(
+            currentLineSpan = when (item) {
+                is ContentItem.ItemTail -> 6
+                is ContentItem.Person -> 2
+                else -> 3
+            }
+        )
+    }
 ) { _, item ->
     when (item) {
-        is WatchableItem.Movie, is WatchableItem.TvSeries -> WatchableWithRating(
+        is ContentItem.Watchable -> WatchableWithRating(
             item = item,
             onClick = { /*TODO: Implement it*/ }
         )
-        is WatchableItem.People -> MediumPersonCard(
+        is ContentItem.Person -> MediumPersonCard(
             item = item,
             onClick = { /*TODO: Implement it*/ }
         )
+        is ContentItem.ItemTail -> if (item.loadMore) {
+            LoadingContent(modifier = Modifier.height(height = 80.dp).fillMaxWidth())
+            SideEffect { onLoadMoreItem() }
+        }
     }
 }

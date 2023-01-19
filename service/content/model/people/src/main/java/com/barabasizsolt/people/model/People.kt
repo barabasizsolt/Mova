@@ -7,4 +7,4 @@ data class People(
     val adult: Boolean,
     val profilePath: String,
     val name: String
-) : PagingItem()
+) : PagingItem

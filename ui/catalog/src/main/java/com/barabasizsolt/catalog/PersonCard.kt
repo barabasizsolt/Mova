@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.barabasizsolt.domain.model.WatchableItem
+import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.ImageType
 import com.barabasizsolt.util.getImageKey
@@ -29,7 +29,7 @@ import com.barabasizsolt.util.withShadow
 @Composable
 fun MediumPersonCard(
     modifier: Modifier = Modifier,
-    item: WatchableItem,
+    item: ContentItem.Person,
     aspectRatio: Float = 0.7f,
     onClick: () -> Unit
 ) = Box {
@@ -42,7 +42,7 @@ fun MediumPersonCard(
             .clickable { onClick() }
     )
     Text(
-        text = item.title,
+        text = item.name,
         style = AppTheme.typography.body2.withShadow(),
         color = Color.White,
         textAlign = TextAlign.Center,
@@ -55,14 +55,14 @@ fun MediumPersonCard(
 @Composable
 fun PersonCard(
     modifier: Modifier = Modifier,
-    person: WatchableItem,
+    person: ContentItem.Person,
     onClick: () -> Unit
 ) = Row(
     modifier = modifier.clickable { onClick() },
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
     verticalAlignment = Alignment.CenterVertically
 ) {
-    val names = person.title.split(" ", limit = 2)
+    val names = person.name.split(" ", limit = 2)
 
     MovaImage(
         imageUrl = person.posterPath.getImageKey(imageType = ImageType.ORIGINAL),

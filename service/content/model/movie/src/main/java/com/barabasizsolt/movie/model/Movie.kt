@@ -15,4 +15,4 @@ data class Movie(
     val posterPath: String?,
     val releaseDate: String,
     val voteAverage: String
-) : PagingItem()
+) : PagingItem

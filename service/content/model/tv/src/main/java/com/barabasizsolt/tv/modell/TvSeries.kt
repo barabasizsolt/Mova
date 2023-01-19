@@ -14,4 +14,4 @@ data class TvSeries(
     val posterPath: String?,
     val firstAirDate: String,
     val voteAverage: String
-) : PagingItem()
+) : PagingItem

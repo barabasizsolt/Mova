@@ -16,7 +16,7 @@ import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.catalog.PeopleCarousel
 import com.barabasizsolt.catalog.WatchablePager
 import com.barabasizsolt.catalog.WatchableWithRatingCarousel
-import com.barabasizsolt.domain.model.WatchableItem
+import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.theme.AppTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -50,13 +50,13 @@ private fun ScreenContent(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     upcomingMovies: List<Movie>,
-    popularMovies: List<WatchableItem>,
+    popularMovies: List<ContentItem.Watchable>,
     onSeeAllPopularMoviesClicked: () -> Unit,
-    popularPeople: List<WatchableItem>,
+    popularPeople: List<ContentItem.Person>,
     onSeeAllPopularPeopleClicked: () -> Unit,
-    nowPlayingMovies: List<WatchableItem>,
+    nowPlayingMovies: List<ContentItem.Watchable>,
     onSeeAllNowPlayingMoviesClicked: () -> Unit,
-    topRatedMovies: List<WatchableItem>,
+    topRatedMovies: List<ContentItem.Watchable>,
     onSeeAllTopRatedMoviesClicked: () -> Unit
 ) {
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)

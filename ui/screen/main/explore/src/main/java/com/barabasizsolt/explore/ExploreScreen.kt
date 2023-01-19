@@ -7,11 +7,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridItemScope
+import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
+import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.BottomSheetScaffold
@@ -20,6 +26,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,8 +38,7 @@ import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MovaSearchField
 import com.barabasizsolt.catalog.SearchableItem
 import com.barabasizsolt.catalog.WatchableWithRating
-import com.barabasizsolt.catalog.paginatedItemsIndexed
-import com.barabasizsolt.domain.model.WatchableItem
+import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.imeBottomInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
@@ -82,7 +88,7 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
 private fun ScreenContent(
     query: String,
     onQueryChange: (String) -> Unit,
-    items: List<WatchableItem>,
+    items: List<ContentItem>,
     isLoading: Boolean,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
     onLoadMoreItem: () -> Unit,
@@ -138,30 +144,67 @@ private fun ScreenContent(
                 state = gridState
             ) {
                 if (query.isNotEmpty()) {
-                    paginatedItemsIndexed(
+                    searchableItemsIndexed(
                         items = items,
                         key = { index, item -> item.id + index },
-                        span = { _, _ -> GridItemSpan(currentLineSpan = 2) },
+                        span = { _, item ->
+                            GridItemSpan(
+                                currentLineSpan = when (item) {
+                                    is ContentItem.ItemTail -> 6
+                                    else -> 2
+                                }
+                            )
+                        },
                         onLoadMoreItem = onLoadMoreItem
                     ) { _, item ->
                         SearchableItem(
-                            item = item,
+                            item = item as ContentItem.Watchable,
                             onClick = { /*TODO: Implement it*/ }
                         )
                     }
                 } else {
-                    paginatedItemsIndexed(
+                    searchableItemsIndexed(
                         items = items,
                         key = { index, item -> item.id + index },
+                        span = { _, item ->
+                            GridItemSpan(
+                                currentLineSpan = when (item) {
+                                    is ContentItem.ItemTail -> 6
+                                    else -> 1
+                                }
+                            )
+                        },
                         onLoadMoreItem = onLoadMoreItem
                     ) { _, item ->
                         WatchableWithRating(
-                            item = item,
+                            item = item as ContentItem.Watchable,
                             onClick = { /*TODO: Implement it*/ }
                         )
                     }
                 }
             }
         }
+    }
+}
+
+private inline fun LazyGridScope.searchableItemsIndexed(
+    items: List<ContentItem>,
+    crossinline onLoadMoreItem: () -> Unit,
+    noinline key: ((index: Int, item: ContentItem) -> Any)? = null,
+    noinline span: (LazyGridItemSpanScope.(index: Int, item: ContentItem) -> GridItemSpan)? = null,
+    crossinline contentType: (index: Int, item: ContentItem) -> Any? = { _, _ -> null },
+    crossinline itemContent: @Composable LazyGridItemScope.(index: Int, item: ContentItem) -> Unit
+) = itemsIndexed(
+    items = items,
+    key = key,
+    span = span,
+    contentType = contentType
+) { index, item ->
+    when (item) {
+        is ContentItem.ItemTail -> if (item.loadMore) {
+            LoadingContent(modifier = Modifier.height(height = 80.dp).fillMaxWidth())
+            SideEffect { onLoadMoreItem() }
+        }
+        else -> itemContent(index, item)
     }
 }

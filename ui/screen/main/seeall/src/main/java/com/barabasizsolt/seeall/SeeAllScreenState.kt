@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
-import com.barabasizsolt.domain.model.WatchableItem
+import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenUseCase
 import com.barabasizsolt.domain.util.Result
@@ -38,7 +38,7 @@ class SeeAllScreenState(
 
     var action by mutableStateOf<Event<Action>?>(value = null)
         private set
-    var watchableItems by mutableStateOf<List<WatchableItem>>(value = emptyList())
+    var watchableItems by mutableStateOf<List<ContentItem>>(value = emptyList())
         private set
 
     init {

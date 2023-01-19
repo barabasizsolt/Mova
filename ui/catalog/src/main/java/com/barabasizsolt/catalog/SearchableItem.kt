@@ -12,13 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import com.barabasizsolt.domain.model.WatchableItem
+import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.theme.AppTheme
 
 @Composable
 fun SearchableItem(
     modifier: Modifier = Modifier,
-    item: WatchableItem,
+    item: ContentItem.Watchable,
     onClick: () -> Unit
 ) = Row(
     modifier = modifier
