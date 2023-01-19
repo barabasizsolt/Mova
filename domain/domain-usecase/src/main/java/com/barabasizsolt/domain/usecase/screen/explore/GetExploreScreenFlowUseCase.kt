@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import com.barabasizsolt.tv.modell.TvSeries
-import com.barabasizsolt.util.TailItem
+import com.barabasizsolt.util.pagination.TailItem
 
 class GetExploreScreenFlowUseCase(
     private val getMovieDiscoverFlowUseCase: GetMovieDiscoverFlowUseCase,

@@ -1,8 +1,7 @@
 package com.barabasizsolt.people.api
 
-import com.barabasizsolt.people.model.People
-import com.barabasizsolt.util.PagingItem
 import com.barabasizsolt.util.RefreshType
+import com.barabasizsolt.util.pagination.PagingItem
 import kotlinx.coroutines.flow.Flow
 
 interface PeopleService {

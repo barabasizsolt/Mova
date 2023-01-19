@@ -1,9 +1,9 @@
 package com.barabasizsolt.movie.implementation
 
 import com.barabasizsolt.movie.api.MovieService
-import com.barabasizsolt.util.PagingItem
 import com.barabasizsolt.util.RefreshType
-import com.barabasizsolt.util.pagination
+import com.barabasizsolt.util.pagination.PagingItem
+import com.barabasizsolt.util.pagination.pagination
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 

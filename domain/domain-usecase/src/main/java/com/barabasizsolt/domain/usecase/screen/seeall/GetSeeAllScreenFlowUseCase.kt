@@ -8,7 +8,7 @@ import com.barabasizsolt.domain.usecase.helper.movie.trending.GetPopularMoviesFl
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleFlowUseCase
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.people.model.People
-import com.barabasizsolt.util.TailItem
+import com.barabasizsolt.util.pagination.TailItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map

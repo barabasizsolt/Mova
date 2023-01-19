@@ -1,15 +1,9 @@
-package com.barabasizsolt.util
+package com.barabasizsolt.util.pagination
 
+import com.barabasizsolt.util.RefreshType
 import kotlinx.coroutines.flow.MutableStateFlow
 
-interface PagingItem {
-    val id: String
-}
-
-data class TailItem(
-    override val id: String = "tailItem",
-    val loadMore: Boolean
-): PagingItem
+//TODO [high] handle empty search items
 
 suspend fun pagination(
     refreshType: RefreshType,

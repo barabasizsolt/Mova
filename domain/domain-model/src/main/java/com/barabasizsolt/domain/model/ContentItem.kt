@@ -3,8 +3,7 @@ package com.barabasizsolt.domain.model
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.people.model.People
 import com.barabasizsolt.tv.modell.TvSeries
-import com.barabasizsolt.util.PagingItem
-import com.barabasizsolt.util.TailItem
+import com.barabasizsolt.util.pagination.TailItem
 
 sealed class ContentItem {
 
