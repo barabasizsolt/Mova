@@ -5,7 +5,7 @@ import com.barabasizsolt.domain.usecase.helper.movie.topRated.GetTopRatedMoviesU
 import com.barabasizsolt.domain.usecase.helper.movie.trending.GetPopularMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.upcoming.GetUpcomingMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleUseCase
-import com.barabasizsolt.domain.util.asyncWrapToResult
+import com.barabasizsolt.domain.util.result.asyncWrapToResult
 import com.barabasizsolt.util.RefreshType
 import kotlinx.coroutines.CoroutineScope
 

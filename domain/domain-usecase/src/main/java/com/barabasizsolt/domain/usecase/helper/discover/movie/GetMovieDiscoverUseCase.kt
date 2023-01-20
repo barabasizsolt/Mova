@@ -2,7 +2,7 @@ package com.barabasizsolt.domain.usecase.helper.discover.movie
 
 import com.barabasizsolt.discover.api.DiscoverService
 import com.barabasizsolt.domain.util.FilterType
-import com.barabasizsolt.domain.util.wrapToResult
+import com.barabasizsolt.domain.util.result.wrapToResult
 import com.barabasizsolt.util.RefreshType
 
 class GetMovieDiscoverUseCase(private val discoverService: DiscoverService) {

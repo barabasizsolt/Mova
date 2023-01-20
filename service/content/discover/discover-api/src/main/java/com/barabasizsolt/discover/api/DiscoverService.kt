@@ -18,6 +18,8 @@ interface DiscoverService {
 
     suspend fun searchTvSeries(query: String, refreshType: RefreshType) : List<PagingItem>
 
+    fun handleError()
+
     fun clearMovies()
 
     fun clearTvSeries()

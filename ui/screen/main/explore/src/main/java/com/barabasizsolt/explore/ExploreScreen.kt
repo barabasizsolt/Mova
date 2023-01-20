@@ -33,6 +33,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.base.BaseScreen
 import com.barabasizsolt.base.BaseScreenState
+import com.barabasizsolt.base.UserAction
+import com.barabasizsolt.catalog.ErrorItem
 import com.barabasizsolt.catalog.FilterIcon
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MovaSearchField
@@ -74,9 +76,10 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
                     query = screenState.query,
                     onQueryChange = screenState::onQueryChange,
                     items = screenState.exploreContent,
-                    isLoading = screenState.state is BaseScreenState.State.UserAction,
+                    isLoading = screenState.state in listOf(BaseScreenState.State.SwipeRefresh, BaseScreenState.State.Search),
                     bottomSheetScaffoldState = bottomSheetScaffoldState,
-                    onLoadMoreItem = { screenState.getScreenData(isUserAction = false) },
+                    onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
+                    onRetryClick = { screenState.getScreenData(userAction = UserAction.Normal) },
                     scope = scope,
                     gridState = gridState
                 )
@@ -94,16 +97,16 @@ private fun ScreenContent(
     isLoading: Boolean,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
     onLoadMoreItem: () -> Unit,
+    onRetryClick: () -> Unit,
     scope: CoroutineScope,
     gridState: LazyGridState
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),) {
+    Column(verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding)) {
         SearchBar(
             query = query,
             onQueryChange = onQueryChange ,
             scope = scope,
-            bottomSheetScaffoldState =
-            bottomSheetScaffoldState
+            bottomSheetScaffoldState = bottomSheetScaffoldState
         )
         if (isLoading) {
             LoadingBody(
@@ -114,7 +117,8 @@ private fun ScreenContent(
                 gridState = gridState,
                 query = query,
                 items = items,
-                onLoadMoreItem = onLoadMoreItem
+                onLoadMoreItem = onLoadMoreItem,
+                onRetryClick = onRetryClick
             )
         }
     }
@@ -162,7 +166,8 @@ private fun ContentBody(
     gridState: LazyGridState,
     query: String,
     items: List<ContentItem>,
-    onLoadMoreItem: () -> Unit
+    onLoadMoreItem: () -> Unit,
+    onRetryClick: () -> Unit
 ) = ScrollUpWrapper(
     gridState = gridState,
     content = {
@@ -182,15 +187,9 @@ private fun ContentBody(
                 searchableItemsIndexed(
                     items = items,
                     key = { index, item -> item.id + index },
-                    span = { _, item ->
-                        GridItemSpan(
-                            currentLineSpan = when (item) {
-                                is ContentItem.ItemTail -> 6
-                                else -> 2
-                            }
-                        )
-                    },
-                    onLoadMoreItem = onLoadMoreItem
+                    span = searchableItemSpan(baseLineSpan = 2),
+                    onLoadMoreItem = onLoadMoreItem,
+                    onRetryClick = onRetryClick
                 ) { _, item ->
                     SearchableItem(
                         item = item as ContentItem.Watchable,
@@ -201,15 +200,9 @@ private fun ContentBody(
                 searchableItemsIndexed(
                     items = items,
                     key = { index, item -> item.id + index },
-                    span = { _, item ->
-                        GridItemSpan(
-                            currentLineSpan = when (item) {
-                                is ContentItem.ItemTail -> 6
-                                else -> 1
-                            }
-                        )
-                    },
-                    onLoadMoreItem = onLoadMoreItem
+                    span = searchableItemSpan(baseLineSpan = 1),
+                    onLoadMoreItem = onLoadMoreItem,
+                    onRetryClick = onRetryClick
                 ) { _, item ->
                     WatchableWithRating(
                         item = item as ContentItem.Watchable,
@@ -233,6 +226,7 @@ private fun LoadingBody(gridState: LazyGridState) {
 private inline fun LazyGridScope.searchableItemsIndexed(
     items: List<ContentItem>,
     crossinline onLoadMoreItem: () -> Unit,
+    crossinline onRetryClick: () -> Unit,
     noinline key: ((index: Int, item: ContentItem) -> Any)? = null,
     noinline span: (LazyGridItemSpanScope.(index: Int, item: ContentItem) -> GridItemSpan)? = null,
     crossinline contentType: (index: Int, item: ContentItem) -> Any? = { _, _ -> null },
@@ -253,6 +247,18 @@ private inline fun LazyGridScope.searchableItemsIndexed(
             }
             items.size == 1 -> NotFoundItem()
         }
+        is ContentItem.ItemError -> ErrorItem(
+            onRetryClick = { onRetryClick() }
+        )
         else -> itemContent(index, item)
     }
+}
+
+private fun searchableItemSpan(baseLineSpan: Int): (LazyGridItemSpanScope.(index: Int, item: ContentItem) -> GridItemSpan) = { _, item ->
+    GridItemSpan(
+        currentLineSpan = when (item) {
+            is ContentItem.ItemTail, is ContentItem.ItemError -> 6
+            else -> baseLineSpan
+        }
+    )
 }

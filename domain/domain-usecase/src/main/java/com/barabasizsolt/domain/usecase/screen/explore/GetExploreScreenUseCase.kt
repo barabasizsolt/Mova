@@ -2,7 +2,6 @@ package com.barabasizsolt.domain.usecase.screen.explore
 
 import com.barabasizsolt.domain.usecase.helper.discover.movie.GetMovieDiscoverUseCase
 import com.barabasizsolt.domain.usecase.helper.discover.tv.GetTvDiscoverUseCase
-import com.barabasizsolt.domain.util.wrapToResult
 import com.barabasizsolt.util.RefreshType
 
 class GetExploreScreenUseCase(
@@ -14,10 +13,8 @@ class GetExploreScreenUseCase(
         category: Category = Category.MOVIE,
         query: String,
         refreshType: RefreshType
-    ) = wrapToResult {
-        when (category) {
-            Category.MOVIE -> getMovieDiscoverUseCase(query = query, refreshType = refreshType)
-            Category.TV -> getTvDiscoverUseCase(query = query, refreshType = refreshType)
-        }
+    ) = when (category) {
+        Category.MOVIE -> getMovieDiscoverUseCase(query = query, refreshType = refreshType)
+        Category.TV -> getTvDiscoverUseCase(query = query, refreshType = refreshType)
     }
 }

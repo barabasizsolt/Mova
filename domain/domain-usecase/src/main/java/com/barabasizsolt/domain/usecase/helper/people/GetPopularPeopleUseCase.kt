@@ -1,6 +1,6 @@
 package com.barabasizsolt.domain.usecase.helper.people
 
-import com.barabasizsolt.domain.util.wrapToResult
+import com.barabasizsolt.domain.util.result.wrapToResult
 import com.barabasizsolt.people.api.PeopleService
 import com.barabasizsolt.util.RefreshType
 

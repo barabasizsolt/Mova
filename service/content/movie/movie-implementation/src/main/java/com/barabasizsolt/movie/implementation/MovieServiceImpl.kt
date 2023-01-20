@@ -25,28 +25,32 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
         refreshType = refreshType,
         flow = _upcomingMovies,
         getRemoteContent = { page -> remoteSource.getUpcomingMovies(page = page) },
-        counter = UPCOMING_MOVIES_CTR++
+        counter = UPCOMING_MOVIES_CTR,
+        incrementCounter = { UPCOMING_MOVIES_CTR++ }
     )
 
     override suspend fun getPopularMovies(refreshType: RefreshType): List<PagingItem> = pagination(
         refreshType = refreshType,
         flow = _popularMovies,
         getRemoteContent = { page -> remoteSource.getPopularMovies(page = page) },
-        counter = POPULAR_MOVIES_CTR++
+        counter = POPULAR_MOVIES_CTR,
+        incrementCounter = { POPULAR_MOVIES_CTR++ }
     )
 
     override suspend fun getTopRatedMovies(refreshType: RefreshType): List<PagingItem> = pagination(
         refreshType = refreshType,
         flow = _topRatedMovies,
         getRemoteContent = { page -> remoteSource.getTopRatedMovies(page = page) },
-        counter = TOP_RATED_MOVIES_CTR++
+        counter = TOP_RATED_MOVIES_CTR,
+        incrementCounter = { TOP_RATED_MOVIES_CTR++ }
     )
 
     override suspend fun getNowPlayingMovies(refreshType: RefreshType): List<PagingItem> = pagination(
         refreshType = refreshType,
         flow = _nowPlayingMovies,
         getRemoteContent = { page -> remoteSource.getNowPlayingMovies(page = page) },
-        counter = NOW_PLAYING_MOVIES_CTR++
+        counter = NOW_PLAYING_MOVIES_CTR,
+        incrementCounter = { NOW_PLAYING_MOVIES_CTR++ }
     )
 
     override fun clearPopularMovies() {

@@ -14,6 +14,8 @@ import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.R
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun BaseScreen(
@@ -25,12 +27,19 @@ fun BaseScreen(
     val snackBarHostState = remember { SnackbarHostState() }
     val snackBarErrorMessage = stringResource(id = R.string.snackbar_error_message)
     val snackBarErrorActionLabel = stringResource(id = R.string.snackbar_action_label)
+    val swipeRefreshState = rememberSwipeRefreshState(
+        isRefreshing = screenState.state is BaseScreenState.State.SwipeRefresh
+    )
 
     Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
         when (screenState.state) {
-            is BaseScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(isUserAction = false) })
+            is BaseScreenState.State.Error -> ErrorContent(onRetry = { screenState.getScreenData(userAction = UserAction.Error) })
             is BaseScreenState.State.Loading -> LoadingContent()
-            else -> content()
+            else -> SwipeRefresh(
+                state = swipeRefreshState,
+                onRefresh = { screenState.getScreenData(userAction = UserAction.SwipeRefresh) },
+                content = content
+            )
         }
 
         MovaSnackBar(

@@ -16,7 +16,8 @@ class PeopleServiceImpl(private val remoteSource: PeopleRemoteSource) : PeopleSe
         refreshType = refreshType,
         flow = _popularPeople,
         getRemoteContent = { page -> remoteSource.getPopularPeople(page = page) },
-        counter = POPULAR_PEOPLE_CTR++
+        counter = POPULAR_PEOPLE_CTR,
+        incrementCounter = { POPULAR_PEOPLE_CTR++ }
     )
 
     override fun clearPopularPeople() {

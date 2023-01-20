@@ -1,6 +1,6 @@
 package com.barabasizsolt.domain.usecase.helper.movie.topRated
 
-import com.barabasizsolt.domain.util.wrapToResult
+import com.barabasizsolt.domain.util.result.wrapToResult
 import com.barabasizsolt.movie.api.MovieService
 import com.barabasizsolt.util.RefreshType
 

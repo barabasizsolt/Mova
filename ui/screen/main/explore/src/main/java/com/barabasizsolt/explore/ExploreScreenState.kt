@@ -7,6 +7,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
+import com.barabasizsolt.base.UserAction
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.helper.discover.movie.DeleteMovieDiscoverUseCase
 import com.barabasizsolt.domain.usecase.helper.discover.tv.DeleteTvDiscoverUseCase
@@ -16,7 +17,7 @@ import com.barabasizsolt.domain.usecase.screen.explore.GetExploreScreenUseCase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import com.barabasizsolt.domain.util.Result
+import com.barabasizsolt.domain.util.result.Result
 import com.barabasizsolt.util.RefreshType
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.get
@@ -57,33 +58,52 @@ class ExploreScreenState(
 
     init {
         getExploreScreenFlow(category = category).onEach {
-            println("<<Items: ${it}")
+            println("<<Size: ${it.size}")
             exploreContent = it
         }.launchIn(scope = scope)
-        getScreenData(isUserAction = false)
+        getScreenData(userAction = UserAction.Normal)
     }
 
-    override fun getScreenData(isUserAction: Boolean, delay: Long) {
-        if (state !in listOf(State.Loading, State.UserAction)) {
-            state = if (isUserAction) State.UserAction else State.Normal
+    override fun getScreenData(userAction: UserAction, delay: Long) {
+        if (state !in listOf(State.Loading, State.SwipeRefresh, State.Search)) {
+
+            state = when (userAction) {
+                UserAction.SwipeRefresh -> State.SwipeRefresh
+                UserAction.Search -> State.Search
+                UserAction.Error -> State.Loading
+                UserAction.Normal -> State.Normal
+            }
             scope.launch {
                 delay(timeMillis = delay)
                 state = when (
                     val result = getExploreScreen(
                         query = query,
                         refreshType = when {
-                            //TODO: [MID] add swipe refresh
-                            //isUserAction -> RefreshType.FORCE_REFRESH
+                            userAction is UserAction.SwipeRefresh -> RefreshType.FORCE_REFRESH
                             exploreContent.isEmpty() -> RefreshType.CACHE_IF_POSSIBLE
                             else -> RefreshType.NEXT_PAGE
                         }
                     )
                 ) {
-                    is Result.Failure -> {
-                        if (!isUserAction) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
+                    is Result.Failure -> when {
+                        userAction is UserAction.Normal && exploreContent.isEmpty() ->
+                            State.Error(message = result.exception.message.orEmpty())
+                        userAction is UserAction.SwipeRefresh ->
+                            State.ShowSnackBar
+                        userAction is UserAction.Search ->
+                            State.Normal.also {
+                                //exploreContent = listOf(ContentItem.ItemError())
+                            }
+                        userAction is UserAction.Normal ->
+                            State.Normal.also {
+                                //exploreContent = exploreContent.take(n = exploreContent.size - 1) + listOf(ContentItem.ItemError())
+                            }
+                        else -> State.Error(message = result.exception.message.orEmpty())
                     }
-                    is Result.Success -> {
-                        State.Normal
+                    is Result.Success -> State.Normal.also {
+                        if (exploreContent.isNotEmpty()) {
+                            println("<<LastItem: ${exploreContent[exploreContent.lastIndex]}")
+                        }
                     }
                 }
             }
@@ -92,8 +112,9 @@ class ExploreScreenState(
 
     fun onQueryChange(query: String) {
         this.query = query
+        //TODO [MID] move into a useCase
         if (category == Category.MOVIE) deleteMovieDiscoverUseCase() else deleteTvDiscoverUseCase()
-        getScreenData(isUserAction = true, delay = 500)
+        getScreenData(userAction = UserAction.Search, delay = 500)
     }
 
     companion object {

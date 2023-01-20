@@ -1,4 +1,4 @@
-package com.barabasizsolt.domain.util
+package com.barabasizsolt.domain.util.result
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async

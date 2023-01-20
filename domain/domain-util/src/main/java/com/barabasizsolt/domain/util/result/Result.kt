@@ -1,4 +1,4 @@
-package com.barabasizsolt.domain.util
+package com.barabasizsolt.domain.util.result
 
 sealed class Result<T> {
     data class Success<T>(val data: T) : Result<T>()

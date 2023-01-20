@@ -27,7 +27,8 @@ class DiscoverServiceImpl(private val remoteSource: DiscoverRemoteSource) : Disc
         getRemoteContent = {
             page -> remoteSource.getMovies(region = region, withGenres = withGenres, sortBy = sortBy, page = page)
         },
-        counter = MOVIES_CTR++
+        counter = MOVIES_CTR,
+        incrementCounter = { MOVIES_CTR++ }
     )
 
     override suspend fun getTvSeries(
@@ -41,22 +42,29 @@ class DiscoverServiceImpl(private val remoteSource: DiscoverRemoteSource) : Disc
         getRemoteContent = {
             page -> remoteSource.getTvSeries(region = region, withGenres = withGenres, sortBy = sortBy, page = page)
         },
-        counter = TV_SERIES_CTR++
+        counter = TV_SERIES_CTR,
+        incrementCounter = { TV_SERIES_CTR++ }
     )
 
     override suspend fun searchMovies(query: String, refreshType: RefreshType): List<PagingItem> = pagination(
         refreshType = refreshType,
         flow = _movies,
         getRemoteContent = { page -> remoteSource.searchMovies(query = query, page = page) },
-        counter = MOVIES_SEARCH_CTR++
+        counter = MOVIES_SEARCH_CTR,
+        incrementCounter = { MOVIES_SEARCH_CTR++ }
     )
 
     override suspend fun searchTvSeries(query: String, refreshType: RefreshType): List<PagingItem> = pagination(
         refreshType = refreshType,
         flow = _tvSeries,
         getRemoteContent = { page -> remoteSource.searchTvSeries(query = query, page = page) },
-        counter = TV_SERIES_SEARCH_CTR++
+        counter = TV_SERIES_SEARCH_CTR,
+        incrementCounter = { TV_SERIES_SEARCH_CTR++ }
     )
+
+    override fun handleError() {
+        TODO("Not yet implemented")
+    }
 
     override fun clearMovies() {
        _movies.value = emptyList()

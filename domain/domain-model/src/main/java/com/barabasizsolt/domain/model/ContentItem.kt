@@ -3,6 +3,7 @@ package com.barabasizsolt.domain.model
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.people.model.People
 import com.barabasizsolt.tv.modell.TvSeries
+import com.barabasizsolt.util.pagination.ErrorItem
 import com.barabasizsolt.util.pagination.TailItem
 
 sealed class ContentItem {
@@ -26,6 +27,11 @@ sealed class ContentItem {
     data class ItemTail(
         override val id: String,
         val loadMore: Boolean
+    ) : ContentItem()
+
+    data class ItemError(
+        override val id: String = "itemError",
+        val errorMessage: String = "Something went wrong."
     ) : ContentItem()
 }
 
@@ -54,4 +60,9 @@ fun People.toContentItem(): ContentItem.Person = ContentItem.Person(
 fun TailItem.toContentItem(): ContentItem.ItemTail = ContentItem.ItemTail(
     id = id,
     loadMore = loadMore
+)
+
+fun ErrorItem.toContentItem(): ContentItem.ItemError = ContentItem.ItemError(
+    id = id,
+    errorMessage = errorMessage
 )

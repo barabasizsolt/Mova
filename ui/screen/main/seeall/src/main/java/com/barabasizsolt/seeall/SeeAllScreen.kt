@@ -19,7 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.base.BaseScreen
-import com.barabasizsolt.base.BaseScreenState
+import com.barabasizsolt.base.UserAction
+import com.barabasizsolt.catalog.ErrorItem
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MediumPersonCard
 import com.barabasizsolt.catalog.MovaHeader
@@ -31,20 +32,16 @@ import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.R
 import com.barabasizsolt.util.navigationBarInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
     screenState = screenState,
-    onSnackBarDismissed = { screenState.getScreenData(isUserAction = false) },
+    onSnackBarDismissed = { screenState.getScreenData(userAction = UserAction.Normal) },
     snackBarModifier = Modifier.systemBarsPadding(),
     content = {
         ScreenContent(
-            isRefreshing = screenState.state is BaseScreenState.State.UserAction,
-            onRefresh = { screenState.getScreenData(isUserAction = true) },
             items = screenState.watchableItems,
-            onLoadMoreItem = { screenState.getScreenData(isUserAction = false) },
+            onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
             onUpClicked = screenState::onUpClicked,
             contentType = screenState.contentType
         )
@@ -53,38 +50,30 @@ fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
 
 @Composable
 private fun ScreenContent(
-    isRefreshing: Boolean,
-    onRefresh: () -> Unit,
     items: List<ContentItem>,
     onLoadMoreItem: () -> Unit,
     onUpClicked: () -> Unit,
     contentType: String,
 ) {
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
     val gridState: LazyGridState = rememberLazyGridState()
 
     ScrollUpWrapper(
         gridState = gridState,
         content = {
-            SwipeRefresh(
-                state = swipeRefreshState,
-                onRefresh = onRefresh
+            LazyVerticalGrid(
+                state = gridState,
+                columns = GridCells.Fixed(count = 6),
+                verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
+                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
+                contentPadding = PaddingValues(
+                    start = AppTheme.dimens.screenPadding,
+                    end = AppTheme.dimens.screenPadding,
+                    bottom = AppTheme.dimens.screenPadding + navigationBarInsetDp,
+                    top = AppTheme.dimens.screenPadding + statusBarInsetDp
+                )
             ) {
-                LazyVerticalGrid(
-                    state = gridState,
-                    columns = GridCells.Fixed(count = 6),
-                    verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-                    horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-                    contentPadding = PaddingValues(
-                        start = AppTheme.dimens.screenPadding,
-                        end = AppTheme.dimens.screenPadding,
-                        bottom = AppTheme.dimens.screenPadding + navigationBarInsetDp,
-                        top = AppTheme.dimens.screenPadding + statusBarInsetDp
-                    )
-                ) {
-                    header(contentType = contentType, onClick = onUpClicked)
-                    content(items = items, onLoadMoreItem = onLoadMoreItem)
-                }
+                header(contentType = contentType, onClick = onUpClicked)
+                content(items = items, onLoadMoreItem = onLoadMoreItem)
             }
         }
     )
@@ -134,8 +123,13 @@ private fun LazyGridScope.content(
             onClick = { /*TODO: Implement it*/ }
         )
         is ContentItem.ItemTail -> if (item.loadMore) {
-            LoadingContent(modifier = Modifier.height(height = 80.dp).fillMaxWidth())
+            LoadingContent(modifier = Modifier
+                .height(height = 80.dp)
+                .fillMaxWidth())
             SideEffect { onLoadMoreItem() }
         }
+        is ContentItem.ItemError -> ErrorItem(
+            onRetryClick = { /*TODO: Implement it*/ }
+        )
     }
 }

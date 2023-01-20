@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import com.barabasizsolt.tv.modell.TvSeries
+import com.barabasizsolt.util.pagination.ErrorItem
 import com.barabasizsolt.util.pagination.TailItem
 
 class GetExploreScreenFlowUseCase(
@@ -18,10 +19,24 @@ class GetExploreScreenFlowUseCase(
 
     operator fun invoke(category: Category): Flow<List<ContentItem>> = when (category) {
         Category.MOVIE -> getMovieDiscoverFlowUseCase().map { item ->
-            item.map { if (it is TailItem) it.toContentItem() else (it as Movie).toContentItem() }
+            item.map {
+                when (it) {
+                    is TailItem -> it.toContentItem()
+                    is ErrorItem -> it.toContentItem()
+                    else -> (it as Movie).toContentItem()
+                }
+                //if (it is TailItem) it.toContentItem() else (it as Movie).toContentItem()
+            }
         }.filterNotNull()
         Category.TV -> getTvDiscoverFlowUseCase().map { item ->
-            item.map { if (it is TailItem) it.toContentItem() else (it as TvSeries).toContentItem() }
+            item.map {
+                when (it) {
+                    is TailItem -> it.toContentItem()
+                    is ErrorItem -> it.toContentItem()
+                    else -> (it as TvSeries).toContentItem()
+                }
+                //if (it is TailItem) it.toContentItem() else (it as TvSeries).toContentItem()
+            }
         }.filterNotNull()
     }
 }

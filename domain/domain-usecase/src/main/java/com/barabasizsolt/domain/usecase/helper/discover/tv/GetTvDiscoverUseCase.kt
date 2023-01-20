@@ -2,7 +2,7 @@ package com.barabasizsolt.domain.usecase.helper.discover.tv
 
 import com.barabasizsolt.discover.api.DiscoverService
 import com.barabasizsolt.domain.util.FilterType
-import com.barabasizsolt.domain.util.wrapToResult
+import com.barabasizsolt.domain.util.result.wrapToResult
 import com.barabasizsolt.util.RefreshType
 
 class GetTvDiscoverUseCase(private val discoverService: DiscoverService) {

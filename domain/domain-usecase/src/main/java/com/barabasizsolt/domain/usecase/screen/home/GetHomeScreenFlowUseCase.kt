@@ -9,6 +9,7 @@ import com.barabasizsolt.domain.usecase.helper.movie.upcoming.GetUpcomingMoviesF
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleFlowUseCase
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.people.model.People
+import com.barabasizsolt.util.pagination.ErrorItem
 import com.barabasizsolt.util.pagination.TailItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -21,6 +22,7 @@ class GetHomeScreenFlowUseCase(
     private val getPopularPeopleFlowUseCase: GetPopularPeopleFlowUseCase
 ) {
 
+    // TODO [HIGH] refactor to ContentItem
     operator fun invoke(): Flow<HomeScreenContent> = combine(
         getUpcomingMoviesFlowUseCase(),
         getPopularMoviesFlowUseCase(),
@@ -29,11 +31,11 @@ class GetHomeScreenFlowUseCase(
         getPopularPeopleFlowUseCase()
     ) { upcoming, popular, topRated, nowPlaying, popularPeople ->
         HomeScreenContent(
-            upcomingMovies = upcoming.filter { it !is TailItem }.map { it as Movie },
-            popularMovies = popular.take(n = MAX_ITEM).map { (it as Movie).toContentItem() },
-            nowPlayingMovies = nowPlaying.take(n = MAX_ITEM).map { (it as Movie).toContentItem() },
-            topRatedMovies = topRated.take(n = MAX_ITEM).map { (it as Movie).toContentItem() },
-            popularPeople = popularPeople.filter { it !is TailItem }.map { (it as People).toContentItem() }
+            upcomingMovies = upcoming.filter { it !is TailItem && it !is ErrorItem }.map { it as Movie },
+            popularMovies = popular.filter { it !is TailItem && it !is ErrorItem }.take(n = MAX_ITEM).map { (it as Movie).toContentItem() },
+            nowPlayingMovies = nowPlaying.filter { it !is TailItem && it !is ErrorItem }.take(n = MAX_ITEM).map { (it as Movie).toContentItem() },
+            topRatedMovies = topRated.filter { it !is TailItem && it !is ErrorItem }.take(n = MAX_ITEM).map { (it as Movie).toContentItem() },
+            popularPeople = popularPeople.filter { it !is TailItem && it !is ErrorItem }.map { (it as People).toContentItem() }
         )
     }
 

@@ -19,14 +19,15 @@ abstract class BaseScreenState : CoroutineScope {
     var state by mutableStateOf<State>(value = State.Normal)
         protected set
 
-    abstract fun getScreenData(isUserAction: Boolean, delay: Long = 0)
+    abstract fun getScreenData(userAction: UserAction, delay: Long = 0)
 
     fun onClear() = coroutineContext.cancelChildren()
 
     sealed class State {
         object Normal : State()
         object Loading : State()
-        object UserAction : State()
+        object SwipeRefresh : State()
+        object Search : State()
         data class Error(val message: String) : State()
         object ShowSnackBar : State()
     }

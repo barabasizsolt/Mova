@@ -6,10 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
+import com.barabasizsolt.base.UserAction
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenUseCase
-import com.barabasizsolt.domain.util.Result
+import com.barabasizsolt.domain.util.result.Result
 import com.barabasizsolt.util.Event
 import com.barabasizsolt.util.RefreshType
 import kotlinx.coroutines.flow.launchIn
@@ -47,22 +48,26 @@ class SeeAllScreenState(
         }.launchIn(scope = scope)
     }
 
-    override fun getScreenData(isUserAction: Boolean, delay: Long) {
-        if (state !in listOf(State.Loading, State.UserAction)) {
+    override fun getScreenData(userAction: UserAction, delay: Long) {
+        if (state !in listOf(State.Loading, State.SwipeRefresh)) {
             scope.launch {
-                state = if (isUserAction) State.UserAction else State.Normal
+                //state = if (isSwipeRefresh) State.SwipeRefresh else State.Normal
+                state = when (userAction) {
+                    UserAction.SwipeRefresh -> State.SwipeRefresh
+                    else -> State.Normal
+                }
                 state = when (
                     val result = getSeeAllScreenUseCase(
                         contentType = contentType,
                         refreshType = when {
-                            isUserAction -> RefreshType.FORCE_REFRESH
+                            userAction is UserAction.SwipeRefresh -> RefreshType.FORCE_REFRESH
                             watchableItems.isEmpty() -> RefreshType.CACHE_IF_POSSIBLE
                             else -> RefreshType.NEXT_PAGE
                         }
                     )
                 ) {
                     is Result.Failure -> when {
-                        isUserAction -> State.ShowSnackBar
+                        userAction is UserAction.SwipeRefresh -> State.ShowSnackBar
                         watchableItems.isNotEmpty() -> State.Normal
                         else -> State.Error(message = result.exception.message.orEmpty())
                     }
