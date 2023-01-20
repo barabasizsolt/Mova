@@ -57,7 +57,7 @@ class ExploreScreenState(
 
     init {
         getExploreScreenFlow(category = category).onEach {
-            //exploreContent = if (it.isEmpty() || it[it.lastIndex].isLastItem) it else it.plus(ContentItem.LoadMore())
+            println("<<Items: ${it}")
             exploreContent = it
         }.launchIn(scope = scope)
         getScreenData(isUserAction = false)

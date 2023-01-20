@@ -36,6 +36,7 @@ import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.catalog.FilterIcon
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MovaSearchField
+import com.barabasizsolt.catalog.NotFoundItem
 import com.barabasizsolt.catalog.ScrollUpWrapper
 import com.barabasizsolt.catalog.SearchableItem
 import com.barabasizsolt.catalog.WatchableWithRating
@@ -97,100 +98,136 @@ private fun ScreenContent(
     gridState: LazyGridState
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),) {
-        Row(
-            modifier = Modifier
-                .padding(
-                    top = statusBarInsetDp + AppTheme.dimens.screenPadding,
-                    start = AppTheme.dimens.screenPadding,
-                    end = AppTheme.dimens.screenPadding
-                ),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
-        ) {
-            MovaSearchField(
-                value = query,
-                onValueChange = onQueryChange,
-                modifier = Modifier.weight(weight = 1f)
-            )
-            FilterIcon(
-                onClick = {
-                    scope.launch {
-                        if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
-                            bottomSheetScaffoldState.bottomSheetState.collapse()
-                        } else {
-                            bottomSheetScaffoldState.bottomSheetState.expand()
-                        }
-                    }
-                }
-            )
-        }
+        SearchBar(
+            query = query,
+            onQueryChange = onQueryChange ,
+            scope = scope,
+            bottomSheetScaffoldState =
+            bottomSheetScaffoldState
+        )
         if (isLoading) {
-            LaunchedEffect(
-                key1 = Unit,
-                block = { gridState.scrollToItem(index = 0, scrollOffset = 0) }
+            LoadingBody(
+                gridState = gridState
             )
-            LoadingContent()
         } else {
-            // TODO [MID] if the search returns empty list show some dialog
-            ScrollUpWrapper(
+            ContentBody(
                 gridState = gridState,
-                content = {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(count = 2),
-                        verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-                        horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-                        contentPadding = PaddingValues(
-                            start = AppTheme.dimens.screenPadding,
-                            end = AppTheme.dimens.screenPadding,
-                            bottom = AppTheme.dimens.screenPadding + imeBottomInsetDp
-                        ),
-                        modifier = Modifier.fillMaxSize(),
-                        state = gridState
-                    ) {
-                        if (query.isNotEmpty()) {
-                            searchableItemsIndexed(
-                                items = items,
-                                key = { index, item -> item.id + index },
-                                span = { _, item ->
-                                    GridItemSpan(
-                                        currentLineSpan = when (item) {
-                                            is ContentItem.ItemTail -> 6
-                                            else -> 2
-                                        }
-                                    )
-                                },
-                                onLoadMoreItem = onLoadMoreItem
-                            ) { _, item ->
-                                SearchableItem(
-                                    item = item as ContentItem.Watchable,
-                                    onClick = { /*TODO: Implement it*/ }
-                                )
-                            }
-                        } else {
-                            searchableItemsIndexed(
-                                items = items,
-                                key = { index, item -> item.id + index },
-                                span = { _, item ->
-                                    GridItemSpan(
-                                        currentLineSpan = when (item) {
-                                            is ContentItem.ItemTail -> 6
-                                            else -> 1
-                                        }
-                                    )
-                                },
-                                onLoadMoreItem = onLoadMoreItem
-                            ) { _, item ->
-                                WatchableWithRating(
-                                    item = item as ContentItem.Watchable,
-                                    onClick = { /*TODO: Implement it*/ }
-                                )
-                            }
-                        }
-                    }
-                }
+                query = query,
+                items = items,
+                onLoadMoreItem = onLoadMoreItem
             )
         }
     }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun SearchBar(
+    modifier: Modifier = Modifier,
+    query: String,
+    onQueryChange: (String) -> Unit,
+    scope: CoroutineScope,
+    bottomSheetScaffoldState: BottomSheetScaffoldState
+) = Row(
+    modifier = modifier
+        .padding(
+            top = statusBarInsetDp + AppTheme.dimens.screenPadding,
+            start = AppTheme.dimens.screenPadding,
+            end = AppTheme.dimens.screenPadding
+        ),
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
+) {
+    MovaSearchField(
+        value = query,
+        onValueChange = onQueryChange,
+        modifier = Modifier.weight(weight = 1f)
+    )
+    FilterIcon(
+        onClick = {
+            scope.launch {
+                if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+                    bottomSheetScaffoldState.bottomSheetState.collapse()
+                } else {
+                    bottomSheetScaffoldState.bottomSheetState.expand()
+                }
+            }
+        }
+    )
+}
+
+@Composable
+private fun ContentBody(
+    modifier: Modifier = Modifier,
+    gridState: LazyGridState,
+    query: String,
+    items: List<ContentItem>,
+    onLoadMoreItem: () -> Unit
+) = ScrollUpWrapper(
+    gridState = gridState,
+    content = {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(count = 2),
+            verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
+            horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
+            contentPadding = PaddingValues(
+                start = AppTheme.dimens.screenPadding,
+                end = AppTheme.dimens.screenPadding,
+                bottom = AppTheme.dimens.screenPadding + imeBottomInsetDp
+            ),
+            modifier = modifier.fillMaxSize(),
+            state = gridState
+        ) {
+            if (query.isNotEmpty()) {
+                searchableItemsIndexed(
+                    items = items,
+                    key = { index, item -> item.id + index },
+                    span = { _, item ->
+                        GridItemSpan(
+                            currentLineSpan = when (item) {
+                                is ContentItem.ItemTail -> 6
+                                else -> 2
+                            }
+                        )
+                    },
+                    onLoadMoreItem = onLoadMoreItem
+                ) { _, item ->
+                    SearchableItem(
+                        item = item as ContentItem.Watchable,
+                        onClick = { /*TODO: Implement it*/ }
+                    )
+                }
+            } else {
+                searchableItemsIndexed(
+                    items = items,
+                    key = { index, item -> item.id + index },
+                    span = { _, item ->
+                        GridItemSpan(
+                            currentLineSpan = when (item) {
+                                is ContentItem.ItemTail -> 6
+                                else -> 1
+                            }
+                        )
+                    },
+                    onLoadMoreItem = onLoadMoreItem
+                ) { _, item ->
+                    WatchableWithRating(
+                        item = item as ContentItem.Watchable,
+                        onClick = { /*TODO: Implement it*/ }
+                    )
+                }
+            }
+        }
+    }
+)
+
+@Composable
+private fun LoadingBody(gridState: LazyGridState) {
+    LaunchedEffect(
+        key1 = Unit,
+        block = { gridState.scrollToItem(index = 0, scrollOffset = 0) }
+    )
+    LoadingContent()
 }
 
 private inline fun LazyGridScope.searchableItemsIndexed(
@@ -207,11 +244,14 @@ private inline fun LazyGridScope.searchableItemsIndexed(
     contentType = contentType
 ) { index, item ->
     when (item) {
-        is ContentItem.ItemTail -> if (item.loadMore) {
-            LoadingContent(modifier = Modifier
-                .height(height = 80.dp)
-                .fillMaxWidth())
-            SideEffect { onLoadMoreItem() }
+        is ContentItem.ItemTail -> when {
+            item.loadMore -> {
+                LoadingContent(modifier = Modifier
+                    .height(height = 80.dp)
+                    .fillMaxWidth())
+                SideEffect { onLoadMoreItem() }
+            }
+            items.size == 1 -> NotFoundItem()
         }
         else -> itemContent(index, item)
     }
