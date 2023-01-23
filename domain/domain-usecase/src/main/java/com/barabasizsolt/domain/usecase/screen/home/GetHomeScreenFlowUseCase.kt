@@ -1,5 +1,6 @@
 package com.barabasizsolt.domain.usecase.screen.home
 
+import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.model.HomeScreenContent
 import com.barabasizsolt.domain.model.toContentItem
 import com.barabasizsolt.domain.usecase.helper.movie.nowPlaying.GetNowPlayingMoviesFlowUseCase
@@ -20,7 +21,6 @@ class GetHomeScreenFlowUseCase(
     private val getPopularPeopleFlowUseCase: GetPopularPeopleFlowUseCase
 ) {
 
-    // TODO [HIGH] refactor to ContentItem
     operator fun invoke(): Flow<HomeScreenContent> = combine(
         getUpcomingMoviesFlowUseCase(),
         getPopularMoviesFlowUseCase(),
@@ -30,10 +30,10 @@ class GetHomeScreenFlowUseCase(
     ) { upcoming, popular, topRated, nowPlaying, popularPeople ->
         HomeScreenContent(
             upcomingMovies = upcoming.filterIsInstance<Movie>(),
-            popularMovies = popular.filterIsInstance<Movie>().take(n = MAX_ITEM).map { it.toContentItem() },
-            nowPlayingMovies = nowPlaying.filterIsInstance<Movie>().take(n = MAX_ITEM).map { it.toContentItem() },
-            topRatedMovies = topRated.filterIsInstance<Movie>().take(n = MAX_ITEM).map { it.toContentItem() },
-            popularPeople = popularPeople.filterIsInstance<People>().map { it.toContentItem() }
+            popularMovies = popular.filterIsInstance<Movie>().take(n = MAX_ITEM).map { it.toContentItem() as ContentItem.Watchable },
+            nowPlayingMovies = nowPlaying.filterIsInstance<Movie>().take(n = MAX_ITEM).map { it.toContentItem() as ContentItem.Watchable },
+            topRatedMovies = topRated.filterIsInstance<Movie>().take(n = MAX_ITEM).map { it.toContentItem() as ContentItem.Watchable },
+            popularPeople = popularPeople.filterIsInstance<People>().map { it.toContentItem() as ContentItem.Person }
         )
     }
 

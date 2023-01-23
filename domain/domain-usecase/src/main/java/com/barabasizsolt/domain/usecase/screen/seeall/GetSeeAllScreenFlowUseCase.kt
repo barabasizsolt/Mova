@@ -6,15 +6,10 @@ import com.barabasizsolt.domain.usecase.helper.movie.nowPlaying.GetNowPlayingMov
 import com.barabasizsolt.domain.usecase.helper.movie.topRated.GetTopRatedMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.trending.GetPopularMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleFlowUseCase
-import com.barabasizsolt.movie.model.Movie
-import com.barabasizsolt.pagination.api.ErrorItem
-import com.barabasizsolt.pagination.api.TailItem
-import com.barabasizsolt.people.model.People
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 
-// TODO [HIGH] make the mapping generic
 class GetSeeAllScreenFlowUseCase(
     private val getPopularMoviesFlowUseCase: GetPopularMoviesFlowUseCase,
     private val getTopRatedMoviesFlowUseCase: GetTopRatedMoviesFlowUseCase,
@@ -22,46 +17,10 @@ class GetSeeAllScreenFlowUseCase(
     private val getPopularPeopleFlowUseCase: GetPopularPeopleFlowUseCase
 ) {
     operator fun invoke(contentType: String): Flow<List<ContentItem>> = when (contentType) {
-        SeeAllContentType.POPULAR_MOVIES.name ->
-            getPopularMoviesFlowUseCase().map { item ->
-                item.map {
-                    when (it) {
-                        is TailItem -> it.toContentItem()
-                        is ErrorItem -> it.toContentItem()
-                        else -> (it as Movie).toContentItem()
-                    }
-                }
-            }
-        SeeAllContentType.POPULAR_PEOPLE.name ->
-            getPopularPeopleFlowUseCase().map { item ->
-                item.map {
-                    when (it) {
-                        is TailItem -> it.toContentItem()
-                        is ErrorItem -> it.toContentItem()
-                        else -> (it as People).toContentItem()
-                    }
-                }
-            }
-        SeeAllContentType.NOW_PLAYING_MOVIES.name ->
-            getNowPlayingMoviesFlowCase().map { item ->
-                item.map {
-                    when (it) {
-                        is TailItem -> it.toContentItem()
-                        is ErrorItem -> it.toContentItem()
-                        else -> (it as Movie).toContentItem()
-                    }
-                }
-            }
-        SeeAllContentType.TOP_RATED_MOVIES.name ->
-            getTopRatedMoviesFlowUseCase().map { item ->
-                item.map {
-                    when (it) {
-                        is TailItem -> it.toContentItem()
-                        is ErrorItem -> it.toContentItem()
-                        else -> (it as Movie).toContentItem()
-                    }
-                }
-            }
+        SeeAllContentType.POPULAR_MOVIES.name -> getPopularMoviesFlowUseCase().map { item -> item.map { it.toContentItem() } }
+        SeeAllContentType.POPULAR_PEOPLE.name -> getPopularPeopleFlowUseCase().map { item -> item.map { it.toContentItem() } }
+        SeeAllContentType.NOW_PLAYING_MOVIES.name -> getNowPlayingMoviesFlowCase().map { item -> item.map { it.toContentItem() } }
+        SeeAllContentType.TOP_RATED_MOVIES.name -> getTopRatedMoviesFlowUseCase().map { item -> item.map { it.toContentItem() } }
         else -> emptyFlow()
     }
 }
