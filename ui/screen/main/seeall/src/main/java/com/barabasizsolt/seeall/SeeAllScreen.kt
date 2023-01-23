@@ -1,8 +1,6 @@
 package com.barabasizsolt.seeall
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,46 +14,35 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.base.BaseScreen
-import com.barabasizsolt.base.BaseScreenState
+import com.barabasizsolt.base.UserAction
+import com.barabasizsolt.catalog.ErrorItem
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MediumPersonCard
 import com.barabasizsolt.catalog.MovaHeader
-import com.barabasizsolt.catalog.ScrollToTopItem
+import com.barabasizsolt.catalog.ScrollUpWrapper
 import com.barabasizsolt.catalog.WatchableWithRating
-import com.barabasizsolt.domain.model.WatchableItem
+import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.screen.seeall.SeeAllContentType
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.R
 import com.barabasizsolt.util.navigationBarInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-
-/*TODO: Handle pagination edge case (themovidedb supports max 500 page)*/
 
 @Composable
 fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
     screenState = screenState,
-    onSnackBarDismissed = { screenState.getScreenData(isUserAction = false) },
+    onSnackBarDismissed = { screenState.getScreenData(userAction = UserAction.Normal) },
     snackBarModifier = Modifier.systemBarsPadding(),
     content = {
         ScreenContent(
-            isRefreshing = screenState.state is BaseScreenState.State.UserAction,
-            onRefresh = { screenState.getScreenData(isUserAction = true) },
             items = screenState.watchableItems,
-            onLoadMoreItem = { screenState.getScreenData(isUserAction = false) },
+            onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
+            onRetryClick = { screenState.getScreenData(userAction = UserAction.Normal) },
             onUpClicked = screenState::onUpClicked,
             contentType = screenState.contentType
         )
@@ -64,35 +51,17 @@ fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
 
 @Composable
 private fun ScreenContent(
-    isRefreshing: Boolean,
-    onRefresh: () -> Unit,
-    items: List<WatchableItem>,
+    items: List<ContentItem>,
     onLoadMoreItem: () -> Unit,
+    onRetryClick: () -> Unit,
     onUpClicked: () -> Unit,
     contentType: String,
 ) {
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
     val gridState: LazyGridState = rememberLazyGridState()
-    val scope: CoroutineScope = rememberCoroutineScope()
-    val scrollToUpIsVisible = rememberSaveable { mutableStateOf(value = false) }
 
-    LaunchedEffect(
-        key1 = gridState.firstVisibleItemIndex,
-        block = {
-            if (gridState.firstVisibleItemIndex > 20) {
-                scrollToUpIsVisible.value = true
-            }
-            if (gridState.firstVisibleItemIndex < 1) {
-                scrollToUpIsVisible.value = false
-            }
-        }
-    )
-
-    Box {
-        SwipeRefresh(
-            state = swipeRefreshState,
-            onRefresh = onRefresh
-        ) {
+    ScrollUpWrapper(
+        gridState = gridState,
+        content = {
             LazyVerticalGrid(
                 state = gridState,
                 columns = GridCells.Fixed(count = 6),
@@ -106,22 +75,10 @@ private fun ScreenContent(
                 )
             ) {
                 header(contentType = contentType, onClick = onUpClicked)
-                content(items = items, onLoadMoreItem = onLoadMoreItem)
+                content(items = items, onLoadMoreItem = onLoadMoreItem, onRetryClick = onRetryClick)
             }
         }
-
-        AnimatedVisibility(
-            visible = scrollToUpIsVisible.value,
-            modifier = Modifier
-                .align(alignment = Alignment.TopCenter)
-                .padding(top = AppTheme.dimens.screenPadding * 2)
-        ) {
-            ScrollToTopItem(
-                text = stringResource(id = com.barabasizsolt.seeall.R.string.scroll_up),
-                onClick = { scope.launch { gridState.scrollToItem(index = 0, scrollOffset = 0) } },
-            )
-        }
-    }
+    )
 }
 
 private fun LazyGridScope.header(
@@ -143,29 +100,37 @@ private fun LazyGridScope.header(
 }
 
 private fun LazyGridScope.content(
-    items: List<WatchableItem>,
-    onLoadMoreItem: () -> Unit
-) {
-    itemsIndexed(
-        items = items,
-        key = { index, item -> item.id + index },
-        span = { _, item -> GridItemSpan(currentLineSpan = if (item is WatchableItem.People) 2 else 3) }
-    ) { index, item ->
-        when (item) {
-            is WatchableItem.Movie, is WatchableItem.TvSeries -> WatchableWithRating(
-                item = item,
-                onClick = { /*TODO: Implement it*/ }
-            )
-            is WatchableItem.People -> MediumPersonCard(
-                item = item,
-                onClick = { /*TODO: Implement it*/ }
-            )
-        }
-        if (index == items.lastIndex) { SideEffect { onLoadMoreItem() } }
+    items: List<ContentItem>,
+    onLoadMoreItem: () -> Unit,
+    onRetryClick: () -> Unit
+) = itemsIndexed(
+    items = items,
+    key = { index, item -> item.id + index },
+    span = { _, item ->
+        GridItemSpan(
+            currentLineSpan = when (item) {
+                is ContentItem.ItemTail, is ContentItem.ItemError -> 6
+                is ContentItem.Person -> 2
+                else -> 3
+            }
+        )
     }
-    item(span = { GridItemSpan(currentLineSpan = 6) }) {
-        LoadingContent(modifier = Modifier
-            .height(height = 80.dp)
-            .fillMaxWidth())
+) { _, item ->
+    when (item) {
+        is ContentItem.Watchable -> WatchableWithRating(
+            item = item,
+            onClick = { /*TODO: Implement it*/ }
+        )
+        is ContentItem.Person -> MediumPersonCard(
+            item = item,
+            onClick = { /*TODO: Implement it*/ }
+        )
+        is ContentItem.ItemTail -> if (item.loadMore) {
+            LoadingContent(modifier = Modifier
+                .height(height = 80.dp)
+                .fillMaxWidth())
+            SideEffect { onLoadMoreItem() }
+        }
+        is ContentItem.ItemError -> ErrorItem(onRetryClick = onRetryClick)
     }
 }

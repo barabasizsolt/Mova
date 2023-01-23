@@ -3,8 +3,8 @@ package com.barabasizsolt.explore
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import cafe.adriel.voyager.core.model.ScreenModel
-import com.barabasizsolt.domain.usecase.helper.discover.movie.GetMovieDiscoverUseCase
-import com.barabasizsolt.domain.usecase.helper.discover.tv.GetTvDiscoverUseCase
+import com.barabasizsolt.domain.usecase.helper.movie.discover.DiscoverMoviesUseCase
+import com.barabasizsolt.domain.usecase.helper.tvSeries.discover.DiscoverTvSeriesUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.Category
 import com.barabasizsolt.domain.util.FilterType
 import com.barabasizsolt.util.movieGenres
@@ -13,8 +13,8 @@ import java.util.Locale
 
 @Composable
 fun rememberFilterScreenState(
-    getMovieDiscoverUseCase: GetMovieDiscoverUseCase = get(),
-    getTvDiscoverUseCase: GetTvDiscoverUseCase = get(),
+    getMovieDiscoverUseCase: DiscoverMoviesUseCase = get(),
+    getTvDiscoverUseCase: DiscoverTvSeriesUseCase = get(),
 ): FilterScreenState = remember {
     FilterScreenState(
         getMovieDiscoverUseCase = getMovieDiscoverUseCase,
@@ -22,8 +22,8 @@ fun rememberFilterScreenState(
     )
 }
 class FilterScreenState(
-    private val getMovieDiscoverUseCase: GetMovieDiscoverUseCase,
-    private val getTvDiscoverUseCase: GetTvDiscoverUseCase,
+    private val getMovieDiscoverUseCase: DiscoverMoviesUseCase,
+    private val getTvDiscoverUseCase: DiscoverTvSeriesUseCase,
 ) : ScreenModel {
 
     val categories: List<FilterItem> = listOf(

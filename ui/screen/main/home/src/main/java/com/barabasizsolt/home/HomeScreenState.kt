@@ -6,15 +6,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
+import com.barabasizsolt.base.UserAction
 import com.barabasizsolt.domain.model.HomeScreenContent
+import com.barabasizsolt.domain.model.isEmpty
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenUseCase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import com.barabasizsolt.domain.util.Result
+import com.barabasizsolt.domain.util.result.Result
+import com.barabasizsolt.pagination.api.RefreshType
 import com.barabasizsolt.util.Event
-import com.barabasizsolt.util.RefreshType
 import org.koin.androidx.compose.get
 
 @Composable
@@ -25,9 +27,7 @@ fun rememberHomeScreenState(
     HomeScreenState(
         getHomeScreen = getHomeScreen,
         getHomeScreenFlow = getHomeScreenFlow
-    ).apply {
-        getScreenData(isUserAction = false)
-    }
+    )
 }
 
 class HomeScreenState(
@@ -37,26 +37,38 @@ class HomeScreenState(
 
     var action by mutableStateOf<Event<Action>?>(value = null)
         private set
-    var homeContent by mutableStateOf<HomeScreenContent?>(value = null)
+    var homeContent by mutableStateOf(value = HomeScreenContent.createEmptyHomeScreenContent())
         private set
 
     init {
         getHomeScreenFlow().onEach {
             homeContent = it
         }.launchIn(scope = scope)
-        getScreenData(isUserAction = false)
+        getScreenData(userAction = UserAction.Normal)
     }
 
-    override fun getScreenData(isUserAction: Boolean, delay: Long) {
-        state = if (isUserAction) State.UserAction else State.Loading
+    override fun getScreenData(userAction: UserAction, delay: Long) {
+        state = when (userAction) {
+            UserAction.SwipeRefresh -> State.SwipeRefresh
+            else -> State.Loading
+        }
         scope.launch {
             state = when (
                 val result = getHomeScreen(
                     coroutineScope = this,
-                    refreshType = if (isUserAction) RefreshType.FORCE_REFRESH else RefreshType.CACHE_IF_POSSIBLE
+                    refreshType = when (userAction) {
+                        is UserAction.SwipeRefresh -> RefreshType.FORCE_REFRESH
+                        else -> RefreshType.CACHE_IF_POSSIBLE
+                    }
                 )
             ) {
-                is Result.Failure -> if (!isUserAction) State.Error(message = result.exception.message.orEmpty()) else State.ShowSnackBar
+                is Result.Failure -> when {
+                    userAction is UserAction.Normal && homeContent.isEmpty() ->
+                        State.Error(message = result.exception.message.orEmpty())
+                    userAction is UserAction.SwipeRefresh ->
+                        State.ShowSnackBar
+                    else -> State.Error(message = result.exception.message.orEmpty())
+                }
                 is Result.Success -> State.Normal
             }
         }

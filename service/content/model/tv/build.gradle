@@ -14,4 +14,5 @@ dependencies {
     kapt(libs.square.moshiCodegen)
 
     implementation(project(":service:network:network-api"))
+    implementation(project(":service:content:pagination:pagination-api"))
 }

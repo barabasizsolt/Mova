@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import com.barabasizsolt.domain.model.WatchableItem
+import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.ImageType
 import com.barabasizsolt.util.getImageKey
@@ -20,7 +20,7 @@ import com.barabasizsolt.util.getImageKey
 @Composable
 fun WatchableWithRating(
     modifier: Modifier = Modifier,
-    item: WatchableItem,
+    item: ContentItem.Watchable,
     aspectRatio: Float = 0.7f,
     onClick: () -> Unit
 ) = Box {

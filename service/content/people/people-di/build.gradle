@@ -14,4 +14,6 @@ dependencies {
     implementation(project(":service:network:network-api"))
     implementation(project(":service:content:people:people-api"))
     implementation(project(":service:content:people:people-implementation"))
+    implementation(project(":service:content:people:people-implementation"))
+    implementation(project(":service:content:pagination:pagination-api"))
 }

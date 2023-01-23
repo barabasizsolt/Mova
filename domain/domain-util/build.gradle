@@ -8,6 +8,8 @@ java {
 }
 
 dependencies {
+    implementation(project(":service:content:pagination:pagination-api"))
+
     implementation(libs.koin.core)
     implementation(libs.kotlinx.coroutines)
 }

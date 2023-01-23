@@ -11,5 +11,5 @@ dependencies {
     implementation(libs.kotlinx.coroutines)
 
     implementation(project(":service:content:model:movie"))
-    implementation(project(":service:content:util"))
+    implementation(project(":service:content:pagination:pagination-api"))
 }

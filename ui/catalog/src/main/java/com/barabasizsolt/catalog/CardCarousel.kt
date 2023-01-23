@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
-import com.barabasizsolt.domain.model.WatchableItem
+import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.theme.AppTheme
 
 @Composable
@@ -31,7 +31,7 @@ fun WatchableWithRatingCarousel(
     header: String,
     buttonText: String? = null,
     showDivider: Boolean = true,
-    items: List<WatchableItem>,
+    items: List<ContentItem.Watchable>,
     onItemClick: (String) -> Unit,
     onHeaderClick: () -> Unit,
 ) = CardCarousel(
@@ -56,7 +56,7 @@ fun PeopleCarousel(
     modifier: Modifier = Modifier,
     header: String,
     buttonText: String? = null,
-    items: List<WatchableItem>,
+    items: List<ContentItem>,
     onItemClick: (String) -> Unit,
     onHeaderClick: () -> Unit,
 ) = CardCarousel(
@@ -68,7 +68,7 @@ fun PeopleCarousel(
     content = {
         items(items = items) { item ->
             PersonCard(
-                person = item,
+                person = item as ContentItem.Person,
                 onClick = { onItemClick(item.id) }
             )
         }

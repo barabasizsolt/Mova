@@ -33,7 +33,6 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.delay
 
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun WatchablePager(

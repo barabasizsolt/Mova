@@ -1,52 +1,55 @@
 package com.barabasizsolt.movie.implementation
 
 import com.barabasizsolt.movie.api.MovieService
-import com.barabasizsolt.util.PagingItem
-import com.barabasizsolt.util.RefreshType
-import com.barabasizsolt.util.pagination
+import com.barabasizsolt.pagination.api.Pager
+import com.barabasizsolt.pagination.api.PagerItem
+import com.barabasizsolt.pagination.api.RefreshType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieService {
+class MovieServiceImpl(
+    private val remoteSource: MovieRemoteSource,
+    private val pager: Pager
+) : MovieService {
 
-    private val _popularMovies = MutableStateFlow<List<PagingItem>>(value = emptyList())
-    override val popularMovies: Flow<List<PagingItem>> = _popularMovies
+    private val _popularMovies = MutableStateFlow<List<PagerItem>>(value = emptyList())
+    override val popularMovies: Flow<List<PagerItem>> = _popularMovies
 
-    private val _upcomingMovies = MutableStateFlow<List<PagingItem>>(value = emptyList())
-    override val upcomingMovies: Flow<List<PagingItem>> = _upcomingMovies
+    private val _upcomingMovies = MutableStateFlow<List<PagerItem>>(value = emptyList())
+    override val upcomingMovies: Flow<List<PagerItem>> = _upcomingMovies
 
-    private val _topRatedMovies = MutableStateFlow<List<PagingItem>>(value = emptyList())
-    override val topRatedMovies: Flow<List<PagingItem>> = _topRatedMovies
+    private val _topRatedMovies = MutableStateFlow<List<PagerItem>>(value = emptyList())
+    override val topRatedMovies: Flow<List<PagerItem>> = _topRatedMovies
 
-    private val _nowPlayingMovies = MutableStateFlow<List<PagingItem>>(value = emptyList())
-    override val nowPlayingMovies: Flow<List<PagingItem>> = _nowPlayingMovies
+    private val _nowPlayingMovies = MutableStateFlow<List<PagerItem>>(value = emptyList())
+    override val nowPlayingMovies: Flow<List<PagerItem>> = _nowPlayingMovies
 
-    override suspend fun getUpcomingMovies(refreshType: RefreshType): List<PagingItem> = pagination(
+    override suspend fun getUpcomingMovies(refreshType: RefreshType): List<PagerItem> = pager.paginate(
         refreshType = refreshType,
         flow = _upcomingMovies,
         getRemoteContent = { page -> remoteSource.getUpcomingMovies(page = page) },
-        counter = UPCOMING_MOVIES_CTR++
+        cacheWithError = false
     )
 
-    override suspend fun getPopularMovies(refreshType: RefreshType): List<PagingItem> = pagination(
+    override suspend fun getPopularMovies(refreshType: RefreshType): List<PagerItem> = pager.paginate(
         refreshType = refreshType,
         flow = _popularMovies,
         getRemoteContent = { page -> remoteSource.getPopularMovies(page = page) },
-        counter = POPULAR_MOVIES_CTR++
+        cacheWithError = false
     )
 
-    override suspend fun getTopRatedMovies(refreshType: RefreshType): List<PagingItem> = pagination(
+    override suspend fun getTopRatedMovies(refreshType: RefreshType): List<PagerItem> = pager.paginate(
         refreshType = refreshType,
         flow = _topRatedMovies,
         getRemoteContent = { page -> remoteSource.getTopRatedMovies(page = page) },
-        counter = TOP_RATED_MOVIES_CTR++
+        cacheWithError = false
     )
 
-    override suspend fun getNowPlayingMovies(refreshType: RefreshType): List<PagingItem> = pagination(
+    override suspend fun getNowPlayingMovies(refreshType: RefreshType): List<PagerItem> = pager.paginate(
         refreshType = refreshType,
         flow = _nowPlayingMovies,
         getRemoteContent = { page -> remoteSource.getNowPlayingMovies(page = page) },
-        counter = NOW_PLAYING_MOVIES_CTR++
+        cacheWithError = false
     )
 
     override fun clearPopularMovies() {
@@ -63,14 +66,5 @@ class MovieServiceImpl(private val remoteSource: MovieRemoteSource) : MovieServi
 
     override fun clearNowPlayingMovies() {
         _nowPlayingMovies.value = emptyList()
-    }
-
-    private
-
-    companion object {
-        private var UPCOMING_MOVIES_CTR: Int = 1
-        private var POPULAR_MOVIES_CTR: Int = 1
-        private var NOW_PLAYING_MOVIES_CTR: Int = 1
-        private var TOP_RATED_MOVIES_CTR: Int = 1
     }
 }

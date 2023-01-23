@@ -1,6 +1,6 @@
 package com.barabasizsolt.movie.model
 
-import com.barabasizsolt.util.PagingItem
+import com.barabasizsolt.pagination.api.PagerItem
 
 data class Movie(
     override val id: String,
@@ -15,4 +15,4 @@ data class Movie(
     val posterPath: String?,
     val releaseDate: String,
     val voteAverage: String
-) : PagingItem()
+) : PagerItem
