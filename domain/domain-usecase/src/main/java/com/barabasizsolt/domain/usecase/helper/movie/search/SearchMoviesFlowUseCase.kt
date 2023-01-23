@@ -3,9 +3,6 @@ package com.barabasizsolt.domain.usecase.helper.movie.search
 import com.barabasizsolt.discover.api.ExploreService
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.model.toContentItem
-import com.barabasizsolt.movie.model.Movie
-import com.barabasizsolt.pagination.api.ErrorItem
-import com.barabasizsolt.pagination.api.TailItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
