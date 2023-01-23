@@ -28,14 +28,14 @@ fun HomeScreen(screenState: HomeScreenState) = BaseScreen(
     onSnackBarDismissed = { screenState.getScreenData(userAction = UserAction.Normal) },
     content = {
         ScreenContent(
-            upcomingMovies = screenState.homeContent?.upcomingMovies.orEmpty(),
-            popularMovies = screenState.homeContent?.popularMovies.orEmpty(),
+            upcomingMovies = screenState.homeContent.upcomingMovies,
+            popularMovies = screenState.homeContent.popularMovies,
             onSeeAllPopularMoviesClicked = screenState::onSeeAllPopularMoviesClicked,
-            popularPeople = screenState.homeContent?.popularPeople.orEmpty(),
+            popularPeople = screenState.homeContent.popularPeople,
             onSeeAllPopularPeopleClicked = screenState::onSeeAllPopularPeopleClicked,
-            nowPlayingMovies = screenState.homeContent?.nowPlayingMovies.orEmpty(),
+            nowPlayingMovies = screenState.homeContent.nowPlayingMovies,
             onSeeAllNowPlayingMoviesClicked = screenState::onSeeAllNowPlayingMoviesClicked,
-            topRatedMovies = screenState.homeContent?.topRatedMovies.orEmpty(),
+            topRatedMovies = screenState.homeContent.topRatedMovies,
             onSeeAllTopRatedMoviesClicked = screenState::onSeeAllTopRatedMoviesClicked
         )
     }
