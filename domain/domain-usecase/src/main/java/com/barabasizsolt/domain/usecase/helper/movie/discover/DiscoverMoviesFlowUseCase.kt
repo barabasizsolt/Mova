@@ -13,12 +13,6 @@ import kotlinx.coroutines.flow.map
 class DiscoverMoviesFlowUseCase(private val exploreService: ExploreService) {
 
     operator fun invoke(): Flow<List<ContentItem>> = exploreService.discoverMovies.filterNotNull().map { list ->
-        list.map { item ->
-            when (item){
-                is TailItem -> item.toContentItem()
-                is ErrorItem -> item.toContentItem()
-                else -> (item as Movie).toContentItem()
-            }
-        }
+        list.map { item -> item.toContentItem() }
     }
 }
