@@ -27,20 +27,19 @@ internal class PagerImplementation : Pager {
         cacheWithError: Boolean/* TODO: Used for HomeScreenState, there isn't pagination */
     ): List<PagingItem> = when (refreshType) {
         RefreshType.CACHE_IF_POSSIBLE -> flow.value.ifEmpty {
-            // TODO [HIGH] improve it
-            COUNTER = 1
             if (cacheWithError) {
                 paginationResult(
                     function = {
-                        getRemoteContent(COUNTER++).also {
+                        getRemoteContent(1).also {
                             flow.value = it.appendTailItem()
                         }
                     },
                     fallbackContent = emptyList(),
-                    flow = flow
+                    flow = flow,
+                    sideEffect = { COUNTER = 2 }
                 )
             } else {
-                getRemoteContent(COUNTER++).also {
+                getRemoteContent(1).also {
                     flow.value = it.appendTailItem()
                 }
             }
@@ -50,36 +49,38 @@ internal class PagerImplementation : Pager {
             val oldContent = flow.value.take(n = flow.value.size - 1)
             paginationResult(
                 function = {
-                    getRemoteContent(COUNTER++).let {
+                    getRemoteContent(COUNTER).let {
                         val newContent = oldContent + it.appendTailItem()
                         flow.value = newContent
                         newContent
                     }
                 },
                 fallbackContent = oldContent,
-                flow = flow
+                flow = flow,
+                sideEffect = { COUNTER++ }
             )
         }
         RefreshType.FORCE_REFRESH -> paginationResult(
             function = {
-                COUNTER = 1
-                getRemoteContent(COUNTER++).also {
+                getRemoteContent(1).also {
                     flow.value = it.appendTailItem()
                 }
             },
             fallbackContent = flow.value,
-            flow = flow
+            flow = flow,
+            sideEffect = { COUNTER = 2 }
         )
     }
 
     private inline fun paginationResult(
         function: () -> List<PagingItem>,
         fallbackContent: List<PagingItem>,
-        flow: MutableStateFlow<List<PagingItem>>
+        flow: MutableStateFlow<List<PagingItem>>,
+        sideEffect: () -> Unit = {}
     ): List<PagingItem> = try {
-        function()
+        function().also { sideEffect() }
     } catch (exception: Exception) {
-        flow.value = fallbackContent.filter { it !is ErrorItem } + listOf(ErrorItem(errorMessage = exception.message.orEmpty()))
+        flow.value = fallbackContent.filter { it !is ErrorItem && it !is TailItem } + listOf(ErrorItem(errorMessage = exception.message.orEmpty()))
         throw exception
     }
 

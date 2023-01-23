@@ -52,13 +52,13 @@ class ExploreServiceImpl(
 
     override suspend fun searchMovies(query: String, refreshType: RefreshType): List<PagingItem> = pager.paginate(
         refreshType = refreshType,
-        flow = _discoverMovies,
+        flow = _searchMovies,
         getRemoteContent = { page -> remoteSource.searchMovies(query = query, page = page) }
     )
 
     override suspend fun searchTvSeries(query: String, refreshType: RefreshType): List<PagingItem> = pager.paginate(
         refreshType = refreshType,
-        flow = _discoverTvSeries,
+        flow = _searchTvSeries,
         getRemoteContent = { page -> remoteSource.searchTvSeries(query = query, page = page) }
     )
 

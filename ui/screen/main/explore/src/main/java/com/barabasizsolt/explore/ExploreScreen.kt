@@ -75,15 +75,19 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
                 ScreenContent(
                     query = screenState.query,
                     onQueryChange = screenState::onQueryChange,
-                    items = screenState.exploreContent,
+                    discoverItems = screenState.discoverContent,
+                    searchItems = screenState.searchContent,
                     isLoading = screenState.state in listOf(BaseScreenState.State.SwipeRefresh, BaseScreenState.State.Search),
                     bottomSheetScaffoldState = bottomSheetScaffoldState,
                     onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
                     onRetryClick = {
-                        // TODO: on search reset page to initial = 1, when UserAction.Search
-                        // TODO: on normal reset page to initial = 1, when UserAction.Normal and content is empty
                         screenState.getScreenData(
-                            userAction = if (screenState.query.isNotEmpty() && screenState.exploreContent.isEmpty()) UserAction.Search else UserAction.Normal
+                            userAction = if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
+                                screenState.clearSearchContent()
+                                UserAction.Search
+                            } else {
+                                UserAction.Normal
+                            }
                         )
                     },
                     scope = scope,
@@ -99,7 +103,8 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
 private fun ScreenContent(
     query: String,
     onQueryChange: (String) -> Unit,
-    items: List<ContentItem>,
+    discoverItems: List<ContentItem>,
+    searchItems: List<ContentItem>,
     isLoading: Boolean,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
     onLoadMoreItem: () -> Unit,
@@ -122,7 +127,8 @@ private fun ScreenContent(
             ContentBody(
                 gridState = gridState,
                 query = query,
-                items = items,
+                discoverItems = discoverItems,
+                searchItems = searchItems,
                 onLoadMoreItem = onLoadMoreItem,
                 onRetryClick = onRetryClick
             )
@@ -171,7 +177,8 @@ private fun ContentBody(
     modifier: Modifier = Modifier,
     gridState: LazyGridState,
     query: String,
-    items: List<ContentItem>,
+    discoverItems: List<ContentItem>,
+    searchItems: List<ContentItem>,
     onLoadMoreItem: () -> Unit,
     onRetryClick: () -> Unit
 ) = ScrollUpWrapper(
@@ -191,7 +198,7 @@ private fun ContentBody(
         ) {
             if (query.isNotEmpty()) {
                 searchableItemsIndexed(
-                    items = items,
+                    items = searchItems,
                     key = { index, item -> item.id + index },
                     span = searchableItemSpan(baseLineSpan = 2),
                     onLoadMoreItem = onLoadMoreItem,
@@ -204,7 +211,7 @@ private fun ContentBody(
                 }
             } else {
                 searchableItemsIndexed(
-                    items = items,
+                    items = discoverItems,
                     key = { index, item -> item.id + index },
                     span = searchableItemSpan(baseLineSpan = 1),
                     onLoadMoreItem = onLoadMoreItem,

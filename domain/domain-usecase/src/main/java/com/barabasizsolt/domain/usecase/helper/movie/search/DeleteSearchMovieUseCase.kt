@@ -1,4 +1,4 @@
-package com.barabasizsolt.domain.usecase.screen.explore.movie
+package com.barabasizsolt.domain.usecase.helper.movie.search
 
 import com.barabasizsolt.discover.api.ExploreService
 

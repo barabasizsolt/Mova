@@ -1,4 +1,4 @@
-package com.barabasizsolt.domain.usecase.screen.explore.tv
+package com.barabasizsolt.domain.usecase.helper.tvSeries.search
 
 import com.barabasizsolt.discover.api.ExploreService
 import com.barabasizsolt.domain.util.result.wrapToResult

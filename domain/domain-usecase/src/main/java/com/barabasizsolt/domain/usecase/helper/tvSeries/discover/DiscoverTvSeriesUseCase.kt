@@ -1,11 +1,11 @@
-package com.barabasizsolt.domain.usecase.screen.explore.movie
+package com.barabasizsolt.domain.usecase.helper.tvSeries.discover
 
 import com.barabasizsolt.discover.api.ExploreService
 import com.barabasizsolt.domain.util.FilterType
 import com.barabasizsolt.domain.util.result.wrapToResult
 import com.barabasizsolt.util.RefreshType
 
-class DiscoverMoviesUseCase(private val exploreService: ExploreService) {
+class DiscoverTvSeriesUseCase(private val exploreService: ExploreService) {
 
     suspend operator fun invoke(
         region: List<String> = emptyList(),
@@ -13,7 +13,7 @@ class DiscoverMoviesUseCase(private val exploreService: ExploreService) {
         sortBy: List<String> = listOf(FilterType.DEFAULT.value),
         refreshType: RefreshType
     ) = wrapToResult {
-        exploreService.getMovies(
+        exploreService.getTvSeries(
             region = region,
             withGenres = withGenres,
             sortBy = sortBy,

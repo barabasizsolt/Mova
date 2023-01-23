@@ -51,7 +51,6 @@ class SeeAllScreenState(
     override fun getScreenData(userAction: UserAction, delay: Long) {
         if (state !in listOf(State.Loading, State.SwipeRefresh)) {
             scope.launch {
-                //state = if (isSwipeRefresh) State.SwipeRefresh else State.Normal
                 state = when (userAction) {
                     UserAction.SwipeRefresh -> State.SwipeRefresh
                     else -> State.Normal
