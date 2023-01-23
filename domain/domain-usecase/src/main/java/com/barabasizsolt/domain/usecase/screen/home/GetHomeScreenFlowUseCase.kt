@@ -31,11 +31,11 @@ class GetHomeScreenFlowUseCase(
         getPopularPeopleFlowUseCase()
     ) { upcoming, popular, topRated, nowPlaying, popularPeople ->
         HomeScreenContent(
-            upcomingMovies = upcoming.filter { it !is TailItem && it !is ErrorItem }.map { it as Movie },
-            popularMovies = popular.filter { it !is TailItem && it !is ErrorItem }.take(n = MAX_ITEM).map { (it as Movie).toContentItem() },
-            nowPlayingMovies = nowPlaying.filter { it !is TailItem && it !is ErrorItem }.take(n = MAX_ITEM).map { (it as Movie).toContentItem() },
-            topRatedMovies = topRated.filter { it !is TailItem && it !is ErrorItem }.take(n = MAX_ITEM).map { (it as Movie).toContentItem() },
-            popularPeople = popularPeople.filter { it !is TailItem && it !is ErrorItem }.map { (it as People).toContentItem() }
+            upcomingMovies = upcoming.filterIsInstance<Movie>(),
+            popularMovies = popular.filterIsInstance<Movie>().take(n = MAX_ITEM).map { it.toContentItem() },
+            nowPlayingMovies = nowPlaying.filterIsInstance<Movie>().take(n = MAX_ITEM).map { it.toContentItem() },
+            topRatedMovies = topRated.filterIsInstance<Movie>().take(n = MAX_ITEM).map { it.toContentItem() },
+            popularPeople = popularPeople.filterIsInstance<People>().map { it.toContentItem() }
         )
     }
 

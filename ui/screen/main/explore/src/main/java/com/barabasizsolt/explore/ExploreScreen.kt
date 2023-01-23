@@ -79,7 +79,13 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
                     isLoading = screenState.state in listOf(BaseScreenState.State.SwipeRefresh, BaseScreenState.State.Search),
                     bottomSheetScaffoldState = bottomSheetScaffoldState,
                     onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
-                    onRetryClick = { screenState.getScreenData(userAction = UserAction.Normal) },
+                    onRetryClick = {
+                        // TODO: on search reset page to initial = 1, when UserAction.Search
+                        // TODO: on normal reset page to initial = 1, when UserAction.Normal and content is empty
+                        screenState.getScreenData(
+                            userAction = if (screenState.query.isNotEmpty() && screenState.exploreContent.isEmpty()) UserAction.Search else UserAction.Normal
+                        )
+                    },
                     scope = scope,
                     gridState = gridState
                 )

@@ -9,11 +9,9 @@ import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.base.UserAction
 import com.barabasizsolt.domain.model.ContentItem
-import com.barabasizsolt.domain.usecase.helper.discover.movie.DeleteMovieDiscoverUseCase
-import com.barabasizsolt.domain.usecase.helper.discover.tv.DeleteTvDiscoverUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.movie.DeleteSearchMovieUseCase
+import com.barabasizsolt.domain.usecase.helper.discover.tv.DeleteSearchTvSeriesUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.Category
-import com.barabasizsolt.domain.usecase.screen.explore.GetExploreScreenFlowUseCase
-import com.barabasizsolt.domain.usecase.screen.explore.GetExploreScreenUseCase
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -26,8 +24,8 @@ import org.koin.androidx.compose.get
 fun rememberExploreScreenState(
     getExploreScreen: GetExploreScreenUseCase = get(),
     getExploreScreenFlow: GetExploreScreenFlowUseCase = get(),
-    deleteMovieDiscoverUseCase: DeleteMovieDiscoverUseCase = get(),
-    deleteTvDiscoverUseCase: DeleteTvDiscoverUseCase = get()
+    deleteMovieDiscoverUseCase: DeleteSearchMovieUseCase = get(),
+    deleteTvDiscoverUseCase: DeleteSearchTvSeriesUseCase = get()
 ): ExploreScreenState = rememberSaveable(
     saver = ExploreScreenState.getSaver(
         getExploreScreen = getExploreScreen,
@@ -47,8 +45,8 @@ fun rememberExploreScreenState(
 class ExploreScreenState(
     private val getExploreScreen: GetExploreScreenUseCase,
     private val getExploreScreenFlow: GetExploreScreenFlowUseCase,
-    private val deleteMovieDiscoverUseCase: DeleteMovieDiscoverUseCase,
-    private val deleteTvDiscoverUseCase: DeleteTvDiscoverUseCase
+    private val deleteMovieDiscoverUseCase: DeleteSearchMovieUseCase,
+    private val deleteTvDiscoverUseCase: DeleteSearchTvSeriesUseCase
 ) : BaseScreenState() {
     var exploreContent by mutableStateOf<List<ContentItem>>(value = emptyList())
         private set
@@ -58,7 +56,6 @@ class ExploreScreenState(
 
     init {
         getExploreScreenFlow(category = category).onEach {
-            println("<<Size: ${it.size}")
             exploreContent = it
         }.launchIn(scope = scope)
         getScreenData(userAction = UserAction.Normal)
@@ -85,26 +82,19 @@ class ExploreScreenState(
                         }
                     )
                 ) {
+                    // TODO [MID] trigger loading State with Try Again Button
                     is Result.Failure -> when {
                         userAction is UserAction.Normal && exploreContent.isEmpty() ->
                             State.Error(message = result.exception.message.orEmpty())
                         userAction is UserAction.SwipeRefresh ->
                             State.ShowSnackBar
                         userAction is UserAction.Search ->
-                            State.Normal.also {
-                                //exploreContent = listOf(ContentItem.ItemError())
-                            }
+                            State.Normal
                         userAction is UserAction.Normal ->
-                            State.Normal.also {
-                                //exploreContent = exploreContent.take(n = exploreContent.size - 1) + listOf(ContentItem.ItemError())
-                            }
+                            State.Normal
                         else -> State.Error(message = result.exception.message.orEmpty())
                     }
-                    is Result.Success -> State.Normal.also {
-                        if (exploreContent.isNotEmpty()) {
-                            println("<<LastItem: ${exploreContent[exploreContent.lastIndex]}")
-                        }
-                    }
+                    is Result.Success -> State.Normal
                 }
             }
         }
@@ -123,8 +113,8 @@ class ExploreScreenState(
         fun getSaver(
             getExploreScreen: GetExploreScreenUseCase,
             getExploreScreenFlow: GetExploreScreenFlowUseCase,
-            deleteMovieDiscoverUseCase: DeleteMovieDiscoverUseCase,
-            deleteTvDiscoverUseCase: DeleteTvDiscoverUseCase
+            deleteMovieDiscoverUseCase: DeleteSearchMovieUseCase,
+            deleteTvDiscoverUseCase: DeleteSearchTvSeriesUseCase
         ): Saver<ExploreScreenState, *> = getBaseSaver(
             save = { mapOf(QUERY_KEY to it.query) },
             restore = {

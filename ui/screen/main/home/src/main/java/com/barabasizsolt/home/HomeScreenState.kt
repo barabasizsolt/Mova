@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.base.UserAction
 import com.barabasizsolt.domain.model.HomeScreenContent
+import com.barabasizsolt.domain.model.isEmpty
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenUseCase
 import kotlinx.coroutines.flow.launchIn
@@ -36,7 +37,7 @@ class HomeScreenState(
 
     var action by mutableStateOf<Event<Action>?>(value = null)
         private set
-    var homeContent by mutableStateOf<HomeScreenContent?>(value = null)
+    var homeContent by mutableStateOf(value = HomeScreenContent.createEmptyHomeScreenContent())
         private set
 
     init {
@@ -47,7 +48,6 @@ class HomeScreenState(
     }
 
     override fun getScreenData(userAction: UserAction, delay: Long) {
-        //state = if (isSwipeRefresh) State.SwipeRefresh else State.Loading
         state = when (userAction) {
             UserAction.SwipeRefresh -> State.SwipeRefresh
             else -> State.Loading
@@ -56,16 +56,20 @@ class HomeScreenState(
             state = when (
                 val result = getHomeScreen(
                     coroutineScope = this,
-                    refreshType = if (userAction is UserAction.SwipeRefresh)
-                        RefreshType.FORCE_REFRESH
-                    else
-                        RefreshType.CACHE_IF_POSSIBLE
+                    refreshType = when {
+                        userAction is UserAction.SwipeRefresh -> RefreshType.FORCE_REFRESH
+                        //homeContent.isEmpty() -> RefreshType.CACHE_IF_POSSIBLE
+                        else -> RefreshType.CACHE_IF_POSSIBLE
+                    }
                 )
             ) {
-                is Result.Failure -> if (userAction !is UserAction.SwipeRefresh)
+                is Result.Failure -> when {
+                    userAction is UserAction.Normal && homeContent.isEmpty() ->
                         State.Error(message = result.exception.message.orEmpty())
-                    else
+                    userAction is UserAction.SwipeRefresh ->
                         State.ShowSnackBar
+                    else -> State.Error(message = result.exception.message.orEmpty())
+                }
                 is Result.Success -> State.Normal
             }
         }

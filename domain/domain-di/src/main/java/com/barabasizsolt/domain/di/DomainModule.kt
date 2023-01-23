@@ -1,6 +1,6 @@
 package com.barabasizsolt.domain.di
 
-import com.barabasizsolt.discover.di.createDiscoverModule
+import com.barabasizsolt.discover.di.createExploreModule
 import com.barabasizsolt.domain.usecase.auth.GetIntentForGoogleAccountLoginUseCase
 import com.barabasizsolt.domain.usecase.auth.IsLoggedInUseCase
 import com.barabasizsolt.domain.usecase.auth.LogOutUseCase
@@ -9,12 +9,12 @@ import com.barabasizsolt.domain.usecase.auth.LoginWithFacebookAccountUseCase
 import com.barabasizsolt.domain.usecase.auth.LoginWithGoogleAccountUseCase
 import com.barabasizsolt.domain.usecase.auth.RegisterWithEmailAndPasswordUseCase
 import com.barabasizsolt.domain.usecase.auth.ResetPasswordUseCase
-import com.barabasizsolt.domain.usecase.helper.discover.movie.DeleteMovieDiscoverUseCase
-import com.barabasizsolt.domain.usecase.helper.discover.movie.GetMovieDiscoverFlowUseCase
-import com.barabasizsolt.domain.usecase.helper.discover.movie.GetMovieDiscoverUseCase
-import com.barabasizsolt.domain.usecase.helper.discover.tv.DeleteTvDiscoverUseCase
-import com.barabasizsolt.domain.usecase.helper.discover.tv.GetTvDiscoverFlowUseCase
-import com.barabasizsolt.domain.usecase.helper.discover.tv.GetTvDiscoverUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.movie.DeleteSearchMovieUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.movie.DiscoverMoviesFlowUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.movie.DiscoverMoviesUseCase
+import com.barabasizsolt.domain.usecase.helper.discover.tv.DeleteSearchTvSeriesUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.tv.DiscoverTvSeriesFlowUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.tv.DiscoverTvSeriesUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.nowPlaying.DeleteNowPlayingMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.nowPlaying.GetNowPlayingMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.nowPlaying.GetNowPlayingMoviesUseCase
@@ -30,8 +30,10 @@ import com.barabasizsolt.domain.usecase.helper.movie.upcoming.GetUpcomingMoviesU
 import com.barabasizsolt.domain.usecase.helper.people.DeletePopularPeopleUseCase
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleUseCase
-import com.barabasizsolt.domain.usecase.screen.explore.GetExploreScreenFlowUseCase
-import com.barabasizsolt.domain.usecase.screen.explore.GetExploreScreenUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.movie.SearchMoviesFlowUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.movie.SearchMoviesUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.tv.SearchTvSeriesFlowUseCase
+import com.barabasizsolt.domain.usecase.screen.explore.tv.SearchTvSeriesUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenUseCase
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenFlowUseCase
@@ -48,7 +50,7 @@ fun createDomainModules() = buildList {
 }
 
 private fun createServiceModules() = buildList {
-    add(createDiscoverModule())
+    add(createExploreModule())
     add(createMovieModule())
     add(createPeopleModule())
     add(createAuthenticationModule())
@@ -64,16 +66,6 @@ private fun createUseCaseModules() = module {
     factory { LogOutUseCase(service = get()) }
     factory { RegisterWithEmailAndPasswordUseCase(service = get()) }
     factory { ResetPasswordUseCase(service = get()) }
-
-    // Discover [Movie]
-    factory { GetMovieDiscoverUseCase(discoverService = get()) }
-    factory { GetMovieDiscoverFlowUseCase(discoverService = get()) }
-    factory { DeleteMovieDiscoverUseCase(discoverService = get()) }
-
-    // Discover [Tv]
-    factory { GetTvDiscoverUseCase(discoverService = get()) }
-    factory { GetTvDiscoverFlowUseCase(discoverService = get()) }
-    factory { DeleteTvDiscoverUseCase(discoverService = get()) }
 
     // Movie [Popular]
     factory { GetPopularMoviesUseCase(movieService = get()) }
@@ -121,18 +113,20 @@ private fun createUseCaseModules() = module {
     }
 
     // Explore
-    factory {
-        GetExploreScreenUseCase(
-            getMovieDiscoverUseCase = get(),
-            getTvDiscoverUseCase = get()
-        )
-    }
-    factory {
-        GetExploreScreenFlowUseCase(
-            getMovieDiscoverFlowUseCase = get(),
-            getTvDiscoverFlowUseCase = get()
-        )
-    }
+    // [Movie]
+    factory { DiscoverMoviesUseCase(discoverService = get()) }
+    factory { DiscoverMoviesFlowUseCase(discoverService = get()) }
+    factory { SearchMoviesUseCase(discoverService = get()) }
+    factory { SearchMoviesFlowUseCase(discoverService = get()) }
+    factory { DeleteSearchMovieUseCase(discoverService = get()) }
+
+    // [TvSeries]
+    factory { DiscoverTvSeriesUseCase(discoverService = get()) }
+    factory { DiscoverTvSeriesFlowUseCase(discoverService = get()) }
+    factory { SearchTvSeriesUseCase(discoverService = get()) }
+    factory { SearchTvSeriesFlowUseCase(discoverService = get()) }
+    factory { DeleteSearchTvSeriesUseCase(discoverService = get()) }
+
 
     // See All
     factory {

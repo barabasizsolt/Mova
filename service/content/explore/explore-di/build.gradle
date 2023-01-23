@@ -8,11 +8,11 @@ java {
 }
 
 dependencies {
+    implementation(project(":service:network:network-api"))
+    implementation(project(":service:content:explore:explore-api"))
+    implementation(project(":service:content:explore:explore-implementation"))
+    implementation(project(":service:content:util"))
+
     implementation(libs.square.retrofit)
     implementation(libs.koin.core)
-
-    implementation(project(":service:network:network-api"))
-    implementation(project(":service:content:movie:movie-api"))
-    implementation(project(":service:content:movie:movie-implementation"))
-    implementation(project(":service:content:util"))
 }

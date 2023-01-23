@@ -42,6 +42,7 @@ fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
         ScreenContent(
             items = screenState.watchableItems,
             onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
+            onRetryClick = { screenState.getScreenData(userAction = UserAction.Normal) },
             onUpClicked = screenState::onUpClicked,
             contentType = screenState.contentType
         )
@@ -52,6 +53,7 @@ fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
 private fun ScreenContent(
     items: List<ContentItem>,
     onLoadMoreItem: () -> Unit,
+    onRetryClick: () -> Unit,
     onUpClicked: () -> Unit,
     contentType: String,
 ) {
@@ -73,7 +75,7 @@ private fun ScreenContent(
                 )
             ) {
                 header(contentType = contentType, onClick = onUpClicked)
-                content(items = items, onLoadMoreItem = onLoadMoreItem)
+                content(items = items, onLoadMoreItem = onLoadMoreItem, onRetryClick = onRetryClick)
             }
         }
     )
@@ -99,14 +101,15 @@ private fun LazyGridScope.header(
 
 private fun LazyGridScope.content(
     items: List<ContentItem>,
-    onLoadMoreItem: () -> Unit
+    onLoadMoreItem: () -> Unit,
+    onRetryClick: () -> Unit
 ) = itemsIndexed(
     items = items,
     key = { index, item -> item.id + index },
     span = { _, item ->
         GridItemSpan(
             currentLineSpan = when (item) {
-                is ContentItem.ItemTail -> 6
+                is ContentItem.ItemTail, is ContentItem.ItemError -> 6
                 is ContentItem.Person -> 2
                 else -> 3
             }
@@ -128,8 +131,6 @@ private fun LazyGridScope.content(
                 .fillMaxWidth())
             SideEffect { onLoadMoreItem() }
         }
-        is ContentItem.ItemError -> ErrorItem(
-            onRetryClick = { /*TODO: Implement it*/ }
-        )
+        is ContentItem.ItemError -> ErrorItem(onRetryClick = onRetryClick)
     }
 }
