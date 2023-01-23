@@ -1,31 +1,20 @@
-package com.barabasizsolt.util.pagination
+package com.barabasizsolt.pagination.implementation
 
-import com.barabasizsolt.util.RefreshType
+import com.barabasizsolt.pagination.api.ErrorItem
+import com.barabasizsolt.pagination.api.Pager
+import com.barabasizsolt.pagination.api.PagerItem
+import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.api.TailItem
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.koin.dsl.module
 
-//TODO: [HIGH] move into a separate module
-
-val pagerModule = module { factory<Pager> { PagerImplementation() } }
-
-interface Pager {
-
-    suspend fun paginate(
-        refreshType: RefreshType,
-        flow: MutableStateFlow<List<PagingItem>>,
-        getRemoteContent: suspend (ctr: Int) -> List<PagingItem>,
-        cacheWithError: Boolean = true
-    ): List<PagingItem>
-}
-
-internal class PagerImplementation : Pager {
+class PagerImplementation : Pager {
 
     override suspend fun paginate(
         refreshType: RefreshType,
-        flow: MutableStateFlow<List<PagingItem>>,
-        getRemoteContent: suspend (ctr: Int) -> List<PagingItem>,
-        cacheWithError: Boolean/* TODO: Used for HomeScreenState, there isn't pagination */
-    ): List<PagingItem> = when (refreshType) {
+        flow: MutableStateFlow<List<PagerItem>>,
+        getRemoteContent: suspend (ctr: Int) -> List<PagerItem>,
+        cacheWithError: Boolean
+    ): List<PagerItem> = when (refreshType) {
         RefreshType.CACHE_IF_POSSIBLE -> flow.value.ifEmpty {
             if (cacheWithError) {
                 paginationResult(
@@ -73,18 +62,18 @@ internal class PagerImplementation : Pager {
     }
 
     private inline fun paginationResult(
-        function: () -> List<PagingItem>,
-        fallbackContent: List<PagingItem>,
-        flow: MutableStateFlow<List<PagingItem>>,
+        function: () -> List<PagerItem>,
+        fallbackContent: List<PagerItem>,
+        flow: MutableStateFlow<List<PagerItem>>,
         sideEffect: () -> Unit = {}
-    ): List<PagingItem> = try {
+    ): List<PagerItem> = try {
         function().also { sideEffect() }
     } catch (exception: Exception) {
         flow.value = fallbackContent.filter { it !is ErrorItem && it !is TailItem } + listOf(ErrorItem(errorMessage = exception.message.orEmpty()))
         throw exception
     }
 
-    private fun List<PagingItem>.appendTailItem() = this + listOf(TailItem(loadMore = this.isNotEmpty()))
+    private fun List<PagerItem>.appendTailItem() = this + listOf(TailItem(loadMore = this.isNotEmpty()))
 
     companion object {
         private var COUNTER: Int = 1

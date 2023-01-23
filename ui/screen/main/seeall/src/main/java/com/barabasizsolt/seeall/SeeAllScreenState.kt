@@ -11,8 +11,8 @@ import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenUseCase
 import com.barabasizsolt.domain.util.result.Result
+import com.barabasizsolt.pagination.api.RefreshType
 import com.barabasizsolt.util.Event
-import com.barabasizsolt.util.RefreshType
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch

@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.result.Result
+import com.barabasizsolt.pagination.api.RefreshType
 import com.barabasizsolt.util.Event
-import com.barabasizsolt.util.RefreshType
 import org.koin.androidx.compose.get
 
 @Composable
@@ -56,9 +56,8 @@ class HomeScreenState(
             state = when (
                 val result = getHomeScreen(
                     coroutineScope = this,
-                    refreshType = when {
-                        userAction is UserAction.SwipeRefresh -> RefreshType.FORCE_REFRESH
-                        //homeContent.isEmpty() -> RefreshType.CACHE_IF_POSSIBLE
+                    refreshType = when (userAction) {
+                        is UserAction.SwipeRefresh -> RefreshType.FORCE_REFRESH
                         else -> RefreshType.CACHE_IF_POSSIBLE
                     }
                 )

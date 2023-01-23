@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.result.Result
-import com.barabasizsolt.util.RefreshType
+import com.barabasizsolt.pagination.api.RefreshType
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.get
 

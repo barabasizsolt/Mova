@@ -17,5 +17,5 @@ dependencies {
     implementation(project(":service:network:network-api"))
     implementation(project(":service:content:movie:movie-api"))
     implementation(project(":service:content:model:movie"))
-    implementation(project(":service:content:util"))
+    implementation(project(":service:content:pagination:pagination-api"))
 }

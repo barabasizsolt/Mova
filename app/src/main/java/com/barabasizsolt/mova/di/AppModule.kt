@@ -5,7 +5,7 @@ import com.barabasizsolt.auth.createAuthModules
 import com.barabasizsolt.di.createNetworkModule
 import com.barabasizsolt.domain.di.createDomainModules
 import com.barabasizsolt.mova.BuildConfig
-import com.barabasizsolt.util.pagination.pagerModule
+import com.barabasizsolt.pagination.di.pagerModule
 
 fun createAppModule() = buildList {
     add(activityProviderModule)

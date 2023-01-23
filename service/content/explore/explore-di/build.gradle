@@ -11,7 +11,7 @@ dependencies {
     implementation(project(":service:network:network-api"))
     implementation(project(":service:content:explore:explore-api"))
     implementation(project(":service:content:explore:explore-implementation"))
-    implementation(project(":service:content:util"))
+    implementation(project(":service:content:pagination:pagination-api"))
 
     implementation(libs.square.retrofit)
     implementation(libs.koin.core)

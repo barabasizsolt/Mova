@@ -7,10 +7,9 @@ import com.barabasizsolt.domain.usecase.helper.movie.topRated.GetTopRatedMoviesF
 import com.barabasizsolt.domain.usecase.helper.movie.trending.GetPopularMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleFlowUseCase
 import com.barabasizsolt.movie.model.Movie
+import com.barabasizsolt.pagination.api.ErrorItem
+import com.barabasizsolt.pagination.api.TailItem
 import com.barabasizsolt.people.model.People
-import com.barabasizsolt.tv.modell.TvSeries
-import com.barabasizsolt.util.pagination.ErrorItem
-import com.barabasizsolt.util.pagination.TailItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map

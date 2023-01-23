@@ -36,7 +36,7 @@ dependencies {
     implementation(project(":service:content:model:movie"))
     implementation(project(":service:content:model:tv"))
     implementation(project(":service:content:model:people"))
-    implementation(project(":service:content:util"))
+    implementation(project(":service:content:pagination:pagination-api"))
 
     implementation(project(":service:content:explore:explore-api"))
     implementation(project(":service:content:explore:explore-di"))

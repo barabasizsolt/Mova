@@ -9,8 +9,6 @@ import com.barabasizsolt.domain.usecase.helper.movie.upcoming.GetUpcomingMoviesF
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleFlowUseCase
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.people.model.People
-import com.barabasizsolt.util.pagination.ErrorItem
-import com.barabasizsolt.util.pagination.TailItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 

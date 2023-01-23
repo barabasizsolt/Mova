@@ -1,10 +1,10 @@
 package com.barabasizsolt.domain.model
 
 import com.barabasizsolt.movie.model.Movie
+import com.barabasizsolt.pagination.api.ErrorItem
+import com.barabasizsolt.pagination.api.TailItem
 import com.barabasizsolt.people.model.People
 import com.barabasizsolt.tv.modell.TvSeries
-import com.barabasizsolt.util.pagination.ErrorItem
-import com.barabasizsolt.util.pagination.TailItem
 
 sealed class ContentItem {
 

@@ -1,6 +1,6 @@
 package com.barabasizsolt.tv.modell
 
-import com.barabasizsolt.util.pagination.PagingItem
+import com.barabasizsolt.pagination.api.PagerItem
 
 data class TvSeries(
     override val id: String,
@@ -14,4 +14,4 @@ data class TvSeries(
     val posterPath: String?,
     val firstAirDate: String,
     val voteAverage: String
-) : PagingItem
+) : PagerItem

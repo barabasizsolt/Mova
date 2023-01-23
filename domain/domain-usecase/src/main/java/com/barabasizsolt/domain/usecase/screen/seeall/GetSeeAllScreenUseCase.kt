@@ -4,7 +4,7 @@ import com.barabasizsolt.domain.usecase.helper.movie.nowPlaying.GetNowPlayingMov
 import com.barabasizsolt.domain.usecase.helper.movie.topRated.GetTopRatedMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.trending.GetPopularMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleUseCase
-import com.barabasizsolt.util.RefreshType
+import com.barabasizsolt.pagination.api.RefreshType
 
 class GetSeeAllScreenUseCase(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
