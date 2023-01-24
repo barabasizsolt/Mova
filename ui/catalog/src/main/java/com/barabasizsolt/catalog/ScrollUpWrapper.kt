@@ -3,6 +3,9 @@ package com.barabasizsolt.catalog
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
@@ -21,12 +24,14 @@ import com.barabasizsolt.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.unit.Dp
 
 @Composable
 fun ScrollUpWrapper(
     modifier: Modifier = Modifier,
     gridState: LazyGridState,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
+    scrollUpTopPadding: Dp = AppTheme.dimens.screenPadding
 ) {
     val scrollToUpIsVisible = rememberSaveable { mutableStateOf(value = false) }
     val scope: CoroutineScope = rememberCoroutineScope()
@@ -44,7 +49,8 @@ fun ScrollUpWrapper(
             visible = scrollToUpIsVisible.value,
             modifier = Modifier
                 .align(alignment = Alignment.TopCenter)
-                .padding(top = AppTheme.dimens.screenPadding * 2)
+                .statusBarsPadding()
+                .padding(top = scrollUpTopPadding)
         ) {
             ScrollToTopItem(
                 text = stringResource(id = R.string.scroll_up),

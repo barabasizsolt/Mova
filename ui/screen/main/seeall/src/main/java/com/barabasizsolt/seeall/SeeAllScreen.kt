@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
@@ -24,7 +23,6 @@ import com.barabasizsolt.catalog.ErrorItem
 import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MediumPersonCard
 import com.barabasizsolt.catalog.MovaHeader
-import com.barabasizsolt.catalog.ScrollUpWrapper
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.screen.seeall.SeeAllContentType
@@ -38,13 +36,14 @@ fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
     screenState = screenState,
     onSnackBarDismissed = { screenState.getScreenData(userAction = UserAction.Normal) },
     snackBarModifier = Modifier.systemBarsPadding(),
-    content = {
+    content = { gridState, _ ->
         ScreenContent(
             items = screenState.watchableItems,
             onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
             onRetryClick = { screenState.getScreenData(userAction = UserAction.Normal) },
             onUpClicked = screenState::onUpClicked,
-            contentType = screenState.contentType
+            contentType = screenState.contentType,
+            gridState = gridState
         )
     }
 )
@@ -56,29 +55,21 @@ private fun ScreenContent(
     onRetryClick: () -> Unit,
     onUpClicked: () -> Unit,
     contentType: String,
-) {
-    val gridState: LazyGridState = rememberLazyGridState()
-
-    ScrollUpWrapper(
-        gridState = gridState,
-        content = {
-            LazyVerticalGrid(
-                state = gridState,
-                columns = GridCells.Fixed(count = 6),
-                verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-                contentPadding = PaddingValues(
-                    start = AppTheme.dimens.screenPadding,
-                    end = AppTheme.dimens.screenPadding,
-                    bottom = AppTheme.dimens.screenPadding + navigationBarInsetDp,
-                    top = AppTheme.dimens.screenPadding + statusBarInsetDp
-                )
-            ) {
-                header(contentType = contentType, onClick = onUpClicked)
-                content(items = items, onLoadMoreItem = onLoadMoreItem, onRetryClick = onRetryClick)
-            }
-        }
+    gridState: LazyGridState
+) = LazyVerticalGrid(
+    state = gridState,
+    columns = GridCells.Fixed(count = 6),
+    verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
+    horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
+    contentPadding = PaddingValues(
+        start = AppTheme.dimens.screenPadding,
+        end = AppTheme.dimens.screenPadding,
+        bottom = AppTheme.dimens.screenPadding + navigationBarInsetDp,
+        top = AppTheme.dimens.screenPadding + statusBarInsetDp
     )
+) {
+    header(contentType = contentType, onClick = onUpClicked)
+    content(items = items, onLoadMoreItem = onLoadMoreItem, onRetryClick = onRetryClick)
 }
 
 private fun LazyGridScope.header(

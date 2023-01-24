@@ -33,7 +33,7 @@ class GetHomeScreenFlowUseCase(
             popularMovies = popular.filterIsInstance<Movie>().take(n = MAX_ITEM).map { it.toContentItem() as ContentItem.Watchable },
             nowPlayingMovies = nowPlaying.filterIsInstance<Movie>().take(n = MAX_ITEM).map { it.toContentItem() as ContentItem.Watchable },
             topRatedMovies = topRated.filterIsInstance<Movie>().take(n = MAX_ITEM).map { it.toContentItem() as ContentItem.Watchable },
-            popularPeople = popularPeople.filterIsInstance<People>().map { it.toContentItem() as ContentItem.Person }
+            popularPeople = popularPeople.filterIsInstance<People>().take(n = MAX_ITEM).map { it.toContentItem() as ContentItem.Person }
         )
     }
 

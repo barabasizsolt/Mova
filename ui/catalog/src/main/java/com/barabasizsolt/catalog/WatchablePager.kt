@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.barabasizsolt.movie.model.Movie
@@ -158,12 +159,12 @@ private fun PagerItemButtons(
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2)
 ) {
     MovaFilledButton(
-        text = "Play",
+        text = stringResource(id = R.string.trailer),
         icon = Icons.Filled.PlayCircle,
         onClick = onPlayButtonClicked
     )
     MovaOutlinedButton(
-        text = "Favourites",
+        text = stringResource(id = R.string.favourites),
         icon = Icons.Filled.Favorite,
         contentColor = AppTheme.colors.secondary,
         onClick = onAddToFavouriteButtonClicked

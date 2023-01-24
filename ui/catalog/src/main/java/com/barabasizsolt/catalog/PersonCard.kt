@@ -73,7 +73,9 @@ fun PersonCard(
     )
     Column {
         NameText(name = names[0])
-        NameText(name = names[1])
+        if (names.size > 1) {
+            NameText(name = names[1])
+        }
     }
 }
 
