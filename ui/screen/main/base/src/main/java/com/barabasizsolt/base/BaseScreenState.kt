@@ -30,6 +30,7 @@ abstract class BaseScreenState : CoroutineScope {
         object Search : State()
         data class Error(val message: String) : State()
         object ShowSnackBar : State()
+        object TryAgainLoading : State()
     }
 
     companion object {

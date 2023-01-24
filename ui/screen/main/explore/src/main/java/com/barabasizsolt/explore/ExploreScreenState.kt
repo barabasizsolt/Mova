@@ -83,6 +83,7 @@ class ExploreScreenState(
                 UserAction.Search -> State.Search
                 UserAction.Error -> State.Loading
                 UserAction.Normal -> State.Normal
+                UserAction.TryAgain -> State.TryAgainLoading
             }
             scope.launch {
                 delay(timeMillis = delay)
@@ -114,7 +115,6 @@ class ExploreScreenState(
                 category = category
             )
         ) {
-            // TODO [MID] trigger loading State with Try Again Button
             is Result.Failure -> handleError(userAction = userAction, errorMessage = result.exception.message.orEmpty())
             is Result.Success -> State.Normal
         }
@@ -127,12 +127,12 @@ class ExploreScreenState(
                     is UserAction.SwipeRefresh -> RefreshType.FORCE_REFRESH
                     is UserAction.Search, is UserAction.Error -> RefreshType.CACHE_IF_POSSIBLE
                     is UserAction.Normal -> RefreshType.NEXT_PAGE
+                    is UserAction.TryAgain -> if (searchContent.size <= 1) RefreshType.CACHE_IF_POSSIBLE else RefreshType.NEXT_PAGE
                 },
                 category = category,
                 query = query
             )
         ) {
-            // TODO [MID] trigger loading State with Try Again Button
             is Result.Failure -> handleError(userAction = userAction, errorMessage = result.exception.message.orEmpty(), isSearch = true)
             is Result.Success -> State.Normal
         }
@@ -146,6 +146,8 @@ class ExploreScreenState(
         userAction is UserAction.Search ->
             State.Normal
         userAction is UserAction.Normal ->
+            State.Normal
+        userAction is UserAction.TryAgain ->
             State.Normal
         else -> State.Error(message = errorMessage)
     }

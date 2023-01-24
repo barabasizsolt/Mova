@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.base.BaseScreen
+import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.base.UserAction
 import com.barabasizsolt.catalog.ErrorItem
 import com.barabasizsolt.catalog.LoadingContent
@@ -40,10 +41,11 @@ fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
         ScreenContent(
             items = screenState.watchableItems,
             onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
-            onRetryClick = { screenState.getScreenData(userAction = UserAction.Normal) },
+            onRetryClick = { screenState.getScreenData(userAction = UserAction.TryAgain) },
             onUpClicked = screenState::onUpClicked,
             contentType = screenState.contentType,
-            gridState = gridState
+            gridState = gridState,
+            isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading
         )
     }
 )
@@ -55,7 +57,8 @@ private fun ScreenContent(
     onRetryClick: () -> Unit,
     onUpClicked: () -> Unit,
     contentType: String,
-    gridState: LazyGridState
+    gridState: LazyGridState,
+    isTryAgainLoading: Boolean
 ) = LazyVerticalGrid(
     state = gridState,
     columns = GridCells.Fixed(count = 6),
@@ -69,7 +72,7 @@ private fun ScreenContent(
     )
 ) {
     header(contentType = contentType, onClick = onUpClicked)
-    content(items = items, onLoadMoreItem = onLoadMoreItem, onRetryClick = onRetryClick)
+    content(items = items, onLoadMoreItem = onLoadMoreItem, onRetryClick = onRetryClick, isTryAgainLoading = isTryAgainLoading)
 }
 
 private fun LazyGridScope.header(
@@ -93,7 +96,8 @@ private fun LazyGridScope.header(
 private fun LazyGridScope.content(
     items: List<ContentItem>,
     onLoadMoreItem: () -> Unit,
-    onRetryClick: () -> Unit
+    onRetryClick: () -> Unit,
+    isTryAgainLoading: Boolean
 ) = itemsIndexed(
     items = items,
     key = { index, item -> item.id + index },
@@ -122,6 +126,9 @@ private fun LazyGridScope.content(
                 .fillMaxWidth())
             SideEffect { onLoadMoreItem() }
         }
-        is ContentItem.ItemError -> ErrorItem(onRetryClick = onRetryClick)
+        is ContentItem.ItemError -> ErrorItem(
+            onRetryClick = onRetryClick,
+            isLoading = isTryAgainLoading
+        )
     }
 }

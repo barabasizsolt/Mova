@@ -74,16 +74,22 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
                     discoverItems = screenState.discoverContent,
                     searchItems = screenState.searchContent,
                     isLoading = screenState.state in listOf(BaseScreenState.State.SwipeRefresh, BaseScreenState.State.Search),
+                    isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
                     bottomSheetScaffoldState = bottomSheetScaffoldState,
                     onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
                     onRetryClick = {
+                        if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
+                            screenState.clearSearchContent()
+                            // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
+                        }
                         screenState.getScreenData(
-                            userAction = if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
-                                screenState.clearSearchContent()
-                                UserAction.Search
-                            } else {
-                                UserAction.Normal
-                            }
+//                            userAction = if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
+//                                screenState.clearSearchContent()
+//                                UserAction.Search
+//                            } else {
+//                                UserAction.Normal
+//                            }
+                            userAction = UserAction.TryAgain
                         )
                     },
                     scope = scope,
@@ -102,6 +108,7 @@ private fun ScreenContent(
     discoverItems: List<ContentItem>,
     searchItems: List<ContentItem>,
     isLoading: Boolean,
+    isTryAgainLoading: Boolean,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
     onLoadMoreItem: () -> Unit,
     onRetryClick: () -> Unit,
@@ -126,7 +133,8 @@ private fun ScreenContent(
                 discoverItems = discoverItems,
                 searchItems = searchItems,
                 onLoadMoreItem = onLoadMoreItem,
-                onRetryClick = onRetryClick
+                onRetryClick = onRetryClick,
+                isTryAgainLoading = isTryAgainLoading
             )
         }
     }
@@ -176,7 +184,8 @@ private fun ContentBody(
     discoverItems: List<ContentItem>,
     searchItems: List<ContentItem>,
     onLoadMoreItem: () -> Unit,
-    onRetryClick: () -> Unit
+    onRetryClick: () -> Unit,
+    isTryAgainLoading: Boolean
 ) = LazyVerticalGrid(
     columns = GridCells.Fixed(count = 2),
     verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
@@ -195,7 +204,8 @@ private fun ContentBody(
             key = { index, item -> item.id + index },
             span = searchableItemSpan(baseLineSpan = 2),
             onLoadMoreItem = onLoadMoreItem,
-            onRetryClick = onRetryClick
+            onRetryClick = onRetryClick,
+            isTryAgainLoading = isTryAgainLoading
         ) { _, item ->
             SearchableItem(
                 item = item as ContentItem.Watchable,
@@ -208,7 +218,8 @@ private fun ContentBody(
             key = { index, item -> item.id + index },
             span = searchableItemSpan(baseLineSpan = 1),
             onLoadMoreItem = onLoadMoreItem,
-            onRetryClick = onRetryClick
+            onRetryClick = onRetryClick,
+            isTryAgainLoading = isTryAgainLoading
         ) { _, item ->
             WatchableWithRating(
                 item = item as ContentItem.Watchable,
@@ -229,6 +240,7 @@ private fun LoadingBody(gridState: LazyGridState) {
 
 private inline fun LazyGridScope.searchableItemsIndexed(
     items: List<ContentItem>,
+    isTryAgainLoading: Boolean,
     crossinline onLoadMoreItem: () -> Unit,
     crossinline onRetryClick: () -> Unit,
     noinline key: ((index: Int, item: ContentItem) -> Any)? = null,
@@ -252,7 +264,8 @@ private inline fun LazyGridScope.searchableItemsIndexed(
             items.size == 1 -> NotFoundItem()
         }
         is ContentItem.ItemError -> ErrorItem(
-            onRetryClick = { onRetryClick() }
+            onRetryClick = { onRetryClick() },
+            isLoading = isTryAgainLoading
         )
         else -> itemContent(index, item)
     }
