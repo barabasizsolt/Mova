@@ -27,7 +27,7 @@ fun ErrorItem(
     modifier = modifier.fillMaxWidth(),
     backgroundColor = if (isSystemInDarkTheme()) Color(color = 0xFF121212) else Color.White,
     elevation = 16.dp,
-    shape = AppTheme.shapes.medium,
+    shape = AppTheme.shapes.medium
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(all = AppTheme.dimens.screenPadding * 2),
