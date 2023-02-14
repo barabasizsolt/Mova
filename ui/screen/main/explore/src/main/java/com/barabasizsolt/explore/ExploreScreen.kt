@@ -82,15 +82,7 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
                             screenState.clearSearchContent()
                             // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
                         }
-                        screenState.getScreenData(
-//                            userAction = if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
-//                                screenState.clearSearchContent()
-//                                UserAction.Search
-//                            } else {
-//                                UserAction.Normal
-//                            }
-                            userAction = UserAction.TryAgain
-                        )
+                        screenState.getScreenData(userAction = UserAction.TryAgain)
                     },
                     scope = scope,
                     gridState = gridState
