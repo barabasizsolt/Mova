@@ -19,7 +19,11 @@ import androidx.compose.ui.unit.dp
 import com.barabasizsolt.theme.AppTheme
 
 @Composable
-fun ErrorItem(modifier: Modifier = Modifier, onRetryClick: () -> Unit) = Card(
+fun ErrorItem(
+    modifier: Modifier = Modifier,
+    isLoading: Boolean,
+    onRetryClick: () -> Unit
+) = Card(
     modifier = modifier.fillMaxWidth(),
     backgroundColor = if (isSystemInDarkTheme()) Color(color = 0xFF121212) else Color.White,
     elevation = 16.dp,
@@ -37,7 +41,8 @@ fun ErrorItem(modifier: Modifier = Modifier, onRetryClick: () -> Unit) = Card(
         )
         MovaButton(
             text = stringResource(id = R.string.try_again),
-            onClick = onRetryClick
+            onClick = onRetryClick,
+            isLoading = isLoading
         ) 
     }
 }

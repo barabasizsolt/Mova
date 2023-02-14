@@ -53,6 +53,7 @@ class SeeAllScreenState(
             scope.launch {
                 state = when (userAction) {
                     UserAction.SwipeRefresh -> State.SwipeRefresh
+                    UserAction.TryAgain -> State.TryAgainLoading
                     else -> State.Normal
                 }
                 state = when (

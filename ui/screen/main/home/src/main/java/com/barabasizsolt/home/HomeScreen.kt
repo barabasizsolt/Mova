@@ -1,14 +1,12 @@
 package com.barabasizsolt.home
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.barabasizsolt.base.BaseScreen
@@ -19,14 +17,12 @@ import com.barabasizsolt.catalog.WatchableWithRatingCarousel
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.theme.AppTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(screenState: HomeScreenState) = BaseScreen(
     screenState = screenState,
     onSnackBarDismissed = { screenState.getScreenData(userAction = UserAction.Normal) },
-    content = {
+    content = { gridState, _ ->
         ScreenContent(
             upcomingMovies = screenState.homeContent.upcomingMovies,
             popularMovies = screenState.homeContent.popularMovies,
@@ -36,7 +32,8 @@ fun HomeScreen(screenState: HomeScreenState) = BaseScreen(
             nowPlayingMovies = screenState.homeContent.nowPlayingMovies,
             onSeeAllNowPlayingMoviesClicked = screenState::onSeeAllNowPlayingMoviesClicked,
             topRatedMovies = screenState.homeContent.topRatedMovies,
-            onSeeAllTopRatedMoviesClicked = screenState::onSeeAllTopRatedMoviesClicked
+            onSeeAllTopRatedMoviesClicked = screenState::onSeeAllTopRatedMoviesClicked,
+            gridState = gridState
         )
     }
 )
@@ -51,66 +48,57 @@ private fun ScreenContent(
     nowPlayingMovies: List<ContentItem.Watchable>,
     onSeeAllNowPlayingMoviesClicked: () -> Unit,
     topRatedMovies: List<ContentItem.Watchable>,
-    onSeeAllTopRatedMoviesClicked: () -> Unit
+    onSeeAllTopRatedMoviesClicked: () -> Unit,
+    gridState: LazyGridState
+) = LazyVerticalGrid(
+    columns = GridCells.Fixed(count = 1),
+    modifier = Modifier.fillMaxSize(),
+    verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
+    contentPadding = PaddingValues(bottom = AppTheme.dimens.screenPadding),
+    state = gridState
 ) {
-    val listState: LazyListState = rememberLazyListState()
-    val scope: CoroutineScope = rememberCoroutineScope()
-
-    BackHandler(enabled = listState.firstVisibleItemScrollOffset > 0) {
-        scope.launch {
-            listState.scrollToItem(index = 0, scrollOffset = 0)
-        }
+    item {
+        WatchablePager(
+            pagerContent = upcomingMovies,
+            onClick = { /*TODO: Implement it*/ },
+            onPlayButtonClicked = { /*TODO: Implement it*/ },
+            onAddToFavouriteButtonClicked = { /*TODO: Implement it*/ }
+        )
     }
-
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
-        contentPadding = PaddingValues(bottom = AppTheme.dimens.screenPadding),
-        state = listState
-    ) {
-        item {
-            WatchablePager(
-                pagerContent = upcomingMovies,
-                onClick = { /*TODO: Implement it*/ },
-                onPlayButtonClicked = { /*TODO: Implement it*/ },
-                onAddToFavouriteButtonClicked = { /*TODO: Implement it*/ }
-            )
-        }
-        item {
-            WatchableWithRatingCarousel(
-                header = stringResource(id = com.barabasizsolt.util.R.string.popular_movies),
-                buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_popular_movies),
-                items = popularMovies,
-                onItemClick = { /*TODO: Implement it*/ },
-                onHeaderClick = onSeeAllPopularMoviesClicked,
-            )
-        }
-        item {
-            PeopleCarousel(
-                header = stringResource(id = com.barabasizsolt.util.R.string.popular_people),
-                items = popularPeople,
-                onItemClick = { /*TODO: Implement it*/ },
-                onHeaderClick = onSeeAllPopularPeopleClicked,
-            )
-        }
-        item {
-            WatchableWithRatingCarousel(
-                header = stringResource(id = com.barabasizsolt.util.R.string.now_playing_movies),
-                buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_now_playing_movies),
-                items = nowPlayingMovies,
-                onItemClick = { /*TODO: Implement it*/ },
-                onHeaderClick = onSeeAllNowPlayingMoviesClicked,
-            )
-        }
-        item {
-            WatchableWithRatingCarousel(
-                header = stringResource(id = com.barabasizsolt.util.R.string.top_rated_movies),
-                buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_top_rated_movies),
-                items = topRatedMovies,
-                onItemClick = { /*TODO: Implement it*/ },
-                onHeaderClick = onSeeAllTopRatedMoviesClicked,
-                showDivider = false
-            )
-        }
+    item {
+        WatchableWithRatingCarousel(
+            header = stringResource(id = com.barabasizsolt.util.R.string.popular_movies),
+            buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_popular_movies),
+            items = popularMovies,
+            onItemClick = { /*TODO: Implement it*/ },
+            onHeaderClick = onSeeAllPopularMoviesClicked,
+        )
+    }
+    item {
+        PeopleCarousel(
+            header = stringResource(id = com.barabasizsolt.util.R.string.popular_people),
+            items = popularPeople,
+            onItemClick = { /*TODO: Implement it*/ },
+            onHeaderClick = onSeeAllPopularPeopleClicked,
+        )
+    }
+    item {
+        WatchableWithRatingCarousel(
+            header = stringResource(id = com.barabasizsolt.util.R.string.now_playing_movies),
+            buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_now_playing_movies),
+            items = nowPlayingMovies,
+            onItemClick = { /*TODO: Implement it*/ },
+            onHeaderClick = onSeeAllNowPlayingMoviesClicked,
+        )
+    }
+    item {
+        WatchableWithRatingCarousel(
+            header = stringResource(id = com.barabasizsolt.util.R.string.top_rated_movies),
+            buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_top_rated_movies),
+            items = topRatedMovies,
+            onItemClick = { /*TODO: Implement it*/ },
+            onHeaderClick = onSeeAllTopRatedMoviesClicked,
+            showDivider = false
+        )
     }
 }

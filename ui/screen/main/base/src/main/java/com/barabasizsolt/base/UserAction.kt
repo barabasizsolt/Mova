@@ -5,4 +5,5 @@ sealed class UserAction {
     object Search : UserAction()
     object Error : UserAction()
     object Normal : UserAction()
+    object TryAgain : UserAction()
 }
