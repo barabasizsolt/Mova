@@ -1,5 +1,6 @@
 package com.barabasizsolt.domain.usecase.screen.home
 
+import com.barabasizsolt.domain.usecase.helper.genre.GetGenresUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.nowPlaying.GetNowPlayingMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.topRated.GetTopRatedMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.trending.GetPopularMoviesUseCase
@@ -15,6 +16,7 @@ class GetHomeScreenUseCase(
     private val getTopRatedMoviesUseCase: GetTopRatedMoviesUseCase,
     private val getNowPlayingMoviesCase: GetNowPlayingMoviesUseCase,
     private val getPopularPeopleUseCase: GetPopularPeopleUseCase,
+    private val getGenresUseCase: GetGenresUseCase
 ) {
 
     suspend operator fun invoke(
@@ -27,7 +29,8 @@ class GetHomeScreenUseCase(
             getPopularMoviesUseCase(refreshType = refreshType),
             getTopRatedMoviesUseCase(refreshType = refreshType),
             getNowPlayingMoviesCase(refreshType = refreshType),
-            getPopularPeopleUseCase(refreshType = refreshType)
+            getPopularPeopleUseCase(refreshType = refreshType),
+            getGenresUseCase()
         )
     )
 }
