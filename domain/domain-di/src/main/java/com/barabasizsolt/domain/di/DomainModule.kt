@@ -140,7 +140,8 @@ private fun createUseCaseModules() = module {
             getUpcomingMoviesFlowUseCase = get(),
             getTopRatedMoviesFlowUseCase = get(),
             getNowPlayingMoviesFlowCase = get(),
-            getPopularPeopleFlowUseCase = get()
+            getPopularPeopleFlowUseCase = get(),
+            getGenresFlowUseCase = get()
         )
     }
 

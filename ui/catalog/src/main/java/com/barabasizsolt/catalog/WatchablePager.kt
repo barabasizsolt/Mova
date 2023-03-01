@@ -26,7 +26,6 @@ import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.ImageType
 import com.barabasizsolt.util.getImageKey
-import com.barabasizsolt.util.movieGenres
 import com.barabasizsolt.util.withShadow
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -39,6 +38,7 @@ import kotlinx.coroutines.delay
 fun WatchablePager(
     modifier: Modifier = Modifier,
     pagerContent: List<Movie>,
+    genres: Map<Long, String>,
     onClick: () -> Unit,
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit
@@ -63,7 +63,8 @@ fun WatchablePager(
                 item = pagerContent[page],
                 onClick = onClick,
                 onPlayButtonClicked = onPlayButtonClicked,
-                onAddToFavouriteButtonClicked = onAddToFavouriteButtonClicked
+                onAddToFavouriteButtonClicked = onAddToFavouriteButtonClicked,
+                genres = genres
             )
         }
         HorizontalPagerIndicator(
@@ -78,6 +79,7 @@ fun WatchablePager(
 private fun PagerItem(
     modifier: Modifier = Modifier,
     item: Movie,
+    genres: Map<Long, String>,
     onClick: () -> Unit,
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit
@@ -103,6 +105,7 @@ private fun PagerItem(
         )
         PagerItemInfo(
             item = item,
+            genres = genres,
             modifier = Modifier
                 .align(alignment = Alignment.BottomStart)
                 .padding(
@@ -119,10 +122,11 @@ private fun PagerItem(
 private fun PagerItemInfo(
     modifier: Modifier = Modifier,
     item: Movie,
+    genres: Map<Long, String>,
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit
 ) {
-    val genresText = item.genreIds.joinToString(separator = " • ") { genre -> movieGenres[genre].orEmpty() }
+    val genresText = item.genreIds.joinToString(separator = " • ") { genre -> genres[genre.toLong()].orEmpty() }
 
     Column(
         modifier = modifier.fillMaxWidth(),
