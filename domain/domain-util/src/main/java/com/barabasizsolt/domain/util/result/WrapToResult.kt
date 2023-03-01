@@ -12,6 +12,6 @@ inline fun <T> wrapToResult(function: () -> T): Result<T> = try {
 
 suspend fun asyncWrapToResult(scope: CoroutineScope, functions: List<Result<out Any>>) : Result<Unit> {
     val results = functions.map { function -> scope.async { function } }.awaitAll()
-    val exception = results.filterIsInstance<Result.Failure<Exception>>()
-    return if (exception.isEmpty()) Result.Success(data = Unit) else Result.Failure(exception = exception[0].exception)
+    val exceptions = results.filterIsInstance<Result.Failure<Exception>>()
+    return if (exceptions.isEmpty()) Result.Success(data = Unit) else Result.Failure(exception = exceptions[0].exception)
 }
