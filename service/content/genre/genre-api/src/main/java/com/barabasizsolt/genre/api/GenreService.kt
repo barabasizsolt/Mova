@@ -1,13 +1,10 @@
 package com.barabasizsolt.genre.api
 
-import com.barabasizsolt.genre.model.Genre
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 interface GenreService {
 
-    val genres: Flow<List<Genre>>
+    val genres: Flow<Map<Long, String>>
 
-    //context(CoroutineScope)
     suspend fun getGenres()
 }
