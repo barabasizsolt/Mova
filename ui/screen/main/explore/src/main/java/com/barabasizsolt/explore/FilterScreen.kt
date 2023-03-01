@@ -34,20 +34,17 @@ import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.MovaButton
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.theme.MovaTheme
-import com.barabasizsolt.util.movieGenres
-import java.util.Locale
 
 /*TODO: Refactor*/
 
 @Preview
 @Composable
 fun FilterScreenPreview() = MovaTheme(isDarkTheme = true) {
-    FilterScreen()
+    FilterScreen(screenState = rememberFilterScreenState())
 }
 
 @Composable
-fun FilterScreen() {
-    val isoCountries = Locale.getISOCountries().map { locale -> Locale("", locale) }
+fun FilterScreen(screenState: FilterScreenState) {
     val isDark: Boolean = isSystemInDarkTheme()
     var invalidateFlag by rememberSaveable { mutableStateOf(value = false) }
 
@@ -75,11 +72,7 @@ fun FilterScreen() {
             FilterCarousel(
                 header = "Categories",
                 selectedItemPositions = listOf(0),
-                items = listOf(
-                    FilterItem(name = "All Categories", value = ""),
-                    FilterItem(name = "Movie", value = "movie"),
-                    FilterItem(name = "Tv Series", value = "tv")
-                ),
+                items = screenState.categories,
                 onClick = { },
                 invalidateFlag = invalidateFlag
             )
@@ -88,7 +81,7 @@ fun FilterScreen() {
             FilterCarousel(
                 header = "Regions",
                 selectedItemPositions = listOf(0),
-                items = listOf(FilterItem(name = "All Regions", value = "")) + isoCountries.map { FilterItem(name = it.displayName, value = it.country) },
+                items = screenState.regions,
                 onClick = { },
                 invalidateFlag = invalidateFlag
             )
@@ -97,7 +90,7 @@ fun FilterScreen() {
             FilterCarousel(
                 header = "Genres",
                 selectedItemPositions = listOf(0),
-                items = listOf(FilterItem(name = "All Genres", value = "")) + movieGenres.entries.map { FilterItem(name = it.value, value = it.key.toString()) },
+                items = screenState.genres,
                 onClick = { },
                 invalidateFlag = invalidateFlag
             )
@@ -106,11 +99,7 @@ fun FilterScreen() {
             FilterCarousel(
                 header = "Sort",
                 selectedItemPositions = listOf(0),
-                items = listOf(
-                    FilterItem(name = "None", value = "none"),
-                    FilterItem(name = "Popularity", value = "popularity"),
-                    FilterItem(name = "Latest Release", value = "release_date")
-                ),
+                items = screenState.sortOptions,
                 onClick = { },
                 invalidateFlag = invalidateFlag
             )
@@ -135,7 +124,7 @@ fun FilterScreen() {
                     modifier = Modifier.weight(weight = 1f)
                 )
                 ApplyButton(
-                    onClick = {},
+                    onClick = screenState::onApplyButtonClicked,
                     modifier = Modifier.weight(weight = 1f)
                 )
             }
@@ -218,7 +207,9 @@ private fun FilterCarousel(
                                 oldPositions.clear()
                                 oldPositions.add(element = 0)
                             }
-                            else -> oldPositions.add(element = index)
+                            else -> {
+                                oldPositions.add(element = index)
+                            }
                         }
                     }
                     selectedPositions = oldPositions

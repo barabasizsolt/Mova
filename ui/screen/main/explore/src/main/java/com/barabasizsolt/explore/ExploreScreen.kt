@@ -53,6 +53,16 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
     scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 3,
     content = { gridState, scope ->
         val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+        val filterScreenState = rememberFilterScreenState()
+
+        LaunchedEffect(
+            key1 = filterScreenState.event,
+            block = {
+                if (filterScreenState.event is FilterScreenState.Event.ApplyButtonClicked) {
+                    scope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
+                }
+            }
+        )
 
         BottomSheetScaffold(
             scaffoldState = bottomSheetScaffoldState,
@@ -60,7 +70,7 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
                 bottomStart = CornerSize(size = 0.dp),
                 bottomEnd = CornerSize(size = 0.dp)
             ),
-            sheetContent = { FilterScreen() },
+            sheetContent = { FilterScreen(screenState = filterScreenState) },
             sheetPeekHeight = 0.dp
         ) {
             Box(
