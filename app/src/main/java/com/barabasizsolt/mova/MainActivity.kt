@@ -47,7 +47,7 @@ class MainActivity : FragmentActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        authService.registerFacebookCallbackManager(requestCode = requestCode, resultCode =resultCode, data = data)
+        authService.registerFacebookCallbackManager(requestCode = requestCode, resultCode = resultCode, data = data)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean = when {
