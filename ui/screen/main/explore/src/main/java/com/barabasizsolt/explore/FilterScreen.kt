@@ -29,13 +29,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.MovaButton
 import com.barabasizsolt.theme.AppTheme
+import com.barabasizsolt.theme.MovaTheme
 import com.barabasizsolt.util.movieGenres
 import java.util.Locale
 
 /*TODO: Refactor*/
+
+@Preview
+@Composable
+fun FilterScreenPreview() = MovaTheme(isDarkTheme = true) {
+    FilterScreen()
+}
 
 @Composable
 fun FilterScreen() {
@@ -46,8 +54,7 @@ fun FilterScreen() {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
         contentPadding = PaddingValues(vertical = AppTheme.dimens.screenPadding),
-        // TODO[MID]: fix this
-        modifier = Modifier.background(color = if (isSystemInDarkTheme()) Color(color = 0xFF121212) else Color.White)
+        modifier = Modifier.background(color = AppTheme.colors.background)
     ) {
         item {
             Text(
@@ -181,7 +188,6 @@ private fun FilterCarousel(
     Text(
         text = header,
         style = AppTheme.typography.subtitle1,
-        color = AppTheme.colors.onBackground,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
     )
@@ -196,26 +202,26 @@ private fun FilterCarousel(
                 text = item.name,
                 isSelected = selectedPositions.contains(element = index),
                 onClick = {
-                    val oldList = selectedPositions.toMutableList()
-                    if (oldList.contains(element = index)) {
-                        oldList.remove(element = index)
-                        if (oldList.isEmpty()) {
-                            oldList.add(element = 0)
+                    val oldPositions = selectedPositions.toMutableList()
+                    if (oldPositions.contains(element = index)) {
+                        oldPositions.remove(element = index)
+                        if (oldPositions.isEmpty()) {
+                            oldPositions.add(element = 0)
                         }
                     } else {
                         when {
-                            oldList.contains(element = 0) -> {
-                                oldList.remove(element = 0)
-                                oldList.add(element = index)
+                            oldPositions.contains(element = 0) -> {
+                                oldPositions.remove(element = 0)
+                                oldPositions.add(element = index)
                             }
                             index == 0 -> {
-                                oldList.clear()
-                                oldList.add(element = 0)
+                                oldPositions.clear()
+                                oldPositions.add(element = 0)
                             }
-                            else -> oldList.add(element = index)
+                            else -> oldPositions.add(element = index)
                         }
                     }
-                    selectedPositions = oldList
+                    selectedPositions = oldPositions
                     onClick()
                 }
             )
