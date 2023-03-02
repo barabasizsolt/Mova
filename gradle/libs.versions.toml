@@ -21,7 +21,7 @@ androidx-recyclerview = "1.2.1" # https://developer.android.com/jetpack/androidx
 
 androidx-navigation = "2.5.2" # https://developer.android.com/jetpack/androidx/releases/navigation
 androidx-room = "2.4.3" # https://developer.android.com/jetpack/androidx/releases/room
-androidx-security = "1.1.0-alpha03" # https://developer.android.com/jetpack/androidx/releases/security
+androidx-security = "1.1.0-alpha01" # https://developer.android.com/jetpack/androidx/releases/security
 androidx-datastore = "1.0.0"
 
 androidx-profileInstaller = "1.2.0"
