@@ -12,5 +12,6 @@ class DeleteContentUseCase(
     operator fun invoke(category: Category) = when (category) {
         Category.MOVIE -> deleteSearchMovieUseCase()
         Category.TV -> deleteSearchTvSeriesUseCase()
+        Category.ALL_CATEGORY -> Unit
     }
 }

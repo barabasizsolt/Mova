@@ -1,5 +1,6 @@
 package com.barabasizsolt.explore
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,12 +16,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
+import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,21 +37,36 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.MovaButton
+import com.barabasizsolt.domain.usecase.screen.explore.Category
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.theme.MovaTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 /*TODO: Refactor*/
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
 fun FilterScreenPreview() = MovaTheme(isDarkTheme = true) {
-    FilterScreen(screenState = rememberFilterScreenState())
+    FilterScreen(
+        screenState = rememberFilterScreenState(),
+        bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+    )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun FilterScreen(screenState: FilterScreenState) {
+fun FilterScreen(
+    screenState: FilterScreenState,
+    bottomSheetScaffoldState: BottomSheetScaffoldState
+) {
     val isDark: Boolean = isSystemInDarkTheme()
-    var invalidateFlag by rememberSaveable { mutableStateOf(value = false) }
+    val scope: CoroutineScope = rememberCoroutineScope()
+
+    BackHandler(enabled = bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+        scope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
+    }
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
@@ -69,39 +89,35 @@ fun FilterScreen(screenState: FilterScreenState) {
             )
         }
         item {
-            FilterCarousel(
+            SingleSelectionFilterCarousel(
                 header = "Categories",
-                selectedItemPositions = listOf(0),
+                selectedItemPosition = screenState.selectedCategoryPosition,
                 items = screenState.categories,
-                onClick = { },
-                invalidateFlag = invalidateFlag
+                onClick = { position -> screenState.onCategorySelected(position) }
             )
         }
         item {
-            FilterCarousel(
+            MultiSelectionFilterCarousel(
                 header = "Regions",
-                selectedItemPositions = listOf(0),
+                selectedItemPositions = screenState.selectedRegionPositions,
                 items = screenState.regions,
-                onClick = { },
-                invalidateFlag = invalidateFlag
+                onClick = { positions -> screenState.onRegionSelected(positions) }
             )
         }
         item {
-            FilterCarousel(
+            MultiSelectionFilterCarousel(
                 header = "Genres",
-                selectedItemPositions = listOf(0),
+                selectedItemPositions = screenState.selectedGenrePositions,
                 items = screenState.genres,
-                onClick = { },
-                invalidateFlag = invalidateFlag
+                onClick = { positions -> screenState.onGenreSelected(positions) }
             )
         }
         item {
-            FilterCarousel(
+            MultiSelectionFilterCarousel(
                 header = "Sort",
-                selectedItemPositions = listOf(0),
+                selectedItemPositions = screenState.selectedSortOptionPositions,
                 items = screenState.sortOptions,
-                onClick = { },
-                invalidateFlag = invalidateFlag
+                onClick = { positions -> screenState.onSortingCriteriaSelected(positions) }
             )
         }
         item {
@@ -119,12 +135,15 @@ fun FilterScreen(screenState: FilterScreenState) {
                 horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
             ) {
                 ResetButton(
-                    onClick = { invalidateFlag = !invalidateFlag },
+                    onClick = screenState::onResetButtonClicked,
                     isDark = isDark,
                     modifier = Modifier.weight(weight = 1f)
                 )
                 ApplyButton(
-                    onClick = screenState::onApplyButtonClicked,
+                    onClick = {
+                        screenState.onApplyButtonClicked()
+                        scope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
+                    },
                     modifier = Modifier.weight(weight = 1f)
                 )
             }
@@ -156,24 +175,82 @@ private fun ResetButton(
 )
 
 @Composable
-private fun FilterCarousel(
+private fun SingleSelectionFilterCarousel(
+    modifier: Modifier = Modifier,
+    header: String,
+    selectedItemPosition: Int,
+    items: List<FilterItem>,
+    onClick: (Int) -> Unit
+) = BaseFilterCarousel(
+    modifier = modifier,
+    header = header,
+    items = items,
+    rowContent = { index, item ->
+        FilterItem(
+            text = item.name,
+            isSelected = index == selectedItemPosition,
+            onClick = {
+                if (selectedItemPosition != index) {
+                    onClick(index)
+                }
+            }
+        )
+    }
+)
+
+@Composable
+private fun MultiSelectionFilterCarousel(
     modifier: Modifier = Modifier,
     header: String,
     selectedItemPositions: List<Int>,
     items: List<FilterItem>,
-    invalidateFlag: Boolean,
-    onClick: () -> Unit
+    onClick: (List<Int>) -> Unit
+) = BaseFilterCarousel(
+    modifier = modifier,
+    header = header,
+    items = items,
+    rowContent = { index, item ->
+        FilterItem(
+            text = item.name,
+            isSelected = selectedItemPositions.contains(element = index),
+            onClick = {
+                val oldPositions = selectedItemPositions.toMutableList()
+                if (oldPositions.contains(element = index)) {
+                    oldPositions.remove(element = index)
+                    if (oldPositions.isEmpty()) {
+                        oldPositions.add(element = 0)
+                    }
+                } else {
+                    when {
+                        oldPositions.contains(element = 0) -> {
+                            oldPositions.remove(element = 0)
+                            oldPositions.add(element = index)
+                        }
+                        index == 0 -> {
+                            oldPositions.clear()
+                            oldPositions.add(element = 0)
+                        }
+                        else -> {
+                            oldPositions.add(element = index)
+                        }
+                    }
+                }
+                onClick(oldPositions)
+            }
+        )
+    }
+)
+
+@Composable
+private fun BaseFilterCarousel(
+    modifier: Modifier = Modifier,
+    header: String,
+    items: List<FilterItem>,
+    rowContent: @Composable (Int, FilterItem) -> Unit
 ) = Column(
     modifier = modifier.fillMaxWidth(),
     verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2)
 ) {
-    var selectedPositions by rememberSaveable { mutableStateOf(value = selectedItemPositions) }
-
-    LaunchedEffect(
-        key1 = invalidateFlag,
-        block = { selectedPositions = listOf(0) }
-    )
-
     Text(
         text = header,
         style = AppTheme.typography.subtitle1,
@@ -187,35 +264,7 @@ private fun FilterCarousel(
         verticalAlignment = Alignment.CenterVertically
     ) {
         itemsIndexed(items = items) { index, item ->
-            FilterItem(
-                text = item.name,
-                isSelected = selectedPositions.contains(element = index),
-                onClick = {
-                    val oldPositions = selectedPositions.toMutableList()
-                    if (oldPositions.contains(element = index)) {
-                        oldPositions.remove(element = index)
-                        if (oldPositions.isEmpty()) {
-                            oldPositions.add(element = 0)
-                        }
-                    } else {
-                        when {
-                            oldPositions.contains(element = 0) -> {
-                                oldPositions.remove(element = 0)
-                                oldPositions.add(element = index)
-                            }
-                            index == 0 -> {
-                                oldPositions.clear()
-                                oldPositions.add(element = 0)
-                            }
-                            else -> {
-                                oldPositions.add(element = index)
-                            }
-                        }
-                    }
-                    selectedPositions = oldPositions
-                    onClick()
-                }
-            )
+            rowContent(index, item)
         }
     }
 }

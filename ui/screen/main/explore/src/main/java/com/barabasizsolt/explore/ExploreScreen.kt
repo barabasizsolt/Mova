@@ -1,5 +1,6 @@
 package com.barabasizsolt.explore
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,22 +56,18 @@ fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
         val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
         val filterScreenState = rememberFilterScreenState()
 
-        LaunchedEffect(
-            key1 = filterScreenState.event,
-            block = {
-                if (filterScreenState.event is FilterScreenState.Event.ApplyButtonClicked) {
-                    scope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
-                }
-            }
-        )
-
         BottomSheetScaffold(
             scaffoldState = bottomSheetScaffoldState,
             sheetShape = AppTheme.shapes.medium.copy(
                 bottomStart = CornerSize(size = 0.dp),
                 bottomEnd = CornerSize(size = 0.dp)
             ),
-            sheetContent = { FilterScreen(screenState = filterScreenState) },
+            sheetContent = {
+                FilterScreen(
+                    screenState = filterScreenState,
+                    bottomSheetScaffoldState = bottomSheetScaffoldState
+                )
+            },
             sheetPeekHeight = 0.dp
         ) {
             Box(

@@ -4,6 +4,7 @@ import com.barabasizsolt.domain.usecase.helper.movie.discover.DiscoverMoviesUseC
 import com.barabasizsolt.domain.usecase.helper.tvSeries.discover.DiscoverTvSeriesUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.Category
 import com.barabasizsolt.domain.util.FilterType
+import com.barabasizsolt.domain.util.result.Result
 import com.barabasizsolt.pagination.api.RefreshType
 
 class DiscoverContentUseCase(
@@ -20,5 +21,6 @@ class DiscoverContentUseCase(
     ) = when (category) {
         Category.MOVIE -> discoverMoviesUseCase(region = region, withGenres = withGenres, sortBy = sortBy, refreshType = refreshType)
         Category.TV -> discoverTvSeriesUseCase(region = region, withGenres = withGenres, sortBy = sortBy, refreshType = refreshType)
+        Category.ALL_CATEGORY -> Result.Failure(exception = Throwable(message = "Not supported Category type: $category"))
     }
 }
