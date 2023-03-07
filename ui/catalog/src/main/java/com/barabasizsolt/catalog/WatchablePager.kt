@@ -5,6 +5,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -108,12 +109,7 @@ private fun PagerItem(
         PagerItemInfo(
             item = item,
             genres = genres,
-            modifier = Modifier
-                .align(alignment = Alignment.BottomStart)
-                .padding(
-                    start = AppTheme.dimens.screenPadding,
-                    bottom = AppTheme.dimens.screenPadding
-                ),
+            modifier = Modifier.align(alignment = Alignment.BottomStart),
             onPlayButtonClicked = onPlayButtonClicked,
             onAddToFavouriteButtonClicked = onAddToFavouriteButtonClicked
         )
@@ -135,11 +131,13 @@ private fun PagerItemInfo(
         text = item.title,
         style = AppTheme.typography.h5.withShadow(),
         fontWeight = FontWeight.Bold,
-        color = Color.White
+        color = Color.White,
+        modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
     )
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        contentPadding = PaddingValues(horizontal = AppTheme.dimens.screenPadding)
     ) {
         itemsIndexed(items = item.genreIds.map { genre -> genres[genre.toLong()].orEmpty() }) { index, genre ->
             PagerGenreItem(
@@ -150,7 +148,11 @@ private fun PagerItemInfo(
     }
     PagerItemButtons(
         onPlayButtonClicked = onPlayButtonClicked,
-        onAddToFavouriteButtonClicked = onAddToFavouriteButtonClicked
+        onAddToFavouriteButtonClicked = onAddToFavouriteButtonClicked,
+        modifier = Modifier.padding(
+            start = AppTheme.dimens.screenPadding,
+            bottom = AppTheme.dimens.screenPadding
+        )
     )
 }
 
