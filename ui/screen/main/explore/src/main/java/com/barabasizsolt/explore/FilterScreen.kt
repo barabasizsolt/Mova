@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.Divider
@@ -22,22 +24,17 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.MovaButton
-import com.barabasizsolt.domain.usecase.screen.explore.Category
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.theme.MovaTheme
 import kotlinx.coroutines.CoroutineScope
@@ -63,6 +60,7 @@ fun FilterScreen(
 ) {
     val isDark: Boolean = isSystemInDarkTheme()
     val scope: CoroutineScope = rememberCoroutineScope()
+    val genreListState = rememberLazyListState()
 
     BackHandler(enabled = bottomSheetScaffoldState.bottomSheetState.isExpanded) {
         scope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
@@ -75,7 +73,7 @@ fun FilterScreen(
     ) {
         item {
             Text(
-                text = "Sort & Filter",
+                text = stringResource(id = R.string.sort_filter),
                 color = AppTheme.colors.secondary,
                 style = AppTheme.typography.h5,
                 textAlign = TextAlign.Center,
@@ -90,15 +88,18 @@ fun FilterScreen(
         }
         item {
             SingleSelectionFilterCarousel(
-                header = "Categories",
+                header = stringResource(id = R.string.categories),
                 selectedItemPosition = screenState.selectedCategoryPosition,
                 items = screenState.categories,
-                onClick = { position -> screenState.onCategorySelected(position) }
+                onClick = { position ->
+                    screenState.onCategorySelected(position)
+                    scope.launch { genreListState.scrollToItem(index = 0, scrollOffset = 0) }
+                }
             )
         }
         item {
             MultiSelectionFilterCarousel(
-                header = "Regions",
+                header = stringResource(id = R.string.regions),
                 selectedItemPositions = screenState.selectedRegionPositions,
                 items = screenState.regions,
                 onClick = { positions -> screenState.onRegionSelected(positions) }
@@ -106,15 +107,16 @@ fun FilterScreen(
         }
         item {
             MultiSelectionFilterCarousel(
-                header = "Genres",
+                header = stringResource(id = R.string.genres),
                 selectedItemPositions = screenState.selectedGenrePositions,
                 items = screenState.genres,
+                listState = genreListState,
                 onClick = { positions -> screenState.onGenreSelected(positions) }
             )
         }
         item {
             MultiSelectionFilterCarousel(
-                header = "Sort",
+                header = stringResource(id = R.string.sort),
                 selectedItemPositions = screenState.selectedSortOptionPositions,
                 items = screenState.sortOptions,
                 onClick = { positions -> screenState.onSortingCriteriaSelected(positions) }
@@ -156,7 +158,7 @@ private fun ApplyButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) = MovaButton(
-    text = "Apply",
+    text = stringResource(id = R.string.apply),
     onClick = onClick,
     modifier = modifier
 )
@@ -167,7 +169,7 @@ private fun ResetButton(
     isDark: Boolean,
     onClick: () -> Unit
 ) = MovaButton(
-    text = "Reset",
+    text = stringResource(id = R.string.reset),
     onClick = onClick,
     contentColor = if (isDark) Color.White else AppTheme.colors.secondary,
     backgroundColor = if (isDark) Color.DarkGray else AppTheme.colors.secondary.copy(alpha = .2f),
@@ -180,11 +182,13 @@ private fun SingleSelectionFilterCarousel(
     header: String,
     selectedItemPosition: Int,
     items: List<FilterItem>,
+    listState: LazyListState = rememberLazyListState(),
     onClick: (Int) -> Unit
 ) = BaseFilterCarousel(
     modifier = modifier,
     header = header,
     items = items,
+    listState = listState,
     rowContent = { index, item ->
         FilterItem(
             text = item.name,
@@ -204,11 +208,13 @@ private fun MultiSelectionFilterCarousel(
     header: String,
     selectedItemPositions: List<Int>,
     items: List<FilterItem>,
+    listState: LazyListState = rememberLazyListState(),
     onClick: (List<Int>) -> Unit
 ) = BaseFilterCarousel(
     modifier = modifier,
     header = header,
     items = items,
+    listState = listState,
     rowContent = { index, item ->
         FilterItem(
             text = item.name,
@@ -246,6 +252,7 @@ private fun BaseFilterCarousel(
     modifier: Modifier = Modifier,
     header: String,
     items: List<FilterItem>,
+    listState: LazyListState,
     rowContent: @Composable (Int, FilterItem) -> Unit
 ) = Column(
     modifier = modifier.fillMaxWidth(),
@@ -261,7 +268,8 @@ private fun BaseFilterCarousel(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = AppTheme.dimens.screenPadding),
         horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        state = listState
     ) {
         itemsIndexed(items = items) { index, item ->
             rowContent(index, item)
