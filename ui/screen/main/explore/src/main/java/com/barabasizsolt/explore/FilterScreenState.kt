@@ -9,8 +9,10 @@ import androidx.compose.runtime.setValue
 import com.barabasizsolt.domain.usecase.helper.genre.GetGenresFlowUseCase
 import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.filter.api.FilterItem
+import com.barabasizsolt.filter.api.FilterItemValue
 import com.barabasizsolt.filter.api.FilterService
 import com.barabasizsolt.filter.api.firstItemToList
+import com.barabasizsolt.filter.api.toFilterItemWithValue
 import com.barabasizsolt.genre.api.GenreType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -76,8 +78,8 @@ class FilterScreenState(
                 }
             ).cancellable().collect {
                 genres = buildList {
-                    add(FilterItem(name = "All Genres", value = ""))
-                    addAll(it.entries.map { FilterItem(name = it.value, value = it.key.toString()) })
+                    add(FilterItem(name = "All Genres", value = FilterItemValue.WithoutValue))
+                    addAll(it.entries.map { FilterItem(name = it.value, value = it.key.toString().toFilterItemWithValue()) })
                 }
             }
         }
