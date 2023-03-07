@@ -9,7 +9,6 @@ import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.domain.usecase.helper.genre.GetGenresFlowUseCase
-import com.barabasizsolt.domain.usecase.helper.genre.GetGenresUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.Category
 import com.barabasizsolt.domain.util.FilterType
 import com.barabasizsolt.genre.api.GenreType
@@ -22,25 +21,21 @@ import java.util.Locale
 
 @Composable
 fun rememberFilterScreenState(
-    getGenresUseCase: GetGenresUseCase = get(),
     getGenresFlowUseCase: GetGenresFlowUseCase = get(),
     scope: CoroutineScope = rememberCoroutineScope()
 ): FilterScreenState = rememberSaveable(
     saver = FilterScreenState.getSaver(
-        getGenresUseCase = getGenresUseCase,
         getGenresFlowUseCase = getGenresFlowUseCase,
         scope = scope
     )
 ) {
     FilterScreenState(
-        getGenresUseCase = getGenresUseCase,
         getGenresFlowUseCase = getGenresFlowUseCase,
         scope = scope
     )
 }
 
 class FilterScreenState(
-    private val getGenresUseCase: GetGenresUseCase,
     private val getGenresFlowUseCase: GetGenresFlowUseCase,
     private val scope: CoroutineScope
 ) {
@@ -135,7 +130,6 @@ class FilterScreenState(
         private const val SORT_KEY: String = "com.barabasizsolt.explore.filterscreenstate.sort"
 
         fun getSaver(
-            getGenresUseCase: GetGenresUseCase,
             getGenresFlowUseCase: GetGenresFlowUseCase,
             scope: CoroutineScope
         ): Saver<FilterScreenState, *> = mapSaver(
@@ -149,7 +143,6 @@ class FilterScreenState(
             },
             restore = {
                 FilterScreenState(
-                    getGenresUseCase = getGenresUseCase,
                     getGenresFlowUseCase = getGenresFlowUseCase,
                     scope = scope
                 ).apply {
