@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -125,32 +127,46 @@ private fun PagerItemInfo(
     genres: Map<Long, String>,
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit
+) = Column(
+    modifier = modifier.fillMaxWidth(),
+    verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
 ) {
-    val genresText = item.genreIds.joinToString(separator = " • ") { genre -> genres[genre.toLong()].orEmpty() }
-
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
+    Text(
+        text = item.title,
+        style = AppTheme.typography.h5.withShadow(),
+        fontWeight = FontWeight.Bold,
+        color = Color.White
+    )
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = item.title,
-            style = AppTheme.typography.h5.withShadow(),
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
-        Text(
-            text = genresText,
-            style = AppTheme.typography.body1.withShadow(),
-            fontWeight = FontWeight.Bold,
-            overflow = TextOverflow.Ellipsis,
-            color = Color.White
-        )
-        PagerItemButtons(
-            onPlayButtonClicked = onPlayButtonClicked,
-            onAddToFavouriteButtonClicked = onAddToFavouriteButtonClicked
-        )
+        itemsIndexed(items = item.genreIds.map { genre -> genres[genre.toLong()].orEmpty() }) { index, genre ->
+            PagerGenreItem(
+                text = genre,
+                shouldShowSeparator = index != item.genreIds.lastIndex
+            )
+        }
     }
+    PagerItemButtons(
+        onPlayButtonClicked = onPlayButtonClicked,
+        onAddToFavouriteButtonClicked = onAddToFavouriteButtonClicked
+    )
 }
+
+@Composable
+private fun PagerGenreItem(
+    modifier: Modifier = Modifier,
+    text: String,
+    shouldShowSeparator: Boolean
+) = Text(
+    text = if (shouldShowSeparator) "$text • " else text,
+    style = AppTheme.typography.body1.withShadow(),
+    fontWeight = FontWeight.Bold,
+    overflow = TextOverflow.Ellipsis,
+    color = Color.White,
+    modifier = modifier
+)
 
 @Composable
 private fun PagerItemButtons(
