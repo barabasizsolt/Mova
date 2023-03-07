@@ -40,6 +40,8 @@ dependencies {
     implementation(project(":service:content:people:people-api"))
     implementation(project(":service:content:genre:genre-api"))
     implementation(project(":service:content:genre:genre-di"))
+    implementation(project(":service:content:filter:filter-api"))
+    implementation(project(":service:content:filter:filter-di"))
     implementation(project(":service:auth:firebase:firebase-api"))
     implementation(project(":service:auth:firebase:firebase-di"))
 

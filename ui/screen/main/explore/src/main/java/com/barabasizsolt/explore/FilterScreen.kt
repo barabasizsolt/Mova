@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.MovaButton
+import com.barabasizsolt.filter.api.FilterItem
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.theme.MovaTheme
 import kotlinx.coroutines.CoroutineScope
@@ -89,7 +90,7 @@ fun FilterScreen(
         item {
             SingleSelectionFilterCarousel(
                 header = stringResource(id = R.string.categories),
-                selectedItemPosition = screenState.selectedCategoryPosition,
+                selectedItem = screenState.selectedCategory,
                 items = screenState.categories,
                 onClick = { position ->
                     screenState.onCategorySelected(position)
@@ -100,7 +101,7 @@ fun FilterScreen(
         item {
             MultiSelectionFilterCarousel(
                 header = stringResource(id = R.string.regions),
-                selectedItemPositions = screenState.selectedRegionPositions,
+                selectedItems = screenState.selectedRegions,
                 items = screenState.regions,
                 onClick = { positions -> screenState.onRegionSelected(positions) }
             )
@@ -108,7 +109,7 @@ fun FilterScreen(
         item {
             MultiSelectionFilterCarousel(
                 header = stringResource(id = R.string.genres),
-                selectedItemPositions = screenState.selectedGenrePositions,
+                selectedItems = screenState.selectedGenres,
                 items = screenState.genres,
                 listState = genreListState,
                 onClick = { positions -> screenState.onGenreSelected(positions) }
@@ -117,7 +118,7 @@ fun FilterScreen(
         item {
             MultiSelectionFilterCarousel(
                 header = stringResource(id = R.string.sort),
-                selectedItemPositions = screenState.selectedSortOptionPositions,
+                selectedItems = screenState.selectedSortOptions,
                 items = screenState.sortOptions,
                 onClick = { positions -> screenState.onSortingCriteriaSelected(positions) }
             )
@@ -180,22 +181,22 @@ private fun ResetButton(
 private fun SingleSelectionFilterCarousel(
     modifier: Modifier = Modifier,
     header: String,
-    selectedItemPosition: Int,
+    selectedItem: FilterItem,
     items: List<FilterItem>,
     listState: LazyListState = rememberLazyListState(),
-    onClick: (Int) -> Unit
+    onClick: (FilterItem) -> Unit
 ) = BaseFilterCarousel(
     modifier = modifier,
     header = header,
     items = items,
     listState = listState,
-    rowContent = { index, item ->
+    rowContent = { _, item ->
         FilterItem(
             text = item.name,
-            isSelected = index == selectedItemPosition,
+            isSelected = item == selectedItem,
             onClick = {
-                if (selectedItemPosition != index) {
-                    onClick(index)
+                if (selectedItem != item) {
+                    onClick(item)
                 }
             }
         )
@@ -206,42 +207,43 @@ private fun SingleSelectionFilterCarousel(
 private fun MultiSelectionFilterCarousel(
     modifier: Modifier = Modifier,
     header: String,
-    selectedItemPositions: List<Int>,
+    selectedItems: List<FilterItem>,
     items: List<FilterItem>,
     listState: LazyListState = rememberLazyListState(),
-    onClick: (List<Int>) -> Unit
+    onClick: (List<FilterItem>) -> Unit
 ) = BaseFilterCarousel(
     modifier = modifier,
     header = header,
     items = items,
     listState = listState,
     rowContent = { index, item ->
+        println("<<SItem: $selectedItems")
         FilterItem(
             text = item.name,
-            isSelected = selectedItemPositions.contains(element = index),
+            isSelected = selectedItems.contains(element = item),
             onClick = {
-                val oldPositions = selectedItemPositions.toMutableList()
-                if (oldPositions.contains(element = index)) {
-                    oldPositions.remove(element = index)
-                    if (oldPositions.isEmpty()) {
-                        oldPositions.add(element = 0)
+                val oldItems = selectedItems.toMutableList()
+                if (oldItems.contains(element = item)) {
+                    oldItems.remove(element = item)
+                    if (oldItems.isEmpty()) {
+                        oldItems.add(element = items[0])
                     }
                 } else {
                     when {
-                        oldPositions.contains(element = 0) -> {
-                            oldPositions.remove(element = 0)
-                            oldPositions.add(element = index)
+                        oldItems.contains(element = items[0]) -> {
+                            oldItems.remove(element = items[0])
+                            oldItems.add(element = item)
                         }
                         index == 0 -> {
-                            oldPositions.clear()
-                            oldPositions.add(element = 0)
+                            oldItems.clear()
+                            oldItems.add(element = items[0])
                         }
                         else -> {
-                            oldPositions.add(element = index)
+                            oldItems.add(element = item)
                         }
                     }
                 }
-                onClick(oldPositions)
+                onClick(oldItems)
             }
         )
     }

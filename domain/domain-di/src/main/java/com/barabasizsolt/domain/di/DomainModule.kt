@@ -45,6 +45,7 @@ import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenUseCase
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenUseCase
+import com.barabasizsolt.filter.di.createFilterModule
 import com.barabasizsolt.firebase.di.createAuthenticationModule
 import com.barabasizsolt.genre.di.createGenreModule
 
@@ -63,6 +64,7 @@ private fun createServiceModules() = buildList {
     add(createPeopleModule())
     add(createGenreModule())
     add(createAuthenticationModule())
+    add(createFilterModule())
 }
 
 private fun createUseCaseModules() = module {

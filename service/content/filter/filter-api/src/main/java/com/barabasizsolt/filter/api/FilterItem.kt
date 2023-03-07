@@ -1,4 +1,4 @@
-package com.barabasizsolt.explore
+package com.barabasizsolt.filter.api
 
 data class FilterItem(
     val name: String,

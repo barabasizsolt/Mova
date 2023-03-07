@@ -9,7 +9,6 @@ import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.base.UserAction
 import com.barabasizsolt.domain.model.ContentItem
-import com.barabasizsolt.domain.usecase.screen.explore.Category
 import com.barabasizsolt.domain.usecase.screen.explore.discover.DiscoverContentFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.discover.DiscoverContentUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.search.DeleteContentUseCase
@@ -19,6 +18,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.result.Result
+import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.pagination.api.RefreshType
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.get

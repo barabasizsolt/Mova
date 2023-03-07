@@ -1,6 +1,6 @@
-package com.barabasizsolt.domain.util
+package com.barabasizsolt.filter.api
 
-enum class FilterType(val value: String) {
+enum class SortOption(val value: String) {
     DEFAULT(value = "popularity.desc"),
     LATEST_RELEASE(value = "release_date.desc"),
     VOTE_AVERAGE(value = "vote_average.desc"),

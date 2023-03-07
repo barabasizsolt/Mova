@@ -14,10 +14,8 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
 }
 
 dependencies {
-    implementation(libs.square.retrofit)
     implementation(libs.koin.core)
 
-    implementation(project(":service:network:network-api"))
-    implementation(project(":service:content:genre:genre-api"))
-    implementation(project(":service:content:genre:genre-implementation"))
+    implementation(project(":service:content:filter:filter-api"))
+    implementation(project(":service:content:filter:filter-implementation"))
 }
