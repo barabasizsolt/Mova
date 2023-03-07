@@ -14,13 +14,19 @@ import com.barabasizsolt.domain.usecase.screen.explore.discover.DiscoverContentU
 import com.barabasizsolt.domain.usecase.screen.explore.search.DeleteContentUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.search.SearchContentFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.search.SearchContentUseCase
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.result.Result
 import com.barabasizsolt.filter.api.Category
+import com.barabasizsolt.filter.api.FilterItem
+import com.barabasizsolt.filter.api.FilterService
 import com.barabasizsolt.pagination.api.RefreshType
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.get
 
 @Composable
@@ -29,14 +35,16 @@ fun rememberExploreScreenState(
     discoverContentFlowUseCase: DiscoverContentFlowUseCase = get(),
     searchContentUseCase: SearchContentUseCase = get(),
     searchContentFlowUseCase: SearchContentFlowUseCase = get(),
-    deleteContentUseCase: DeleteContentUseCase = get()
+    deleteContentUseCase: DeleteContentUseCase = get(),
+    filterService: FilterService = get()
 ): ExploreScreenState = rememberSaveable(
     saver = ExploreScreenState.getSaver(
         discoverContentUseCase = discoverContentUseCase,
         discoverContentFlowUseCase = discoverContentFlowUseCase,
         searchContentUseCase = searchContentUseCase,
         searchContentFlowUseCase = searchContentFlowUseCase,
-        deleteContentUseCase = deleteContentUseCase
+        deleteContentUseCase = deleteContentUseCase,
+        filterService = filterService
     )
 ) {
     ExploreScreenState(
@@ -44,7 +52,8 @@ fun rememberExploreScreenState(
         discoverContentFlowUseCase = discoverContentFlowUseCase,
         searchContentUseCase = searchContentUseCase,
         searchContentFlowUseCase = searchContentFlowUseCase,
-        deleteContentUseCase = deleteContentUseCase
+        deleteContentUseCase = deleteContentUseCase,
+        filterService = filterService
     )
 }
 
@@ -53,25 +62,40 @@ class ExploreScreenState(
     private val discoverContentFlowUseCase: DiscoverContentFlowUseCase,
     private val searchContentUseCase: SearchContentUseCase,
     private  val searchContentFlowUseCase: SearchContentFlowUseCase,
-    private val deleteContentUseCase: DeleteContentUseCase
+    private val deleteContentUseCase: DeleteContentUseCase,
+    private val filterService: FilterService
 ) : BaseScreenState() {
+    private var discoverJob: Job? = null
+    private var searchJob: Job? = null
+
     var discoverContent by mutableStateOf<List<ContentItem>>(value = emptyList())
         private set
     var searchContent by mutableStateOf<List<ContentItem>>(value = emptyList())
         private set
     var query by mutableStateOf(value = "")
         private set
-    var category by mutableStateOf(value = Category.MOVIE)
+
+    var selectedCategory by mutableStateOf(value = filterService.categories[0])
         private set
+    private var selectedRegions by mutableStateOf<List<FilterItem>>(value = emptyList())
+    private var selectedGenres by mutableStateOf<List<FilterItem>>(value = emptyList())
+    private var selectedSortOptions by mutableStateOf<List<FilterItem>>(value = emptyList())
 
     init {
-        discoverContentFlowUseCase(category = category).onEach {
-            discoverContent = it
-        }.launchIn(scope = scope)
 
-        searchContentFlowUseCase(category = category).onEach {
-            searchContent = it
-        }.launchIn(scope = scope)
+        filterService.selectedCategory.observe {
+            selectedCategory = it
+            restartDiscoverContentCollection()
+            restartSearchContentCollection()
+            query = ""
+            getScreenData(userAction = UserAction.Normal)
+        }
+        filterService.selectedRegions.observe { selectedRegions = it }
+        filterService.selectedGenres.observe { selectedGenres = it }
+        filterService.selectedSortOptions.observe { selectedSortOptions = it }
+
+        restartDiscoverContentCollection()
+        restartSearchContentCollection()
 
         getScreenData(userAction = UserAction.Normal)
     }
@@ -96,13 +120,31 @@ class ExploreScreenState(
         }
     }
 
+    private fun restartDiscoverContentCollection() {
+        discoverJob?.cancel()
+        discoverJob = scope.launch {
+            discoverContentFlowUseCase(category = selectedCategory.wrappedItem as Category).cancellable().collect {
+                discoverContent = it
+            }
+        }
+    }
+
+    private fun restartSearchContentCollection() {
+        searchJob?.cancel()
+        searchJob = scope.launch {
+            searchContentFlowUseCase(category = selectedCategory.wrappedItem as Category).cancellable().collect {
+                searchContent = it
+            }
+        }
+    }
+
     fun onQueryChange(query: String) {
         this.query = query
         clearSearchContent()
         getScreenData(userAction = UserAction.Search, delay = 500)
     }
 
-    fun clearSearchContent() = deleteContentUseCase(category = category)
+    fun clearSearchContent() = deleteContentUseCase(category = selectedCategory.wrappedItem as Category)
 
     private suspend fun discoverContent(userAction: UserAction) {
         state = when (
@@ -112,7 +154,7 @@ class ExploreScreenState(
                     discoverContent.isEmpty() -> RefreshType.CACHE_IF_POSSIBLE
                     else -> RefreshType.NEXT_PAGE
                 },
-                category = category
+                category = selectedCategory.wrappedItem as Category
             )
         ) {
             is Result.Failure -> handleError(userAction = userAction, errorMessage = result.exception.message.orEmpty())
@@ -129,7 +171,7 @@ class ExploreScreenState(
                     is UserAction.Normal -> RefreshType.NEXT_PAGE
                     is UserAction.TryAgain -> if (searchContent.size <= 1) RefreshType.CACHE_IF_POSSIBLE else RefreshType.NEXT_PAGE
                 },
-                category = category,
+                category = selectedCategory.wrappedItem as Category,
                 query = query
             )
         ) {
@@ -153,14 +195,15 @@ class ExploreScreenState(
     }
 
     companion object {
-        private const val QUERY_KEY: String = "query"
+        private const val QUERY_KEY: String = "com.barabasizsolt.explore.query"
 
         fun getSaver(
             discoverContentUseCase: DiscoverContentUseCase,
             discoverContentFlowUseCase: DiscoverContentFlowUseCase,
             searchContentUseCase: SearchContentUseCase,
             searchContentFlowUseCase: SearchContentFlowUseCase,
-            deleteContentUseCase: DeleteContentUseCase
+            deleteContentUseCase: DeleteContentUseCase,
+            filterService: FilterService
         ): Saver<ExploreScreenState, *> = getBaseSaver(
             save = { mapOf(QUERY_KEY to it.query) },
             restore = {
@@ -169,7 +212,8 @@ class ExploreScreenState(
                     discoverContentFlowUseCase = discoverContentFlowUseCase,
                     searchContentUseCase = searchContentUseCase,
                     searchContentFlowUseCase = searchContentFlowUseCase,
-                    deleteContentUseCase = deleteContentUseCase
+                    deleteContentUseCase = deleteContentUseCase,
+                    filterService = filterService
                 ).apply {
                     query = it[QUERY_KEY] as String
                 }

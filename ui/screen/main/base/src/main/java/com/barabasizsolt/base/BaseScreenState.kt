@@ -10,6 +10,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 abstract class BaseScreenState : CoroutineScope {
 
@@ -22,6 +25,8 @@ abstract class BaseScreenState : CoroutineScope {
     abstract fun getScreenData(userAction: UserAction, delay: Long = 0)
 
     fun onClear() = coroutineContext.cancelChildren()
+
+    fun <T> Flow<T>.observe(action: suspend (T) -> Unit) = this.onEach(action).launchIn(scope = scope)
 
     sealed class State {
         object Normal : State()

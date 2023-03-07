@@ -41,9 +41,7 @@ class HomeScreenState(
         private set
 
     init {
-        getHomeScreenFlow().onEach {
-            homeContent = it
-        }.launchIn(scope = scope)
+        getHomeScreenFlow().observe { homeContent = it }
         getScreenData(userAction = UserAction.Normal)
     }
 

@@ -8,13 +8,11 @@ import com.barabasizsolt.pagination.api.RefreshType
 class DiscoverTvSeriesUseCase(private val exploreService: ExploreService) {
 
     suspend operator fun invoke(
-        region: List<String> = emptyList(),
         withGenres: List<Int> = emptyList(),
         sortBy: List<String> = listOf(SortOption.DEFAULT.value),
         refreshType: RefreshType
     ) = wrapToResult {
         exploreService.getTvSeries(
-            region = region,
             withGenres = withGenres,
             sortBy = sortBy,
             refreshType = refreshType

@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import com.barabasizsolt.base.BaseScreenState
+import com.barabasizsolt.base.UserAction
 import com.barabasizsolt.domain.usecase.helper.genre.GetGenresFlowUseCase
 import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.filter.api.FilterItem
@@ -16,10 +18,7 @@ import com.barabasizsolt.filter.api.toFilterItemWithValue
 import com.barabasizsolt.genre.api.GenreType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 
@@ -31,16 +30,14 @@ fun rememberFilterScreenState(
 ): FilterScreenState = remember {
     FilterScreenState(
         getGenresFlowUseCase = getGenresFlowUseCase,
-        scope = scope,
         filterService = filterService
     )
 }
 
 class FilterScreenState(
     private val getGenresFlowUseCase: GetGenresFlowUseCase,
-    private val scope: CoroutineScope,
     private val filterService: FilterService
-) {
+) : BaseScreenState() {
     private var job: Job? = null
 
     val categories = filterService.categories
@@ -61,14 +58,18 @@ class FilterScreenState(
         private set
 
     init {
+        getScreenData(userAction = UserAction.Normal)
+    }
+
+    override fun getScreenData(userAction: UserAction, delay: Long) {
         filterService.selectedCategory.observe { selectedCategory = it }
         filterService.selectedRegions.observe { selectedRegions = it }
         filterService.selectedGenres.observe { selectedGenres = it }
         filterService.selectedSortOptions.observe { selectedSortOptions = it }
-        restartGenresCollecting()
+        restartGenresCollection()
     }
 
-    private fun restartGenresCollecting() {
+    private fun restartGenresCollection() {
         job?.cancel()
         job = scope.launch {
             getGenresFlowUseCase(
@@ -86,7 +87,7 @@ class FilterScreenState(
     }
 
     fun onCategorySelected(category: FilterItem) {
-        restartGenresCollecting()
+        restartGenresCollection()
         filterService.onCategoryChange(selectedCategory = category)
         filterService.onGenresChange(selectedGenres = genres.firstItemToList())
     }
@@ -104,13 +105,10 @@ class FilterScreenState(
     }
 
     fun onResetButtonClicked() {
-        filterService.onCategoryChange(selectedCategory = categories[0])
         filterService.onRegionsChange(selectedRegions = regions.firstItemToList())
         filterService.onGenresChange(selectedGenres = genres.firstItemToList())
         filterService.onSortOptionChange(selectedSortOptions = sortOptions.firstItemToList())
     }
 
     fun onApplyButtonClicked() { }
-
-    private fun <T> Flow<T>.observe(action: suspend (T) -> Unit) = this.onEach(action).launchIn(scope = scope)
 }

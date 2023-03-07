@@ -38,7 +38,6 @@ class ExploreServiceImpl(
     )
 
     override suspend fun getTvSeries(
-        region: List<String>,
         withGenres: List<Int>,
         sortBy: List<String>,
         refreshType: RefreshType
@@ -46,7 +45,7 @@ class ExploreServiceImpl(
         refreshType = refreshType,
         flow = _discoverTvSeries,
         getRemoteContent = {
-            page -> remoteSource.getTvSeries(region = region, withGenres = withGenres, sortBy = sortBy, page = page)
+            page -> remoteSource.getTvSeries(withGenres = withGenres, sortBy = sortBy, page = page)
         }
     )
 

@@ -48,6 +48,6 @@ fun MovieDTO.toModel() : Movie? {
         popularity = popularity.toString(),
         posterPath = posterPath,
         releaseDate = releaseDate,
-        voteAverage = voteAverage.toString()
+        voteAverage = String.format("%.1f", voteAverage)
     )
 }

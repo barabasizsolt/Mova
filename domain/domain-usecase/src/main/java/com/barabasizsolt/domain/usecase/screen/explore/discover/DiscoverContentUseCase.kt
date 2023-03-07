@@ -19,6 +19,6 @@ class DiscoverContentUseCase(
         refreshType: RefreshType
     ) = when (category) {
         Category.MOVIE -> discoverMoviesUseCase(region = region, withGenres = withGenres, sortBy = sortBy, refreshType = refreshType)
-        Category.TV -> discoverTvSeriesUseCase(region = region, withGenres = withGenres, sortBy = sortBy, refreshType = refreshType)
+        Category.TV -> discoverTvSeriesUseCase(withGenres = withGenres, sortBy = sortBy, refreshType = refreshType)
     }
 }

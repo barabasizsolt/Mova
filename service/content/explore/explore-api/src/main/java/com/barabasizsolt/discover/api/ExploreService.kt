@@ -16,7 +16,7 @@ interface ExploreService {
 
     suspend fun getMovies(region: List<String>, withGenres: List<Int>, sortBy: List<String>, refreshType: RefreshType) : List<PagerItem>
 
-    suspend fun getTvSeries(region: List<String>, withGenres: List<Int>, sortBy: List<String>, refreshType: RefreshType) : List<PagerItem>
+    suspend fun getTvSeries(withGenres: List<Int>, sortBy: List<String>, refreshType: RefreshType) : List<PagerItem>
 
     suspend fun searchMovies(query: String, refreshType: RefreshType) : List<PagerItem>
 

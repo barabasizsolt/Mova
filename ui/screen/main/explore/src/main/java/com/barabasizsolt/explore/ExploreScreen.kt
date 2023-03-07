@@ -1,6 +1,5 @@
 package com.barabasizsolt.explore
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetScaffoldState
@@ -41,63 +41,79 @@ import com.barabasizsolt.catalog.NotFoundItem
 import com.barabasizsolt.catalog.SearchableItem
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.ContentItem
+import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.imeBottomInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+/*
+* TODO:
+*  - separate the movie/tv screen positions
+* - if the search is enabled the screen state isn't preserved after navigation
+* */
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
-    screenState = screenState,
-    scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 3,
-    content = { gridState, scope ->
-        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
-        val filterScreenState = rememberFilterScreenState()
+fun ExploreScreen(screenState: ExploreScreenState){
+    val movieListState: LazyGridState = rememberLazyGridState()
+    val tvListState: LazyGridState = rememberLazyGridState()
 
-        BottomSheetScaffold(
-            scaffoldState = bottomSheetScaffoldState,
-            sheetShape = AppTheme.shapes.medium.copy(
-                bottomStart = CornerSize(size = 0.dp),
-                bottomEnd = CornerSize(size = 0.dp)
-            ),
-            sheetContent = {
-                FilterScreen(
-                    screenState = filterScreenState,
-                    bottomSheetScaffoldState = bottomSheetScaffoldState
-                )
-            },
-            sheetPeekHeight = 0.dp
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = AppTheme.colors.primary)
+    BaseScreen(
+        screenState = screenState,
+        gridState = when (screenState.selectedCategory.wrappedItem as Category) {
+            Category.MOVIE -> movieListState
+            Category.TV -> tvListState
+        },
+        scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 3,
+        content = { gridState, scope ->
+            val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+            val filterScreenState = rememberFilterScreenState()
+
+            BottomSheetScaffold(
+                scaffoldState = bottomSheetScaffoldState,
+                sheetShape = AppTheme.shapes.medium.copy(
+                    bottomStart = CornerSize(size = 0.dp),
+                    bottomEnd = CornerSize(size = 0.dp)
+                ),
+                sheetContent = {
+                    FilterScreen(
+                        screenState = filterScreenState,
+                        bottomSheetScaffoldState = bottomSheetScaffoldState
+                    )
+                },
+                sheetPeekHeight = 0.dp
             ) {
-                ScreenContent(
-                    query = screenState.query,
-                    onQueryChange = screenState::onQueryChange,
-                    discoverItems = screenState.discoverContent,
-                    searchItems = screenState.searchContent,
-                    isLoading = screenState.state in listOf(BaseScreenState.State.SwipeRefresh, BaseScreenState.State.Search),
-                    isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
-                    bottomSheetScaffoldState = bottomSheetScaffoldState,
-                    onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
-                    onRetryClick = {
-                        if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
-                            screenState.clearSearchContent()
-                            // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
-                        }
-                        screenState.getScreenData(userAction = UserAction.TryAgain)
-                    },
-                    scope = scope,
-                    gridState = gridState
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = AppTheme.colors.primary)
+                ) {
+                    ScreenContent(
+                        query = screenState.query,
+                        onQueryChange = screenState::onQueryChange,
+                        discoverItems = screenState.discoverContent,
+                        searchItems = screenState.searchContent,
+                        isLoading = screenState.state in listOf(BaseScreenState.State.SwipeRefresh, BaseScreenState.State.Search),
+                        isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
+                        bottomSheetScaffoldState = bottomSheetScaffoldState,
+                        onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
+                        onRetryClick = {
+                            if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
+                                screenState.clearSearchContent()
+                                // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
+                            }
+                            screenState.getScreenData(userAction = UserAction.TryAgain)
+                        },
+                        scope = scope,
+                        gridState = gridState
+                    )
+                }
             }
         }
-    }
-)
+    )
+}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

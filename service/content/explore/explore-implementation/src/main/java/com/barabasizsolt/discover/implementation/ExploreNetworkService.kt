@@ -17,7 +17,6 @@ interface ExploreNetworkService {
 
     @GET("discover/tv")
     suspend fun getTvSeries(
-        @Query("region") region: List<String>,
         @Query("with_genres") withGenres: List<Int>,
         @Query("sort_by") sortBy: List<String>,
         @Query("page") page: Int

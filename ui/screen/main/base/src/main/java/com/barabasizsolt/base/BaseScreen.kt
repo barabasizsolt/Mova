@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun BaseScreen(
     screenState: BaseScreenState,
+    gridState: LazyGridState = rememberLazyGridState(),
     snackBarModifier: Modifier = Modifier,
     onSnackBarDismissed: (() -> Unit)? = null,
     scrollUpTopPadding: Dp = AppTheme.dimens.screenPadding,
@@ -40,7 +41,6 @@ fun BaseScreen(
     val swipeRefreshState: SwipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = screenState.state is BaseScreenState.State.SwipeRefresh
     )
-    val gridState: LazyGridState = rememberLazyGridState()
     val scope: CoroutineScope = rememberCoroutineScope()
 
     Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {

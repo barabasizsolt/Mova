@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.MovaButton
+import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.filter.api.FilterItem
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.theme.MovaTheme
@@ -94,17 +95,23 @@ fun FilterScreen(
                 items = screenState.categories,
                 onClick = { position ->
                     screenState.onCategorySelected(position)
-                    scope.launch { genreListState.scrollToItem(index = 0, scrollOffset = 0) }
+                    scope.launch {
+                        genreListState.scrollToItem(index = 0, scrollOffset = 0)
+                        //bottomSheetScaffoldState.bottomSheetState.collapse()
+                        bottomSheetScaffoldState.bottomSheetState.expand()
+                    }
                 }
             )
         }
-        item {
-            MultiSelectionFilterCarousel(
-                header = stringResource(id = R.string.regions),
-                selectedItems = screenState.selectedRegions,
-                items = screenState.regions,
-                onClick = { positions -> screenState.onRegionSelected(positions) }
-            )
+        if (screenState.selectedCategory.wrappedItem as Category == Category.MOVIE) {
+            item {
+                MultiSelectionFilterCarousel(
+                    header = stringResource(id = R.string.regions),
+                    selectedItems = screenState.selectedRegions,
+                    items = screenState.regions,
+                    onClick = { positions -> screenState.onRegionSelected(positions) }
+                )
+            }
         }
         item {
             MultiSelectionFilterCarousel(
@@ -217,7 +224,6 @@ private fun MultiSelectionFilterCarousel(
     items = items,
     listState = listState,
     rowContent = { index, item ->
-        println("<<SItem: $selectedItems")
         FilterItem(
             text = item.name,
             isSelected = selectedItems.contains(element = item),

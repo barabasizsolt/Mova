@@ -9,7 +9,7 @@ data class TvSeriesDTO(
     @Json(name = "id") val id: String?,
     @Json(name = "backdrop_path") val backdropPath: String?,
     @Json(name = "genre_ids") val genreIds: List<String>?,
-    @Json(name = "original_country") val originalCountry: List<String>?,
+    @Json(name = "origin_country") val originalCountry: List<String>?,
     @Json(name = "original_language") val originalLanguage: String?,
     @Json(name = "original_name") val originalTitle: String?,
     @Json(name = "overview") val overview: String?,
@@ -22,7 +22,6 @@ data class TvSeriesDTO(
 fun TvSeriesDTO.toModel() : TvSeries? {
     if (
         id == null ||
-        backdropPath == null ||
         genreIds == null ||
         originalCountry == null ||
         originalLanguage == null ||
@@ -45,6 +44,6 @@ fun TvSeriesDTO.toModel() : TvSeries? {
         popularity = popularity.toString(),
         posterPath = posterPath,
         firstAirDate = firstAirDate,
-        voteAverage = voteAverage.toString()
+        voteAverage = String.format("%.1f", voteAverage)
     )
 }
