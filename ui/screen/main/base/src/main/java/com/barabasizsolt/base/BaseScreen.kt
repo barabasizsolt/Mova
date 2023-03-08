@@ -33,6 +33,7 @@ fun BaseScreen(
     snackBarModifier: Modifier = Modifier,
     onSnackBarDismissed: (() -> Unit)? = null,
     scrollUpTopPadding: Dp = AppTheme.dimens.screenPadding,
+    shouldShowScrollUp: Boolean = true,
     content: @Composable (LazyGridState, CoroutineScope) -> Unit
 ) {
     val snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }
@@ -54,6 +55,7 @@ fun BaseScreen(
                     ScrollUpWrapper(
                         gridState = gridState,
                         scrollUpTopPadding = scrollUpTopPadding,
+                        shouldShow = shouldShowScrollUp,
                         content = { content(gridState, scope) }
                     )
                 }

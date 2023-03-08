@@ -60,6 +60,9 @@ fun ExploreScreen(screenState: ExploreScreenState){
     val movieListState: LazyGridState = rememberLazyGridState()
     val tvListState: LazyGridState = rememberLazyGridState()
 
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+    val filterScreenState = rememberFilterScreenState()
+
     BaseScreen(
         screenState = screenState,
         gridState = when (screenState.selectedCategory.wrappedItem as Category) {
@@ -67,10 +70,8 @@ fun ExploreScreen(screenState: ExploreScreenState){
             Category.TV -> tvListState
         },
         scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 3,
+        shouldShowScrollUp = bottomSheetScaffoldState.bottomSheetState.isCollapsed,
         content = { gridState, scope ->
-            val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
-            val filterScreenState = rememberFilterScreenState()
-
             BottomSheetScaffold(
                 scaffoldState = bottomSheetScaffoldState,
                 sheetShape = AppTheme.shapes.medium.copy(

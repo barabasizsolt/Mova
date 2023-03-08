@@ -97,8 +97,6 @@ fun FilterScreen(
                     screenState.onCategorySelected(position)
                     scope.launch {
                         genreListState.scrollToItem(index = 0, scrollOffset = 0)
-                        //bottomSheetScaffoldState.bottomSheetState.collapse()
-                        bottomSheetScaffoldState.bottomSheetState.expand()
                     }
                 }
             )
