@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -18,6 +19,10 @@ import com.barabasizsolt.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.Dp
 import com.barabasizsolt.util.isScrollingUp
 
@@ -30,14 +35,13 @@ fun ScrollUpWrapper(
     shouldShow: Boolean = true
 ) {
     val scope: CoroutineScope = rememberCoroutineScope()
-    val isVisible by derivedStateOf { gridState.firstVisibleItemIndex > 20 }
-    val isHidden by derivedStateOf { gridState.firstVisibleItemIndex < 1 }
+    val isVisible by derivedStateOf { gridState.firstVisibleItemIndex > 10 }
 
     Box(modifier = modifier) {
         content()
 
         AnimatedVisibility(
-            visible = (isVisible || (!isHidden && gridState.isScrollingUp())) && shouldShow,
+            visible = isVisible && shouldShow,
             modifier = Modifier
                 .align(alignment = Alignment.TopCenter)
                 .statusBarsPadding()

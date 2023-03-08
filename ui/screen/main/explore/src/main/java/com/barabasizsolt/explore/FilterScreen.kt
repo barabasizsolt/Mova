@@ -42,8 +42,6 @@ import com.barabasizsolt.theme.MovaTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-/*TODO: Refactor*/
-
 @OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable

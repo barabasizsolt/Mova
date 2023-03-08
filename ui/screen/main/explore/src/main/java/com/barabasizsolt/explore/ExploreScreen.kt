@@ -27,6 +27,8 @@ import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -47,10 +49,11 @@ import com.barabasizsolt.util.imeBottomInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 
 /*
 * TODO:
-*  - separate the movie/tv screen positions
 * - if the search is enabled the screen state isn't preserved after navigation
 * */
 
@@ -63,6 +66,16 @@ fun ExploreScreen(screenState: ExploreScreenState){
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val filterScreenState = rememberFilterScreenState()
 
+    var shouldShowScrollUp by rememberSaveable { mutableStateOf(value = bottomSheetScaffoldState.bottomSheetState.isCollapsed) }
+    LaunchedEffect(
+        key1 = bottomSheetScaffoldState.bottomSheetState.currentValue,
+        block = {
+            if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+                shouldShowScrollUp = true
+            }
+        }
+    )
+
     BaseScreen(
         screenState = screenState,
         gridState = when (screenState.selectedCategory.wrappedItem as Category) {
@@ -70,7 +83,7 @@ fun ExploreScreen(screenState: ExploreScreenState){
             Category.TV -> tvListState
         },
         scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 3,
-        shouldShowScrollUp = bottomSheetScaffoldState.bottomSheetState.isCollapsed,
+        shouldShowScrollUp = shouldShowScrollUp,
         content = { gridState, scope ->
             BottomSheetScaffold(
                 scaffoldState = bottomSheetScaffoldState,
@@ -107,6 +120,9 @@ fun ExploreScreen(screenState: ExploreScreenState){
                             }
                             screenState.getScreenData(userAction = UserAction.TryAgain)
                         },
+                        onClick = {
+                            shouldShowScrollUp = it
+                        },
                         scope = scope,
                         gridState = gridState
                     )
@@ -129,6 +145,7 @@ private fun ScreenContent(
     onLoadMoreItem: () -> Unit,
     onRetryClick: () -> Unit,
     scope: CoroutineScope,
+    onClick: (Boolean) -> Unit,
     gridState: LazyGridState
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding)) {
@@ -136,7 +153,8 @@ private fun ScreenContent(
             query = query,
             onQueryChange = onQueryChange ,
             scope = scope,
-            bottomSheetScaffoldState = bottomSheetScaffoldState
+            bottomSheetScaffoldState = bottomSheetScaffoldState,
+            onClick = onClick
         )
         if (isLoading) {
             LoadingBody(
@@ -163,7 +181,8 @@ private fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     scope: CoroutineScope,
-    bottomSheetScaffoldState: BottomSheetScaffoldState
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
+    onClick: (Boolean) -> Unit
 ) = Row(
     modifier = modifier
         .padding(
@@ -183,8 +202,10 @@ private fun SearchBar(
         onClick = {
             scope.launch {
                 if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+                    onClick(true)
                     bottomSheetScaffoldState.bottomSheetState.collapse()
                 } else {
+                    onClick(false)
                     bottomSheetScaffoldState.bottomSheetState.expand()
                 }
             }

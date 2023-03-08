@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.base.UserAction
@@ -16,7 +15,6 @@ import com.barabasizsolt.filter.api.FilterService
 import com.barabasizsolt.filter.api.firstItemToList
 import com.barabasizsolt.filter.api.toFilterItemWithValue
 import com.barabasizsolt.genre.api.GenreType
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.launch
@@ -25,7 +23,6 @@ import org.koin.androidx.compose.get
 @Composable
 fun rememberFilterScreenState(
     getGenresFlowUseCase: GetGenresFlowUseCase = get(),
-    scope: CoroutineScope = rememberCoroutineScope(),
     filterService: FilterService = get()
 ): FilterScreenState = remember {
     FilterScreenState(

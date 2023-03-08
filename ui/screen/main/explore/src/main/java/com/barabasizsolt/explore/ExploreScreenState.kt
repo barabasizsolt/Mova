@@ -84,6 +84,7 @@ class ExploreScreenState(
     init {
 
         filterService.selectedCategory.observe {
+            /*TODO: Improve It*/
             selectedCategory = it
             restartDiscoverContentCollection()
             restartSearchContentCollection()
