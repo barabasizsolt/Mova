@@ -11,8 +11,6 @@ import com.barabasizsolt.domain.model.HomeScreenContent
 import com.barabasizsolt.domain.model.isEmpty
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenUseCase
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.result.Result
 import com.barabasizsolt.pagination.api.RefreshType
