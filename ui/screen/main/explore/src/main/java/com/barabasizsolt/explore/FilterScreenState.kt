@@ -1,51 +1,122 @@
 package com.barabasizsolt.explore
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import cafe.adriel.voyager.core.model.ScreenModel
-import com.barabasizsolt.domain.usecase.helper.movie.discover.DiscoverMoviesUseCase
-import com.barabasizsolt.domain.usecase.helper.tvSeries.discover.DiscoverTvSeriesUseCase
-import com.barabasizsolt.domain.usecase.screen.explore.Category
-import com.barabasizsolt.domain.util.FilterType
-import com.barabasizsolt.util.movieGenres
+import androidx.compose.runtime.setValue
+import com.barabasizsolt.base.BaseScreenState
+import com.barabasizsolt.base.UserAction
+import com.barabasizsolt.domain.usecase.helper.genre.GetGenresFlowUseCase
+import com.barabasizsolt.filter.api.Category
+import com.barabasizsolt.filter.api.FilterItem
+import com.barabasizsolt.filter.api.FilterItemValue
+import com.barabasizsolt.filter.api.FilterService
+import com.barabasizsolt.filter.api.firstItemToList
+import com.barabasizsolt.filter.api.toFilterItemWithValue
+import com.barabasizsolt.genre.api.GenreType
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
-import java.util.Locale
+import com.barabasizsolt.util.Event
 
 @Composable
 fun rememberFilterScreenState(
-    getMovieDiscoverUseCase: DiscoverMoviesUseCase = get(),
-    getTvDiscoverUseCase: DiscoverTvSeriesUseCase = get(),
+    getGenresFlowUseCase: GetGenresFlowUseCase = get(),
+    filterService: FilterService = get()
 ): FilterScreenState = remember {
     FilterScreenState(
-        getMovieDiscoverUseCase = getMovieDiscoverUseCase,
-        getTvDiscoverUseCase = getTvDiscoverUseCase
+        getGenresFlowUseCase = getGenresFlowUseCase,
+        filterService = filterService
     )
 }
+
 class FilterScreenState(
-    private val getMovieDiscoverUseCase: DiscoverMoviesUseCase,
-    private val getTvDiscoverUseCase: DiscoverTvSeriesUseCase,
-) : ScreenModel {
+    private val getGenresFlowUseCase: GetGenresFlowUseCase,
+    private val filterService: FilterService
+) : BaseScreenState() {
+    private var job: Job? = null
 
-    val categories: List<FilterItem> = listOf(
-        FilterItem(name = "All Categories", value = ""),
-        FilterItem(name = "Movie", value = Category.MOVIE.name.lowercase(Locale.getDefault())),
-        FilterItem(name = "Tv Series", value = Category.TV.name.lowercase(Locale.getDefault()))
-    )
+    val categories = filterService.categories
+    var selectedCategory by mutableStateOf(value = categories[0])
+        private set
 
-    val regions: List<FilterItem> =
-        listOf(FilterItem(name = "All Regions", value = "")) + Locale.getISOCountries().map { locale -> locale.convertToFilterItem() }
+    val regions = filterService.regions
+    var selectedRegions by mutableStateOf<List<FilterItem>>(value = emptyList())
+        private set
 
-    val genres: List<FilterItem> =
-        listOf(FilterItem(name = "All Genres", value = "")) + movieGenres.entries.map { FilterItem(name = it.value, value = it.key.toString()) }
+    var genres by mutableStateOf<List<FilterItem>>(value = emptyList())
+        private set
+    var selectedGenres by mutableStateOf<List<FilterItem>>(value = emptyList())
+        private set
 
-    val sort: List<FilterItem> = listOf(
-        FilterItem(name = "Default", value = FilterType.DEFAULT.value),
-        FilterItem(name = "Latest Release", value = FilterType.LATEST_RELEASE.value),
-        FilterItem(name = "Vote Average", value = FilterType.VOTE_AVERAGE.value)
-    )
+    val sortOptions = filterService.sortOptions
+    var selectedSortOptions by mutableStateOf<List<FilterItem>>(value = emptyList())
+        private set
 
-    private fun String.convertToFilterItem(): FilterItem {
-        val locale = Locale("", this)
-        return FilterItem(name = locale.displayName, value = locale.country)
+    var action by mutableStateOf<Event<Action>?>(value = null)
+        private set
+
+    init {
+        filterService.selectedCategory.observe { selectedCategory = it }
+        filterService.selectedRegions.observe { selectedRegions = it }
+        filterService.selectedGenres.observe { selectedGenres = it }
+        filterService.selectedSortOptions.observe { selectedSortOptions = it }
+        getScreenData(userAction = UserAction.Normal)
+    }
+
+    override fun getScreenData(userAction: UserAction, delay: Long) {
+        restartGenresCollection()
+    }
+
+    private fun restartGenresCollection() {
+        job?.cancel()
+        job = scope.launch {
+            getGenresFlowUseCase(
+                genreType = when (selectedCategory.wrappedItem as Category) {
+                    Category.MOVIE -> GenreType.MOVIE
+                    Category.TV -> GenreType.TV
+                }
+            ).cancellable().collect {
+                genres = buildList {
+                    add(FilterItem(name = "All Genres", value = FilterItemValue.WithoutValue))
+                    addAll(it.entries.map { FilterItem(name = it.value, value = it.key.toString().toFilterItemWithValue()) })
+                }
+            }
+        }
+    }
+
+    fun onCategorySelected(category: FilterItem) {
+        filterService.onCategoryChange(selectedCategory = category)
+        restartGenresCollection()
+    }
+
+    fun onRegionSelected(regions: List<FilterItem>) {
+        filterService.onRegionsChange(selectedRegions = regions)
+    }
+
+    fun onGenreSelected(genres: List<FilterItem>) {
+        filterService.onGenresChange(selectedGenres = genres)
+    }
+
+    fun onSortingCriteriaSelected(sortOptions: List<FilterItem>) {
+        filterService.onSortOptionChange(selectedSortOptions = sortOptions)
+    }
+
+    fun onResetButtonClicked() {
+        filterService.onRegionsChange(selectedRegions = regions.firstItemToList())
+        filterService.onGenresChange(selectedGenres = genres.firstItemToList())
+        filterService.onSortOptionChange(selectedSortOptions = sortOptions.firstItemToList())
+        action = Event(data = Action.OnResetButtonClicked)
+    }
+
+    fun onApplyButtonClicked() {
+        action = Event(data = Action.OnApplyButtonClicked)
+    }
+
+    sealed class Action {
+        object OnApplyButtonClicked : Action()
+        object OnResetButtonClicked : Action()
     }
 }

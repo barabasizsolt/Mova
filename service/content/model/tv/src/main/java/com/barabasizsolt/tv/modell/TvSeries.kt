@@ -4,7 +4,7 @@ import com.barabasizsolt.pagination.api.PagerItem
 
 data class TvSeries(
     override val id: String,
-    val backdropPath: String,
+    val backdropPath: String?,
     val genreIds: List<String>,
     val originalCountry: List<String>,
     val originalLanguage: String,

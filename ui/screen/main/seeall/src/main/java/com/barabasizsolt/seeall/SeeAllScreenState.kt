@@ -43,9 +43,7 @@ class SeeAllScreenState(
         private set
 
     init {
-        getSeeAllScreenFlowUseCase(contentType = contentType).onEach {
-            watchableItems = it
-        }.launchIn(scope = scope)
+        getSeeAllScreenFlowUseCase(contentType = contentType).observe { watchableItems = it }
     }
 
     override fun getScreenData(userAction: UserAction, delay: Long) {

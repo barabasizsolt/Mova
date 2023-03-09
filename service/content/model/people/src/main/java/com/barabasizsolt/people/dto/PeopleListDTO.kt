@@ -6,12 +6,12 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PeopleListResponse(
+data class PeopleListDTO(
     @Json(name = "page") val page: Int?,
-    @Json(name = "results") val results: List<PeopleResponse>?
+    @Json(name = "results") val results: List<PeopleDTO>?
 )
 
-fun PeopleListResponse.toModel() : List<People> {
+fun PeopleListDTO.toModel() : List<People> {
     if (page == null || results == null) {
         throw DataLayerException(message = "PeopleListException: $this")
     }

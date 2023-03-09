@@ -2,7 +2,7 @@ package com.barabasizsolt.domain.usecase.screen.explore.search
 
 import com.barabasizsolt.domain.usecase.helper.movie.search.SearchMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.search.SearchTvSeriesUseCase
-import com.barabasizsolt.domain.usecase.screen.explore.Category
+import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.pagination.api.RefreshType
 
 class SearchContentUseCase(

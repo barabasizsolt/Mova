@@ -4,6 +4,10 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
+private val Jam = Color(color = 0xFF60100B)
+private val Black200 = Color(color = 0xFF121212)
+private val Pink = Color(color = 0xFFCF6679)
+
 internal val LocalColors = staticCompositionLocalOf { lightColors }
 
 val lightColors = lightColors()
@@ -80,7 +84,3 @@ fun darkColors(
     onSurface = onSurface,
     onError = onError
 )
-
-private val Jam = Color(color = 0xFF60100B)
-private val Black200 = Color(color = 0xFF121212)
-private val Pink = Color(color = 0xFFCF6679)

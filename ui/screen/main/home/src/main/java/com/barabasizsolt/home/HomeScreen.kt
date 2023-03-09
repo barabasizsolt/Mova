@@ -33,7 +33,8 @@ fun HomeScreen(screenState: HomeScreenState) = BaseScreen(
             onSeeAllNowPlayingMoviesClicked = screenState::onSeeAllNowPlayingMoviesClicked,
             topRatedMovies = screenState.homeContent.topRatedMovies,
             onSeeAllTopRatedMoviesClicked = screenState::onSeeAllTopRatedMoviesClicked,
-            gridState = gridState
+            gridState = gridState,
+            genres = screenState.homeContent.genres
         )
     }
 )
@@ -49,7 +50,8 @@ private fun ScreenContent(
     onSeeAllNowPlayingMoviesClicked: () -> Unit,
     topRatedMovies: List<ContentItem.Watchable>,
     onSeeAllTopRatedMoviesClicked: () -> Unit,
-    gridState: LazyGridState
+    gridState: LazyGridState,
+    genres: Map<Long, String>
 ) = LazyVerticalGrid(
     columns = GridCells.Fixed(count = 1),
     modifier = Modifier.fillMaxSize(),
@@ -60,6 +62,7 @@ private fun ScreenContent(
     item {
         WatchablePager(
             pagerContent = upcomingMovies,
+            genres = genres,
             onClick = { /*TODO: Implement it*/ },
             onPlayButtonClicked = { /*TODO: Implement it*/ },
             onAddToFavouriteButtonClicked = { /*TODO: Implement it*/ }

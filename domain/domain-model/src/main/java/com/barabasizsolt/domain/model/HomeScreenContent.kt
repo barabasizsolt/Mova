@@ -7,14 +7,16 @@ fun HomeScreenContent.isEmpty(): Boolean =
             popularMovies.isEmpty() ||
             nowPlayingMovies.isEmpty() ||
             topRatedMovies.isEmpty() ||
-            popularPeople.isEmpty()
+            popularPeople.isEmpty() ||
+            genres.isEmpty()
 
 data class HomeScreenContent(
     val upcomingMovies: List<Movie>,
     val popularMovies: List<ContentItem.Watchable>,
     val nowPlayingMovies: List<ContentItem.Watchable>,
     val topRatedMovies: List<ContentItem.Watchable>,
-    val popularPeople: List<ContentItem.Person>
+    val popularPeople: List<ContentItem.Person>,
+    val genres: Map<Long, String>
 ) {
     companion object {
         fun createEmptyHomeScreenContent() = HomeScreenContent(
@@ -22,7 +24,8 @@ data class HomeScreenContent(
             popularPeople = emptyList(),
             nowPlayingMovies = emptyList(),
             topRatedMovies = emptyList(),
-            popularMovies = emptyList()
+            popularMovies = emptyList(),
+            genres = emptyMap()
         )
     }
 }

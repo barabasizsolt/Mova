@@ -19,12 +19,10 @@ class ExploreRemoteSource(private val networkService: ExploreNetworkService) {
     ).toModel()
 
     suspend fun getTvSeries(
-        region: List<String>,
         withGenres: List<Int>,
         sortBy: List<String>,
         page: Int
     ) = networkService.getTvSeries(
-        region = region,
         withGenres = withGenres,
         sortBy = sortBy,
         page = page

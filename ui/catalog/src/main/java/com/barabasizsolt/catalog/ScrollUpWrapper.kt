@@ -4,18 +4,13 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,29 +19,29 @@ import com.barabasizsolt.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.Dp
+import com.barabasizsolt.util.isScrollingUp
 
 @Composable
 fun ScrollUpWrapper(
     modifier: Modifier = Modifier,
     gridState: LazyGridState,
     content: @Composable () -> Unit,
-    scrollUpTopPadding: Dp = AppTheme.dimens.screenPadding
+    scrollUpTopPadding: Dp = AppTheme.dimens.screenPadding,
+    shouldShow: Boolean = true
 ) {
-    val scrollToUpIsVisible = rememberSaveable { mutableStateOf(value = false) }
     val scope: CoroutineScope = rememberCoroutineScope()
-
-    val keyToShow by remember { derivedStateOf { gridState.firstVisibleItemIndex > 20 } }
-    val keyToHide by remember { derivedStateOf { gridState.firstVisibleItemIndex < 1 } }
-
-    LaunchedEffect(key1 = keyToShow, block = { scrollToUpIsVisible.value = true })
-    LaunchedEffect(key1 = keyToHide, block = { scrollToUpIsVisible.value = false })
+    val isVisible by derivedStateOf { gridState.firstVisibleItemIndex > 10 }
 
     Box(modifier = modifier) {
         content()
 
         AnimatedVisibility(
-            visible = scrollToUpIsVisible.value,
+            visible = isVisible && shouldShow,
             modifier = Modifier
                 .align(alignment = Alignment.TopCenter)
                 .statusBarsPadding()

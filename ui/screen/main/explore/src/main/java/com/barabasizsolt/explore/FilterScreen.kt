@@ -1,5 +1,6 @@
 package com.barabasizsolt.explore
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,46 +13,67 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
+import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.MovaButton
+import com.barabasizsolt.filter.api.Category
+import com.barabasizsolt.filter.api.FilterItem
 import com.barabasizsolt.theme.AppTheme
-import com.barabasizsolt.util.movieGenres
-import java.util.Locale
+import com.barabasizsolt.theme.MovaTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
-/*TODO: Refactor*/
-
+@OptIn(ExperimentalMaterialApi::class)
+@Preview
 @Composable
-fun FilterScreen() {
-    val isoCountries = Locale.getISOCountries().map { locale -> Locale("", locale) }
+fun FilterScreenPreview() = MovaTheme(isDarkTheme = true) {
+    FilterScreen(
+        screenState = rememberFilterScreenState(),
+        bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+    )
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun FilterScreen(
+    screenState: FilterScreenState,
+    bottomSheetScaffoldState: BottomSheetScaffoldState
+) {
     val isDark: Boolean = isSystemInDarkTheme()
-    var invalidateFlag by rememberSaveable { mutableStateOf(value = false) }
+    val scope: CoroutineScope = rememberCoroutineScope()
+    val genreListState = rememberLazyListState()
+
+    BackHandler(enabled = bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+        scope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
+    }
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
         contentPadding = PaddingValues(vertical = AppTheme.dimens.screenPadding),
-        // TODO[MID]: fix this
-        modifier = Modifier.background(color = if (isSystemInDarkTheme()) Color(color = 0xFF121212) else Color.White)
+        modifier = Modifier.background(color = AppTheme.colors.background)
     ) {
         item {
             Text(
-                text = "Sort & Filter",
+                text = stringResource(id = R.string.sort_filter),
                 color = AppTheme.colors.secondary,
                 style = AppTheme.typography.h5,
                 textAlign = TextAlign.Center,
@@ -65,47 +87,43 @@ fun FilterScreen() {
             )
         }
         item {
-            FilterCarousel(
-                header = "Categories",
-                selectedItemPositions = listOf(0),
-                items = listOf(
-                    FilterItem(name = "All Categories", value = ""),
-                    FilterItem(name = "Movie", value = "movie"),
-                    FilterItem(name = "Tv Series", value = "tv")
-                ),
-                onClick = { },
-                invalidateFlag = invalidateFlag
+            SingleSelectionFilterCarousel(
+                header = stringResource(id = R.string.categories),
+                selectedItem = screenState.selectedCategory,
+                items = screenState.categories,
+                onClick = { position ->
+                    screenState.onCategorySelected(position)
+                    scope.launch {
+                        genreListState.scrollToItem(index = 0, scrollOffset = 0)
+                    }
+                }
+            )
+        }
+        if (screenState.selectedCategory.wrappedItem as Category == Category.MOVIE) {
+            item {
+                MultiSelectionFilterCarousel(
+                    header = stringResource(id = R.string.regions),
+                    selectedItems = screenState.selectedRegions,
+                    items = screenState.regions,
+                    onClick = { positions -> screenState.onRegionSelected(positions) }
+                )
+            }
+        }
+        item {
+            MultiSelectionFilterCarousel(
+                header = stringResource(id = R.string.genres),
+                selectedItems = screenState.selectedGenres,
+                items = screenState.genres,
+                listState = genreListState,
+                onClick = { positions -> screenState.onGenreSelected(positions) }
             )
         }
         item {
-            FilterCarousel(
-                header = "Regions",
-                selectedItemPositions = listOf(0),
-                items = listOf(FilterItem(name = "All Regions", value = "")) + isoCountries.map { FilterItem(name = it.displayName, value = it.country) },
-                onClick = { },
-                invalidateFlag = invalidateFlag
-            )
-        }
-        item {
-            FilterCarousel(
-                header = "Genres",
-                selectedItemPositions = listOf(0),
-                items = listOf(FilterItem(name = "All Genres", value = "")) + movieGenres.entries.map { FilterItem(name = it.value, value = it.key.toString()) },
-                onClick = { },
-                invalidateFlag = invalidateFlag
-            )
-        }
-        item {
-            FilterCarousel(
-                header = "Sort",
-                selectedItemPositions = listOf(0),
-                items = listOf(
-                    FilterItem(name = "None", value = "none"),
-                    FilterItem(name = "Popularity", value = "popularity"),
-                    FilterItem(name = "Latest Release", value = "release_date")
-                ),
-                onClick = { },
-                invalidateFlag = invalidateFlag
+            MultiSelectionFilterCarousel(
+                header = stringResource(id = R.string.sort),
+                selectedItems = screenState.selectedSortOptions,
+                items = screenState.sortOptions,
+                onClick = { positions -> screenState.onSortingCriteriaSelected(positions) }
             )
         }
         item {
@@ -123,12 +141,15 @@ fun FilterScreen() {
                 horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
             ) {
                 ResetButton(
-                    onClick = { invalidateFlag = !invalidateFlag },
+                    onClick = screenState::onResetButtonClicked,
                     isDark = isDark,
                     modifier = Modifier.weight(weight = 1f)
                 )
                 ApplyButton(
-                    onClick = {},
+                    onClick = {
+                        screenState.onApplyButtonClicked()
+                        scope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
+                    },
                     modifier = Modifier.weight(weight = 1f)
                 )
             }
@@ -141,7 +162,7 @@ private fun ApplyButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) = MovaButton(
-    text = "Apply",
+    text = stringResource(id = R.string.apply),
     onClick = onClick,
     modifier = modifier
 )
@@ -152,7 +173,7 @@ private fun ResetButton(
     isDark: Boolean,
     onClick: () -> Unit
 ) = MovaButton(
-    text = "Reset",
+    text = stringResource(id = R.string.reset),
     onClick = onClick,
     contentColor = if (isDark) Color.White else AppTheme.colors.secondary,
     backgroundColor = if (isDark) Color.DarkGray else AppTheme.colors.secondary.copy(alpha = .2f),
@@ -160,28 +181,90 @@ private fun ResetButton(
 )
 
 @Composable
-private fun FilterCarousel(
+private fun SingleSelectionFilterCarousel(
     modifier: Modifier = Modifier,
     header: String,
-    selectedItemPositions: List<Int>,
+    selectedItem: FilterItem,
     items: List<FilterItem>,
-    invalidateFlag: Boolean,
-    onClick: () -> Unit
+    listState: LazyListState = rememberLazyListState(),
+    onClick: (FilterItem) -> Unit
+) = BaseFilterCarousel(
+    modifier = modifier,
+    header = header,
+    items = items,
+    listState = listState,
+    rowContent = { _, item ->
+        FilterItem(
+            text = item.name,
+            isSelected = item == selectedItem,
+            onClick = {
+                if (selectedItem != item) {
+                    onClick(item)
+                }
+            }
+        )
+    }
+)
+
+@Composable
+private fun MultiSelectionFilterCarousel(
+    modifier: Modifier = Modifier,
+    header: String,
+    selectedItems: List<FilterItem>,
+    items: List<FilterItem>,
+    listState: LazyListState = rememberLazyListState(),
+    onClick: (List<FilterItem>) -> Unit
+) = BaseFilterCarousel(
+    modifier = modifier,
+    header = header,
+    items = items,
+    listState = listState,
+    rowContent = { index, item ->
+        FilterItem(
+            text = item.name,
+            isSelected = selectedItems.contains(element = item),
+            onClick = {
+                val oldItems = selectedItems.toMutableList()
+                if (oldItems.contains(element = item)) {
+                    oldItems.remove(element = item)
+                    if (oldItems.isEmpty()) {
+                        oldItems.add(element = items[0])
+                    }
+                } else {
+                    when {
+                        oldItems.contains(element = items[0]) -> {
+                            oldItems.remove(element = items[0])
+                            oldItems.add(element = item)
+                        }
+                        index == 0 -> {
+                            oldItems.clear()
+                            oldItems.add(element = items[0])
+                        }
+                        else -> {
+                            oldItems.add(element = item)
+                        }
+                    }
+                }
+                onClick(oldItems)
+            }
+        )
+    }
+)
+
+@Composable
+private fun BaseFilterCarousel(
+    modifier: Modifier = Modifier,
+    header: String,
+    items: List<FilterItem>,
+    listState: LazyListState,
+    rowContent: @Composable (Int, FilterItem) -> Unit
 ) = Column(
     modifier = modifier.fillMaxWidth(),
     verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2)
 ) {
-    var selectedPositions by rememberSaveable { mutableStateOf(value = selectedItemPositions) }
-
-    LaunchedEffect(
-        key1 = invalidateFlag,
-        block = { selectedPositions = listOf(0) }
-    )
-
     Text(
         text = header,
         style = AppTheme.typography.subtitle1,
-        color = AppTheme.colors.onBackground,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
     )
@@ -189,36 +272,11 @@ private fun FilterCarousel(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = AppTheme.dimens.screenPadding),
         horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        state = listState
     ) {
         itemsIndexed(items = items) { index, item ->
-            FilterItem(
-                text = item.name,
-                isSelected = selectedPositions.contains(element = index),
-                onClick = {
-                    val oldList = selectedPositions.toMutableList()
-                    if (oldList.contains(element = index)) {
-                        oldList.remove(element = index)
-                        if (oldList.isEmpty()) {
-                            oldList.add(element = 0)
-                        }
-                    } else {
-                        when {
-                            oldList.contains(element = 0) -> {
-                                oldList.remove(element = 0)
-                                oldList.add(element = index)
-                            }
-                            index == 0 -> {
-                                oldList.clear()
-                                oldList.add(element = 0)
-                            }
-                            else -> oldList.add(element = index)
-                        }
-                    }
-                    selectedPositions = oldList
-                    onClick()
-                }
-            )
+            rowContent(index, item)
         }
     }
 }

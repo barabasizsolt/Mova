@@ -9,6 +9,8 @@ import com.barabasizsolt.domain.usecase.auth.LoginWithFacebookAccountUseCase
 import com.barabasizsolt.domain.usecase.auth.LoginWithGoogleAccountUseCase
 import com.barabasizsolt.domain.usecase.auth.RegisterWithEmailAndPasswordUseCase
 import com.barabasizsolt.domain.usecase.auth.ResetPasswordUseCase
+import com.barabasizsolt.domain.usecase.helper.genre.GetGenresFlowUseCase
+import com.barabasizsolt.domain.usecase.helper.genre.GetGenresUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.search.DeleteSearchMovieUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.discover.DiscoverMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.discover.DiscoverMoviesUseCase
@@ -43,7 +45,9 @@ import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenUseCase
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenUseCase
+import com.barabasizsolt.filter.di.createFilterModule
 import com.barabasizsolt.firebase.di.createAuthenticationModule
+import com.barabasizsolt.genre.di.createGenreModule
 
 import com.barabasizsolt.movie.di.createMovieModule
 import com.barabasizsolt.people.di.createPeopleModule
@@ -58,7 +62,9 @@ private fun createServiceModules() = buildList {
     add(createExploreModule())
     add(createMovieModule())
     add(createPeopleModule())
+    add(createGenreModule())
     add(createAuthenticationModule())
+    add(createFilterModule())
 }
 
 private fun createUseCaseModules() = module {
@@ -97,6 +103,10 @@ private fun createUseCaseModules() = module {
     factory { GetPopularPeopleFlowUseCase(peopleService = get()) }
     factory { DeletePopularPeopleUseCase(peopleService = get()) }
 
+    // Genre
+    factory { GetGenresUseCase(genreService = get()) }
+    factory { GetGenresFlowUseCase(genreService = get()) }
+
     // Discover [Movie]
     factory { DiscoverMoviesUseCase(exploreService = get()) }
     factory { DiscoverMoviesFlowUseCase(exploreService = get()) }
@@ -122,7 +132,8 @@ private fun createUseCaseModules() = module {
             getUpcomingMoviesUseCase = get(),
             getTopRatedMoviesUseCase = get(),
             getNowPlayingMoviesCase = get(),
-            getPopularPeopleUseCase = get()
+            getPopularPeopleUseCase = get(),
+            getGenresUseCase = get()
         )
     }
     factory {
@@ -131,7 +142,8 @@ private fun createUseCaseModules() = module {
             getUpcomingMoviesFlowUseCase = get(),
             getTopRatedMoviesFlowUseCase = get(),
             getNowPlayingMoviesFlowCase = get(),
-            getPopularPeopleFlowUseCase = get()
+            getPopularPeopleFlowUseCase = get(),
+            getGenresFlowUseCase = get()
         )
     }
 

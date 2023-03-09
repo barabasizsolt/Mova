@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetScaffoldState
@@ -26,6 +27,8 @@ import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -40,57 +43,97 @@ import com.barabasizsolt.catalog.NotFoundItem
 import com.barabasizsolt.catalog.SearchableItem
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.ContentItem
+import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.imeBottomInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ExploreScreen(screenState: ExploreScreenState) = BaseScreen(
-    screenState = screenState,
-    scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 3,
-    content = { gridState, scope ->
-        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+fun ExploreScreen(screenState: ExploreScreenState){
+    val movieListState: LazyGridState = rememberLazyGridState()
+    val movieSearchState: LazyGridState = rememberLazyGridState()
+    val tvListState: LazyGridState = rememberLazyGridState()
+    val tvSearchState: LazyGridState = rememberLazyGridState()
 
-        BottomSheetScaffold(
-            scaffoldState = bottomSheetScaffoldState,
-            sheetShape = AppTheme.shapes.medium.copy(
-                bottomStart = CornerSize(size = 0.dp),
-                bottomEnd = CornerSize(size = 0.dp)
-            ),
-            sheetContent = { FilterScreen() },
-            sheetPeekHeight = 0.dp
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = AppTheme.colors.primary)
-            ) {
-                ScreenContent(
-                    query = screenState.query,
-                    onQueryChange = screenState::onQueryChange,
-                    discoverItems = screenState.discoverContent,
-                    searchItems = screenState.searchContent,
-                    isLoading = screenState.state in listOf(BaseScreenState.State.SwipeRefresh, BaseScreenState.State.Search),
-                    isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
-                    bottomSheetScaffoldState = bottomSheetScaffoldState,
-                    onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
-                    onRetryClick = {
-                        if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
-                            screenState.clearSearchContent()
-                            // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
-                        }
-                        screenState.getScreenData(userAction = UserAction.TryAgain)
-                    },
-                    scope = scope,
-                    gridState = gridState
-                )
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+    val filterScreenState = rememberFilterScreenState()
+
+    when (filterScreenState.action?.consume()) {
+        is FilterScreenState.Action.OnApplyButtonClicked -> screenState.onApplyButtonClicked()
+        is FilterScreenState.Action.OnResetButtonClicked -> screenState.onResetButtonClicked()
+        else -> Unit
+    }
+
+    var shouldShowScrollUp by rememberSaveable { mutableStateOf(value = bottomSheetScaffoldState.bottomSheetState.isCollapsed) }
+    LaunchedEffect(
+        key1 = bottomSheetScaffoldState.bottomSheetState.currentValue,
+        block = {
+            if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+                shouldShowScrollUp = true
             }
         }
-    }
-)
+    )
+
+    BaseScreen(
+        screenState = screenState,
+        gridState = when (screenState.selectedCategory.wrappedItem as Category) {
+            Category.MOVIE -> if (screenState.query.isEmpty()) movieListState else movieSearchState
+            Category.TV -> if (screenState.query.isEmpty()) tvListState else tvSearchState
+        },
+        scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 3,
+        shouldShowScrollUp = shouldShowScrollUp,
+        content = { gridState, scope ->
+            BottomSheetScaffold(
+                scaffoldState = bottomSheetScaffoldState,
+                sheetShape = AppTheme.shapes.medium.copy(
+                    bottomStart = CornerSize(size = 0.dp),
+                    bottomEnd = CornerSize(size = 0.dp)
+                ),
+                sheetContent = {
+                    FilterScreen(
+                        screenState = filterScreenState,
+                        bottomSheetScaffoldState = bottomSheetScaffoldState
+                    )
+                },
+                sheetPeekHeight = 0.dp
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = AppTheme.colors.primary)
+                ) {
+                    ScreenContent(
+                        query = screenState.query,
+                        onQueryChange = screenState::onQueryChange,
+                        discoverItems = screenState.discoverContent,
+                        searchItems = screenState.searchContent,
+                        isLoading = screenState.state in listOf(BaseScreenState.State.SwipeRefresh, BaseScreenState.State.SearchLoading),
+                        isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
+                        bottomSheetScaffoldState = bottomSheetScaffoldState,
+                        onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
+                        onRetryClick = {
+                            if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
+                                screenState.clearSearchContent()
+                                // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
+                            }
+                            screenState.getScreenData(userAction = UserAction.TryAgain)
+                        },
+                        onClick = {
+                            shouldShowScrollUp = it
+                        },
+                        scope = scope,
+                        gridState = gridState
+                    )
+                }
+            }
+        }
+    )
+}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -105,6 +148,7 @@ private fun ScreenContent(
     onLoadMoreItem: () -> Unit,
     onRetryClick: () -> Unit,
     scope: CoroutineScope,
+    onClick: (Boolean) -> Unit,
     gridState: LazyGridState
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding)) {
@@ -112,7 +156,8 @@ private fun ScreenContent(
             query = query,
             onQueryChange = onQueryChange ,
             scope = scope,
-            bottomSheetScaffoldState = bottomSheetScaffoldState
+            bottomSheetScaffoldState = bottomSheetScaffoldState,
+            onClick = onClick
         )
         if (isLoading) {
             LoadingBody(
@@ -139,7 +184,8 @@ private fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     scope: CoroutineScope,
-    bottomSheetScaffoldState: BottomSheetScaffoldState
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
+    onClick: (Boolean) -> Unit
 ) = Row(
     modifier = modifier
         .padding(
@@ -159,8 +205,10 @@ private fun SearchBar(
         onClick = {
             scope.launch {
                 if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+                    onClick(true)
                     bottomSheetScaffoldState.bottomSheetState.collapse()
                 } else {
+                    onClick(false)
                     bottomSheetScaffoldState.bottomSheetState.expand()
                 }
             }
