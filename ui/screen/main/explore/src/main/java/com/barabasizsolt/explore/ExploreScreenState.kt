@@ -57,8 +57,9 @@ fun rememberExploreScreenState(
 
 /*
 * TODO: [BUG]-[LOW]:
-*  - TV's search query is not empty
-*  - TV's scroll position is not the first
+*  - TV's/Movie's search query is not empty
+*  - TV's/Movie's scroll position is not the first
+*  - if both is not empty then its okay the scroll position
 *  - BUG: switching between MOVIE/TV at the 3rd attempt, resets the tv scroll position to 0.
 *  - BUG: put the search cursor to the end of the string
 *
@@ -165,15 +166,15 @@ class ExploreScreenState(
     fun clearSearchContent() = deleteContentUseCase(category = selectedCategory.wrappedItem as Category)
 
     fun onApplyButtonClicked() {
+        restartDiscoverContentCollection()
+        restartSearchContentCollection()
         if (query.isEmpty()) {
-            restartDiscoverContentCollection()
-            restartSearchContentCollection()
             state = State.SearchLoading
-            scope.launch {
-                delay(timeMillis = 100L)
-                discoverContent(userAction = UserAction.SwipeRefresh)
-                state = State.Normal
-            }
+        }
+        scope.launch {
+            delay(timeMillis = 100L)
+            discoverContent(userAction = UserAction.SwipeRefresh)
+            state = State.Normal
         }
     }
 

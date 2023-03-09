@@ -56,7 +56,9 @@ import androidx.compose.runtime.getValue
 @Composable
 fun ExploreScreen(screenState: ExploreScreenState){
     val movieListState: LazyGridState = rememberLazyGridState()
+    val movieSearchState: LazyGridState = rememberLazyGridState()
     val tvListState: LazyGridState = rememberLazyGridState()
+    val tvSearchState: LazyGridState = rememberLazyGridState()
 
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val filterScreenState = rememberFilterScreenState()
@@ -80,8 +82,8 @@ fun ExploreScreen(screenState: ExploreScreenState){
     BaseScreen(
         screenState = screenState,
         gridState = when (screenState.selectedCategory.wrappedItem as Category) {
-            Category.MOVIE -> movieListState
-            Category.TV -> tvListState
+            Category.MOVIE -> if (screenState.query.isEmpty()) movieListState else movieSearchState
+            Category.TV -> if (screenState.query.isEmpty()) tvListState else tvSearchState
         },
         scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 3,
         shouldShowScrollUp = shouldShowScrollUp,
