@@ -32,7 +32,7 @@ abstract class BaseScreenState : CoroutineScope {
         object Normal : State()
         object Loading : State()
         object SwipeRefresh : State()
-        object Search : State()
+        object SearchLoading : State()
         data class Error(val message: String) : State()
         object ShowSnackBar : State()
         object TryAgainLoading : State()
