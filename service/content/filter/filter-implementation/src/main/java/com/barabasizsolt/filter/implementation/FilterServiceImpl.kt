@@ -9,6 +9,7 @@ import com.barabasizsolt.filter.api.firstItemToList
 import com.barabasizsolt.filter.api.toFilterItemWithValue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import java.util.Locale
 
 class FilterServiceImpl : FilterService {
@@ -30,8 +31,14 @@ class FilterServiceImpl : FilterService {
     override val selectedRegions: Flow<List<FilterItem>> = _selectedRegions
 
     private val defaultGenres = listOf(FilterItem(name = "All Genres", value = FilterItemValue.WithoutValue))
-    private val _selectedGenres = MutableStateFlow(value = defaultGenres)
-    override val selectedGenres: Flow<List<FilterItem>> = _selectedGenres
+    private val _selectedMovieGenres = MutableStateFlow(value = defaultGenres)
+    private val _selectedTveGenres = MutableStateFlow(value = defaultGenres)
+    override val selectedGenres: Flow<List<FilterItem>> = combine(_selectedCategory, _selectedMovieGenres, _selectedTveGenres) { category, movie, tv ->
+        when (category.wrappedItem as Category) {
+            Category.MOVIE -> movie
+            Category.TV -> tv
+        }
+    }
 
     override val sortOptions: List<FilterItem>
         get() = listOf(
@@ -45,7 +52,6 @@ class FilterServiceImpl : FilterService {
 
     override fun onCategoryChange(selectedCategory: FilterItem) {
         _selectedCategory.value = selectedCategory
-        _selectedGenres.value = defaultGenres
     }
 
     override fun onRegionsChange(selectedRegions: List<FilterItem>) {
@@ -53,7 +59,10 @@ class FilterServiceImpl : FilterService {
     }
 
     override fun onGenresChange(selectedGenres: List<FilterItem>) {
-        _selectedGenres.value = selectedGenres
+        when (_selectedCategory.value.wrappedItem as Category) {
+            Category.MOVIE -> _selectedMovieGenres.value = selectedGenres
+            Category.TV -> _selectedTveGenres.value = selectedGenres
+        }
     }
 
     override fun onSortOptionChange(selectedSortOptions: List<FilterItem>) {
