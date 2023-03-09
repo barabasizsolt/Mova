@@ -59,14 +59,14 @@ class FilterScreenState(
         private set
 
     init {
-        getScreenData(userAction = UserAction.Normal)
-    }
-
-    override fun getScreenData(userAction: UserAction, delay: Long) {
         filterService.selectedCategory.observe { selectedCategory = it }
         filterService.selectedRegions.observe { selectedRegions = it }
         filterService.selectedGenres.observe { selectedGenres = it }
         filterService.selectedSortOptions.observe { selectedSortOptions = it }
+        getScreenData(userAction = UserAction.Normal)
+    }
+
+    override fun getScreenData(userAction: UserAction, delay: Long) {
         restartGenresCollection()
     }
 
