@@ -52,11 +52,6 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 
-/*
-* TODO:
-* - if the search is enabled the screen state isn't preserved after navigation
-* */
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ExploreScreen(screenState: ExploreScreenState){
@@ -65,6 +60,12 @@ fun ExploreScreen(screenState: ExploreScreenState){
 
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val filterScreenState = rememberFilterScreenState()
+
+    when (filterScreenState.action?.consume()) {
+        is FilterScreenState.Action.OnApplyButtonClicked -> screenState.onApplyButtonClicked()
+        is FilterScreenState.Action.OnResetButtonClicked -> screenState.onResetButtonClicked()
+        else -> Unit
+    }
 
     var shouldShowScrollUp by rememberSaveable { mutableStateOf(value = bottomSheetScaffoldState.bottomSheetState.isCollapsed) }
     LaunchedEffect(
@@ -109,7 +110,7 @@ fun ExploreScreen(screenState: ExploreScreenState){
                         onQueryChange = screenState::onQueryChange,
                         discoverItems = screenState.discoverContent,
                         searchItems = screenState.searchContent,
-                        isLoading = screenState.state in listOf(BaseScreenState.State.SwipeRefresh, BaseScreenState.State.Search),
+                        isLoading = screenState.state in listOf(BaseScreenState.State.SwipeRefresh, BaseScreenState.State.SearchLoading),
                         isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
                         bottomSheetScaffoldState = bottomSheetScaffoldState,
                         onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },

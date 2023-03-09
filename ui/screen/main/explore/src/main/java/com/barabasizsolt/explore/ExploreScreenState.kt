@@ -1,6 +1,7 @@
 package com.barabasizsolt.explore
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
@@ -18,15 +19,12 @@ import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.result.Result
 import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.filter.api.FilterItem
+import com.barabasizsolt.filter.api.FilterItemValue
 import com.barabasizsolt.filter.api.FilterService
 import com.barabasizsolt.pagination.api.RefreshType
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.get
 
 @Composable
@@ -57,6 +55,14 @@ fun rememberExploreScreenState(
     )
 }
 
+/*
+* TODO: [BUG]-[LOW]:
+*  - TV's search query is not empty
+*  - TV's scroll position is not the first
+*  - BUG: switching between MOVIE/TV at the 3rd attempt, resets the tv scroll position to 0.
+*  - BUG: put the search cursor to the end of the string
+*
+* */
 class ExploreScreenState(
     private val discoverContentUseCase: DiscoverContentUseCase,
     private val discoverContentFlowUseCase: DiscoverContentFlowUseCase,
@@ -72,8 +78,6 @@ class ExploreScreenState(
         private set
     var searchContent by mutableStateOf<List<ContentItem>>(value = emptyList())
         private set
-    var query by mutableStateOf(value = "")
-        private set
 
     var selectedCategory by mutableStateOf(value = filterService.categories[0])
         private set
@@ -81,31 +85,41 @@ class ExploreScreenState(
     private var selectedGenres by mutableStateOf<List<FilterItem>>(value = emptyList())
     private var selectedSortOptions by mutableStateOf<List<FilterItem>>(value = emptyList())
 
-    init {
+    private var movieQuery by mutableStateOf(value = "")
+    private var tvQuery by mutableStateOf(value = "")
+    val query by derivedStateOf {
+        when (selectedCategory.wrappedItem as Category) {
+            Category.MOVIE -> movieQuery
+            Category.TV -> tvQuery
+        }
+    }
 
+    init {
         filterService.selectedCategory.observe {
-            /*TODO: Improve It*/
             selectedCategory = it
             restartDiscoverContentCollection()
             restartSearchContentCollection()
-            query = ""
             getScreenData(userAction = UserAction.Normal)
         }
-        filterService.selectedRegions.observe { selectedRegions = it }
-        filterService.selectedGenres.observe { selectedGenres = it }
-        filterService.selectedSortOptions.observe { selectedSortOptions = it }
-
+        filterService.selectedRegions.observe {
+            selectedRegions = it
+        }
+        filterService.selectedGenres.observe {
+            selectedGenres = it
+        }
+        filterService.selectedSortOptions.observe {
+            selectedSortOptions = it
+        }
         restartDiscoverContentCollection()
         restartSearchContentCollection()
-
         getScreenData(userAction = UserAction.Normal)
     }
 
     override fun getScreenData(userAction: UserAction, delay: Long) {
-        if (state !in listOf(State.Loading, State.SwipeRefresh, State.Search)) {
+        if (state !in listOf(State.Loading, State.SwipeRefresh, State.SearchLoading)) {
             state = when (userAction) {
                 UserAction.SwipeRefresh -> State.SwipeRefresh
-                UserAction.Search -> State.Search
+                UserAction.Search -> State.SearchLoading
                 UserAction.Error -> State.Loading
                 UserAction.Normal -> State.Normal
                 UserAction.TryAgain -> State.TryAgainLoading
@@ -140,12 +154,44 @@ class ExploreScreenState(
     }
 
     fun onQueryChange(query: String) {
-        this.query = query
+        when (selectedCategory.wrappedItem as Category) {
+            Category.MOVIE -> movieQuery = query
+            Category.TV -> tvQuery = query
+        }
         clearSearchContent()
         getScreenData(userAction = UserAction.Search, delay = 500)
     }
 
     fun clearSearchContent() = deleteContentUseCase(category = selectedCategory.wrappedItem as Category)
+
+    fun onApplyButtonClicked() {
+        if (query.isEmpty()) {
+            restartDiscoverContentCollection()
+            restartSearchContentCollection()
+            state = State.SearchLoading
+            scope.launch {
+                delay(timeMillis = 100L)
+                discoverContent(userAction = UserAction.SwipeRefresh)
+                state = State.Normal
+            }
+        }
+    }
+
+    fun onResetButtonClicked() {
+        restartDiscoverContentCollection()
+        restartSearchContentCollection()
+        state = State.SearchLoading
+        scope.launch {
+            delay(timeMillis = 100L)
+            when (selectedCategory.wrappedItem as Category) {
+                Category.MOVIE -> movieQuery = ""
+                Category.TV -> tvQuery = ""
+            }
+            discoverContent(userAction = UserAction.SwipeRefresh)
+            searchContent(userAction = UserAction.SwipeRefresh, query = query)
+            state = State.Normal
+        }
+    }
 
     private suspend fun discoverContent(userAction: UserAction) {
         state = when (
@@ -155,7 +201,18 @@ class ExploreScreenState(
                     discoverContent.isEmpty() -> RefreshType.CACHE_IF_POSSIBLE
                     else -> RefreshType.NEXT_PAGE
                 },
-                category = selectedCategory.wrappedItem as Category
+                category = selectedCategory.wrappedItem as Category,
+                region = if (selectedRegions.size == 1 && selectedRegions[0].value is FilterItemValue.WithoutValue) {
+                    emptyList()
+                } else {
+                    selectedRegions.map { (it.value as FilterItemValue.WithValue).value }
+                },
+                withGenres = if (selectedGenres.size == 1 && selectedGenres[0].value is FilterItemValue.WithoutValue) {
+                    emptyList()
+                } else {
+                    selectedGenres.map { (it.value as FilterItemValue.WithValue).value.toInt() }
+                },
+                sortBy = selectedSortOptions.map { (it.value as FilterItemValue.WithValue).value }
             )
         ) {
             is Result.Failure -> handleError(userAction = userAction, errorMessage = result.exception.message.orEmpty())
@@ -196,7 +253,8 @@ class ExploreScreenState(
     }
 
     companion object {
-        private const val QUERY_KEY: String = "com.barabasizsolt.explore.query"
+        private const val MOVIE_QUERY_KEY: String = "com.barabasizsolt.explore.query.movie"
+        private const val TV_QUERY_KEY: String = "com.barabasizsolt.explore.query.tv"
 
         fun getSaver(
             discoverContentUseCase: DiscoverContentUseCase,
@@ -206,7 +264,7 @@ class ExploreScreenState(
             deleteContentUseCase: DeleteContentUseCase,
             filterService: FilterService
         ): Saver<ExploreScreenState, *> = getBaseSaver(
-            save = { mapOf(QUERY_KEY to it.query) },
+            save = { mapOf(MOVIE_QUERY_KEY to it.movieQuery, TV_QUERY_KEY to it.tvQuery) },
             restore = {
                 ExploreScreenState(
                     discoverContentUseCase = discoverContentUseCase,
@@ -216,7 +274,8 @@ class ExploreScreenState(
                     deleteContentUseCase = deleteContentUseCase,
                     filterService = filterService
                 ).apply {
-                    query = it[QUERY_KEY] as String
+                    movieQuery = it[MOVIE_QUERY_KEY] as String
+                    tvQuery = it[TV_QUERY_KEY] as String
                 }
             }
         )
