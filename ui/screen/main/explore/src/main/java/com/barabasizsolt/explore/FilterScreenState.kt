@@ -19,6 +19,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
+import com.barabasizsolt.util.Event
 
 @Composable
 fun rememberFilterScreenState(
@@ -54,6 +55,9 @@ class FilterScreenState(
     var selectedSortOptions by mutableStateOf<List<FilterItem>>(value = emptyList())
         private set
 
+    var action by mutableStateOf<Event<Action>?>(value = null)
+        private set
+
     init {
         getScreenData(userAction = UserAction.Normal)
     }
@@ -84,9 +88,8 @@ class FilterScreenState(
     }
 
     fun onCategorySelected(category: FilterItem) {
-        restartGenresCollection()
         filterService.onCategoryChange(selectedCategory = category)
-        filterService.onGenresChange(selectedGenres = genres.firstItemToList())
+        restartGenresCollection()
     }
 
     fun onRegionSelected(regions: List<FilterItem>) {
@@ -105,7 +108,15 @@ class FilterScreenState(
         filterService.onRegionsChange(selectedRegions = regions.firstItemToList())
         filterService.onGenresChange(selectedGenres = genres.firstItemToList())
         filterService.onSortOptionChange(selectedSortOptions = sortOptions.firstItemToList())
+        action = Event(data = Action.OnResetButtonClicked)
     }
 
-    fun onApplyButtonClicked() { }
+    fun onApplyButtonClicked() {
+        action = Event(data = Action.OnApplyButtonClicked)
+    }
+
+    sealed class Action {
+        object OnApplyButtonClicked : Action()
+        object OnResetButtonClicked : Action()
+    }
 }
