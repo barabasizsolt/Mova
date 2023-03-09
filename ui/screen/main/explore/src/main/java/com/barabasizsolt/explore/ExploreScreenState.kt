@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.base.UserAction
 import com.barabasizsolt.domain.model.ContentItem
+import com.barabasizsolt.domain.usecase.helper.genre.GetGenresUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.discover.DiscoverContentFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.discover.DiscoverContentUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.search.DeleteContentUseCase
@@ -34,6 +35,7 @@ fun rememberExploreScreenState(
     searchContentUseCase: SearchContentUseCase = get(),
     searchContentFlowUseCase: SearchContentFlowUseCase = get(),
     deleteContentUseCase: DeleteContentUseCase = get(),
+    getGenresUseCase: GetGenresUseCase = get(),
     filterService: FilterService = get()
 ): ExploreScreenState = rememberSaveable(
     saver = ExploreScreenState.getSaver(
@@ -42,6 +44,7 @@ fun rememberExploreScreenState(
         searchContentUseCase = searchContentUseCase,
         searchContentFlowUseCase = searchContentFlowUseCase,
         deleteContentUseCase = deleteContentUseCase,
+        getGenresUseCase = getGenresUseCase,
         filterService = filterService
     )
 ) {
@@ -51,6 +54,7 @@ fun rememberExploreScreenState(
         searchContentUseCase = searchContentUseCase,
         searchContentFlowUseCase = searchContentFlowUseCase,
         deleteContentUseCase = deleteContentUseCase,
+        getGenresUseCase = getGenresUseCase,
         filterService = filterService
     )
 }
@@ -70,6 +74,7 @@ class ExploreScreenState(
     private val searchContentUseCase: SearchContentUseCase,
     private  val searchContentFlowUseCase: SearchContentFlowUseCase,
     private val deleteContentUseCase: DeleteContentUseCase,
+    private val getGenresUseCase: GetGenresUseCase,
     private val filterService: FilterService
 ) : BaseScreenState() {
     private var discoverJob: Job? = null
@@ -132,6 +137,12 @@ class ExploreScreenState(
                 } else {
                     searchContent(userAction = userAction, query = query)
                 }
+            }
+        }
+
+        scope.launch {
+            when(getGenresUseCase()) {
+                is Result.Failure, is Result.Success -> Unit
             }
         }
     }
@@ -240,7 +251,7 @@ class ExploreScreenState(
     }
 
     private fun handleError(userAction: UserAction, errorMessage: String, isSearch: Boolean = false) = when {
-        userAction is UserAction.Normal && (if (isSearch) searchContent.size <= 1 else discoverContent.size <= 1) ->
+        userAction is UserAction.Normal && (if (isSearch) searchContent.size <= 1 else discoverContent.size <= 1) && query.isEmpty() ->
             State.Error(message = errorMessage)
         userAction is UserAction.SwipeRefresh ->
             State.ShowSnackBar
@@ -263,6 +274,7 @@ class ExploreScreenState(
             searchContentUseCase: SearchContentUseCase,
             searchContentFlowUseCase: SearchContentFlowUseCase,
             deleteContentUseCase: DeleteContentUseCase,
+            getGenresUseCase: GetGenresUseCase,
             filterService: FilterService
         ): Saver<ExploreScreenState, *> = getBaseSaver(
             save = { mapOf(MOVIE_QUERY_KEY to it.movieQuery, TV_QUERY_KEY to it.tvQuery) },
@@ -273,6 +285,7 @@ class ExploreScreenState(
                     searchContentUseCase = searchContentUseCase,
                     searchContentFlowUseCase = searchContentFlowUseCase,
                     deleteContentUseCase = deleteContentUseCase,
+                    getGenresUseCase = getGenresUseCase,
                     filterService = filterService
                 ).apply {
                     movieQuery = it[MOVIE_QUERY_KEY] as String
