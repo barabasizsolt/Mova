@@ -59,15 +59,6 @@ fun rememberExploreScreenState(
     )
 }
 
-/*
-* TODO: [BUG]-[LOW]:
-*  - TV's/Movie's search query is not empty
-*  - TV's/Movie's scroll position is not the first
-*  - if both is not empty then its okay the scroll position
-*  - BUG: switching between MOVIE/TV at the 3rd attempt, resets the tv scroll position to 0.
-*  - BUG: put the search cursor to the end of the string
-*
-* */
 class ExploreScreenState(
     private val discoverContentUseCase: DiscoverContentUseCase,
     private val discoverContentFlowUseCase: DiscoverContentFlowUseCase,
