@@ -1,6 +1,8 @@
 package com.barabasizsolt.explore
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemScope
@@ -19,10 +22,13 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,6 +57,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import com.barabasizsolt.filter.api.FilterItem
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -112,6 +121,12 @@ fun ExploreScreen(screenState: ExploreScreenState){
                         onQueryChange = screenState::onQueryChange,
                         discoverItems = screenState.discoverContent,
                         searchItems = screenState.searchContent,
+                        filterItems = buildList {
+                            add(element = screenState.selectedCategory)
+                            addAll(elements = screenState.selectedRegions)
+                            addAll(elements = screenState.selectedGenres)
+                            addAll(elements = screenState.selectedSortOptions)
+                        },
                         isLoading = screenState.state in listOf(BaseScreenState.State.SwipeRefresh, BaseScreenState.State.SearchLoading),
                         isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
                         bottomSheetScaffoldState = bottomSheetScaffoldState,
@@ -142,6 +157,7 @@ private fun ScreenContent(
     onQueryChange: (String) -> Unit,
     discoverItems: List<ContentItem>,
     searchItems: List<ContentItem>,
+    filterItems: List<FilterItem>,
     isLoading: Boolean,
     isTryAgainLoading: Boolean,
     bottomSheetScaffoldState: BottomSheetScaffoldState,
@@ -169,6 +185,7 @@ private fun ScreenContent(
                 query = query,
                 discoverItems = discoverItems,
                 searchItems = searchItems,
+                filterItems = filterItems,
                 onLoadMoreItem = onLoadMoreItem,
                 onRetryClick = onRetryClick,
                 isTryAgainLoading = isTryAgainLoading
@@ -223,6 +240,7 @@ private fun ContentBody(
     query: String,
     discoverItems: List<ContentItem>,
     searchItems: List<ContentItem>,
+    filterItems: List<FilterItem>,
     onLoadMoreItem: () -> Unit,
     onRetryClick: () -> Unit,
     isTryAgainLoading: Boolean
@@ -253,6 +271,12 @@ private fun ContentBody(
             )
         }
     } else {
+        item(span = { GridItemSpan(currentLineSpan = 2) }) {
+            FilterItemCarousel(
+                filterItems = filterItems,
+                modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding)
+            )
+        }
         searchableItemsIndexed(
             items = discoverItems,
             key = { index, item -> item.id + index },
@@ -266,6 +290,20 @@ private fun ContentBody(
                 onClick = { /*TODO: Implement it*/ }
             )
         }
+    }
+}
+
+@Composable
+private fun FilterItemCarousel(
+    modifier: Modifier = Modifier,
+    filterItems: List<FilterItem>
+) = LazyRow(
+    modifier = modifier,
+    horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
+    verticalAlignment = Alignment.CenterVertically
+) {
+    items(items = filterItems) { item ->
+        SelectedFilterItem(text = item.name)
     }
 }
 
@@ -319,3 +357,29 @@ private fun searchableItemSpan(baseLineSpan: Int): (LazyGridItemSpanScope.(index
         }
     )
 }
+
+@Composable
+private fun SelectedFilterItem(
+    modifier: Modifier = Modifier,
+    text: String
+) = Box(
+    modifier = modifier
+        .clip(shape = CircleShape)
+        .background(color = AppTheme.colors.secondary)
+        .border(
+            width = 1.dp,
+            color = AppTheme.colors.secondary,
+            shape = CircleShape
+        ),
+    content = {
+        Text(
+            text = text,
+            style = AppTheme.typography.caption,
+            color = AppTheme.colors.onSecondary,
+            modifier = Modifier.padding(
+                horizontal = AppTheme.dimens.contentPadding * 2,
+                vertical = AppTheme.dimens.contentPadding
+            )
+        )
+    }
+)

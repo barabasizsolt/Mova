@@ -78,9 +78,12 @@ class ExploreScreenState(
 
     var selectedCategory by mutableStateOf(value = filterService.categories[0])
         private set
-    private var selectedRegions by mutableStateOf<List<FilterItem>>(value = emptyList())
-    private var selectedGenres by mutableStateOf<List<FilterItem>>(value = emptyList())
-    private var selectedSortOptions by mutableStateOf<List<FilterItem>>(value = emptyList())
+    var selectedRegions by mutableStateOf<List<FilterItem>>(value = emptyList())
+        private set
+    var selectedGenres by mutableStateOf<List<FilterItem>>(value = emptyList())
+        private set
+    var selectedSortOptions by mutableStateOf<List<FilterItem>>(value = emptyList())
+        private set
 
     private var movieQuery by mutableStateOf(value = "")
     private var tvQuery by mutableStateOf(value = "")
