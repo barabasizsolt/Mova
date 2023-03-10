@@ -2,7 +2,6 @@ package com.barabasizsolt.explore
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -271,12 +270,15 @@ private fun ContentBody(
             )
         }
     } else {
-        item(span = { GridItemSpan(currentLineSpan = 2) }) {
-            FilterItemCarousel(
-                filterItems = filterItems,
-                modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding)
-            )
-        }
+//        item(
+//            span = { GridItemSpan(currentLineSpan = 2) },
+//            key = "com.barabasizsolt.explore.filterItemCarousel"
+//        ) {
+//            FilterItemCarousel(
+//                filterItems = filterItems,
+//                modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding)
+//            )
+//        }
         searchableItemsIndexed(
             items = discoverItems,
             key = { index, item -> item.id + index },

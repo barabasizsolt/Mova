@@ -23,6 +23,7 @@ fun HomeScreen(screenState: HomeScreenState) = BaseScreen(
     screenState = screenState,
     onSnackBarDismissed = { screenState.getScreenData(userAction = UserAction.Normal) },
     content = { gridState, _ ->
+        //println("<<H: ${screenState.homeContent.topRatedMovies.size}")
         ScreenContent(
             upcomingMovies = screenState.homeContent.upcomingMovies,
             popularMovies = screenState.homeContent.popularMovies,
@@ -92,6 +93,37 @@ private fun ScreenContent(
             items = nowPlayingMovies,
             onItemClick = { /*TODO: Implement it*/ },
             onHeaderClick = onSeeAllNowPlayingMoviesClicked,
+        )
+    }
+    item {
+        WatchableWithRatingCarousel(
+            header = stringResource(id = com.barabasizsolt.util.R.string.top_rated_movies),
+            buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_top_rated_movies),
+            items = topRatedMovies,
+            onItemClick = { /*TODO: Implement it*/ },
+            onHeaderClick = onSeeAllTopRatedMoviesClicked,
+            showDivider = false
+        )
+    }
+
+    item {
+        WatchableWithRatingCarousel(
+            header = stringResource(id = com.barabasizsolt.util.R.string.top_rated_movies),
+            buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_top_rated_movies),
+            items = topRatedMovies,
+            onItemClick = { /*TODO: Implement it*/ },
+            onHeaderClick = onSeeAllTopRatedMoviesClicked,
+            showDivider = false
+        )
+    }
+    item {
+        WatchableWithRatingCarousel(
+            header = stringResource(id = com.barabasizsolt.util.R.string.top_rated_movies),
+            buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_top_rated_movies),
+            items = topRatedMovies,
+            onItemClick = { /*TODO: Implement it*/ },
+            onHeaderClick = onSeeAllTopRatedMoviesClicked,
+            showDivider = false
         )
     }
     item {
