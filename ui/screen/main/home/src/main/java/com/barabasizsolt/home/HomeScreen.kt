@@ -105,35 +105,4 @@ private fun ScreenContent(
             showDivider = false
         )
     }
-
-    item {
-        WatchableWithRatingCarousel(
-            header = stringResource(id = com.barabasizsolt.util.R.string.top_rated_movies),
-            buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_top_rated_movies),
-            items = topRatedMovies,
-            onItemClick = { /*TODO: Implement it*/ },
-            onHeaderClick = onSeeAllTopRatedMoviesClicked,
-            showDivider = false
-        )
-    }
-    item {
-        WatchableWithRatingCarousel(
-            header = stringResource(id = com.barabasizsolt.util.R.string.top_rated_movies),
-            buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_top_rated_movies),
-            items = topRatedMovies,
-            onItemClick = { /*TODO: Implement it*/ },
-            onHeaderClick = onSeeAllTopRatedMoviesClicked,
-            showDivider = false
-        )
-    }
-    item {
-        WatchableWithRatingCarousel(
-            header = stringResource(id = com.barabasizsolt.util.R.string.top_rated_movies),
-            buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_top_rated_movies),
-            items = topRatedMovies,
-            onItemClick = { /*TODO: Implement it*/ },
-            onHeaderClick = onSeeAllTopRatedMoviesClicked,
-            showDivider = false
-        )
-    }
 }
