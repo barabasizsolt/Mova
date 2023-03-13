@@ -39,8 +39,10 @@ class HomeScreenState(
         private set
 
     init {
-        getHomeScreenFlow().observe { homeContent = it }
         getScreenData(userAction = UserAction.Normal)
+        getHomeScreenFlow().observe {
+            homeContent = it
+        }
     }
 
     override fun getScreenData(userAction: UserAction, delay: Long) {

@@ -40,7 +40,10 @@ fun WatchableWithRatingCarousel(
     buttonText = buttonText,
     showDivider = showDivider,
     content = {
-        items(items = items) { item ->
+        items(
+            items = items,
+            key = { item -> item.id }
+        ) { item ->
             WatchableWithRating(
                 item = item,
                 onClick = { onItemClick(item.id) },
@@ -66,7 +69,10 @@ fun PeopleCarousel(
     itemSpacing = AppTheme.dimens.screenPadding,
     showDivider = true,
     content = {
-        items(items = items) { item ->
+        items(
+            items = items,
+            key = { item -> item.id }
+        ) { item ->
             PersonCard(
                 person = item as ContentItem.Person,
                 onClick = { onItemClick(item.id) }
