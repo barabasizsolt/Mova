@@ -23,7 +23,6 @@ fun HomeScreen(screenState: HomeScreenState) = BaseScreen(
     screenState = screenState,
     onSnackBarDismissed = { screenState.getScreenData(userAction = UserAction.Normal) },
     content = { gridState, _ ->
-        //println("<<H: ${screenState.homeContent.topRatedMovies.size}")
         ScreenContent(
             upcomingMovies = screenState.homeContent.upcomingMovies,
             popularMovies = screenState.homeContent.popularMovies,
