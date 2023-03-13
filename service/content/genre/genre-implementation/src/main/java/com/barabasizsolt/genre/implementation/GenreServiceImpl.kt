@@ -15,14 +15,12 @@ class GenreServiceImpl(private val remoteSource: GenreRemoteSource) : GenreServi
     private val _tvGenres = MutableStateFlow<Map<Long, String>>(value = emptyMap())
     override val tvGenres: Flow<Map<Long, String>> = _tvGenres
 
+    /*TODO: improve it*/
     override suspend fun getGenres() = coroutineScope {
-        if (_movieGenres.value.isEmpty()) {
-            val movieGenres = async { remoteSource.getMovieGenres() }
-            _movieGenres.value = movieGenres.await().associateBy({it.id}, {it.name})
-        }
-        if (_tvGenres.value.isEmpty()) {
-            val tvSeriesGenres = async { remoteSource.getTvSeriesGenres() }
-            _tvGenres.value = tvSeriesGenres.await().associateBy({it.id}, {it.name})
-        }
+        val movieGenres = async { remoteSource.getMovieGenres() }
+        val tvSeriesGenres = async { remoteSource.getTvSeriesGenres() }
+
+        _movieGenres.value = movieGenres.await().associateBy({it.id}, {it.name})
+        _tvGenres.value = tvSeriesGenres.await().associateBy({it.id}, {it.name})
     }
 }
