@@ -26,9 +26,6 @@ class MainActivity : FragmentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             MovaTheme {
-                val systemUiController = rememberSystemUiController()
-                systemUiController.setStatusBarColor(color = Color.Transparent, darkIcons = false)
-                systemUiController.setNavigationBarColor(color = Color.Transparent, darkIcons = false)
                 AppNavigation()
             }
         }

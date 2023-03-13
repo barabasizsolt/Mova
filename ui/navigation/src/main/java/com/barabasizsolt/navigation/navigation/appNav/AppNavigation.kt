@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,6 +18,7 @@ import com.barabasizsolt.navigation.navigation.Route
 import com.barabasizsolt.navigation.navigation.authNavigation
 import com.barabasizsolt.navigation.navigation.bottomNav.BottomNavHolder
 import com.barabasizsolt.navigation.navigation.mainNavigation
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun AppNavigation() {
@@ -51,6 +53,8 @@ fun AppNavigation() {
             }
         }
     )
+
+    setStatusBarColor()
 }
 
 fun NavHostController.navigateToAuth() {
@@ -67,4 +71,11 @@ fun NavHostController.navigateToMain() {
             inclusive = true
         }
     }
+}
+
+@Composable
+private fun setStatusBarColor() {
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(color = Color.Transparent, darkIcons = false)
+    systemUiController.setNavigationBarColor(color = Color.Transparent, darkIcons = false)
 }
