@@ -1,8 +1,8 @@
 package com.barabasizsolt.domain.usecase.screen.explore.discover
 
+import com.barabasizsolt.category.Category
 import com.barabasizsolt.domain.usecase.helper.movie.discover.DiscoverMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.discover.DiscoverTvSeriesUseCase
-import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.filter.api.SortOption
 import com.barabasizsolt.pagination.api.RefreshType
 

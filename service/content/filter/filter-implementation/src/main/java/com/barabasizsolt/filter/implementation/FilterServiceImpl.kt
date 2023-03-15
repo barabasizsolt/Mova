@@ -1,6 +1,6 @@
 package com.barabasizsolt.filter.implementation
 
-import com.barabasizsolt.filter.api.Category
+import com.barabasizsolt.category.Category
 import com.barabasizsolt.filter.api.FilterItem
 import com.barabasizsolt.filter.api.FilterItemValue
 import com.barabasizsolt.filter.api.FilterService

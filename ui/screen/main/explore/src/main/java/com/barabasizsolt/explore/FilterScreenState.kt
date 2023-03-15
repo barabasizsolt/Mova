@@ -7,8 +7,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.base.UserAction
+import com.barabasizsolt.category.Category
 import com.barabasizsolt.domain.usecase.helper.genre.GetGenresFlowUseCase
-import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.filter.api.FilterItem
 import com.barabasizsolt.filter.api.FilterItemValue
 import com.barabasizsolt.filter.api.FilterService

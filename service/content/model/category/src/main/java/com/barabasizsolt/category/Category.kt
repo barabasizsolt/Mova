@@ -1,4 +1,4 @@
-package com.barabasizsolt.filter.api
+package com.barabasizsolt.category
 
 enum class Category(val value: String) {
     MOVIE(value = "movie"),

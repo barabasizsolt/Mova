@@ -35,7 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.MovaButton
-import com.barabasizsolt.filter.api.Category
+import com.barabasizsolt.category.Category
 import com.barabasizsolt.filter.api.FilterItem
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.theme.MovaTheme

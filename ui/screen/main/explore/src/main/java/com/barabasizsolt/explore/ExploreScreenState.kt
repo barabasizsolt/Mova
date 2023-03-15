@@ -9,6 +9,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.base.BaseScreenState
 import com.barabasizsolt.base.UserAction
+import com.barabasizsolt.category.Category
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.helper.genre.GetGenresUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.discover.DiscoverContentFlowUseCase
@@ -18,7 +19,6 @@ import com.barabasizsolt.domain.usecase.screen.explore.search.SearchContentFlowU
 import com.barabasizsolt.domain.usecase.screen.explore.search.SearchContentUseCase
 import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.result.Result
-import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.filter.api.FilterItem
 import com.barabasizsolt.filter.api.FilterItemValue
 import com.barabasizsolt.filter.api.FilterService

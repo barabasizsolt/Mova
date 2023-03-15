@@ -48,7 +48,6 @@ import com.barabasizsolt.catalog.NotFoundItem
 import com.barabasizsolt.catalog.SearchableItem
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.ContentItem
-import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.imeBottomInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
@@ -57,6 +56,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
+import com.barabasizsolt.category.Category
 import com.barabasizsolt.filter.api.FilterItem
 
 @OptIn(ExperimentalMaterialApi::class)

@@ -1,9 +1,9 @@
 package com.barabasizsolt.domain.usecase.screen.explore.discover
 
+import com.barabasizsolt.category.Category
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.helper.movie.discover.DiscoverMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.discover.DiscoverTvSeriesFlowUseCase
-import com.barabasizsolt.filter.api.Category
 import kotlinx.coroutines.flow.Flow
 
 class DiscoverContentFlowUseCase(
