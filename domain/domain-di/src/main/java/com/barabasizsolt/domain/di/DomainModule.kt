@@ -1,5 +1,6 @@
 package com.barabasizsolt.domain.di
 
+import com.barabasizsolt.castCrew.di.createCastCrewModule
 import com.barabasizsolt.discover.di.createExploreModule
 import com.barabasizsolt.domain.usecase.auth.GetIntentForGoogleAccountLoginUseCase
 import com.barabasizsolt.domain.usecase.auth.IsLoggedInUseCase
@@ -9,6 +10,7 @@ import com.barabasizsolt.domain.usecase.auth.LoginWithFacebookAccountUseCase
 import com.barabasizsolt.domain.usecase.auth.LoginWithGoogleAccountUseCase
 import com.barabasizsolt.domain.usecase.auth.RegisterWithEmailAndPasswordUseCase
 import com.barabasizsolt.domain.usecase.auth.ResetPasswordUseCase
+import com.barabasizsolt.domain.usecase.helper.`cast-crew`.GetCastCrewUseCase
 import com.barabasizsolt.domain.usecase.helper.genre.GetGenresFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.genre.GetGenresUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.search.DeleteSearchMovieUseCase
@@ -76,6 +78,7 @@ private fun createServiceModules() = buildList {
     add(createFilterModule())
     add(createVideoModule())
     add(createReviewModule())
+    add(createCastCrewModule())
 }
 
 private fun createUseCaseModules() = module {
@@ -150,6 +153,7 @@ private fun createUseCaseModules() = module {
     factory { DeleteReviewsUseCase(reviewService = get()) }
 
     // Cast & Crew
+    factory { GetCastCrewUseCase(castCrewService = get()) }
 
     // Home
     factory {
