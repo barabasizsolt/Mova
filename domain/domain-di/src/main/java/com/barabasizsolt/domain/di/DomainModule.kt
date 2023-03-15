@@ -37,10 +37,12 @@ import com.barabasizsolt.domain.usecase.helper.movie.search.SearchMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.similar.DeleteSimilarMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.similar.GetSimilarMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.similar.GetSimilarMoviesUseCase
+import com.barabasizsolt.domain.usecase.helper.review.DeleteReviewsUseCase
+import com.barabasizsolt.domain.usecase.helper.review.GetReviewsFlowUseCase
+import com.barabasizsolt.domain.usecase.helper.review.GetReviewsUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.search.SearchTvSeriesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.search.SearchTvSeriesUseCase
-import com.barabasizsolt.domain.usecase.helper.video.GetVideosForMovieUseCase
-import com.barabasizsolt.domain.usecase.helper.video.GetVideosForTvUseCase
+import com.barabasizsolt.domain.usecase.helper.video.GetVideosUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.discover.DiscoverContentFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.discover.DiscoverContentUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.search.DeleteContentUseCase
@@ -56,6 +58,7 @@ import com.barabasizsolt.genre.di.createGenreModule
 
 import com.barabasizsolt.movie.di.createMovieModule
 import com.barabasizsolt.people.di.createPeopleModule
+import com.barabasizsolt.review.di.createReviewModule
 import com.barabasizsolt.video.di.createVideoModule
 import org.koin.dsl.module
 
@@ -72,6 +75,7 @@ private fun createServiceModules() = buildList {
     add(createAuthenticationModule())
     add(createFilterModule())
     add(createVideoModule())
+    add(createReviewModule())
 }
 
 private fun createUseCaseModules() = module {
@@ -138,8 +142,14 @@ private fun createUseCaseModules() = module {
     factory { DeleteSearchTvSeriesUseCase(exploreService = get()) }
 
     // Video
-    factory { GetVideosForMovieUseCase(videoService = get()) }
-    factory { GetVideosForTvUseCase(videoService = get()) }
+    factory { GetVideosUseCase(videoService = get()) }
+
+    // Review
+    factory { GetReviewsUseCase(reviewService = get()) }
+    factory { GetReviewsFlowUseCase(reviewService = get()) }
+    factory { DeleteReviewsUseCase(reviewService = get()) }
+
+    // Cast & Crew
 
     // Home
     factory {
