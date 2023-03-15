@@ -93,7 +93,7 @@ fun ExploreScreen(screenState: ExploreScreenState){
             Category.MOVIE -> if (screenState.query.isEmpty()) movieListState else movieSearchState
             Category.TV -> if (screenState.query.isEmpty()) tvListState else tvSearchState
         },
-        scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 3,
+        scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 5,
         shouldShowScrollUp = shouldShowScrollUp,
         content = { gridState, scope ->
             BottomSheetScaffold(
@@ -179,12 +179,16 @@ private fun ScreenContent(
                 gridState = gridState
             )
         } else {
+            if (query.isEmpty()) {
+                FilterItemCarousel(
+                    filterItems = filterItems,
+                )
+            }
             ContentBody(
                 gridState = gridState,
                 query = query,
                 discoverItems = discoverItems,
                 searchItems = searchItems,
-                filterItems = filterItems,
                 onLoadMoreItem = onLoadMoreItem,
                 onRetryClick = onRetryClick,
                 isTryAgainLoading = isTryAgainLoading
@@ -239,7 +243,6 @@ private fun ContentBody(
     query: String,
     discoverItems: List<ContentItem>,
     searchItems: List<ContentItem>,
-    filterItems: List<FilterItem>,
     onLoadMoreItem: () -> Unit,
     onRetryClick: () -> Unit,
     isTryAgainLoading: Boolean
@@ -270,15 +273,6 @@ private fun ContentBody(
             )
         }
     } else {
-//        item(
-//            span = { GridItemSpan(currentLineSpan = 2) },
-//            key = "com.barabasizsolt.explore.filterItemCarousel"
-//        ) {
-//            FilterItemCarousel(
-//                filterItems = filterItems,
-//                modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding)
-//            )
-//        }
         searchableItemsIndexed(
             items = discoverItems,
             key = { index, item -> item.id + index },
@@ -302,7 +296,8 @@ private fun FilterItemCarousel(
 ) = LazyRow(
     modifier = modifier,
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
-    verticalAlignment = Alignment.CenterVertically
+    verticalAlignment = Alignment.CenterVertically,
+    contentPadding = PaddingValues(start = AppTheme.dimens.screenPadding)
 ) {
     items(items = filterItems) { item ->
         SelectedFilterItem(text = item.name)
