@@ -24,6 +24,9 @@ class MovieServiceImpl(
     private val _nowPlayingMovies = MutableStateFlow<List<PagerItem>>(value = emptyList())
     override val nowPlayingMovies: Flow<List<PagerItem>> = _nowPlayingMovies
 
+    private val _similarMovies = MutableStateFlow<List<PagerItem>>(value = emptyList())
+    override val similarMovies: Flow<List<PagerItem>> = _similarMovies
+
     override suspend fun getUpcomingMovies(refreshType: RefreshType): List<PagerItem> = pager.paginate(
         refreshType = refreshType,
         flow = _upcomingMovies,
@@ -52,6 +55,13 @@ class MovieServiceImpl(
         cacheWithError = false
     )
 
+    override suspend fun getSimilarMovies(id: Int, refreshType: RefreshType): List<PagerItem> = pager.paginate(
+        refreshType = refreshType,
+        flow = _similarMovies,
+        getRemoteContent = { page -> remoteSource.getSimilarMovies(id = id, page = page) },
+        cacheWithError = false
+    )
+
     override fun clearPopularMovies() {
         _popularMovies.value = emptyList()
     }
@@ -66,5 +76,9 @@ class MovieServiceImpl(
 
     override fun clearNowPlayingMovies() {
         _nowPlayingMovies.value = emptyList()
+    }
+
+    override fun clearSimilarMovies() {
+        _similarMovies.value = emptyList()
     }
 }

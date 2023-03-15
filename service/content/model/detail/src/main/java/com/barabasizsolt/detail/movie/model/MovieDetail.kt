@@ -13,8 +13,6 @@ data class MovieDetail(
     val status: String,
     val tagline: String,
     val voteAverage: String,
-//    val similarMovies: List<Movie>,
-//    val videos: List<Video>,
 //    val reviews: List<Review>,
 //    val castCrew: CastCrew
 )

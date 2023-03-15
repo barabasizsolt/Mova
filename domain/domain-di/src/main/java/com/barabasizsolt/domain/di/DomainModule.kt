@@ -34,8 +34,13 @@ import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleFlowUseCas
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.search.SearchMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.search.SearchMoviesUseCase
+import com.barabasizsolt.domain.usecase.helper.movie.similar.DeleteSimilarMoviesUseCase
+import com.barabasizsolt.domain.usecase.helper.movie.similar.GetSimilarMoviesFlowUseCase
+import com.barabasizsolt.domain.usecase.helper.movie.similar.GetSimilarMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.search.SearchTvSeriesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.search.SearchTvSeriesUseCase
+import com.barabasizsolt.domain.usecase.helper.video.GetVideosForMovieUseCase
+import com.barabasizsolt.domain.usecase.helper.video.GetVideosForTvUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.discover.DiscoverContentFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.discover.DiscoverContentUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.search.DeleteContentUseCase
@@ -51,6 +56,7 @@ import com.barabasizsolt.genre.di.createGenreModule
 
 import com.barabasizsolt.movie.di.createMovieModule
 import com.barabasizsolt.people.di.createPeopleModule
+import com.barabasizsolt.video.di.createVideoModule
 import org.koin.dsl.module
 
 fun createDomainModules() = buildList {
@@ -65,6 +71,7 @@ private fun createServiceModules() = buildList {
     add(createGenreModule())
     add(createAuthenticationModule())
     add(createFilterModule())
+    add(createVideoModule())
 }
 
 private fun createUseCaseModules() = module {
@@ -98,6 +105,11 @@ private fun createUseCaseModules() = module {
     factory { GetNowPlayingMoviesFlowUseCase(movieService = get()) }
     factory { DeleteNowPlayingMoviesUseCase(movieService = get()) }
 
+    // Movie [Similar]
+    factory { GetSimilarMoviesUseCase(movieService = get()) }
+    factory { GetSimilarMoviesFlowUseCase(movieService = get()) }
+    factory { DeleteSimilarMoviesUseCase(movieService = get()) }
+
     // People [Popular]
     factory { GetPopularPeopleUseCase(peopleService = get()) }
     factory { GetPopularPeopleFlowUseCase(peopleService = get()) }
@@ -124,6 +136,10 @@ private fun createUseCaseModules() = module {
     factory { SearchTvSeriesUseCase(exploreService = get()) }
     factory { SearchTvSeriesFlowUseCase(exploreService = get()) }
     factory { DeleteSearchTvSeriesUseCase(exploreService = get()) }
+
+    // Video
+    factory { GetVideosForMovieUseCase(videoService = get()) }
+    factory { GetVideosForTvUseCase(videoService = get()) }
 
     // Home
     factory {

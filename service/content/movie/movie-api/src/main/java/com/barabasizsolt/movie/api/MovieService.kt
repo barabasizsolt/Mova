@@ -24,7 +24,7 @@ interface MovieService {
 
     suspend fun getNowPlayingMovies(refreshType: RefreshType): List<PagerItem>
 
-    suspend fun getSimilarMovies(refreshType: RefreshType): List<PagerItem>
+    suspend fun getSimilarMovies(id: Int, refreshType: RefreshType): List<PagerItem>
 
     fun clearPopularMovies()
 
@@ -34,5 +34,5 @@ interface MovieService {
 
     fun clearNowPlayingMovies()
 
-    fun clearSimilarMovies
+    fun clearSimilarMovies()
 }
