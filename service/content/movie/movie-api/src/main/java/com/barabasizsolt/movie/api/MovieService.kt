@@ -14,6 +14,8 @@ interface MovieService {
 
     val nowPlayingMovies: Flow<List<PagerItem>>
 
+    val similarMovies: Flow<List<PagerItem>>
+
     suspend fun getUpcomingMovies(refreshType: RefreshType): List<PagerItem>
 
     suspend fun getPopularMovies(refreshType: RefreshType): List<PagerItem>
@@ -22,6 +24,8 @@ interface MovieService {
 
     suspend fun getNowPlayingMovies(refreshType: RefreshType): List<PagerItem>
 
+    suspend fun getSimilarMovies(refreshType: RefreshType): List<PagerItem>
+
     fun clearPopularMovies()
 
     fun clearUpcomingMovies()
@@ -29,4 +33,6 @@ interface MovieService {
     fun clearTopRatedMovies()
 
     fun clearNowPlayingMovies()
+
+    fun clearSimilarMovies
 }

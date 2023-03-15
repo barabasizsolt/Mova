@@ -57,7 +57,6 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import com.barabasizsolt.filter.api.FilterItem
 
 @OptIn(ExperimentalMaterialApi::class)

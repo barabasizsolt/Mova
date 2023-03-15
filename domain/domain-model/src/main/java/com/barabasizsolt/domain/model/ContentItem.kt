@@ -16,7 +16,8 @@ sealed class ContentItem {
         val posterPath: String,
         val title: String,
         val voteAverage: String,
-        val releaseDate: String
+        val releaseDate: String,
+        val isMovie: Boolean
     ) : ContentItem()
 
     data class Person(
@@ -50,14 +51,16 @@ fun PagerItem.toContentItem(): ContentItem = when (this) {
         title = originalTitle,
         voteAverage = voteAverage,
         releaseDate = releaseDate,
-        posterPath = posterPath.orEmpty()
+        posterPath = posterPath.orEmpty(),
+        isMovie = true
     )
     is TvSeries -> ContentItem.Watchable(
         id = id,
         title = originalName,
         voteAverage = voteAverage,
         releaseDate = firstAirDate,
-        posterPath = posterPath.orEmpty()
+        posterPath = posterPath.orEmpty(),
+        isMovie = false
     )
     is People -> ContentItem.Person(
         id = id,
