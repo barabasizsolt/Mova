@@ -1,5 +1,6 @@
 package com.barabasizsolt.detail.movie.dto
 
+import com.barabasizsolt.api.DataLayerException
 import com.barabasizsolt.detail.movie.model.MovieDetail
 import com.barabasizsolt.genre.dto.GenreDTO
 import com.barabasizsolt.genre.dto.toModel
@@ -28,7 +29,7 @@ data class SpokenLanguagesDTO(
     @Json(name = "name") val name: String?
 )
 
-fun MovieDetailDTO.toModel(): MovieDetail? {
+fun MovieDetailDTO.toModel(): MovieDetail {
     if (
         id == null ||
         title == null ||
@@ -41,7 +42,7 @@ fun MovieDetailDTO.toModel(): MovieDetail? {
         tagline == null ||
         voteAverage == null
     ) {
-        return null
+        throw DataLayerException("MovieDetailsException: $this")
     }
     return MovieDetail(
         id = id.toString(),

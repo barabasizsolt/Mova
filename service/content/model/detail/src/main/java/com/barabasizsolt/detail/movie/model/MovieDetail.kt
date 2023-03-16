@@ -12,6 +12,5 @@ data class MovieDetail(
     val spokenLanguages: List<String>,
     val status: String,
     val tagline: String,
-    val voteAverage: String,
-//    val castCrew: CastCrew
+    val voteAverage: String
 )

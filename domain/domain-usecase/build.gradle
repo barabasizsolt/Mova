@@ -57,6 +57,8 @@ dependencies {
     implementation(project(":service:content:review:review-di"))
     implementation(project(":service:content:cast-crew:cast-crew-api"))
     implementation(project(":service:content:cast-crew:cast-crew-di"))
+    implementation(project(":service:content:detail:detail-api"))
+    implementation(project(":service:content:detail:detail-di"))
     implementation(project(":service:content:filter:filter-api"))
     implementation(project(":service:content:filter:filter-di"))
     implementation(project(":service:auth:firebase:firebase-api"))

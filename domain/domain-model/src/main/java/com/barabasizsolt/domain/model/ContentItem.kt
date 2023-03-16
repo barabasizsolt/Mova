@@ -5,6 +5,7 @@ import com.barabasizsolt.pagination.api.ErrorItem
 import com.barabasizsolt.pagination.api.PagerItem
 import com.barabasizsolt.pagination.api.TailItem
 import com.barabasizsolt.people.model.People
+import com.barabasizsolt.review.model.Review
 import com.barabasizsolt.tv.modell.TvSeries
 
 sealed class ContentItem {

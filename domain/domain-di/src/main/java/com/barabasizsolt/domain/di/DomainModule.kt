@@ -1,6 +1,7 @@
 package com.barabasizsolt.domain.di
 
 import com.barabasizsolt.castCrew.di.createCastCrewModule
+import com.barabasizsolt.detail.di.createDetailModule
 import com.barabasizsolt.discover.di.createExploreModule
 import com.barabasizsolt.domain.usecase.auth.GetIntentForGoogleAccountLoginUseCase
 import com.barabasizsolt.domain.usecase.auth.IsLoggedInUseCase
@@ -11,6 +12,7 @@ import com.barabasizsolt.domain.usecase.auth.LoginWithGoogleAccountUseCase
 import com.barabasizsolt.domain.usecase.auth.RegisterWithEmailAndPasswordUseCase
 import com.barabasizsolt.domain.usecase.auth.ResetPasswordUseCase
 import com.barabasizsolt.domain.usecase.helper.`cast-crew`.GetCastCrewUseCase
+import com.barabasizsolt.domain.usecase.helper.detail.GetMovieDetailUseCase
 import com.barabasizsolt.domain.usecase.helper.genre.GetGenresFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.genre.GetGenresUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.search.DeleteSearchMovieUseCase
@@ -45,6 +47,7 @@ import com.barabasizsolt.domain.usecase.helper.review.GetReviewsUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.search.SearchTvSeriesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.search.SearchTvSeriesUseCase
 import com.barabasizsolt.domain.usecase.helper.video.GetVideosUseCase
+import com.barabasizsolt.domain.usecase.screen.detail.GetMovieDetailsUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.discover.DiscoverContentFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.discover.DiscoverContentUseCase
 import com.barabasizsolt.domain.usecase.screen.explore.search.DeleteContentUseCase
@@ -79,6 +82,7 @@ private fun createServiceModules() = buildList {
     add(createVideoModule())
     add(createReviewModule())
     add(createCastCrewModule())
+    add(createDetailModule())
 }
 
 private fun createUseCaseModules() = module {
@@ -155,6 +159,9 @@ private fun createUseCaseModules() = module {
     // Cast & Crew
     factory { GetCastCrewUseCase(castCrewService = get()) }
 
+    // Movie detail
+    factory { GetMovieDetailUseCase(detailService = get()) }
+
     // Home
     factory {
         GetHomeScreenUseCase(
@@ -224,6 +231,17 @@ private fun createUseCaseModules() = module {
             getTopRatedMoviesFlowUseCase = get(),
             getNowPlayingMoviesFlowCase = get(),
             getPopularPeopleFlowUseCase = get()
+        )
+    }
+
+    // Detail [Movie]
+    factory {
+        GetMovieDetailsUseCase(
+            getMovieDetailUseCase = get(),
+            getVideosUseCase = get(),
+            getSimilarMoviesUseCase = get(),
+            getReviewsUseCase = get(),
+            getCastCrewUseCase = get()
         )
     }
 }

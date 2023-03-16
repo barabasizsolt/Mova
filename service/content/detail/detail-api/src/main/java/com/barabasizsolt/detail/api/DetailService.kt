@@ -4,5 +4,5 @@ import com.barabasizsolt.detail.movie.model.MovieDetail
 
 interface DetailService {
 
-    fun getMovieDetails(id: String): MovieDetail
+    suspend fun getMovieDetails(id: Int): MovieDetail
 }
