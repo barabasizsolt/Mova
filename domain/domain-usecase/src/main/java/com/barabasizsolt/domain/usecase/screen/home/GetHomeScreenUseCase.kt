@@ -19,11 +19,7 @@ class GetHomeScreenUseCase(
     private val getGenresUseCase: GetGenresUseCase
 ) {
 
-    suspend operator fun invoke(
-        coroutineScope: CoroutineScope,
-        refreshType: RefreshType
-    ) = asyncWrapToResult(
-        scope = coroutineScope,
+    suspend operator fun invoke(refreshType: RefreshType) = asyncWrapToResult(
         functions = listOf(
             getUpcomingMoviesUseCase(refreshType = refreshType),
             getPopularMoviesUseCase(refreshType = refreshType),

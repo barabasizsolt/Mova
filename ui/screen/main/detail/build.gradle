@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         minSdk 23
-        targetSdk 32
+        targetSdk 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -36,24 +36,23 @@ android {
 }
 
 dependencies {
-    implementation(project(":ui:screen:auth:welcome"))
-    implementation implementation(project(':ui:screen:auth:login-register'))
-    implementation(project(":ui:screen:main:base"))
-    implementation(project(":ui:screen:main:home"))
-    implementation(project(":ui:screen:main:explore"))
-    implementation(project(":ui:screen:main:favourites"))
-    implementation(project(":ui:screen:main:profile"))
-    implementation(project(":ui:screen:main:seeall"))
-    implementation(project(":ui:screen:main:detail"))
-
+    implementation(project(":ui:catalog"))
     implementation(project(":ui:theme"))
     implementation(project(":ui:util"))
+    implementation(project(":ui:screen:main:base"))
+
+    implementation(project(":domain:domain-model"))
+    implementation(project(":domain:domain-util"))
     implementation(project(":domain:domain-usecase"))
-    implementation(project(":service:content:filter:filter-api"))
-    implementation(project(":service:auth:firebase:firebase-api"))
+
+    implementation(project(":service:content:pagination:pagination-api"))
+    implementation(project(":service:content:model:category"))
+    implementation(project(":service:content:model:cast-crew"))
+    implementation(project(":service:content:model:video"))
+    implementation(project(":service:content:model:movie"))
+    implementation(project(":service:content:model:review"))
 
     implementation(libs.bundles.androidx.compose)
-    implementation(libs.bundles.voyager)
     implementation(libs.koin.core)
     implementation(libs.koin.compose)
 

@@ -53,7 +53,6 @@ class HomeScreenState(
         scope.launch {
             state = when (
                 val result = getHomeScreen(
-                    coroutineScope = this,
                     refreshType = when (userAction) {
                         is UserAction.SwipeRefresh -> RefreshType.FORCE_REFRESH
                         else -> RefreshType.CACHE_IF_POSSIBLE
@@ -88,10 +87,15 @@ class HomeScreenState(
         action = Event(data = Action.SeeAllTopRatedMovies)
     }
 
+    fun onMovieClicked(id: Int) {
+        action = Event(data = Action.OnMovieClicked(id = id))
+    }
+
     sealed class Action {
         object SeeAllPopularMovies : Action()
         object SeeAllPopularPeople : Action()
         object SeeAllNowPlayingMovies : Action()
         object SeeAllTopRatedMovies : Action()
+        data class OnMovieClicked(val id: Int) : Action()
     }
 }

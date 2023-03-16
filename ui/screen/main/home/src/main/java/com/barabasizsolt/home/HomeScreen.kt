@@ -34,7 +34,8 @@ fun HomeScreen(screenState: HomeScreenState) = BaseScreen(
             topRatedMovies = screenState.homeContent.topRatedMovies,
             onSeeAllTopRatedMoviesClicked = screenState::onSeeAllTopRatedMoviesClicked,
             gridState = gridState,
-            genres = screenState.homeContent.genres
+            genres = screenState.homeContent.genres,
+            onItemClicked = screenState::onMovieClicked
         )
     }
 )
@@ -51,7 +52,8 @@ private fun ScreenContent(
     topRatedMovies: List<ContentItem.Watchable>,
     onSeeAllTopRatedMoviesClicked: () -> Unit,
     gridState: LazyGridState,
-    genres: Map<Long, String>
+    genres: Map<Long, String>,
+    onItemClicked: (Int) -> Unit
 ) = LazyVerticalGrid(
     columns = GridCells.Fixed(count = 1),
     modifier = Modifier.fillMaxSize(),
@@ -63,7 +65,7 @@ private fun ScreenContent(
         WatchablePager(
             pagerContent = upcomingMovies,
             genres = genres,
-            onClick = { /*TODO: Implement it*/ },
+            onClick = onItemClicked,
             onPlayButtonClicked = { /*TODO: Implement it*/ },
             onAddToFavouriteButtonClicked = { /*TODO: Implement it*/ }
         )
@@ -73,7 +75,7 @@ private fun ScreenContent(
             header = stringResource(id = com.barabasizsolt.util.R.string.popular_movies),
             buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_popular_movies),
             items = popularMovies,
-            onItemClick = { /*TODO: Implement it*/ },
+            onItemClick = onItemClicked,
             onHeaderClick = onSeeAllPopularMoviesClicked,
         )
     }
@@ -90,7 +92,7 @@ private fun ScreenContent(
             header = stringResource(id = com.barabasizsolt.util.R.string.now_playing_movies),
             buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_now_playing_movies),
             items = nowPlayingMovies,
-            onItemClick = { /*TODO: Implement it*/ },
+            onItemClick = onItemClicked,
             onHeaderClick = onSeeAllNowPlayingMoviesClicked,
         )
     }
@@ -99,7 +101,7 @@ private fun ScreenContent(
             header = stringResource(id = com.barabasizsolt.util.R.string.top_rated_movies),
             buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_top_rated_movies),
             items = topRatedMovies,
-            onItemClick = { /*TODO: Implement it*/ },
+            onItemClick = onItemClicked,
             onHeaderClick = onSeeAllTopRatedMoviesClicked,
             showDivider = false
         )

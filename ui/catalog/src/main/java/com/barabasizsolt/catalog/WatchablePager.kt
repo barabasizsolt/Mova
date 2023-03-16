@@ -42,7 +42,7 @@ fun WatchablePager(
     modifier: Modifier = Modifier,
     pagerContent: List<Movie>,
     genres: Map<Long, String>,
-    onClick: () -> Unit,
+    onClick: (Int) -> Unit,
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit
 ) {
@@ -64,7 +64,7 @@ fun WatchablePager(
         ) { page ->
             PagerItem(
                 item = pagerContent[page],
-                onClick = onClick,
+                onClick = { onClick(pagerContent[page].id.toInt()) },
                 onPlayButtonClicked = onPlayButtonClicked,
                 onAddToFavouriteButtonClicked = onAddToFavouriteButtonClicked,
                 genres = genres

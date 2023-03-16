@@ -21,5 +21,6 @@ sealed class Route {
         const val FAVOURITES: String = "Favourites"
         const val PROFILE: String = "Profile"
         const val SEE_ALL: String = "SeeAll/{contentType}"
+        const val DETAIL: String = "Detail/{id}"
     }
 }

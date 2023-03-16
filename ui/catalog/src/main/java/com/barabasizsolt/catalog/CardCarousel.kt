@@ -32,7 +32,7 @@ fun WatchableWithRatingCarousel(
     buttonText: String? = null,
     showDivider: Boolean = true,
     items: List<ContentItem.Watchable>,
-    onItemClick: (String) -> Unit,
+    onItemClick: (Int) -> Unit,
     onHeaderClick: () -> Unit,
 ) = CardCarousel(
     header = header,
@@ -46,7 +46,7 @@ fun WatchableWithRatingCarousel(
         ) { item ->
             WatchableWithRating(
                 item = item,
-                onClick = { onItemClick(item.id) },
+                onClick = { onItemClick(item.id.toInt()) },
                 modifier = Modifier.height(height = AppTheme.dimens.watchableCardHeight)
             )
         }
