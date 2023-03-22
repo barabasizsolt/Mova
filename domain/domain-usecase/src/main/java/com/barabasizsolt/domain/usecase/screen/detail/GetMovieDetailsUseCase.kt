@@ -2,6 +2,7 @@ package com.barabasizsolt.domain.usecase.screen.detail
 
 import com.barabasizsolt.category.Category
 import com.barabasizsolt.domain.model.DetailScreenContent
+import com.barabasizsolt.domain.model.toContentItem
 import com.barabasizsolt.domain.usecase.helper.`cast-crew`.GetCastCrewUseCase
 import com.barabasizsolt.domain.usecase.helper.detail.GetMovieDetailUseCase
 import com.barabasizsolt.domain.usecase.helper.movie.similar.GetSimilarMoviesUseCase
@@ -64,7 +65,12 @@ class GetMovieDetailsUseCase(
                 videos = (videosResult as Result.Success).data,
                 similarMovies = (similarMoviesResult as Result.Success).data.map { it as Movie },
                 reviews = (reviewsResult as Result.Success).data.map { it as Review },
-                castCrew = (castCrewResult as Result.Success).data
+                castCrew = buildList {
+                    val data = (castCrewResult as Result.Success).data
+                    val casts = data.casts.filter { it.profilePath != null }.map { it.toContentItem() }
+                    val crews = data.crews.filter { it.profilePath != null }.map { it.toContentItem() }
+                    addAll((casts + crews).distinctBy { it.id })
+                }
             )
         )
     }

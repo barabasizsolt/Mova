@@ -36,7 +36,7 @@ sealed class DetailScreenContent {
         val videos: List<Video>,
         val similarMovies: List<Movie>,
         val reviews: List<Review>,
-        val castCrew: CastCrew
+        val castCrew: List<ContentItem.Person>
     ) : DetailScreenContent() {
         companion object {
             fun createEmptyMovieDetailContent() = MovieDetails(
@@ -55,7 +55,7 @@ sealed class DetailScreenContent {
                 videos = emptyList(),
                 similarMovies = emptyList(),
                 reviews = emptyList(),
-                castCrew = CastCrew(casts = emptyList(), crews = emptyList())
+                castCrew = emptyList()
             )
         }
     }
