@@ -75,7 +75,7 @@ fun FilterScreen(
             Text(
                 text = stringResource(id = R.string.sort_filter),
                 color = AppTheme.colors.secondary,
-                style = AppTheme.typography.h5,
+                style = AppTheme.typography.h6,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -300,7 +300,7 @@ private fun FilterItem(
 ) {
     Text(
         text = text,
-        style = AppTheme.typography.subtitle2,
+        style = AppTheme.typography.caption,
         color = if (isSelected) AppTheme.colors.onSecondary else AppTheme.colors.secondary,
         modifier = Modifier.padding(
             horizontal = AppTheme.dimens.contentPadding * 2,
