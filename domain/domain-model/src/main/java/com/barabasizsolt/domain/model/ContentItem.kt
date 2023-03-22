@@ -1,5 +1,8 @@
 package com.barabasizsolt.domain.model
 
+import com.barabasizsolt.cast_crew.model.Cast
+import com.barabasizsolt.cast_crew.model.CastCrew
+import com.barabasizsolt.cast_crew.model.Crew
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.pagination.api.ErrorItem
 import com.barabasizsolt.pagination.api.PagerItem
@@ -24,7 +27,9 @@ sealed class ContentItem {
     data class Person(
         override val id: String,
         val name: String,
-        val posterPath: String
+        val posterPath: String,
+        val knownForDepartment: String? = null,
+        val job: String? = null
     ) : ContentItem()
 
     data class ItemTail(
@@ -73,3 +78,18 @@ fun PagerItem.toContentItem(): ContentItem = when (this) {
         loadMore = false
     )
 }
+
+fun Cast.toContentItem() = ContentItem.Person(
+    id = id,
+    name = name,
+    posterPath = profilePath.orEmpty(),
+    knownForDepartment = knownForDepartment
+)
+
+fun Crew.toContentItem() = ContentItem.Person(
+    id = id,
+    name = name,
+    posterPath = profilePath.orEmpty(),
+    knownForDepartment = knownForDepartment,
+    job = job
+)
