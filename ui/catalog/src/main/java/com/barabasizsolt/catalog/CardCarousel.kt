@@ -13,15 +13,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.theme.AppTheme
 
@@ -57,8 +60,10 @@ fun WatchableWithRatingCarousel(
 @Composable
 fun PeopleCarousel(
     modifier: Modifier = Modifier,
-    header: String,
+    header: String? = null,
     buttonText: String? = null,
+    showDivider: Boolean = true,
+    personCardSize: PersonCardSize = PersonCardSize.LARGE,
     items: List<ContentItem>,
     onItemClick: (String) -> Unit,
     onHeaderClick: () -> Unit,
@@ -67,15 +72,16 @@ fun PeopleCarousel(
     onHeaderClick = onHeaderClick,
     buttonText = buttonText,
     itemSpacing = AppTheme.dimens.screenPadding,
-    showDivider = true,
+    showDivider = showDivider,
     content = {
-        items(
+        itemsIndexed(
             items = items,
-            key = { item -> item.id }
-        ) { item ->
+            key = { index, item -> "${item.id}-$index" }
+        ) { _, item ->
             PersonCard(
                 person = item as ContentItem.Person,
-                onClick = { onItemClick(item.id) }
+                onClick = { onItemClick(item.id) },
+                personCardSize = personCardSize
             )
         }
     },
@@ -85,7 +91,7 @@ fun PeopleCarousel(
 @Composable
 private fun CardCarousel(
     modifier: Modifier = Modifier,
-    header: String,
+    header: String?,
     buttonText: String? = null,
     showDivider: Boolean,
     onHeaderClick: () -> Unit,
@@ -96,11 +102,13 @@ private fun CardCarousel(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding)
     ) {
-        CardCarouselHeader(
-            header = header,
-            onHeaderClick = onHeaderClick,
-            modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
-        )
+        if (header != null) {
+            CardCarouselHeader(
+                header = header,
+                onHeaderClick = onHeaderClick,
+                modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
+            )
+        }
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(horizontal = AppTheme.dimens.screenPadding),
@@ -145,7 +153,7 @@ private fun CardCarouselHeader(
             Text(
                 text = "See all",
                 color = AppTheme.colors.secondary,
-                style = AppTheme.typography.body1,
+                style = AppTheme.typography.body2,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(all = AppTheme.dimens.smallPadding)
             )
