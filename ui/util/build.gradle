@@ -41,7 +41,11 @@ dependencies {
     releaseImplementation(libs.beagle.noop)
     debugImplementation(libs.beagle.uiDrawer)
 
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0")
+    implementation ("com.google.android.gms:play-services-oss-licenses:17.0.0")
+
     implementation(libs.bundles.androidx.core)
+    implementation(libs.bundles.exoPlayer)
     implementation(libs.androidx.appcompat)
     implementation(libs.google.android.material)
     testImplementation(libs.test.junit4)
