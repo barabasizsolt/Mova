@@ -24,7 +24,7 @@ fun VideoDTO.toModel() : Video? {
     return Video(
         id = id,
         name = name,
-        key = key,
+        videoId = key,
         site = site
     )
 }
