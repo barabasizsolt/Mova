@@ -18,6 +18,7 @@ import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.theme.AppTheme
 
+/*TODO[HIGH]: Fix no-internet-error state*/
 @Composable
 fun HomeScreen(screenState: HomeScreenState) = BaseScreen(
     screenState = screenState,
