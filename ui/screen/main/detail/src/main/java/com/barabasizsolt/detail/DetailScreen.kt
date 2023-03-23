@@ -1,5 +1,6 @@
 package com.barabasizsolt.detail
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +13,8 @@ import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,8 +22,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
 import com.barabasizsolt.base.BaseScreen
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.detail.catalog.CastCrewContent
@@ -36,6 +41,7 @@ import com.barabasizsolt.util.navigationBarInsetDp
 @Composable
 fun DetailScreen(screenState: DetailScreenState) {
     var tabIndex by remember { mutableStateOf(value = 0) }
+    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 
     BaseScreen(
         screenState = screenState,
@@ -44,22 +50,26 @@ fun DetailScreen(screenState: DetailScreenState) {
                 item = screenState.details,
                 gridState = gridState,
                 tabIndex = tabIndex,
-                onTabIndexChange = { index -> tabIndex = index }
+                onTabIndexChange = { index -> tabIndex = index },
+                lifecycleOwner = lifecycleOwner,
+                scrollState = rememberScrollState()
             )
         }
     )
 }
 
-/*TODO: handle empty videos, movies, comments*/
+/*TODO[HIGH]: handle empty videos, movies, comments*/
 @Composable
 private fun ScreenContent(
     item: DetailScreenContent,
     gridState: LazyGridState,
     tabIndex: Int,
-    onTabIndexChange: (Int) -> Unit
+    onTabIndexChange: (Int) -> Unit,
+    lifecycleOwner: LifecycleOwner,
+    scrollState: ScrollState
 ) = LazyVerticalGrid(
     columns = GridCells.Fixed(count = 2),
-    modifier = Modifier.fillMaxSize(),
+    //modifier = Modifier.fillMaxSize(),
     state = gridState,
     verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2),
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
@@ -84,12 +94,14 @@ private fun ScreenContent(
                 onTabIndexChange = onTabIndexChange
             )
         }
+        /*TODO[HIGH]: Make it separate item*/
         when (tabIndex) {
             0 -> itemsIndexed(
                 items = (item as DetailScreenContent.MovieDetails).videos,
                 span = getTabItemsSpan(tabIndex = tabIndex),
-                key = { index, item -> "${index}-${item.id}" }
+                key = { _, item -> item.id }
             ) { _, item ->
+                /*TODO[HIGH]: Make it separate component*/
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -100,13 +112,14 @@ private fun ScreenContent(
                         style = AppTheme.typography.body1,
                         fontWeight = FontWeight.Bold
                     )
-                    YoutubePlayer(videoId = item.key)
+                    YoutubePlayer(videoId = item.videoId, lifecycleOwner = lifecycleOwner)
                 }
             }
             1 -> itemsIndexed(
                 items = (item as DetailScreenContent.MovieDetails).similarMovies,
                 span = getTabItemsSpan(tabIndex = tabIndex)
             ) { index, item ->
+                /*TODO[HIGH]: Make it separate component*/
                 WatchableWithRating(
                     item = item.toContentItem() as ContentItem.Watchable,
                     onClick = { /*TODO: Implement it*/ },
