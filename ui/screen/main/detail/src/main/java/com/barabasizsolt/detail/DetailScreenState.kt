@@ -47,7 +47,6 @@ class DetailScreenState(
                     State.Error(message = result.exception.message.toString())
                 }
                 is Result.Success -> {
-                    println("<<SUCCESS: ${result.data.id}")
                     details = result.data
                     State.Normal
                 }
