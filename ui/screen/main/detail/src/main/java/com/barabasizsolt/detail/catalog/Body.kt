@@ -45,7 +45,7 @@ fun ContentTabs(
     tabIndex: Int,
     onTabIndexChange: (Int) -> Unit
 ) {
-    val tabTitles = listOf("Videos", "Similar", "Reviews") /*TODO: move to res*/
+    val tabTitles = listOf("Similar", "Videos", "Reviews") /*TODO: move to res*/
     val isDark = isSystemInDarkTheme()
 
     TabRow(
