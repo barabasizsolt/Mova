@@ -46,7 +46,7 @@ google-play-services = "20.2.0"
 firebase-facebook = "15.0.2"
 
 # Accompanist
-google-accompanist = "0.23.1" # https://github.com/google/accompanist/releases
+google-accompanist = "0.30.0" # https://github.com/google/accompanist/releases
 
 # Halcyon
 halcyon-oauth = '1.0.1' # https://github.com/halcyonmobile/retrofit-oauth2-helper/releases
@@ -132,6 +132,7 @@ google-accompanistPagerIndicators = { module = "com.google.accompanist:accompani
 google-accompanistPermissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "google-accompanist" }
 google-accompanistSystemUiController = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
 google-accompanistSwipeRefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "google-accompanist" }
+google-accompanistWebView = { module = "com.google.accompanist:accompanist-webview", version.ref = "google-accompanist" }
 
 # Google libraries for Android
 google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
@@ -252,6 +253,7 @@ androidx-compose = [
     "google-accompanistPermissions",
     "google-accompanistSystemUiController",
     "google-accompanistSwipeRefresh",
+    "google-accompanistWebView",
     "google-android-material-icon"
 ]
 coil = [
