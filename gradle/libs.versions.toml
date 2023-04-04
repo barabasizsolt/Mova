@@ -69,6 +69,7 @@ ktlint = "11.0.0" # https://github.com/JLLeitschuh/ktlint-gradle
 exoPlayer = "2.18.1" # https://github.com/google/ExoPlayer
 statemachine = "0.2.0" # https://github.com/Tinder/StateMachine/releases
 voyager = "1.0.0-rc02" # https://github.com/adrielcafe/voyager/releases
+youtube-player = "12.0.0" # https://github.com/PierfrancescoSoffritti/android-youtube-player
 
 # Test libraries
 test-junit5Bom = "5.8.2"
@@ -195,6 +196,9 @@ exoPlayerUI = { module = "com.google.android.exoplayer:exoplayer-ui", version.re
 detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 # Ktlint
 ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint" }
+# YouTube Player
+youtube-player = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "youtube-player" }
+youtube-player-customui = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:custom-ui", version.ref = "youtube-player" }
 
 # Test
 test-junit4 = { module = "junit:junit", version.ref = "test-junit4" }
