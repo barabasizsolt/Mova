@@ -139,6 +139,7 @@ fun ExploreScreen(screenState: ExploreScreenState){
                         onClick = {
                             shouldShowScrollUp = it
                         },
+                        onMovieClicked = screenState::onMovieClicked,
                         scope = scope,
                         gridState = gridState
                     )
@@ -163,6 +164,7 @@ private fun ScreenContent(
     onRetryClick: () -> Unit,
     scope: CoroutineScope,
     onClick: (Boolean) -> Unit,
+    onMovieClicked: (Int) -> Unit,
     gridState: LazyGridState
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding)) {
@@ -190,7 +192,8 @@ private fun ScreenContent(
                 searchItems = searchItems,
                 onLoadMoreItem = onLoadMoreItem,
                 onRetryClick = onRetryClick,
-                isTryAgainLoading = isTryAgainLoading
+                isTryAgainLoading = isTryAgainLoading,
+                onMovieClicked = onMovieClicked
             )
         }
     }
@@ -244,7 +247,8 @@ private fun ContentBody(
     searchItems: List<ContentItem>,
     onLoadMoreItem: () -> Unit,
     onRetryClick: () -> Unit,
-    isTryAgainLoading: Boolean
+    isTryAgainLoading: Boolean,
+    onMovieClicked: (Int) -> Unit
 ) = LazyVerticalGrid(
     columns = GridCells.Fixed(count = 2),
     verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
@@ -268,7 +272,11 @@ private fun ContentBody(
         ) { _, item ->
             SearchableItem(
                 item = item as ContentItem.Watchable,
-                onClick = { /*TODO: Implement it*/ }
+                onClick = {
+                    if (item.isMovie) {
+                        onMovieClicked(item.id.toInt())
+                    }
+                }
             )
         }
     } else {
@@ -282,7 +290,11 @@ private fun ContentBody(
         ) { _, item ->
             WatchableWithRating(
                 item = item as ContentItem.Watchable,
-                onClick = { /*TODO: Implement it*/ }
+                onClick = {
+                    if (item.isMovie) {
+                        onMovieClicked(item.id.toInt())
+                    }
+                }
             )
         }
     }

@@ -23,6 +23,7 @@ import com.barabasizsolt.filter.api.FilterItem
 import com.barabasizsolt.filter.api.FilterItemValue
 import com.barabasizsolt.filter.api.FilterService
 import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.util.Event
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.cancellable
@@ -93,6 +94,9 @@ class ExploreScreenState(
             Category.TV -> tvQuery
         }
     }
+
+    var action by mutableStateOf<Event<Action>?>(value = null)
+        private set
 
     init {
         filterService.selectedCategory.observe {
@@ -199,6 +203,10 @@ class ExploreScreenState(
         }
     }
 
+    fun onMovieClicked(id: Int) {
+        action = Event(data = Action.OnMovieClicked(id = id))
+    }
+
     private suspend fun discoverContent(userAction: UserAction) {
         state = when (
             val result = discoverContentUseCase(
@@ -287,5 +295,9 @@ class ExploreScreenState(
                 }
             }
         )
+    }
+
+    sealed class Action {
+        data class OnMovieClicked(val id: Int) : Action()
     }
 }
