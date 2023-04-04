@@ -32,8 +32,8 @@ fun ReviewDTO.toModel() : Review? {
     return Review(
         id = id,
         author = author,
-        authorUsername = authorDetails.username.orEmpty(),
-        authorAvatarPath = authorDetails.avatarPath.orEmpty(),
+        authorUsername = authorDetails.username,
+        authorAvatarPath = authorDetails.avatarPath,
         content = content,
         createdAt = createdAt
     )
