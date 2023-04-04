@@ -43,7 +43,9 @@ class SeeAllScreenState(
         private set
 
     init {
-        getSeeAllScreenFlowUseCase(contentType = contentType).observe { watchableItems = it }
+        getSeeAllScreenFlowUseCase(contentType = contentType).observe {
+            watchableItems = listOf(ContentItem.ItemHeader) + it
+        }
     }
 
     override fun getScreenData(userAction: UserAction, delay: Long) {
@@ -79,7 +81,12 @@ class SeeAllScreenState(
         action = Event(data = Action.NavigateUp)
     }
 
+    fun onMovieClicked(id: Int) {
+        action = Event(data = Action.OnMovieClicked(id = id))
+    }
+
     sealed class Action {
         object NavigateUp : Action()
+        data class OnMovieClicked(val id: Int) : Action()
     }
 }
