@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.barabasizsolt.detail.DetailScreen
+import com.barabasizsolt.detail.DetailScreenState
 import com.barabasizsolt.detail.rememberDetailScreenState
 import com.barabasizsolt.explore.ExploreScreen
 import com.barabasizsolt.explore.rememberExploreScreenState
@@ -16,6 +17,7 @@ import com.barabasizsolt.home.HomeScreenState
 import com.barabasizsolt.home.rememberHomeScreenState
 import com.barabasizsolt.profile.ProfileScreen
 import com.barabasizsolt.domain.usecase.screen.seeall.SeeAllContentType
+import com.barabasizsolt.explore.ExploreScreenState
 import com.barabasizsolt.seeall.SeeAllScreen
 import com.barabasizsolt.seeall.SeeAllScreenState
 import com.barabasizsolt.seeall.rememberSeeAllScreenState
@@ -44,7 +46,13 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         }
 
         composable(route = Route.Main.EXPLORE) {
-            ExploreScreen(screenState = rememberExploreScreenState())
+            ExploreScreen(screenState = rememberExploreScreenState().apply {
+                when (val action = action?.consume()) {
+                    is ExploreScreenState.Action.OnMovieClicked ->
+                        navController.navigateToDetails(id = action.id)
+                    else -> Unit
+                }
+            })
         }
 
         composable(route = Route.Main.FAVOURITES) {
@@ -59,8 +67,11 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             val contentType = backstackEntry.arguments?.getString("contentType") as String
 
             SeeAllScreen(screenState = rememberSeeAllScreenState(contentType = contentType).apply {
-                when (action?.consume()) {
-                    is SeeAllScreenState.Action.NavigateUp -> navController.navigateUp()
+                when (val action = action?.consume()) {
+                    is SeeAllScreenState.Action.NavigateUp ->
+                        navController.navigateUp()
+                    is SeeAllScreenState.Action.OnMovieClicked ->
+                        navController.navigateToDetails(id = action.id)
                     else -> Unit
                 }
             })
@@ -72,7 +83,13 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
         ) { backstackEntry ->
             val id = backstackEntry.arguments?.getInt("id") as Int
 
-            DetailScreen(screenState = rememberDetailScreenState(id = id))
+            DetailScreen(screenState = rememberDetailScreenState(id = id).apply {
+                when (val action = action?.consume()) {
+                    is DetailScreenState.Action.OnMovieClicked ->
+                        navController.navigateToDetails(id = action.id)
+                    else -> Unit
+                }
+            })
         }
     }
 }
