@@ -1,6 +1,6 @@
 package com.barabasizsolt.review.model
 
-import com.barabasizsolt.pagination.api.PagerItem
+import com.barabasizsolt.pagination.PagerItem
 
 data class Review(
     override val id: String,

@@ -1,4 +1,4 @@
-package com.barabasizsolt.pagination.api
+package com.barabasizsolt.pagination
 
 interface PagerItem {
     val id: String

@@ -1,14 +1,12 @@
 package com.barabasizsolt.domain.model
 
 import com.barabasizsolt.cast_crew.model.Cast
-import com.barabasizsolt.cast_crew.model.CastCrew
 import com.barabasizsolt.cast_crew.model.Crew
 import com.barabasizsolt.movie.model.Movie
-import com.barabasizsolt.pagination.api.ErrorItem
-import com.barabasizsolt.pagination.api.PagerItem
-import com.barabasizsolt.pagination.api.TailItem
+import com.barabasizsolt.pagination.ErrorItem
+import com.barabasizsolt.pagination.PagerItem
+import com.barabasizsolt.pagination.TailItem
 import com.barabasizsolt.people.model.People
-import com.barabasizsolt.review.model.Review
 import com.barabasizsolt.tv.modell.TvSeries
 
 sealed class ContentItem {

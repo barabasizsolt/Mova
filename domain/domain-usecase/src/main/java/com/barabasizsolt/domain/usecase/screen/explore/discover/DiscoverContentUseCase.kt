@@ -4,7 +4,7 @@ import com.barabasizsolt.category.Category
 import com.barabasizsolt.domain.usecase.helper.movie.discover.DiscoverMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.discover.DiscoverTvSeriesUseCase
 import com.barabasizsolt.filter.api.SortOption
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.RefreshType
 
 class DiscoverContentUseCase(
     private val discoverMoviesUseCase: DiscoverMoviesUseCase,

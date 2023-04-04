@@ -1,20 +1,21 @@
 package com.barabasizsolt.review.implementation
 
 import com.barabasizsolt.category.Category
-import com.barabasizsolt.pagination.api.Pager
-import com.barabasizsolt.pagination.api.PagerItem
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.Pager
+import com.barabasizsolt.pagination.PagerItem
+import com.barabasizsolt.pagination.RefreshType
 import com.barabasizsolt.review.api.ReviewService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class ReviewServiceImpl(
-    private val remoteSource: ReviewRemoteSource,
-    private val pager: Pager
+    private val remoteSource: ReviewRemoteSource
 ) : ReviewService {
 
     private val _reviews = MutableStateFlow<List<PagerItem>>(value = emptyList())
     override val reviews: Flow<List<PagerItem>> = _reviews
+
+    private val pager: Pager = Pager()
 
     override suspend fun getReviews(id: Int, category: Category, refreshType: RefreshType): List<PagerItem> = pager.paginate(
         refreshType = refreshType,

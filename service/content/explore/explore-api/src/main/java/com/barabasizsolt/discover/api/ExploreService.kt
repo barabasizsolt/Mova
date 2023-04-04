@@ -1,7 +1,7 @@
 package com.barabasizsolt.discover.api
 
-import com.barabasizsolt.pagination.api.PagerItem
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.PagerItem
+import com.barabasizsolt.pagination.RefreshType
 import kotlinx.coroutines.flow.Flow
 
 interface ExploreService {

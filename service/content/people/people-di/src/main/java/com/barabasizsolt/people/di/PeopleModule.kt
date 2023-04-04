@@ -10,5 +10,5 @@ import org.koin.dsl.module
 fun createPeopleModule() = module {
     factory { get<RetrofitClient>().sessionless.create(PeopleNetworkService::class.java) }
     factory { PeopleRemoteSource(networkService = get()) }
-    single<PeopleService> { PeopleServiceImpl(remoteSource = get(), pager = get()) }
+    single<PeopleService> { PeopleServiceImpl(remoteSource = get()) }
 }

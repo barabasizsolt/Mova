@@ -2,7 +2,7 @@ package com.barabasizsolt.domain.usecase.helper.review
 
 import com.barabasizsolt.category.Category
 import com.barabasizsolt.domain.util.result.wrapToResult
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.RefreshType
 import com.barabasizsolt.review.api.ReviewService
 
 class GetReviewsUseCase(private val reviewService: ReviewService) {

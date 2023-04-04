@@ -11,10 +11,8 @@ import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.seeall.GetSeeAllScreenUseCase
 import com.barabasizsolt.domain.util.result.Result
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.RefreshType
 import com.barabasizsolt.util.Event
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 
@@ -68,7 +66,9 @@ class SeeAllScreenState(
                 ) {
                     is Result.Failure -> when {
                         userAction is UserAction.SwipeRefresh -> State.ShowSnackBar
-                        watchableItems.isNotEmpty() -> State.Normal
+                        watchableItems.isNotEmpty() -> State.Normal.also {
+                            println("<<ERR: ${result.exception}")
+                        }
                         else -> State.Error(message = result.exception.message.orEmpty())
                     }
                     is Result.Success -> State.Normal

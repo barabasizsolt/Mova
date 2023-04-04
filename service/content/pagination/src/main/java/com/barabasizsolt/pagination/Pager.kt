@@ -1,19 +1,16 @@
-package com.barabasizsolt.pagination.implementation
+package com.barabasizsolt.pagination
 
-import com.barabasizsolt.pagination.api.ErrorItem
-import com.barabasizsolt.pagination.api.Pager
-import com.barabasizsolt.pagination.api.PagerItem
-import com.barabasizsolt.pagination.api.RefreshType
-import com.barabasizsolt.pagination.api.TailItem
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class PagerImplementation : Pager {
+class Pager(private val initialValue: Int = 1) {
 
-    override suspend fun paginate(
+    private var counter: Int = initialValue
+
+    suspend fun paginate(
         refreshType: RefreshType,
         flow: MutableStateFlow<List<PagerItem>>,
         getRemoteContent: suspend (ctr: Int) -> List<PagerItem>,
-        cacheWithError: Boolean
+        cacheWithError: Boolean = true
     ): List<PagerItem> = when (refreshType) {
         RefreshType.CACHE_IF_POSSIBLE -> flow.value.ifEmpty {
             if (cacheWithError) {
@@ -25,11 +22,12 @@ class PagerImplementation : Pager {
                     },
                     fallbackContent = emptyList(),
                     flow = flow,
-                    sideEffect = { COUNTER = 2 }
+                    sideEffect = { counter = 2 }
                 )
             } else {
                 getRemoteContent(1).also {
                     flow.value = it.appendTailItem()
+                    counter = 2
                 }
             }
 
@@ -38,7 +36,8 @@ class PagerImplementation : Pager {
             val oldContent = flow.value.take(n = flow.value.size - 1)
             paginationResult(
                 function = {
-                    getRemoteContent(COUNTER).let {
+                    println("<<CTR: $counter")
+                    getRemoteContent(counter).let {
                         val newContent = oldContent + it.appendTailItem()
                         flow.value = newContent
                         newContent
@@ -46,18 +45,19 @@ class PagerImplementation : Pager {
                 },
                 fallbackContent = oldContent,
                 flow = flow,
-                sideEffect = { COUNTER++ }
+                sideEffect = { counter++ }
             )
         }
         RefreshType.FORCE_REFRESH -> paginationResult(
             function = {
                 getRemoteContent(1).also {
                     flow.value = it.appendTailItem()
+                    counter = 2
                 }
             },
             fallbackContent = flow.value,
             flow = flow,
-            sideEffect = { COUNTER = 2 }
+            sideEffect = { counter = 2 }
         )
     }
 
@@ -74,8 +74,4 @@ class PagerImplementation : Pager {
     }
 
     private fun List<PagerItem>.appendTailItem() = this + listOf(TailItem(loadMore = this.isNotEmpty()))
-
-    companion object {
-        private var COUNTER: Int = 1
-    }
 }

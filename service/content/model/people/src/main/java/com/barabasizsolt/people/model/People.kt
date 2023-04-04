@@ -1,6 +1,6 @@
 package com.barabasizsolt.people.model
 
-import com.barabasizsolt.pagination.api.PagerItem
+import com.barabasizsolt.pagination.PagerItem
 
 data class People(
     override val id: String,

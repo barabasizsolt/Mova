@@ -18,5 +18,5 @@ dependencies {
     implementation(project(":service:content:review:review-api"))
     implementation(project(":service:content:model:review"))
     implementation(project(":service:content:model:category"))
-    implementation(project(":service:content:pagination:pagination-api"))
+    implementation(project(":service:content:pagination"))
 }

@@ -9,4 +9,6 @@ java {
 
 dependencies {
     implementation(libs.kotlinx.coroutines)
+    implementation(libs.koin.core)
+    //implementation(project(":service:content:pagination:pagination-api"))
 }

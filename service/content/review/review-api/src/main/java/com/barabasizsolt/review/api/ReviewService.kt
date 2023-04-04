@@ -1,8 +1,8 @@
 package com.barabasizsolt.review.api
 
 import com.barabasizsolt.category.Category
-import com.barabasizsolt.pagination.api.PagerItem
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.PagerItem
+import com.barabasizsolt.pagination.RefreshType
 import kotlinx.coroutines.flow.Flow
 
 interface ReviewService {

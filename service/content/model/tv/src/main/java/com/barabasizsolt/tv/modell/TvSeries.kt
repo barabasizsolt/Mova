@@ -1,6 +1,6 @@
 package com.barabasizsolt.tv.modell
 
-import com.barabasizsolt.pagination.api.PagerItem
+import com.barabasizsolt.pagination.PagerItem
 
 data class TvSeries(
     override val id: String,

@@ -10,7 +10,7 @@ import com.barabasizsolt.domain.usecase.helper.review.GetReviewsUseCase
 import com.barabasizsolt.domain.usecase.helper.video.GetVideosUseCase
 import com.barabasizsolt.domain.util.result.Result
 import com.barabasizsolt.movie.model.Movie
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.RefreshType
 import com.barabasizsolt.review.model.Review
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope

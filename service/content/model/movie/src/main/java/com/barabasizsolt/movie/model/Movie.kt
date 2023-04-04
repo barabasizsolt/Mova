@@ -1,6 +1,6 @@
 package com.barabasizsolt.movie.model
 
-import com.barabasizsolt.pagination.api.PagerItem
+import com.barabasizsolt.pagination.PagerItem
 
 data class Movie(
     override val id: String,

@@ -13,7 +13,7 @@ import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenUseCase
 import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.result.Result
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.RefreshType
 import com.barabasizsolt.util.Event
 import org.koin.androidx.compose.get
 

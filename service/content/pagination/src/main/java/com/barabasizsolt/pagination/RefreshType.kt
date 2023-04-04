@@ -1,4 +1,4 @@
-package com.barabasizsolt.pagination.api
+package com.barabasizsolt.pagination
 
 enum class RefreshType {
     CACHE_IF_POSSIBLE,

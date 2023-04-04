@@ -45,7 +45,7 @@ dependencies {
     implementation(project(":domain:domain-util"))
     implementation(project(":domain:domain-usecase"))
 
-    implementation(project(":service:content:pagination:pagination-api"))
+    implementation(project(":service:content:pagination"))
     implementation(project(":service:content:model:category"))
     implementation(project(":service:content:model:cast-crew"))
     implementation(project(":service:content:model:video"))

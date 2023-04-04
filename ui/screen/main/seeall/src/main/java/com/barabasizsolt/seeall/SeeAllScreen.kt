@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -129,7 +130,13 @@ private fun LazyGridScope.content(
             LoadingContent(modifier = Modifier
                 .height(height = 80.dp)
                 .fillMaxWidth())
-            SideEffect { onLoadMoreItem() }
+            LaunchedEffect(
+                key1 = Unit,
+                block = {
+                    println("<<HERE")
+                    onLoadMoreItem()
+                }
+            )
         }
         is ContentItem.ItemError -> ErrorItem(
             onRetryClick = onRetryClick,

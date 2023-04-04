@@ -10,5 +10,5 @@ import org.koin.dsl.module
 fun createReviewModule() = module {
     factory { get<RetrofitClient>().sessionless.create(ReviewNetworkService::class.java) }
     factory { ReviewRemoteSource(networkService = get()) }
-    single<ReviewService> { ReviewServiceImpl(remoteSource = get(), pager = get()) }
+    single<ReviewService> { ReviewServiceImpl(remoteSource = get()) }
 }

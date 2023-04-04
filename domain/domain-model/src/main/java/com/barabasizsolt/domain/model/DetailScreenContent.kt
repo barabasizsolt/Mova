@@ -1,6 +1,5 @@
 package com.barabasizsolt.domain.model
 
-import com.barabasizsolt.cast_crew.model.CastCrew
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.review.model.Review
 import com.barabasizsolt.video.model.Video

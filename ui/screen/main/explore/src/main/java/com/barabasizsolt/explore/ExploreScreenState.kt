@@ -22,7 +22,7 @@ import com.barabasizsolt.domain.util.result.Result
 import com.barabasizsolt.filter.api.FilterItem
 import com.barabasizsolt.filter.api.FilterItemValue
 import com.barabasizsolt.filter.api.FilterService
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.RefreshType
 import com.barabasizsolt.util.Event
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

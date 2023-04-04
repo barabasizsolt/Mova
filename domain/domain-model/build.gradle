@@ -16,5 +16,5 @@ dependencies {
     implementation(project(":service:content:model:review"))
     implementation(project(":service:content:model:cast-crew"))
     implementation(project(":service:content:model:detail"))
-    implementation(project(":service:content:pagination:pagination-api"))
+    implementation(project(":service:content:pagination"))
 }
