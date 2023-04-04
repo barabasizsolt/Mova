@@ -29,7 +29,7 @@ fun SearchableItem(
 ) {
     WatchableWithRating(
         item = item,
-        onClick = { },
+        onClick = { onClick() },
         modifier = Modifier.height(height = AppTheme.dimens.watchableCardHeight)
     )
     Column {
