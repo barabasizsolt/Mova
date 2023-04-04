@@ -1,6 +1,5 @@
 package com.barabasizsolt.detail
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
@@ -23,28 +21,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LifecycleOwner
 import com.barabasizsolt.base.BaseScreen
 import com.barabasizsolt.catalog.R
 import com.barabasizsolt.catalog.WatchableWithRating
-import com.barabasizsolt.detail.catalog.CastCrewContent
 import com.barabasizsolt.detail.catalog.ContentHeader
-import com.barabasizsolt.detail.catalog.ContentTabs
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.model.DetailScreenContent
 import com.barabasizsolt.domain.model.toContentItem
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.theme.AppTheme
-import com.barabasizsolt.util.YoutubePlayer
+import com.barabasizsolt.catalog.YoutubePlayer
+import com.barabasizsolt.detail.catalog.ContentTabs
+import com.barabasizsolt.detail.catalog.Review
+import com.barabasizsolt.review.model.Review
 import com.barabasizsolt.util.navigationBarInsetDp
 import com.barabasizsolt.video.model.Video
 
@@ -60,12 +55,12 @@ fun DetailScreen(screenState: DetailScreenState) {
                 gridState = gridState,
                 tabIndex = tabIndex,
                 onTabIndexChange = { index -> tabIndex = index },
+                onMovieClicked = screenState::onMovieClicked
             )
         }
     )
 }
 
-/*TODO[HIGH]: handle empty videos, movies, comments*/
 @Composable
 private fun ScreenContent(
     modifier: Modifier = Modifier,
@@ -73,8 +68,11 @@ private fun ScreenContent(
     gridState: LazyGridState,
     tabIndex: Int,
     onTabIndexChange: (Int) -> Unit,
+    onMovieClicked: (Int) -> Unit,
 ) = LazyVerticalGrid(
-    modifier = modifier.fillMaxSize().background(color = AppTheme.colors.surface),
+    modifier = modifier
+        .fillMaxSize()
+        .background(color = AppTheme.colors.primary),
     columns = GridCells.Fixed(count = 2),
     state = gridState,
     verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2),
@@ -89,43 +87,27 @@ private fun ScreenContent(
             )
         }
         item(span = itemSpan) {
-            CastCrewContent(
-                castCrew = (item as DetailScreenContent.MovieDetails).castCrew,
-                onItemClick = { /*TODO: Implement it*/ }
-            )
-        }
-        item(span = itemSpan) {
             ContentTabs(
                 tabIndex = tabIndex,
                 onTabIndexChange = onTabIndexChange
             )
         }
         when (tabIndex) {
-            0 -> similarMoviesItem(movies = (item as DetailScreenContent.MovieDetails).similarMovies)
+            0 -> similarMoviesItem(movies = (item as DetailScreenContent.MovieDetails).similarMovies, onMovieClicked = onMovieClicked)
             1 -> similarVideoItem(videos = (item as DetailScreenContent.MovieDetails).videos)
-            2 -> itemsIndexed(
-                items = (item as DetailScreenContent.MovieDetails).reviews,
-                span = getTabItemsSpan(tabStyle = TabStyle.ROW)
-            ) { _, item ->
-                /*TODO: Implement it*/
-                Text(
-                    text = item.content,
-                    style = AppTheme.typography.body1,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+            2 -> reviewsItem(reviews = (item as DetailScreenContent.MovieDetails).reviews)
         }
     }
 )
 
 
-private fun LazyGridScope.similarMoviesItem(movies: List<Movie>) = baseTabItem(
+private fun LazyGridScope.similarMoviesItem(movies: List<Movie>, onMovieClicked: (Int) -> Unit) = baseTabItem(
     items = movies,
     span = getTabItemsSpan(tabStyle = TabStyle.GRID)
 ) { index, item ->
     WatchableWithRating(
-        item = (item as Movie).toContentItem() as ContentItem.Watchable,
-        onClick = { /*TODO: Implement it*/ },
+        item = item.toContentItem() as ContentItem.Watchable,
+        onClick = onMovieClicked,
         modifier = Modifier.padding(
             start = if (index % 2 == 0) AppTheme.dimens.screenPadding else 0.dp,
             end = if (index % 2 == 0) 0.dp else AppTheme.dimens.screenPadding,
@@ -143,20 +125,28 @@ private fun LazyGridScope.similarVideoItem(videos: List<Video>) = baseTabItem(
             .padding(horizontal = AppTheme.dimens.screenPadding)
     ) {
         Text(
-            text = (item as Video).name,
-            style = AppTheme.typography.body1,
+            text = item.name,
+            style = AppTheme.typography.body2,
             fontWeight = FontWeight.Bold
         )
         YoutubePlayer(
-            videoId = (item).videoId
+            videoId = (item).videoId,
+            lifecycleOwner = LocalLifecycleOwner.current
         )
     }
 }
 
-private fun LazyGridScope.baseTabItem(
-    items: List<Any>,
-    span: (LazyGridItemSpanScope.(index: Int, item: Any) -> GridItemSpan),
-    content: @Composable (index: Int, item: Any) -> Unit
+private fun LazyGridScope.reviewsItem(reviews: List<Review>) = baseTabItem(
+    items = reviews,
+    span = getTabItemsSpan(tabStyle = TabStyle.ROW)
+) { _, item ->
+    Review(review = item)
+}
+
+private fun <T>LazyGridScope.baseTabItem(
+    items: List<T>,
+    span: (LazyGridItemSpanScope.(index: Int, item: T) -> GridItemSpan),
+    content: @Composable (index: Int, item: T) -> Unit
 ) =
     if (items.isEmpty()) {
         item(span = { GridItemSpan(currentLineSpan = 2) }) {

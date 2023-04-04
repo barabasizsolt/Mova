@@ -10,6 +10,7 @@ import com.barabasizsolt.base.UserAction
 import com.barabasizsolt.domain.model.DetailScreenContent
 import com.barabasizsolt.domain.usecase.screen.detail.GetMovieDetailsUseCase
 import com.barabasizsolt.domain.util.result.Result
+import com.barabasizsolt.util.Event
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
 
@@ -29,6 +30,8 @@ class DetailScreenState(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase
 ) : BaseScreenState() {
 
+    var action by mutableStateOf<Event<Action>?>(value = null)
+        private set
     var details by mutableStateOf<DetailScreenContent>(value = DetailScreenContent.MovieDetails.createEmptyMovieDetailContent())
         private set
 
@@ -52,5 +55,13 @@ class DetailScreenState(
                 }
             }
         }
+    }
+
+    fun onMovieClicked(id: Int) {
+        action = Event(data = Action.OnMovieClicked(id = id))
+    }
+
+    sealed class Action {
+        data class OnMovieClicked(val id: Int) : Action()
     }
 }
