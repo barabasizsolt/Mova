@@ -62,6 +62,8 @@ class HomeScreenState(
                 is Result.Failure -> when {
                     userAction is UserAction.Normal && homeContent.isEmpty() ->
                         State.Error(message = result.exception.message.orEmpty())
+                    userAction is UserAction.Normal && !homeContent.isEmpty() ->
+                        State.Normal
                     userAction is UserAction.SwipeRefresh ->
                         State.ShowSnackBar
                     else -> State.Error(message = result.exception.message.orEmpty())
