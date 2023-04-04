@@ -52,7 +52,6 @@ dependencies {
     implementation(project(":service:content:model:movie"))
     implementation(project(":service:content:model:review"))
 
-    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0")
 
     implementation(libs.bundles.androidx.compose)
     implementation(libs.koin.core)
