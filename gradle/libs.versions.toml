@@ -23,7 +23,6 @@ androidx-navigation = "2.5.2" # https://developer.android.com/jetpack/androidx/r
 androidx-room = "2.4.3" # https://developer.android.com/jetpack/androidx/releases/room
 androidx-security = "1.1.0-alpha01" # https://developer.android.com/jetpack/androidx/releases/security
 androidx-datastore = "1.0.0"
-
 androidx-profileInstaller = "1.2.0"
 
 # Compose
