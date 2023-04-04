@@ -32,6 +32,10 @@ sealed class ContentItem {
         val job: String? = null
     ) : ContentItem()
 
+    object ItemHeader : ContentItem() {
+        override val id: String = "headerItem"
+    }
+
     data class ItemTail(
         override val id: String,
         val loadMore: Boolean
