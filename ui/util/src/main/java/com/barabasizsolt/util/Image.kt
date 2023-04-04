@@ -1,5 +1,7 @@
 package com.barabasizsolt.util
 
+import android.webkit.URLUtil
+
 private const val basePath: String = "https://image.tmdb.org/t/p"
 
 enum class ImageType { ORIGINAL, PROFILE }
@@ -10,3 +12,5 @@ fun String.getImageKey(imageType: ImageType) = when (imageType) {
 }
 
 fun String.isSvg(): Boolean = this.takeLast(n = 3) == "svg"
+
+fun String.isValidUrl(): Boolean = URLUtil.isValidUrl(this)
