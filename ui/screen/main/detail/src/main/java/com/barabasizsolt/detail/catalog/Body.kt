@@ -2,11 +2,15 @@ package com.barabasizsolt.detail.catalog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Tab
 import androidx.compose.material.TabPosition
@@ -14,30 +18,23 @@ import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.barabasizsolt.catalog.PeopleCarousel
+import com.barabasizsolt.catalog.MovaImage
 import com.barabasizsolt.catalog.PersonCardSize
-import com.barabasizsolt.domain.model.ContentItem
+import com.barabasizsolt.review.model.Review
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.ExpandingText
-
-@Composable
-fun CastCrewContent(
-    castCrew: List<ContentItem.Person>,
-    modifier: Modifier = Modifier,
-    onItemClick: (String) -> Unit
-) = PeopleCarousel(
-    modifier = modifier.fillMaxWidth(),
-    showDivider = false,
-    personCardSize = PersonCardSize.MEDIUM,
-    items = castCrew,
-    onItemClick = onItemClick,
-    onHeaderClick = {}
-)
+import com.barabasizsolt.util.ImageType
+import com.barabasizsolt.util.getImageKey
+import com.barabasizsolt.util.isValidUrl
 
 @Composable
 fun ContentTabs(
@@ -119,3 +116,69 @@ private fun TabRowDivider(
             shape = CircleShape
         )
 )
+
+@Composable
+fun Review(
+    modifier: Modifier = Modifier,
+    review: Review
+) = Column(
+    modifier = modifier
+        .fillMaxWidth()
+        .padding(horizontal = AppTheme.dimens.screenPadding),
+    verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.smallPadding)
+) {
+    ReviewAuthor(
+        author = review.author,
+        authorUsername = review.authorUsername,
+        authorAvatarPath = review.authorAvatarPath
+    )
+
+    ExpandingText(
+        text = review.content,
+        color = AppTheme.colors.onSurface,
+        tailTextColor = AppTheme.colors.secondary,
+        style = AppTheme.typography.body2,
+        modifier = modifier.fillMaxWidth()
+    )
+
+    /*TODO: move to res*/
+    Text(
+        text = "Created At: ${review.createdAt.substringBefore(delimiter = "T")}",
+        color = Color.Gray,
+        style = AppTheme.typography.body2,
+        modifier = modifier.fillMaxWidth()
+    )
+}
+
+@Composable
+private fun ReviewAuthor(
+    modifier: Modifier = Modifier,
+    author: String,
+    authorUsername: String?,
+    authorAvatarPath: String?
+) = Row(
+    modifier = modifier.fillMaxWidth(),
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
+) {
+    MovaImage(
+        imageUrl = if (authorAvatarPath?.substring(startIndex = 1)?.isValidUrl() == true)
+            authorAvatarPath.substring(startIndex = 1)
+        else
+            authorAvatarPath?.getImageKey(imageType = ImageType.ORIGINAL),
+        modifier = Modifier
+            .size(size = PersonCardSize.SMALL.size)
+            .clip(shape = CircleShape),
+        contentScale = ContentScale.Crop,
+        disableShimmerOnError = true,
+        shouldShowFallbackOnError = true
+    )
+    Text(
+        text = "$author ($authorUsername)",
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        style = AppTheme.typography.body2,
+        fontWeight = FontWeight.Bold,
+        color = AppTheme.colors.onPrimary
+    )
+}

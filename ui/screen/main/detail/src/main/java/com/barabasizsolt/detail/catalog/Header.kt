@@ -35,7 +35,10 @@ import com.barabasizsolt.catalog.GradientOverlay
 import com.barabasizsolt.catalog.MovaFilledButton
 import com.barabasizsolt.catalog.MovaImage
 import com.barabasizsolt.catalog.MovaOutlinedButton
+import com.barabasizsolt.catalog.PeopleCarousel
+import com.barabasizsolt.catalog.PersonCardSize
 import com.barabasizsolt.catalog.R
+import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.model.DetailScreenContent
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.ExpandingText
@@ -99,12 +102,16 @@ private fun BoxScope.ContentHeaderInfo(
         modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
     )
     ExpandableContentOverview(overview = item.overview)
+    CastCrewContent(
+        castCrew = (item as DetailScreenContent.MovieDetails).castCrew,
+        onItemClick = { /*TODO: Implement it*/ }
+    )
 }
 
 @Composable
 private fun ContentTitle(title: String) = Text(
     text = title,
-    style = AppTheme.typography.h6.withShadow(),
+    style = AppTheme.typography.h5.withShadow(),
     fontWeight = FontWeight.Bold,
     color = Color.White,
     modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
@@ -230,4 +237,18 @@ private fun ExpandableContentOverview(
     modifier = modifier
         .fillMaxWidth()
         .padding(horizontal = AppTheme.dimens.screenPadding)
+)
+
+@Composable
+fun CastCrewContent(
+    castCrew: List<ContentItem.Person>,
+    modifier: Modifier = Modifier,
+    onItemClick: (String) -> Unit
+) = PeopleCarousel(
+    modifier = modifier.fillMaxWidth(),
+    showDivider = false,
+    personCardSize = PersonCardSize.MEDIUM,
+    items = castCrew,
+    onItemClick = onItemClick,
+    onHeaderClick = {}
 )
