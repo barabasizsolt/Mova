@@ -52,6 +52,8 @@ dependencies {
     implementation(project(":service:content:model:movie"))
     implementation(project(":service:content:model:review"))
 
+    implementation(libs.youtube.player)
+    implementation(libs.youtube.player.customui)
 
     implementation(libs.bundles.androidx.compose)
     implementation(libs.koin.core)
