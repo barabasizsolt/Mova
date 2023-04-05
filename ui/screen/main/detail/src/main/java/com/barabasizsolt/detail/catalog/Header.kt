@@ -38,8 +38,8 @@ import com.barabasizsolt.catalog.MovaOutlinedButton
 import com.barabasizsolt.catalog.PeopleCarousel
 import com.barabasizsolt.catalog.PersonCardSize
 import com.barabasizsolt.catalog.R
+import com.barabasizsolt.detail.DetailScreenListItem
 import com.barabasizsolt.domain.model.ContentItem
-import com.barabasizsolt.domain.model.DetailScreenContent
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.ExpandingText
 import com.barabasizsolt.util.ImageType
@@ -48,7 +48,7 @@ import com.barabasizsolt.util.withShadow
 
 @Composable
 fun ContentHeader(
-    item: DetailScreenContent,
+    item: DetailScreenListItem.HeaderItem,
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -83,7 +83,7 @@ private fun BoxScope.ContentGradientImage(posterPath: String?) {
 
 @Composable
 private fun BoxScope.ContentHeaderInfo(
-    item: DetailScreenContent,
+    item: DetailScreenListItem.HeaderItem,
     modifier: Modifier = Modifier,
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit
@@ -103,7 +103,7 @@ private fun BoxScope.ContentHeaderInfo(
     )
     ExpandableContentOverview(overview = item.overview)
     CastCrewContent(
-        castCrew = (item as DetailScreenContent.MovieDetails).castCrew,
+        castCrew = item.castCrew,
         onItemClick = { /*TODO: Implement it*/ }
     )
 }
@@ -118,7 +118,7 @@ private fun ContentTitle(title: String) = Text(
 )
 
 @Composable
-private fun ContentGeneralInfo(item: DetailScreenContent) = LazyRow(
+private fun ContentGeneralInfo(item: DetailScreenListItem.HeaderItem) = LazyRow(
     modifier = Modifier.fillMaxWidth(),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
@@ -126,7 +126,7 @@ private fun ContentGeneralInfo(item: DetailScreenContent) = LazyRow(
 ) {
     item { ContentRating(rating = item.voteAverage) }
     item { ContentReleaseDate(releaseDate = item.releaseDate) }
-    item { ContentInfoItem(value = (item as DetailScreenContent.MovieDetails).status) }
+    item { ContentInfoItem(value = item.status) }
     items(items = item.spokenLanguages) { ContentInfoItem(value = it) }
 }
 

@@ -18,6 +18,8 @@ import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,26 +37,33 @@ import com.barabasizsolt.util.ExpandingText
 import com.barabasizsolt.util.ImageType
 import com.barabasizsolt.util.getImageKey
 import com.barabasizsolt.util.isValidUrl
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 @Composable
 fun ContentTabs(
-    modifier: Modifier = Modifier,
-    tabIndex: Int,
-    onTabIndexChange: (Int) -> Unit
+    tabs: List<String>,
+    onTabIndexChange: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    val tabTitles = listOf("Similar", "Videos", "Reviews") /*TODO: move to res*/
     val isDark = isSystemInDarkTheme()
+    var selectedTab by rememberSaveable { mutableStateOf(value = 0)  }
 
     TabRow(
-        selectedTabIndex = tabIndex,
-        indicator = { tabPositions -> TabRowIndicator(tabPosition = tabPositions[tabIndex]) },
+        selectedTabIndex = selectedTab,
+        indicator = { tabPositions -> TabRowIndicator(tabPosition = tabPositions[selectedTab]) },
         backgroundColor = Color.Transparent,
         divider = { TabRowDivider(isDark = isDark) },
         tabs = {
-            tabTitles.forEachIndexed { index, title ->
+            tabs.forEachIndexed { index, title ->
                 ContentTab(
-                    isSelected = tabIndex == index,
-                    onClick = { onTabIndexChange(index) },
+                    isSelected = selectedTab == index,
+                    onClick = {
+                       if (selectedTab != index) {
+                           selectedTab = index
+                           onTabIndexChange(index)
+                       }
+                    },
                     isDark = isDark,
                     title = title
                 )
@@ -124,15 +133,16 @@ fun Review(
 ) = Column(
     modifier = modifier
         .fillMaxWidth()
-        .padding(horizontal = AppTheme.dimens.screenPadding),
-    verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.smallPadding)
+        .padding(horizontal = AppTheme.dimens.screenPadding)
 ) {
     ReviewAuthor(
         author = review.author,
         authorUsername = review.authorUsername,
-        authorAvatarPath = review.authorAvatarPath
+        authorAvatarPath = review.authorAvatarPath,
+        modifier = Modifier.padding(bottom = AppTheme.dimens.smallPadding)
     )
 
+    /*TODO: format as a HTML text*/
     ExpandingText(
         text = review.content,
         color = AppTheme.colors.onSurface,

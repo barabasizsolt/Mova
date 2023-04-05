@@ -32,8 +32,12 @@ class DetailScreenState(
 
     var action by mutableStateOf<Event<Action>?>(value = null)
         private set
-    var details by mutableStateOf<DetailScreenContent>(value = DetailScreenContent.MovieDetails.createEmptyMovieDetailContent())
+    var screenDetailList by mutableStateOf<List<DetailScreenListItem>>(value = emptyList())
         private set
+    private var details by mutableStateOf(value = DetailScreenContent.MovieDetails.createEmptyMovieDetailContent())
+    var tabIndex by mutableStateOf(value = 0)
+        private set
+    private val tabs: List<String> = listOf("Similar", "Videos", "Reviews")
 
     init {
         getScreenData(userAction = UserAction.Normal)
@@ -51,6 +55,11 @@ class DetailScreenState(
                 }
                 is Result.Success -> {
                     details = result.data
+                    screenDetailList = buildList {
+                        add(element = details.toHeaderItem())
+                        add(element = DetailScreenListItem.TabsItem(tabs = tabs))
+                        addAll(elements = details.toSimilarMoviesItem())
+                    }
                     State.Normal
                 }
             }
@@ -59,6 +68,19 @@ class DetailScreenState(
 
     fun onMovieClicked(id: Int) {
         action = Event(data = Action.OnMovieClicked(id = id))
+    }
+
+    fun onTabIndexChange(index: Int) {
+        screenDetailList = buildList {
+            add(element = details.toHeaderItem())
+            add(element = DetailScreenListItem.TabsItem(tabs = tabs))
+            when (index) {
+                0 -> addAll(elements = details.toSimilarMoviesItem())
+                1 -> addAll(elements = details.toVideosItem())
+                2 ->  addAll(elements = details.toReviewsItem())
+            }
+        }
+        tabIndex = index
     }
 
     sealed class Action {
