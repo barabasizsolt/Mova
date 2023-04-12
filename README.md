@@ -11,7 +11,6 @@ Highly modularized native Android Application using Jetpack Compose.
 <img src="screenshots/06_light.png" width="48%" /> <img src="screenshots/06_dark.png" width="48%" />
 <img src="screenshots/07_light.png" width="48%" /> <img src="screenshots/07_dark.png" width="48%" />
 <img src="screenshots/08_light.png" width="48%" /> <img src="screenshots/08_dark.png" width="48%" />
-<img src="screenshots/09_light.png" width="48%" /> <img src="screenshots/09_dark.png" width="48%" />
 
 ### License
 
