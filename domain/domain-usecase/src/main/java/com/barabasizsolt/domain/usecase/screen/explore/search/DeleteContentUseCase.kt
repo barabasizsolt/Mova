@@ -1,8 +1,8 @@
 package com.barabasizsolt.domain.usecase.screen.explore.search
 
+import com.barabasizsolt.category.Category
 import com.barabasizsolt.domain.usecase.helper.movie.search.DeleteSearchMovieUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.search.DeleteSearchTvSeriesUseCase
-import com.barabasizsolt.filter.api.Category
 
 class DeleteContentUseCase(
     private val deleteSearchMovieUseCase: DeleteSearchMovieUseCase,

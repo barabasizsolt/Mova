@@ -11,4 +11,6 @@ class MovieRemoteSource(private val networkService: MovieNetworkService) {
     suspend fun getTopRatedMovies(page: Int) = networkService.getTopRatedMovies(page = page).toModel()
 
     suspend fun getNowPlayingMovies(page: Int) = networkService.getNowPlayingMovies(page = page).toModel()
+
+    suspend fun getSimilarMovies(id: Int, page: Int) = networkService.getSimilarMovies(movieId = id, page = page).toModel()
 }

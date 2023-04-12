@@ -1,9 +1,11 @@
 package com.barabasizsolt.domain.model
 
+import com.barabasizsolt.cast_crew.model.Cast
+import com.barabasizsolt.cast_crew.model.Crew
 import com.barabasizsolt.movie.model.Movie
-import com.barabasizsolt.pagination.api.ErrorItem
-import com.barabasizsolt.pagination.api.PagerItem
-import com.barabasizsolt.pagination.api.TailItem
+import com.barabasizsolt.pagination.ErrorItem
+import com.barabasizsolt.pagination.PagerItem
+import com.barabasizsolt.pagination.TailItem
 import com.barabasizsolt.people.model.People
 import com.barabasizsolt.tv.modell.TvSeries
 
@@ -16,14 +18,21 @@ sealed class ContentItem {
         val posterPath: String,
         val title: String,
         val voteAverage: String,
-        val releaseDate: String
+        val releaseDate: String,
+        val isMovie: Boolean
     ) : ContentItem()
 
     data class Person(
         override val id: String,
         val name: String,
-        val posterPath: String
+        val posterPath: String,
+        val knownForDepartment: String? = null,
+        val job: String? = null
     ) : ContentItem()
+
+    object ItemHeader : ContentItem() {
+        override val id: String = "headerItem"
+    }
 
     data class ItemTail(
         override val id: String,
@@ -50,14 +59,16 @@ fun PagerItem.toContentItem(): ContentItem = when (this) {
         title = originalTitle,
         voteAverage = voteAverage,
         releaseDate = releaseDate,
-        posterPath = posterPath.orEmpty()
+        posterPath = posterPath.orEmpty(),
+        isMovie = true
     )
     is TvSeries -> ContentItem.Watchable(
         id = id,
         title = originalName,
         voteAverage = voteAverage,
         releaseDate = firstAirDate,
-        posterPath = posterPath.orEmpty()
+        posterPath = posterPath.orEmpty(),
+        isMovie = false
     )
     is People -> ContentItem.Person(
         id = id,
@@ -69,3 +80,18 @@ fun PagerItem.toContentItem(): ContentItem = when (this) {
         loadMore = false
     )
 }
+
+fun Cast.toContentItem() = ContentItem.Person(
+    id = id,
+    name = name,
+    posterPath = profilePath.orEmpty(),
+    knownForDepartment = knownForDepartment
+)
+
+fun Crew.toContentItem() = ContentItem.Person(
+    id = id,
+    name = name,
+    posterPath = profilePath.orEmpty(),
+    knownForDepartment = knownForDepartment,
+    job = job
+)

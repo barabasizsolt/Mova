@@ -35,7 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.MovaButton
-import com.barabasizsolt.filter.api.Category
+import com.barabasizsolt.category.Category
 import com.barabasizsolt.filter.api.FilterItem
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.theme.MovaTheme
@@ -75,7 +75,7 @@ fun FilterScreen(
             Text(
                 text = stringResource(id = R.string.sort_filter),
                 color = AppTheme.colors.secondary,
-                style = AppTheme.typography.h5,
+                style = AppTheme.typography.h6,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -176,7 +176,7 @@ private fun ResetButton(
     text = stringResource(id = R.string.reset),
     onClick = onClick,
     contentColor = if (isDark) Color.White else AppTheme.colors.secondary,
-    backgroundColor = if (isDark) Color.DarkGray else AppTheme.colors.secondary.copy(alpha = .2f),
+    backgroundColor = if (isDark) Color.DarkGray else Color.LightGray,
     modifier = modifier
 )
 
@@ -300,7 +300,7 @@ private fun FilterItem(
 ) {
     Text(
         text = text,
-        style = AppTheme.typography.subtitle2,
+        style = AppTheme.typography.caption,
         color = if (isSelected) AppTheme.colors.onSecondary else AppTheme.colors.secondary,
         modifier = Modifier.padding(
             horizontal = AppTheme.dimens.contentPadding * 2,

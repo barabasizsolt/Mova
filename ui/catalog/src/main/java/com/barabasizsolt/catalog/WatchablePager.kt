@@ -42,7 +42,7 @@ fun WatchablePager(
     modifier: Modifier = Modifier,
     pagerContent: List<Movie>,
     genres: Map<Long, String>,
-    onClick: () -> Unit,
+    onClick: (Int) -> Unit,
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit
 ) {
@@ -64,7 +64,7 @@ fun WatchablePager(
         ) { page ->
             PagerItem(
                 item = pagerContent[page],
-                onClick = onClick,
+                onClick = { onClick(pagerContent[page].id.toInt()) },
                 onPlayButtonClicked = onPlayButtonClicked,
                 onAddToFavouriteButtonClicked = onAddToFavouriteButtonClicked,
                 genres = genres
@@ -129,7 +129,7 @@ private fun PagerItemInfo(
 ) {
     Text(
         text = item.title,
-        style = AppTheme.typography.h5.withShadow(),
+        style = AppTheme.typography.h6.withShadow(),
         fontWeight = FontWeight.Bold,
         color = Color.White,
         modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
@@ -163,7 +163,7 @@ private fun PagerGenreItem(
     shouldShowSeparator: Boolean
 ) = Text(
     text = if (shouldShowSeparator) "$text • " else text,
-    style = AppTheme.typography.body1.withShadow(),
+    style = AppTheme.typography.body2.withShadow(),
     fontWeight = FontWeight.Bold,
     overflow = TextOverflow.Ellipsis,
     color = Color.White,

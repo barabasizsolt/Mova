@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -45,7 +46,8 @@ fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
             onUpClicked = screenState::onUpClicked,
             contentType = screenState.contentType,
             gridState = gridState,
-            isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading
+            isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
+            onMovieClicked = screenState::onMovieClicked
         )
     }
 )
@@ -58,7 +60,8 @@ private fun ScreenContent(
     onUpClicked: () -> Unit,
     contentType: String,
     gridState: LazyGridState,
-    isTryAgainLoading: Boolean
+    isTryAgainLoading: Boolean,
+    onMovieClicked: (Int) -> Unit
 ) = LazyVerticalGrid(
     state = gridState,
     columns = GridCells.Fixed(count = 6),
@@ -71,32 +74,24 @@ private fun ScreenContent(
         top = AppTheme.dimens.screenPadding + statusBarInsetDp
     )
 ) {
-    header(contentType = contentType, onClick = onUpClicked)
-    content(items = items, onLoadMoreItem = onLoadMoreItem, onRetryClick = onRetryClick, isTryAgainLoading = isTryAgainLoading)
-}
-
-private fun LazyGridScope.header(
-    modifier: Modifier = Modifier,
-    contentType: String,
-    onClick: () -> Unit
-) = item(span = { GridItemSpan(currentLineSpan = 6) }) {
-    MovaHeader(
-        text = when (contentType) {
-            SeeAllContentType.POPULAR_MOVIES.name -> stringResource(id = R.string.popular_movies)
-            SeeAllContentType.POPULAR_PEOPLE.name -> stringResource(id = R.string.popular_people)
-            SeeAllContentType.NOW_PLAYING_MOVIES.name -> stringResource(id = R.string.now_playing_movies)
-            SeeAllContentType.TOP_RATED_MOVIES.name -> stringResource(id = R.string.top_rated_movies)
-            else -> stringResource(id = R.string.all_content)
-        },
-        onClick = onClick,
-        modifier = modifier.padding(bottom = AppTheme.dimens.contentPadding)
+    content(
+        items = items,
+        contentType = contentType,
+        onHeaderClick = onUpClicked,
+        onLoadMoreItem = onLoadMoreItem,
+        onRetryClick = onRetryClick,
+        isTryAgainLoading = isTryAgainLoading,
+        onMovieClicked = onMovieClicked
     )
 }
 
 private fun LazyGridScope.content(
     items: List<ContentItem>,
+    contentType: String,
+    onHeaderClick: () -> Unit,
     onLoadMoreItem: () -> Unit,
     onRetryClick: () -> Unit,
+    onMovieClicked: (Int) -> Unit,
     isTryAgainLoading: Boolean
 ) = itemsIndexed(
     items = items,
@@ -104,7 +99,7 @@ private fun LazyGridScope.content(
     span = { _, item ->
         GridItemSpan(
             currentLineSpan = when (item) {
-                is ContentItem.ItemTail, is ContentItem.ItemError -> 6
+                is ContentItem.ItemHeader, is ContentItem.ItemTail, is ContentItem.ItemError -> 6
                 is ContentItem.Person -> 2
                 else -> 3
             }
@@ -112,9 +107,20 @@ private fun LazyGridScope.content(
     }
 ) { _, item ->
     when (item) {
+        is ContentItem.ItemHeader -> MovaHeader(
+            text = when (contentType) {
+                SeeAllContentType.POPULAR_MOVIES.name -> stringResource(id = R.string.popular_movies)
+                SeeAllContentType.POPULAR_PEOPLE.name -> stringResource(id = R.string.popular_people)
+                SeeAllContentType.NOW_PLAYING_MOVIES.name -> stringResource(id = R.string.now_playing_movies)
+                SeeAllContentType.TOP_RATED_MOVIES.name -> stringResource(id = R.string.top_rated_movies)
+                else -> stringResource(id = R.string.all_content)
+            },
+            onClick = onHeaderClick,
+            modifier = Modifier.padding(bottom = AppTheme.dimens.contentPadding)
+        )
         is ContentItem.Watchable -> WatchableWithRating(
             item = item,
-            onClick = { /*TODO: Implement it*/ }
+            onClick = onMovieClicked
         )
         is ContentItem.Person -> MediumPersonCard(
             item = item,
@@ -124,7 +130,13 @@ private fun LazyGridScope.content(
             LoadingContent(modifier = Modifier
                 .height(height = 80.dp)
                 .fillMaxWidth())
-            SideEffect { onLoadMoreItem() }
+            LaunchedEffect(
+                key1 = Unit,
+                block = {
+                    println("<<HERE")
+                    onLoadMoreItem()
+                }
+            )
         }
         is ContentItem.ItemError -> ErrorItem(
             onRetryClick = onRetryClick,

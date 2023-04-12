@@ -48,7 +48,6 @@ import com.barabasizsolt.catalog.NotFoundItem
 import com.barabasizsolt.catalog.SearchableItem
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.ContentItem
-import com.barabasizsolt.filter.api.Category
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.imeBottomInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
@@ -57,7 +56,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import com.barabasizsolt.category.Category
 import com.barabasizsolt.filter.api.FilterItem
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -122,7 +121,9 @@ fun ExploreScreen(screenState: ExploreScreenState){
                         searchItems = screenState.searchContent,
                         filterItems = buildList {
                             add(element = screenState.selectedCategory)
-                            addAll(elements = screenState.selectedRegions)
+                            if ((filterScreenState.selectedCategory.wrappedItem as Category) == Category.MOVIE) {
+                                addAll(elements = screenState.selectedRegions)
+                            }
                             addAll(elements = screenState.selectedGenres)
                             addAll(elements = screenState.selectedSortOptions)
                         },
@@ -140,6 +141,7 @@ fun ExploreScreen(screenState: ExploreScreenState){
                         onClick = {
                             shouldShowScrollUp = it
                         },
+                        onMovieClicked = screenState::onMovieClicked,
                         scope = scope,
                         gridState = gridState
                     )
@@ -164,6 +166,7 @@ private fun ScreenContent(
     onRetryClick: () -> Unit,
     scope: CoroutineScope,
     onClick: (Boolean) -> Unit,
+    onMovieClicked: (Int) -> Unit,
     gridState: LazyGridState
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding)) {
@@ -191,7 +194,8 @@ private fun ScreenContent(
                 searchItems = searchItems,
                 onLoadMoreItem = onLoadMoreItem,
                 onRetryClick = onRetryClick,
-                isTryAgainLoading = isTryAgainLoading
+                isTryAgainLoading = isTryAgainLoading,
+                onMovieClicked = onMovieClicked
             )
         }
     }
@@ -245,7 +249,8 @@ private fun ContentBody(
     searchItems: List<ContentItem>,
     onLoadMoreItem: () -> Unit,
     onRetryClick: () -> Unit,
-    isTryAgainLoading: Boolean
+    isTryAgainLoading: Boolean,
+    onMovieClicked: (Int) -> Unit
 ) = LazyVerticalGrid(
     columns = GridCells.Fixed(count = 2),
     verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding),
@@ -269,7 +274,11 @@ private fun ContentBody(
         ) { _, item ->
             SearchableItem(
                 item = item as ContentItem.Watchable,
-                onClick = { /*TODO: Implement it*/ }
+                onClick = {
+                    if (item.isMovie) {
+                        onMovieClicked(item.id.toInt())
+                    }
+                }
             )
         }
     } else {
@@ -283,7 +292,11 @@ private fun ContentBody(
         ) { _, item ->
             WatchableWithRating(
                 item = item as ContentItem.Watchable,
-                onClick = { /*TODO: Implement it*/ }
+                onClick = {
+                    if (item.isMovie) {
+                        onMovieClicked(item.id.toInt())
+                    }
+                }
             )
         }
     }

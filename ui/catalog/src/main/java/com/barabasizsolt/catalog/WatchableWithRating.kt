@@ -22,15 +22,15 @@ fun WatchableWithRating(
     modifier: Modifier = Modifier,
     item: ContentItem.Watchable,
     aspectRatio: Float = 0.7f,
-    onClick: () -> Unit
-) = Box {
+    onClick: (Int) -> Unit
+) = Box(modifier = modifier) {
     MovaImage(
         imageUrl = item.posterPath.getImageKey(imageType = ImageType.ORIGINAL),
         contentScale = ContentScale.Crop,
-        modifier = modifier
+        modifier = Modifier
             .clip(shape = AppTheme.shapes.medium)
             .aspectRatio(ratio = aspectRatio)
-            .clickable { onClick() }
+            .clickable { onClick(item.id.toInt()) }
     )
     RatingHolder(
         rating = item.voteAverage,

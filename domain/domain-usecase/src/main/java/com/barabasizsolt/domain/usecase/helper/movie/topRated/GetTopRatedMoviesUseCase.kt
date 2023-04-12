@@ -2,7 +2,7 @@ package com.barabasizsolt.domain.usecase.helper.movie.topRated
 
 import com.barabasizsolt.domain.util.result.wrapToResult
 import com.barabasizsolt.movie.api.MovieService
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.RefreshType
 
 class GetTopRatedMoviesUseCase(private val movieService: MovieService) {
 

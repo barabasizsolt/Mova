@@ -10,6 +10,6 @@ import org.koin.dsl.module
 fun createExploreModule() = module {
     factory { get<RetrofitClient>().sessionless.create(ExploreNetworkService::class.java) }
     factory { ExploreRemoteSource(networkService = get()) }
-    single<ExploreService> { ExploreServiceImpl(remoteSource = get(), pager = get()) }
+    single<ExploreService> { ExploreServiceImpl(remoteSource = get()) }
 }
 

@@ -1,15 +1,14 @@
 package com.barabasizsolt.discover.implementation
 
 import com.barabasizsolt.discover.api.ExploreService
-import com.barabasizsolt.pagination.api.Pager
-import com.barabasizsolt.pagination.api.PagerItem
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.Pager
+import com.barabasizsolt.pagination.PagerItem
+import com.barabasizsolt.pagination.RefreshType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class ExploreServiceImpl(
-    private val remoteSource: ExploreRemoteSource,
-    private val pager: Pager
+    private val remoteSource: ExploreRemoteSource
 ) : ExploreService {
 
     private val _discoverMovies = MutableStateFlow<List<PagerItem>>(value = emptyList())
@@ -24,12 +23,14 @@ class ExploreServiceImpl(
     private val _searchTvSeries = MutableStateFlow<List<PagerItem>>(value = emptyList())
     override val searchTvSeries: Flow<List<PagerItem>> = _searchTvSeries
 
+    private val pagers = List(size = 4) { Pager() }
+
     override suspend fun getMovies(
         region: List<String>,
         withGenres: List<Int>,
         sortBy: List<String>,
         refreshType: RefreshType
-    ): List<PagerItem> = pager.paginate(
+    ): List<PagerItem> = pagers[0].paginate(
         refreshType = refreshType,
         flow = _discoverMovies,
         getRemoteContent = {
@@ -41,7 +42,7 @@ class ExploreServiceImpl(
         withGenres: List<Int>,
         sortBy: List<String>,
         refreshType: RefreshType
-    ): List<PagerItem> = pager.paginate(
+    ): List<PagerItem> = pagers[1].paginate(
         refreshType = refreshType,
         flow = _discoverTvSeries,
         getRemoteContent = {
@@ -49,13 +50,13 @@ class ExploreServiceImpl(
         }
     )
 
-    override suspend fun searchMovies(query: String, refreshType: RefreshType): List<PagerItem> = pager.paginate(
+    override suspend fun searchMovies(query: String, refreshType: RefreshType): List<PagerItem> = pagers[2].paginate(
         refreshType = refreshType,
         flow = _searchMovies,
         getRemoteContent = { page -> remoteSource.searchMovies(query = query, page = page) }
     )
 
-    override suspend fun searchTvSeries(query: String, refreshType: RefreshType): List<PagerItem> = pager.paginate(
+    override suspend fun searchTvSeries(query: String, refreshType: RefreshType): List<PagerItem> = pagers[3].paginate(
         refreshType = refreshType,
         flow = _searchTvSeries,
         getRemoteContent = { page -> remoteSource.searchTvSeries(query = query, page = page) }

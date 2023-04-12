@@ -1,34 +1,55 @@
 package com.barabasizsolt.catalog
 
+import android.annotation.SuppressLint
+import androidx.annotation.IdRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import coil.compose.AsyncImage
+import androidx.compose.ui.res.painterResource
+import coil.compose.SubcomposeAsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.barabasizsolt.util.isSvg
 
+@SuppressLint("ResourceType")
 @Composable
 fun MovaImage(
     modifier: Modifier = Modifier,
-    imageUrl: String,
+    imageUrl: String?,
     alignment: Alignment = Alignment.Center,
     contentScale: ContentScale = ContentScale.Fit,
-    placeHolderColor: Color = Color.LightGray
+    shouldShowFallbackOnError: Boolean = false,
+    @IdRes fallbackResourceId: Int = R.drawable.ic_default_profile,
+    disableShimmerOnError: Boolean = false
 ) {
-    AsyncImage(
+    val showShimmer = remember { mutableStateOf(value = true) }
+    SubcomposeAsyncImage(
         model = ImageRequest.Builder(context = LocalContext.current)
             .data(data = imageUrl)
-            .let { if (imageUrl.isSvg()) it.decoderFactory(factory = SvgDecoder.Factory()) else it }
+            .let { if (imageUrl?.isSvg() == true) it.decoderFactory(factory = SvgDecoder.Factory()) else it }
             .build(),
-        placeholder = ColorPainter(color = placeHolderColor),
+        error = {
+            if (shouldShowFallbackOnError) {
+                Image(
+                    painter = painterResource(id = fallbackResourceId),
+                    contentDescription = null,
+                    alignment = alignment,
+                    contentScale = contentScale,
+                    modifier = modifier
+                )
+            }
+        },
+        onSuccess = { showShimmer.value = false },
+        onError = { if (disableShimmerOnError) showShimmer.value = false },
         contentDescription = null,
         alignment = alignment,
         contentScale = contentScale,
-        modifier = modifier
+        modifier = modifier.background(shimmerBrush(targetValue = 1300f, showShimmer = showShimmer.value))
     )
 }

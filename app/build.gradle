@@ -76,8 +76,6 @@ dependencies {
     implementation(project(":service:auth:firebase:firebase-api"))
     implementation(project(":service:activityprovider:activityprovider-api"))
     implementation(project(":service:activityprovider:activityprovider-di"))
-    implementation(project(":service:content:pagination:pagination-api"))
-    implementation(project(":service:content:pagination:pagination-di"))
 
     // Kotlin
     implementation(libs.kotlinx.coroutines)

@@ -19,12 +19,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.ImageType
 import com.barabasizsolt.util.getImageKey
 import com.barabasizsolt.util.withShadow
+
+enum class PersonCardSize(val size: Dp) {
+    SMALL(size = 45.dp),
+    MEDIUM(size = 50.dp),
+    LARGE(size = 65.dp)
+}
 
 @Composable
 fun MediumPersonCard(
@@ -56,6 +63,7 @@ fun MediumPersonCard(
 fun PersonCard(
     modifier: Modifier = Modifier,
     person: ContentItem.Person,
+    personCardSize: PersonCardSize,
     onClick: () -> Unit
 ) = Row(
     modifier = modifier.clickable { onClick() },
@@ -67,14 +75,22 @@ fun PersonCard(
     MovaImage(
         imageUrl = person.posterPath.getImageKey(imageType = ImageType.ORIGINAL),
         modifier = Modifier
-            .size(size = 80.dp)
+            .size(size = personCardSize.size)
             .clip(shape = CircleShape),
         contentScale = ContentScale.Crop
     )
     Column {
-        NameText(name = names[0])
+        NameText(name = names[0], personCardSize = personCardSize)
         if (names.size > 1) {
-            NameText(name = names[1])
+            NameText(name = names[1], personCardSize = personCardSize)
+        }
+        when {
+            person.knownForDepartment != null && person.job != null -> DetailText(
+                detail = "${person.knownForDepartment}/${person.job}"
+            )
+            person.knownForDepartment != null -> DetailText(
+                detail = person.knownForDepartment.orEmpty()
+            )
         }
     }
 }
@@ -82,13 +98,30 @@ fun PersonCard(
 @Composable
 private fun NameText(
     modifier: Modifier = Modifier,
-    name: String
+    name: String,
+    personCardSize: PersonCardSize,
 ) = Text(
     modifier = modifier,
     text = name,
     maxLines = 1,
     overflow = TextOverflow.Ellipsis,
-    style = AppTheme.typography.body1,
+    style = when (personCardSize) {
+        PersonCardSize.LARGE -> AppTheme.typography.body2
+        PersonCardSize.MEDIUM, PersonCardSize.SMALL -> AppTheme.typography.caption
+    },
     fontWeight = FontWeight.Bold,
     color = AppTheme.colors.onPrimary
+)
+
+@Composable
+private fun DetailText(
+    modifier: Modifier = Modifier,
+    detail: String
+) = Text(
+    modifier = modifier,
+    text = detail,
+    maxLines = 1,
+    overflow = TextOverflow.Ellipsis,
+    style = AppTheme.typography.caption,
+    color = Color.Gray
 )

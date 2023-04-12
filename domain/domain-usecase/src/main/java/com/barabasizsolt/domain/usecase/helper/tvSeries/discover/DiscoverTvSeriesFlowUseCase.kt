@@ -10,6 +10,6 @@ import kotlinx.coroutines.flow.map
 class DiscoverTvSeriesFlowUseCase(private val exploreService: ExploreService) {
 
     operator fun invoke(): Flow<List<ContentItem>> = exploreService.discoverTvSeries.filterNotNull().map { list ->
-        list.map { item -> item.toContentItem() }
+        list.distinctBy { it.id }.map { item -> item.toContentItem() }
     }
 }

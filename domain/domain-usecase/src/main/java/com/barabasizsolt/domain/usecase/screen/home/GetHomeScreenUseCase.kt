@@ -7,8 +7,7 @@ import com.barabasizsolt.domain.usecase.helper.movie.trending.GetPopularMoviesUs
 import com.barabasizsolt.domain.usecase.helper.movie.upcoming.GetUpcomingMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.people.GetPopularPeopleUseCase
 import com.barabasizsolt.domain.util.result.asyncWrapToResult
-import com.barabasizsolt.pagination.api.RefreshType
-import kotlinx.coroutines.CoroutineScope
+import com.barabasizsolt.pagination.RefreshType
 
 class GetHomeScreenUseCase(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
@@ -19,11 +18,7 @@ class GetHomeScreenUseCase(
     private val getGenresUseCase: GetGenresUseCase
 ) {
 
-    suspend operator fun invoke(
-        coroutineScope: CoroutineScope,
-        refreshType: RefreshType
-    ) = asyncWrapToResult(
-        scope = coroutineScope,
+    suspend operator fun invoke(refreshType: RefreshType) = asyncWrapToResult(
         functions = listOf(
             getUpcomingMoviesUseCase(refreshType = refreshType),
             getPopularMoviesUseCase(refreshType = refreshType),

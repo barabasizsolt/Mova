@@ -2,7 +2,7 @@ package com.barabasizsolt.domain.usecase.helper.movie.nowPlaying
 
 import com.barabasizsolt.domain.util.result.wrapToResult
 import com.barabasizsolt.movie.api.MovieService
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.RefreshType
 
 class GetNowPlayingMoviesUseCase(private val movieService: MovieService) {
 

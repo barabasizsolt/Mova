@@ -47,7 +47,7 @@ dependencies {
     implementation(project(":service:content:model:movie"))
     implementation(project(":service:content:model:tv"))
     implementation(project(":service:content:model:people"))
-    implementation(project(":service:content:pagination:pagination-api"))
+    implementation(project(":service:content:pagination"))
 
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.voyager)

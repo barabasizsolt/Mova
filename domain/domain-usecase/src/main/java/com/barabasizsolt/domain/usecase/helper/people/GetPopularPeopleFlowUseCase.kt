@@ -2,8 +2,9 @@ package com.barabasizsolt.domain.usecase.helper.people
 
 import com.barabasizsolt.people.api.PeopleService
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 
 class GetPopularPeopleFlowUseCase(private val peopleService: PeopleService) {
 
-    operator fun invoke() = peopleService.popularPeople.filterNotNull()
+    operator fun invoke() = peopleService.popularPeople.filterNotNull().map { it.distinctBy { movie -> movie.id } }
 }

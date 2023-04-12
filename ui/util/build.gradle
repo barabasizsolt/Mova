@@ -42,6 +42,7 @@ dependencies {
     debugImplementation(libs.beagle.uiDrawer)
 
     implementation(libs.bundles.androidx.core)
+    implementation(libs.bundles.exoPlayer)
     implementation(libs.androidx.appcompat)
     implementation(libs.google.android.material)
     testImplementation(libs.test.junit4)

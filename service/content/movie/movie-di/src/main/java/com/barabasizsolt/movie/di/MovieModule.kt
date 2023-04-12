@@ -10,5 +10,5 @@ import org.koin.dsl.module
 fun createMovieModule() = module {
     factory { get<RetrofitClient>().sessionless.create(MovieNetworkService::class.java) }
     factory { MovieRemoteSource(networkService = get()) }
-    single<MovieService> { MovieServiceImpl(remoteSource = get(), pager = get()) }
+    single<MovieService> { MovieServiceImpl(remoteSource = get()) }
 }

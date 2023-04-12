@@ -1,6 +1,7 @@
 package com.barabasizsolt.catalog
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
@@ -16,6 +18,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -55,20 +58,22 @@ fun MovaFilledButton(
 @Composable
 fun MovaOutlinedButton(
     modifier: Modifier = Modifier,
+    shape: Shape = CircleShape,
     icon: ImageVector? = null,
     text: String,
     contentColor: Color = Color.White,
     textStyle: TextStyle = AppTheme.typography.subtitle1,
+    borderWidth: Dp = 2.dp,
     onClick: () -> Unit
 ) = Button(
     modifier = modifier,
     onClick = onClick,
-    shape = CircleShape,
+    shape = shape,
     border = BorderStroke(
         color = contentColor,
-        width = 2.dp
+        width = borderWidth
     ),
-    colors = ButtonDefaults.buttonColors(
+    colors = ButtonDefaults.outlinedButtonColors(
         backgroundColor = AppTheme.colors.primary.copy(
             alpha = if (isSystemInDarkTheme()) 0f else 0.7f
         )
@@ -115,7 +120,7 @@ fun MovaButton(
             color = contentColor,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = AppTheme.typography.body1,
+            style = AppTheme.typography.body2,
             fontWeight = FontWeight.Bold
         )
     }
@@ -136,11 +141,11 @@ private fun ButtonContent(
             tint = contentColor,
             modifier = Modifier.size(size = iconSize)
         )
+        Spacer(modifier = Modifier.width(width = AppTheme.dimens.contentPadding))
     }
-    Spacer(modifier = Modifier.width(width = AppTheme.dimens.contentPadding))
     Text(
         text = text,
         style = textStyle,
-        color = contentColor
+        color = contentColor,
     )
 }

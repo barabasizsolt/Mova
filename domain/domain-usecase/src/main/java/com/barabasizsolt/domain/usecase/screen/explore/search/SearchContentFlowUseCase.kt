@@ -1,8 +1,8 @@
 package com.barabasizsolt.domain.usecase.screen.explore.search
 
+import com.barabasizsolt.category.Category
 import com.barabasizsolt.domain.usecase.helper.movie.search.SearchMoviesFlowUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.search.SearchTvSeriesFlowUseCase
-import com.barabasizsolt.filter.api.Category
 
 class SearchContentFlowUseCase(
     private val searchMoviesFlowUseCase: SearchMoviesFlowUseCase,

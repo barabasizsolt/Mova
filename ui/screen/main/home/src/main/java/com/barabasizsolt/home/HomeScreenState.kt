@@ -13,7 +13,7 @@ import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.domain.usecase.screen.home.GetHomeScreenUseCase
 import kotlinx.coroutines.launch
 import com.barabasizsolt.domain.util.result.Result
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.RefreshType
 import com.barabasizsolt.util.Event
 import org.koin.androidx.compose.get
 
@@ -53,7 +53,6 @@ class HomeScreenState(
         scope.launch {
             state = when (
                 val result = getHomeScreen(
-                    coroutineScope = this,
                     refreshType = when (userAction) {
                         is UserAction.SwipeRefresh -> RefreshType.FORCE_REFRESH
                         else -> RefreshType.CACHE_IF_POSSIBLE
@@ -63,6 +62,8 @@ class HomeScreenState(
                 is Result.Failure -> when {
                     userAction is UserAction.Normal && homeContent.isEmpty() ->
                         State.Error(message = result.exception.message.orEmpty())
+                    userAction is UserAction.Normal && !homeContent.isEmpty() ->
+                        State.Normal
                     userAction is UserAction.SwipeRefresh ->
                         State.ShowSnackBar
                     else -> State.Error(message = result.exception.message.orEmpty())
@@ -88,10 +89,15 @@ class HomeScreenState(
         action = Event(data = Action.SeeAllTopRatedMovies)
     }
 
+    fun onMovieClicked(id: Int) {
+        action = Event(data = Action.OnMovieClicked(id = id))
+    }
+
     sealed class Action {
         object SeeAllPopularMovies : Action()
         object SeeAllPopularPeople : Action()
         object SeeAllNowPlayingMovies : Action()
         object SeeAllTopRatedMovies : Action()
+        data class OnMovieClicked(val id: Int) : Action()
     }
 }

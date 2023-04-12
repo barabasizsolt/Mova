@@ -1,9 +1,9 @@
 package com.barabasizsolt.domain.usecase.screen.explore.search
 
+import com.barabasizsolt.category.Category
 import com.barabasizsolt.domain.usecase.helper.movie.search.SearchMoviesUseCase
 import com.barabasizsolt.domain.usecase.helper.tvSeries.search.SearchTvSeriesUseCase
-import com.barabasizsolt.filter.api.Category
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.RefreshType
 
 class SearchContentUseCase(
     private val searchMoviesUseCase: SearchMoviesUseCase,

@@ -3,7 +3,7 @@ package com.barabasizsolt.domain.usecase.helper.tvSeries.discover
 import com.barabasizsolt.discover.api.ExploreService
 import com.barabasizsolt.domain.util.result.wrapToResult
 import com.barabasizsolt.filter.api.SortOption
-import com.barabasizsolt.pagination.api.RefreshType
+import com.barabasizsolt.pagination.RefreshType
 
 class DiscoverTvSeriesUseCase(private val exploreService: ExploreService) {
 
