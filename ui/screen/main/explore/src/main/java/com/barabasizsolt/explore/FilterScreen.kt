@@ -176,7 +176,7 @@ private fun ResetButton(
     text = stringResource(id = R.string.reset),
     onClick = onClick,
     contentColor = if (isDark) Color.White else AppTheme.colors.secondary,
-    backgroundColor = if (isDark) Color.DarkGray else AppTheme.colors.secondary.copy(alpha = .2f),
+    backgroundColor = if (isDark) Color.DarkGray else Color.LightGray,
     modifier = modifier
 )
 
