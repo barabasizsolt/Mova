@@ -1,6 +1,7 @@
 package com.barabasizsolt.video.dto
 
 import com.barabasizsolt.video.model.Video
+import com.barabasizsolt.video.model.toVideoType
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -10,6 +11,7 @@ data class VideoDTO(
     @Json(name = "name") val name: String?,
     @Json(name = "key") val key: String?,
     @Json(name = "site") val site: String?,
+    @Json(name = "type") val type: String?
 )
 
 fun VideoDTO.toModel() : Video? {
@@ -17,7 +19,8 @@ fun VideoDTO.toModel() : Video? {
         id == null ||
         name == null ||
         key == null ||
-        site == null
+        site == null ||
+        type == null
     ) {
         return null
     }
@@ -25,6 +28,7 @@ fun VideoDTO.toModel() : Video? {
         id = id,
         name = name,
         videoId = key,
-        site = site
+        site = site,
+        type = type.toVideoType()
     )
 }
