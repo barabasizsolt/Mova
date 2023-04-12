@@ -3,7 +3,6 @@ package com.barabasizsolt.detail
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import android.widget.TextView
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -11,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.detail.catalog.ContentHeader
@@ -20,9 +20,13 @@ import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.model.toContentItem
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.ListItemDiff
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.customui.DefaultPlayerUiController
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+
 
 enum class ItemViewType {
     HEADER, TAB, SIMILAR_MOVIE, VIDEO, REVIEW, EMPTY
@@ -186,18 +190,19 @@ class DetailScreenAdapter(
     ) : RecyclerView.ViewHolder(view) {
 
         private val textView: TextView = view.findViewById(R.id.title)
-        private val youTubePlayerView: YouTubePlayerView = view.findViewById(R.id.youtube_player_view)
+        val youTubePlayerView: YouTubePlayerView = view.findViewById(R.id.youtube_player_view)
 
         /*TODO:
            - register lifecycle observer
-           - find a way to apple Compose Theme's to XML
+           - find a way to apply Compose Theme's to XML
+           - Implement to play it in full screen
         */
         fun bind(listItem: DetailScreenListItem.VideoItem) {
             textView.text = listItem.video.name
             youTubePlayerView.addYouTubePlayerListener(
-                object : AbstractYouTubePlayerListener() {
+                youTubePlayerListener = object : AbstractYouTubePlayerListener() {
                     override fun onReady(youTubePlayer: YouTubePlayer) {
-                        youTubePlayer.cueVideo(listItem.video.videoId, 0f)
+                        youTubePlayer.cueVideo(videoId = listItem.video.videoId, startSeconds = 0f)
                     }
                 }
             )
@@ -206,7 +211,17 @@ class DetailScreenAdapter(
         companion object {
             fun create(parent: ViewGroup) = VideoViewHolder(
                 view = LayoutInflater.from(parent.context).inflate(R.layout.layout_movie_video, parent, false)
-            )
+            ).also {
+                val listener =  object : AbstractYouTubePlayerListener() {
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        val defaultPlayerUiController = DefaultPlayerUiController(it.youTubePlayerView, youTubePlayer)
+                        it.youTubePlayerView.setCustomPlayerUi(defaultPlayerUiController.rootView)
+                    }
+                }
+                val options: IFramePlayerOptions = IFramePlayerOptions.Builder().controls(0).build()
+                it.youTubePlayerView.enableAutomaticInitialization = false
+                it.youTubePlayerView.initialize(listener, options)
+            }
         }
     }
 
