@@ -34,8 +34,6 @@ android {
         }
 
         release {
-            debuggable true
-
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
