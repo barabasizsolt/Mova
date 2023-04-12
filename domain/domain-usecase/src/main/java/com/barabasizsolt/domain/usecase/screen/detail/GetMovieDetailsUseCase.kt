@@ -12,6 +12,7 @@ import com.barabasizsolt.domain.util.result.Result
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.pagination.RefreshType
 import com.barabasizsolt.review.model.Review
+import com.barabasizsolt.video.model.VideoType
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
@@ -62,7 +63,10 @@ class GetMovieDetailsUseCase(
                 status = movieDetailsResultData.status,
                 tagline = movieDetailsResultData.tagline,
                 voteAverage = movieDetailsResultData.voteAverage,
-                videos = (videosResult as Result.Success).data,
+                videos = (videosResult as Result.Success).data
+                    .filter { it.type == VideoType.TRAILER }
+                    .reversed()
+                    .take(n = 5), /* Limit the videos size for 5, to improve UX caused by YouTubePlayer */
                 similarMovies = (similarMoviesResult as Result.Success).data.map { it as Movie },
                 reviews = (reviewsResult as Result.Success).data.map { it as Review },
                 castCrew = buildList {
