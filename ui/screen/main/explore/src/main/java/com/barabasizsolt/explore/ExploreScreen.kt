@@ -121,7 +121,9 @@ fun ExploreScreen(screenState: ExploreScreenState){
                         searchItems = screenState.searchContent,
                         filterItems = buildList {
                             add(element = screenState.selectedCategory)
-                            addAll(elements = screenState.selectedRegions)
+                            if ((filterScreenState.selectedCategory.wrappedItem as Category) == Category.MOVIE) {
+                                addAll(elements = screenState.selectedRegions)
+                            }
                             addAll(elements = screenState.selectedGenres)
                             addAll(elements = screenState.selectedSortOptions)
                         },
