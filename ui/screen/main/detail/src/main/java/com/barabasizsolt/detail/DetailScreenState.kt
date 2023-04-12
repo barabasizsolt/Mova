@@ -37,7 +37,7 @@ class DetailScreenState(
     private var details by mutableStateOf(value = DetailScreenContent.MovieDetails.createEmptyMovieDetailContent())
     var tabIndex by mutableStateOf(value = 0)
         private set
-    private val tabs: List<String> = listOf("Similar", "Videos", "Reviews")
+    private val tabs: List<String> = listOf("Similar", "Trailers", "Reviews")
 
     init {
         getScreenData(userAction = UserAction.Normal)
