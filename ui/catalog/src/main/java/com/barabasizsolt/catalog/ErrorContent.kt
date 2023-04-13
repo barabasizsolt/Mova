@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import com.barabasizsolt.mova.ui.catalog.R
 import com.barabasizsolt.theme.AppTheme
 
 @Composable

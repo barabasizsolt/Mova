@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.barabasizsolt.catalog.MovaButton
 import com.barabasizsolt.category.Category
 import com.barabasizsolt.filter.api.FilterItem
+import com.barabasizsolt.mova.ui.screen.main.explore.R
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.theme.MovaTheme
 import kotlinx.coroutines.CoroutineScope

@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import coil.compose.SubcomposeAsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.barabasizsolt.mova.ui.catalog.R
 import com.barabasizsolt.util.isSvg
 
 @SuppressLint("ResourceType")

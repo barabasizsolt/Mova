@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.barabasizsolt.catalog.GradientOverlay
 import com.barabasizsolt.catalog.MovaButton
+import com.barabasizsolt.mova.ui.screen.auth.welcome.R
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.withShadow
 import com.google.accompanist.pager.ExperimentalPagerApi

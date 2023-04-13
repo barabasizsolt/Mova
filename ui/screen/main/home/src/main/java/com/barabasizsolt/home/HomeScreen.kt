@@ -72,8 +72,8 @@ private fun ScreenContent(
     }
     item {
         WatchableWithRatingCarousel(
-            header = stringResource(id = com.barabasizsolt.util.R.string.popular_movies),
-            buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_popular_movies),
+            header = stringResource(id = com.barabasizsolt.mova.ui.util.R.string.popular_movies),
+            buttonText = stringResource(id = com.barabasizsolt.mova.ui.util.R.string.more_popular_movies),
             items = popularMovies,
             onItemClick = onItemClicked,
             onHeaderClick = onSeeAllPopularMoviesClicked,
@@ -81,7 +81,7 @@ private fun ScreenContent(
     }
     item {
         PeopleCarousel(
-            header = stringResource(id = com.barabasizsolt.util.R.string.popular_people),
+            header = stringResource(id = com.barabasizsolt.mova.ui.util.R.string.popular_people),
             items = popularPeople,
             onItemClick = { /*TODO: Implement it*/ },
             onHeaderClick = onSeeAllPopularPeopleClicked,
@@ -89,8 +89,8 @@ private fun ScreenContent(
     }
     item {
         WatchableWithRatingCarousel(
-            header = stringResource(id = com.barabasizsolt.util.R.string.now_playing_movies),
-            buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_now_playing_movies),
+            header = stringResource(id = com.barabasizsolt.mova.ui.util.R.string.now_playing_movies),
+            buttonText = stringResource(id = com.barabasizsolt.mova.ui.util.R.string.more_now_playing_movies),
             items = nowPlayingMovies,
             onItemClick = onItemClicked,
             onHeaderClick = onSeeAllNowPlayingMoviesClicked,
@@ -98,8 +98,8 @@ private fun ScreenContent(
     }
     item {
         WatchableWithRatingCarousel(
-            header = stringResource(id = com.barabasizsolt.util.R.string.top_rated_movies),
-            buttonText = stringResource(id = com.barabasizsolt.util.R.string.more_top_rated_movies),
+            header = stringResource(id = com.barabasizsolt.mova.ui.util.R.string.top_rated_movies),
+            buttonText = stringResource(id = com.barabasizsolt.mova.ui.util.R.string.more_top_rated_movies),
             items = topRatedMovies,
             onItemClick = onItemClicked,
             onHeaderClick = onSeeAllTopRatedMoviesClicked,

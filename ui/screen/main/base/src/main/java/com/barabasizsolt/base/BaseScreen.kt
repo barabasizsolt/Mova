@@ -19,7 +19,7 @@ import com.barabasizsolt.catalog.LoadingContent
 import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.ScrollUpWrapper
 import com.barabasizsolt.theme.AppTheme
-import com.barabasizsolt.util.R
+import com.barabasizsolt.mova.ui.util.R
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState

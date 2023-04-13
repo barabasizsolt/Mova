@@ -37,7 +37,7 @@ import com.barabasizsolt.catalog.MovaImage
 import com.barabasizsolt.catalog.MovaOutlinedButton
 import com.barabasizsolt.catalog.PeopleCarousel
 import com.barabasizsolt.catalog.PersonCardSize
-import com.barabasizsolt.catalog.R
+import com.barabasizsolt.mova.ui.catalog.R
 import com.barabasizsolt.detail.DetailScreenListItem
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.theme.AppTheme
@@ -136,7 +136,7 @@ private fun ContentRating(rating: String) = Row(
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.smallPadding)
 ) {
     Image(
-        painter = painterResource(id = com.barabasizsolt.detail.R.drawable.ic_rating),
+        painter = painterResource(id = com.barabasizsolt.mova.ui.screen.main.detail.R.drawable.ic_rating),
         contentDescription = ""
     )
     Text(
@@ -153,7 +153,7 @@ private fun ContentReleaseDate(releaseDate: String) = Row(
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.smallPadding)
 ) {
     Image(
-        painter = painterResource(id = com.barabasizsolt.detail.R.drawable.ic_arrow),
+        painter = painterResource(id = com.barabasizsolt.mova.ui.screen.main.detail.R.drawable.ic_arrow),
         contentDescription = "",
         modifier = Modifier.size(size = 20.dp)
     )

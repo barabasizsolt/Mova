@@ -51,7 +51,6 @@ import com.barabasizsolt.catalog.AuthInputField
 import com.barabasizsolt.catalog.AuthScreenDelimiter
 import com.barabasizsolt.catalog.MovaButton
 import com.barabasizsolt.catalog.SocialAuthFooter
-import com.barabasizsolt.util.R
 import com.google.accompanist.insets.statusBarsPadding
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
@@ -64,6 +63,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.SocialLoginOption
+import com.barabasizsolt.mova.ui.screen.auth.loginregister.R
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.BeagleModules
 
@@ -80,7 +80,7 @@ fun AuthScreen(screenState: AuthScreenState) {
             screenState.authenticateWithGoogle(intent = data)
         }
     }
-    val dismissText = stringResource(id = com.barabasizsolt.login.R.string.dismiss)
+    val dismissText = stringResource(id = R.string.dismiss)
 
     Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
         ScreenContent(
@@ -205,7 +205,7 @@ private fun ScreenContent(
         }
         item {
             AuthScreenDelimiter(
-                text = stringResource(id = com.barabasizsolt.login.R.string.or_continue_with),
+                text = stringResource(id = R.string.or_continue_with),
                 modifier = Modifier.padding(vertical = AppTheme.dimens.contentPadding * 4)
             )
         }
@@ -230,7 +230,7 @@ private fun ScreenContent(
 private fun AuthScreenLogo(
     modifier: Modifier = Modifier
 ) = Image(
-    painter = painterResource(id = R.drawable.mova_logo),
+    painter = painterResource(id = com.barabasizsolt.mova.ui.util.R.drawable.mova_logo),
     contentDescription = null,
     contentScale = ContentScale.Crop,
     modifier = modifier.size(size = 100.dp)
@@ -256,7 +256,7 @@ private fun EmailInput(
 ) = AuthInputField(
     value = email,
     onValueChange = onEmailChange,
-    placeholder = stringResource(id = com.barabasizsolt.login.R.string.email),
+    placeholder = stringResource(id = R.string.email),
     leadingIcon = Icons.Default.Email,
     keyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Email,
@@ -277,7 +277,7 @@ private fun PasswordInput(
     AuthInputField(
         value = password,
         onValueChange = onPasswordChange,
-        placeholder = stringResource(id = com.barabasizsolt.login.R.string.password),
+        placeholder = stringResource(id = R.string.password),
         leadingIcon = Icons.Default.Lock,
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(
@@ -309,7 +309,7 @@ private fun SocialItemHolder(
     horizontalArrangement = Arrangement.Center,
     verticalAlignment = Alignment.CenterVertically
 ) {
-    SocialLoginOption(onClick = onFacebookClicked, iconId = com.barabasizsolt.login.R.drawable.facebook_ic)
+    SocialLoginOption(onClick = onFacebookClicked, iconId = R.drawable.facebook_ic)
     Spacer(modifier = Modifier.width(width = AppTheme.dimens.contentPadding * 2))
-    SocialLoginOption(onClick = onGoogleClicked, iconId = com.barabasizsolt.login.R.drawable.google_ic)
+    SocialLoginOption(onClick = onGoogleClicked, iconId = R.drawable.google_ic)
 }
