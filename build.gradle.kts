@@ -15,3 +15,6 @@ plugins {
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
+
+apply(from = "gradle/config/android-library.gradle")
+apply(from = "gradle/config/java-library.gradle")

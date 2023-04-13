@@ -1,32 +1,11 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    alias libs.plugins.android.library
-    alias libs.plugins.kotlin.android
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    compileSdk 32
-
-    defaultConfig {
-        minSdk 23
-        targetSdk 32
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
+    namespace = "com.barabasizsolt.mova.domain.domain.di"
 }
 
 dependencies {

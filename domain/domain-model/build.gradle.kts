@@ -1,10 +1,6 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    alias libs.plugins.kotlin.jvm
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
+    alias(libs.plugins.kotlin.jvm)
 }
 
 dependencies {
