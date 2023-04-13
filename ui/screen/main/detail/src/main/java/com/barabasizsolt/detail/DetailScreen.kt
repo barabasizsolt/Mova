@@ -19,7 +19,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.barabasizsolt.base.BaseScreen
-import com.barabasizsolt.catalog.R
+import com.barabasizsolt.mova.ui.catalog.R
 import com.barabasizsolt.theme.AppTheme
 
 /*TODO: remember the scroll position*/

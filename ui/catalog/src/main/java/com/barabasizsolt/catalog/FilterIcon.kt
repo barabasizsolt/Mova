@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.barabasizsolt.mova.ui.catalog.R
 import com.barabasizsolt.theme.AppTheme
 
 @Composable

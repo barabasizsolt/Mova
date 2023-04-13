@@ -29,7 +29,7 @@ import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.screen.seeall.SeeAllContentType
 import com.barabasizsolt.theme.AppTheme
-import com.barabasizsolt.util.R
+import com.barabasizsolt.mova.ui.util.R
 import com.barabasizsolt.util.navigationBarInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
 

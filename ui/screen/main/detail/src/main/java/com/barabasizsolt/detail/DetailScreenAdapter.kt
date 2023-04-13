@@ -18,6 +18,7 @@ import com.barabasizsolt.detail.catalog.ContentTabs
 import com.barabasizsolt.detail.catalog.Review
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.model.toContentItem
+import com.barabasizsolt.mova.ui.screen.main.detail.R
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.ListItemDiff
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.customui.DefaultPlayerUiController

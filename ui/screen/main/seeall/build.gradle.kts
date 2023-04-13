@@ -1,37 +1,17 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    alias libs.plugins.android.library
-    alias libs.plugins.kotlin.android
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    compileSdk 32
+    namespace = "com.barabasizsolt.mova.ui.screen.main.seeall"
 
-    defaultConfig {
-        minSdk 23
-        targetSdk 32
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
     buildFeatures {
-        compose true
+        compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.androidx.composeCompiler.get()
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
+        kotlinCompilerExtensionVersion = libs.versions.androidx.composeCompiler.get()
     }
 }
 
@@ -43,8 +23,10 @@ dependencies {
     implementation(project(":domain:domain-model"))
     implementation(project(":domain:domain-util"))
     implementation(project(":domain:domain-usecase"))
-    implementation(project(":service:content:pagination"))
     implementation(project(":service:content:model:movie"))
+    implementation(project(":service:content:model:tv"))
+    implementation(project(":service:content:model:people"))
+    implementation(project(":service:content:pagination"))
 
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.voyager)

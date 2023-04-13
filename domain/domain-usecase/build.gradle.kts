@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.barabasizsolt.mova.domain.domain.usecase"
+    namespace = "com.barabasizsolt.mova.domain.usecase"
 }
 
 dependencies {

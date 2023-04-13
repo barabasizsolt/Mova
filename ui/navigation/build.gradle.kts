@@ -1,43 +1,23 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    alias libs.plugins.android.library
-    alias libs.plugins.kotlin.android
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    compileSdk 32
+    namespace = "com.barabasizsolt.mova.ui.navigation"
 
-    defaultConfig {
-        minSdk 23
-        targetSdk 32
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
     buildFeatures {
-        compose true
+        compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.androidx.composeCompiler.get()
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
+        kotlinCompilerExtensionVersion = libs.versions.androidx.composeCompiler.get()
     }
 }
 
 dependencies {
     implementation(project(":ui:screen:auth:welcome"))
-    implementation implementation(project(':ui:screen:auth:login-register'))
+    implementation(project(":ui:screen:auth:login-register"))
     implementation(project(":ui:screen:main:base"))
     implementation(project(":ui:screen:main:home"))
     implementation(project(":ui:screen:main:explore"))

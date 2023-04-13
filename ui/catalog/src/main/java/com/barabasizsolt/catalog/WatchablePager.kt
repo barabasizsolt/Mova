@@ -25,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import com.barabasizsolt.mova.ui.catalog.R
 import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.ImageType

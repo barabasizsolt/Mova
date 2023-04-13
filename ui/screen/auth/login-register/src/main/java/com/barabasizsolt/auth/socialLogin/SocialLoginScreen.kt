@@ -35,7 +35,7 @@ import com.barabasizsolt.catalog.MovaButton
 import com.barabasizsolt.catalog.MovaSnackBar
 import com.barabasizsolt.catalog.SocialAuthFooter
 import com.barabasizsolt.catalog.SocialLoginOption
-import com.barabasizsolt.login.R
+import com.barabasizsolt.mova.ui.screen.auth.loginregister.R
 import com.barabasizsolt.theme.AppTheme
 import com.google.accompanist.insets.statusBarsPadding
 
@@ -144,7 +144,7 @@ private fun ScreenContent(
 private fun SocialLoginScreenLogo(
     modifier: Modifier = Modifier
 ) = Image(
-    painter = painterResource(id = com.barabasizsolt.util.R.drawable.social_logo),
+    painter = painterResource(id = com.barabasizsolt.mova.ui.util.R.drawable.social_logo),
     contentDescription = null,
     contentScale = ContentScale.Crop,
     modifier = modifier.size(size = 260.dp)

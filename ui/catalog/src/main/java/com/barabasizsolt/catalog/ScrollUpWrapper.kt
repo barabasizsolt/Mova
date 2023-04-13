@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.Dp
+import com.barabasizsolt.mova.ui.catalog.R
 import com.barabasizsolt.util.isScrollingUp
 
 @Composable
