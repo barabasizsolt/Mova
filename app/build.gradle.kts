@@ -38,7 +38,6 @@ android {
         release {
             isMinifyEnabled = false
             isShrinkResources = false
-            isZipAlignEnabled = true
 
             buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
             buildConfigField("String", "API_KEY", "\"93697a6983d40e793bc6b81401c77e1c\"")

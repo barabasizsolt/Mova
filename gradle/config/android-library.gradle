@@ -1,0 +1,39 @@
+subprojects { module ->
+    plugins.withId("com.android.library") {
+        module.android {
+            compileSdkVersion = 33
+
+            defaultConfig {
+                minSdk = 23
+                targetSdk = 33
+
+                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                consumerProguardFiles("consumer-rules.pro")
+            }
+
+            compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_1_8
+                targetCompatibility = JavaVersion.VERSION_1_8
+            }
+
+            buildTypes {
+                debug {}
+                internal {}
+                release {}
+            }
+
+            // needed for androidTest
+            packagingOptions {
+                exclude 'META-INF/LICENSE.md'
+                exclude 'META-INF/LICENSE-notice.md'
+            }
+        }
+    }
+    plugins.withId("org.jetbrains.kotlin.android") {
+        module.android {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+    }
+}
