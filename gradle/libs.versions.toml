@@ -4,7 +4,7 @@ kotlin = "1.7.10" # https://kotlinlang.org/docs/releases.html#release-details
 kotlinx-coroutines = "1.6.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
 
 # Android tools
-androidBuildTools = "7.2.2" # https://developer.android.com/studio/releases/gradle-plugin
+androidBuildTools = "8.0.0" # https://developer.android.com/studio/releases/gradle-plugin
 
 # AndroidX libraries
 # AndroidX releases: https://developer.android.com/jetpack/androidx/versions#version-table
