@@ -4,14 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.activity.compose.setContent
-import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import com.barabasizsolt.activityprovider.api.ActivitySetter
 import com.barabasizsolt.api.AuthenticationService
 import com.barabasizsolt.navigation.navigation.appNav.AppNavigation
 import com.barabasizsolt.theme.MovaTheme
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pandulapeter.beagle.Beagle
 import org.koin.android.ext.android.inject
 

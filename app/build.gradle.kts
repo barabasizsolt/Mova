@@ -7,6 +7,7 @@ plugins {
 val release = "release"
 android {
     compileSdk = 33
+    namespace = "com.barabasizsolt.mova"
 
     defaultConfig {
         applicationId = "com.barabasizsolt.mova"
@@ -56,6 +57,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.androidx.composeCompiler.get()
