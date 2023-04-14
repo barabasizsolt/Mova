@@ -2,7 +2,7 @@ package com.barabasizsolt.pagination
 
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class Pager(private val initialValue: Int = 1) {
+class Pager(initialValue: Int = 1) {
 
     private var counter: Int = initialValue
 

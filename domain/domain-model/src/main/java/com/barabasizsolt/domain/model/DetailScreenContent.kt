@@ -4,8 +4,6 @@ import com.barabasizsolt.movie.model.Movie
 import com.barabasizsolt.review.model.Review
 import com.barabasizsolt.video.model.Video
 
-fun DetailScreenContent.MovieDetails.isEmpty(): Boolean = id == EMPTY
-
 sealed class DetailScreenContent {
 
     abstract val id: String

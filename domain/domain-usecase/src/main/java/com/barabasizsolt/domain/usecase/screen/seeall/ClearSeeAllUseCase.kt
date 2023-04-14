@@ -6,6 +6,5 @@ class ClearSeeAllUseCase(private val movieService: MovieService) {
 
     operator fun invoke() {
         movieService.clearPopularMovies()
-        //movieService.
     }
 }

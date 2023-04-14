@@ -1,7 +1,6 @@
 package com.barabasizsolt.genre.implementation
 
 import com.barabasizsolt.genre.api.GenreService
-import com.barabasizsolt.genre.api.GenreType
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow

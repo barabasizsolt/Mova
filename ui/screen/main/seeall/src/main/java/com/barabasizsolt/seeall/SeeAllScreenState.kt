@@ -32,7 +32,7 @@ fun rememberSeeAllScreenState(
 class SeeAllScreenState(
     val contentType: String,
     private val getSeeAllScreenUseCase: GetSeeAllScreenUseCase,
-    private val getSeeAllScreenFlowUseCase: GetSeeAllScreenFlowUseCase
+    getSeeAllScreenFlowUseCase: GetSeeAllScreenFlowUseCase
 ) : BaseScreenState() {
 
     var action by mutableStateOf<Event<Action>?>(value = null)
