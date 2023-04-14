@@ -65,7 +65,7 @@ fun SocialLoginOption(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     text: String? = null,
-    @IdRes iconId: Int
+    iconId: Int
 ) = OutlinedButton(
     border = BorderStroke(width = 1.dp, color = Color.LightGray.copy(alpha = if (isSystemInDarkTheme()) 0.4f else 1f)),
     shape = AppTheme.shapes.medium,
