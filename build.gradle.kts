@@ -8,8 +8,8 @@ buildscript {
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    alias(libs.plugins.github.ben.manes.versions) apply false
-    alias(libs.plugins.littlerobots) apply false
+    alias(libs.plugins.github.ben.manes.versions)
+    alias(libs.plugins.littlerobots)
 }
 
 tasks.register("clean", Delete::class) {
