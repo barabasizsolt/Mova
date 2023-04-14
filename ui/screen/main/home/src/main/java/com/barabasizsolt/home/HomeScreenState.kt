@@ -30,7 +30,7 @@ fun rememberHomeScreenState(
 
 class HomeScreenState(
     private val getHomeScreen: GetHomeScreenUseCase,
-    private val getHomeScreenFlow: GetHomeScreenFlowUseCase,
+    getHomeScreenFlow: GetHomeScreenFlowUseCase,
 ) : BaseScreenState() {
 
     var action by mutableStateOf<Event<Action>?>(value = null)

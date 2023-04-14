@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -51,7 +52,6 @@ import com.barabasizsolt.catalog.AuthInputField
 import com.barabasizsolt.catalog.AuthScreenDelimiter
 import com.barabasizsolt.catalog.MovaButton
 import com.barabasizsolt.catalog.SocialAuthFooter
-import com.google.accompanist.insets.statusBarsPadding
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.SnackbarDuration
@@ -37,7 +38,6 @@ import com.barabasizsolt.catalog.SocialAuthFooter
 import com.barabasizsolt.catalog.SocialLoginOption
 import com.barabasizsolt.mova.ui.screen.auth.loginregister.R
 import com.barabasizsolt.theme.AppTheme
-import com.google.accompanist.insets.statusBarsPadding
 
 @Composable
 fun SocialLoginScreen(screenState: SocialLoginScreenState) {

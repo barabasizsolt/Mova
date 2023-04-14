@@ -25,7 +25,7 @@ fun rememberAppNavigationState(
 
 
 class AppNavigationState(
-    private val scope: CoroutineScope,
+    scope: CoroutineScope,
     private val isLoggedInUseCase: IsLoggedInUseCase
 ) {
     var authState by mutableStateOf<AuthenticationState?>(value = null)

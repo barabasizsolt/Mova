@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,8 +27,8 @@ import com.barabasizsolt.catalog.MovaHeader
 import com.barabasizsolt.catalog.WatchableWithRating
 import com.barabasizsolt.domain.model.ContentItem
 import com.barabasizsolt.domain.usecase.screen.seeall.SeeAllContentType
-import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.mova.ui.util.R
+import com.barabasizsolt.theme.AppTheme
 import com.barabasizsolt.util.navigationBarInsetDp
 import com.barabasizsolt.util.statusBarInsetDp
 

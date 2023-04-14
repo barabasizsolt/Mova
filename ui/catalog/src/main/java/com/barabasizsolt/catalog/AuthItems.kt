@@ -1,7 +1,6 @@
 package com.barabasizsolt.catalog
 
 import android.annotation.SuppressLint
-import androidx.annotation.IdRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,7 +23,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -65,7 +63,7 @@ fun SocialLoginOption(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     text: String? = null,
-    @IdRes iconId: Int
+    iconId: Int
 ) = OutlinedButton(
     border = BorderStroke(width = 1.dp, color = Color.LightGray.copy(alpha = if (isSystemInDarkTheme()) 0.4f else 1f)),
     shape = AppTheme.shapes.medium,

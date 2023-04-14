@@ -9,6 +9,7 @@ import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -28,9 +29,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun BaseScreen(
+    snackBarModifier: Modifier = Modifier,
     screenState: BaseScreenState,
     gridState: LazyGridState = rememberLazyGridState(),
-    snackBarModifier: Modifier = Modifier,
     onSnackBarDismissed: (() -> Unit)? = null,
     scrollUpTopPadding: Dp = AppTheme.dimens.screenPadding,
     shouldShowScrollUp: Boolean = true,
@@ -62,7 +63,11 @@ fun BaseScreen(
             )
         }
 
-        BackHandler(enabled = gridState.firstVisibleItemScrollOffset > 0) {
+        BackHandler(
+            enabled = remember {
+                derivedStateOf { gridState.firstVisibleItemScrollOffset }
+            }.value > 0
+        ) {
             scope.launch {
                 gridState.scrollToItem(index = 0, scrollOffset = 0)
             }
