@@ -54,7 +54,7 @@ fun AppNavigation() {
         }
     )
 
-    setStatusBarColor()
+    SetStatusBarColor()
 }
 
 fun NavHostController.navigateToAuth() {
@@ -74,7 +74,7 @@ fun NavHostController.navigateToMain() {
 }
 
 @Composable
-private fun setStatusBarColor() {
+private fun SetStatusBarColor() {
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(color = Color.Transparent, darkIcons = false)
     systemUiController.setNavigationBarColor(color = Color.Transparent, darkIcons = false)
