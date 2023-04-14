@@ -1,4 +1,4 @@
-package com.barabasizsolt.auth.di
+package com.barabasizsolt.auth
 
 import com.barabasizsolt.auth.implementation.AuthenticationLocalStorageImpl
 import com.barabasizsolt.auth.implementation.SessionExpiredEventHandlerImpl
