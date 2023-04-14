@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Mova</string>
     <string name="facebook_app_id">1125462478085131</string>
-    <string name="fb_login_protocol_scheme">fb1125462478085131</string>
     <string name="facebook_client_token">b922efc28b7ad1ca65b253c5083d0215</string>
 </resources>
