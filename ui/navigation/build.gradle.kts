@@ -29,8 +29,8 @@ dependencies {
     implementation(project(":ui:theme"))
     implementation(project(":ui:util"))
     implementation(project(":domain:domain-usecase"))
-    implementation(project(":service:content:filter:filter-api"))
-    implementation(project(":service:auth:firebase:firebase-api"))
+    implementation(project(":kmm:service:content:filter:filter-api"))
+    implementation(project(":kmm:service:auth:firebase:firebase-api"))
 
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.voyager)

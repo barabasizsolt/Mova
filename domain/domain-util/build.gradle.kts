@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":service:content:pagination"))
+    implementation(project(":kmm:service:content:pagination"))
 
     implementation(libs.koin.core)
     implementation(libs.kotlinx.coroutines)

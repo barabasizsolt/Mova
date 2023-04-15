@@ -300,6 +300,7 @@ test-android = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidBuildTools" }
 android-library = { id = "com.android.library", version.ref = "androidBuildTools" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }

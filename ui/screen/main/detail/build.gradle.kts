@@ -25,12 +25,12 @@ dependencies {
     implementation(project(":domain:domain-util"))
     implementation(project(":domain:domain-usecase"))
 
-    implementation(project(":service:content:pagination"))
-    implementation(project(":service:content:model:category"))
-    implementation(project(":service:content:model:cast-crew"))
-    implementation(project(":service:content:model:video"))
-    implementation(project(":service:content:model:movie"))
-    implementation(project(":service:content:model:review"))
+    implementation(project(":kmm:service:content:pagination"))
+    implementation(project(":kmm:service:content:model:category"))
+    implementation(project(":kmm:service:content:model:cast-crew"))
+    implementation(project(":kmm:service:content:model:video"))
+    implementation(project(":kmm:service:content:model:movie"))
+    implementation(project(":kmm:service:content:model:review"))
 
     implementation(libs.youtube.player)
     implementation(libs.youtube.player.customui)

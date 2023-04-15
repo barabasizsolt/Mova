@@ -19,8 +19,8 @@ dependencies {
     implementation(project(":domain:domain-model"))
     implementation(project(":ui:theme"))
     implementation(project(":ui:util"))
-    implementation(project(":service:content:model:movie"))
-    implementation(project(":service:content:pagination"))
+    implementation(project(":kmm:service:content:model:movie"))
+    implementation(project(":kmm:service:content:pagination"))
 
     implementation(libs.youtube.player)
     implementation(libs.youtube.player.customui)

@@ -23,8 +23,8 @@ dependencies {
     implementation(project(":domain:domain-model"))
     implementation(project(":domain:domain-util"))
     implementation(project(":domain:domain-usecase"))
-    implementation(project(":service:content:pagination"))
-    implementation(project(":service:content:model:movie"))
+    implementation(project(":kmm:service:content:pagination"))
+    implementation(project(":kmm:service:content:model:movie"))
 
     implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.voyager)

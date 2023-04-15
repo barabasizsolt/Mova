@@ -74,11 +74,11 @@ dependencies {
     implementation(project(":ui:theme"))
     implementation(project(":domain:domain-di"))
     implementation(project(":domain:domain-usecase"))
-    implementation(project(":service:network:network-di"))
-    implementation(project(":service:auth:auth-di"))
-    implementation(project(":service:auth:firebase:firebase-api"))
-    implementation(project(":service:activityprovider:activityprovider-api"))
-    implementation(project(":service:activityprovider:activityprovider-di"))
+    implementation(project(":kmm:service:network:network-di"))
+    implementation(project(":kmm:service:auth:auth-di"))
+    implementation(project(":kmm:service:auth:firebase:firebase-api"))
+    implementation(project(":kmm:service:activityprovider:activityprovider-api"))
+    implementation(project(":kmm:service:activityprovider:activityprovider-di"))
 
     // Kotlin
     implementation(libs.kotlinx.coroutines)
