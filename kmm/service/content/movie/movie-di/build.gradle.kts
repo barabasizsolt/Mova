@@ -5,10 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.square.retrofit)
     implementation(libs.koin.core)
-
-
     implementation(libs.kotlinx.serialization)
 
     implementation(project(":kmm:service:network:network-api"))
