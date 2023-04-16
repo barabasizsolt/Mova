@@ -4,11 +4,15 @@ import com.barabasizsolt.api.DataLayerException
 import com.barabasizsolt.movie.model.Movie
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MovieListDTO(
-    @Json(name = "page") val page: Int?,
-    @Json(name = "results") val results: List<MovieDTO>?
+    @SerialName(value = "page") val page: Int?,
+    @SerialName(value = "results") val results: List<MovieDTO>?,
+    @SerialName(value = "total_pages") val totalPages: Int?,
+    @SerialName(value = "total_results") val totalResults: Int?,
 )
 
 fun MovieListDTO.toModel() : List<Movie> {

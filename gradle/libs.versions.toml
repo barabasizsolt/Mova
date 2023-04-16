@@ -204,10 +204,12 @@ youtube-player = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:cor
 youtube-player-customui = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:custom-ui", version.ref = "youtube-player" }
 # Ktor
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-client-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
-ktor-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-logging = { module = "io.ktor:ktor-client-logging-jvm", version.ref = "ktor" }
 
 # Test
@@ -309,6 +311,8 @@ test-android = [
 ktor-common = [
     "ktor-client-core",
     "ktor-serialization",
+    "ktor-client-negotiation",
+    "ktor-client-cio",
 ]
 ktor-android = [
     "ktor-client-android",

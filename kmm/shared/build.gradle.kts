@@ -26,8 +26,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                //implementation(project(":kmm:service:activityprovider:activityprovider-api"))
-                implementation(project(":kmm:service:content:cast-crew:cast-crew-api"))
+
             }
         }
         val commonTest by getting {

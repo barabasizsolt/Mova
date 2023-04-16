@@ -1,6 +1,8 @@
 package com.barabasizsolt.di
 
+import com.barabasizsolt.api.BaseHttpClient
 import com.barabasizsolt.api.RetrofitClient
+import com.barabasizsolt.implementation.BaseHttpClientImpl
 import com.barabasizsolt.implementation.OauthRetrofitWithMoshiContainer
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
@@ -25,5 +27,12 @@ fun createNetworkModule(
             moshiBuilder = moshiBuilderProvider(),
         )
     }
+}
+
+fun createNetworkModule1(
+    host: String,
+    apiKey: String
+) = module {
+    single<BaseHttpClient> { BaseHttpClientImpl(hostUrl = host, apiKey = apiKey) }
 }
 

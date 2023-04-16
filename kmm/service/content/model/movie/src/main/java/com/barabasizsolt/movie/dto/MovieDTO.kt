@@ -3,21 +3,25 @@ package com.barabasizsolt.movie.dto
 import com.barabasizsolt.movie.model.Movie
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MovieDTO(
-    @Json(name = "id") val id: String?,
-    @Json(name = "adult") val adult: Boolean?,
-    @Json(name = "backdrop_path") val backdropPath: String?,
-    @Json(name = "genre_ids") val genreIds: List<Int>?,
-    @Json(name = "original_language") val originalLanguage: String?,
-    @Json(name = "original_title") val originalTitle: String?,
-    @Json(name = "title") val title: String?,
-    @Json(name = "overview") val overview: String?,
-    @Json(name = "popularity") val popularity: Double?,
-    @Json(name = "poster_path") val posterPath: String?,
-    @Json(name = "release_date") val releaseDate: String?,
-    @Json(name = "vote_average") val voteAverage: Double?
+    @SerialName(value = "id") val id: Int?,
+    @SerialName(value = "adult") val adult: Boolean?,
+    @SerialName(value = "backdrop_path") val backdropPath: String?,
+    @SerialName(value = "genre_ids") val genreIds: List<Int>?,
+    @SerialName(value = "original_language") val originalLanguage: String?,
+    @SerialName(value = "original_title") val originalTitle: String?,
+    @SerialName(value = "title") val title: String?,
+    @SerialName(value = "overview") val overview: String?,
+    @SerialName(value = "popularity") val popularity: Double?,
+    @SerialName(value = "poster_path") val posterPath: String?,
+    @SerialName(value = "release_date") val releaseDate: String?,
+    @SerialName(value = "vote_average") val voteAverage: Double?,
+    @SerialName(value = "vote_count") val voteCount: Int?,
+    @SerialName(value = "video") val video: Boolean?,
 )
 
 fun MovieDTO.toModel() : Movie? {
@@ -37,7 +41,7 @@ fun MovieDTO.toModel() : Movie? {
         return null
     }
     return Movie(
-        id = id,
+        id = id.toString(),
         adult = adult,
         backdropPath = backdropPath,
         genreIds = genreIds,

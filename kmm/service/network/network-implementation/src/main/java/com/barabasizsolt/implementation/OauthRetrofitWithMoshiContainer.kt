@@ -33,7 +33,7 @@ class OauthRetrofitWithMoshiContainer(
             connectTimeout(30L, TimeUnit.SECONDS)
             this.okhttpBuilder().addInterceptor { chain ->
                 val original = chain.request()
-                val url = original.url().newBuilder().apply {
+                val url = original.url.newBuilder().apply {
                     addQueryParameter("api_key", apiKey)
                 }.build()
                 chain.proceed(original.newBuilder().url(url).build())

@@ -32,6 +32,7 @@ android {
         debug {
             isDebuggable = true
             buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "HOST", "\"api.themoviedb.org\"")
             buildConfigField("String", "API_KEY", "\"93697a6983d40e793bc6b81401c77e1c\"")
             buildConfigField("String", "CLIENT_ID", "\"mova-mobile-client\"")
         }
@@ -41,6 +42,7 @@ android {
             isShrinkResources = false
 
             buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "HOST", "\"api.themoviedb.org\"")
             buildConfigField("String", "API_KEY", "\"93697a6983d40e793bc6b81401c77e1c\"")
             buildConfigField("String", "CLIENT_ID", "\"mova-mobile-client\"")
 
@@ -79,6 +81,8 @@ dependencies {
     implementation(project(":kmm:service:auth:firebase:firebase-api"))
     implementation(project(":kmm:service:activityprovider:activityprovider-api"))
     implementation(project(":kmm:service:activityprovider:activityprovider-di"))
+
+    implementation(project(":kmm:service:network:implementation"))
 
     // Kotlin
     implementation(libs.kotlinx.coroutines)

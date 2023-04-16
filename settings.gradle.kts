@@ -125,3 +125,5 @@ include(":ui:screen:auth:welcome")
 
 include(":kmm:")
 include(":kmm:shared")
+include(":kmm:service:network:api")
+include(":kmm:service:network:implementation")
