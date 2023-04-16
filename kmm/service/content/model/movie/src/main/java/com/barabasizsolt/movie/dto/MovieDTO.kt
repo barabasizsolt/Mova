@@ -1,11 +1,8 @@
 package com.barabasizsolt.movie.dto
 
 import com.barabasizsolt.movie.model.Movie
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
 @Serializable
 data class MovieDTO(
     @SerialName(value = "id") val id: Int?,

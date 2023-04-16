@@ -7,7 +7,6 @@ import io.ktor.client.request.get
 
 interface BaseHttpClient {
     val client: HttpClient
-
 }
 
 suspend inline fun <reified T> BaseHttpClient.get(
