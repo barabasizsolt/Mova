@@ -12,8 +12,6 @@ dependencyResolutionManagement {
         maven {
             url = uri("https://maven.pkg.github.com/halcyonmobile/*")
             credentials {
-                //username = System.getenv("GITHUB_USERNAME")
-                //password = System.getenv("GITHUB_TOKEN")
                 username = extra.properties["GITHUB_USERNAME"] as String? ?: System.getenv("GITHUB_USERNAME")
                 password = extra.properties["GITHUB_TOKEN"] as String? ?: System.getenv("GITHUB_TOKEN")
             }
@@ -125,6 +123,7 @@ include(":ui:screen:auth:welcome")
 
 include(":kmm:")
 include(":kmm:shared")
+
 include(":kmm:service:network:api")
 include(":kmm:service:network:implementation")
 include(":kmm:service:content:movie:api")
@@ -141,3 +140,9 @@ include(":kmm:service:content:filter:api")
 include(":kmm:service:content:filter:implementation")
 include(":kmm:service:content:genre:api")
 include(":kmm:service:content:genre:implementation")
+include(":kmm:service:content:people:api")
+include(":kmm:service:content:people:implementation")
+include(":kmm:service:content:review:api")
+include(":kmm:service:content:review:implementation")
+include(":kmm:service:content:video:api")
+include(":kmm:service:content:video:implementation")

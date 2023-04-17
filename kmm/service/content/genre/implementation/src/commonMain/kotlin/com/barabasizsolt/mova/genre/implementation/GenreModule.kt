@@ -1,14 +1,9 @@
-package com.barabasizsolt.genre.di
+package com.barabasizsolt.mova.genre.implementation
 
-import com.barabasizsolt.api.RetrofitClient
-import com.barabasizsolt.genre.api.GenreService
-import com.barabasizsolt.genre.implementation.GenreNetworkService
-import com.barabasizsolt.genre.implementation.GenreRemoteSource
-import com.barabasizsolt.genre.implementation.GenreServiceImpl
+import com.barabasizsolt.mova.genre.api.GenreService
 import org.koin.dsl.module
 
 fun createGenreModule() = module {
-    factory { get<RetrofitClient>().sessionless.create(GenreNetworkService::class.java) }
-    factory { GenreRemoteSource(networkService = get()) }
+    factory { GenreRemoteSource(baseHttpClient = get()) }
     single<GenreService> { GenreServiceImpl(remoteSource = get()) }
 }

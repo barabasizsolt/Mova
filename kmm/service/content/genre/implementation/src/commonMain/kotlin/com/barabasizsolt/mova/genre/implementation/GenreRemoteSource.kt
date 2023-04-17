@@ -1,10 +1,15 @@
-package com.barabasizsolt.genre.implementation
+package com.barabasizsolt.mova.genre.implementation
 
-import com.barabasizsolt.genre.dto.toModel
+import com.barabasizsolt.network.api.BaseHttpClient
+import com.barabasizsolt.network.api.get
+import genre.dto.GenreListDTO
+import genre.dto.toModel
 
-class GenreRemoteSource(private val networkService: GenreNetworkService) {
+class GenreRemoteSource(private val baseHttpClient: BaseHttpClient) {
 
-    suspend fun getMovieGenres() = networkService.getMovieGenres().toModel()
+    suspend fun getMovieGenres() =
+        baseHttpClient.get<GenreListDTO>(urlString = "genre/movie/list").toModel()
 
-    suspend fun getTvSeriesGenres() = networkService.getTvSeriesGenres().toModel()
+    suspend fun getTvSeriesGenres() =
+        baseHttpClient.get<GenreListDTO>(urlString = "genre/tv/list").toModel()
 }

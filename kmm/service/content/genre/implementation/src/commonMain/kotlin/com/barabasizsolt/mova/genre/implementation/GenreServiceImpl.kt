@@ -1,6 +1,6 @@
-package com.barabasizsolt.genre.implementation
+package com.barabasizsolt.mova.genre.implementation
 
-import com.barabasizsolt.genre.api.GenreService
+import com.barabasizsolt.mova.genre.api.GenreService
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
