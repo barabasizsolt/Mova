@@ -53,7 +53,7 @@ halcyon-errorHandler = '1.0.0' # https://github.com/halcyonmobile/error-handler/
 halcyon-recylerTypedAdapter = '1.0.1' # releases page is unmaintained: https://github.com/halcyonmobile/recycler-typed-adapter/releases
 
 # Other libraries
-koin = "3.2.1" # https://insert-koin.io/docs/setup/v3
+koin = "3.4.0" # https://insert-koin.io/docs/setup/v3
 koin-compose = "3.2.0" # https://search.maven.org/search?q=io.insert-koin
 leakcanary = "2.9.1" # https://square.github.io/leakcanary/getting_started/
 beagle = "2.9.0" # https://github.com/pandulapeter/beagle/releases
@@ -260,7 +260,7 @@ androidx-compose = [
     "androidx-composeUiTooling",
     "androidx-composeFoundation",
     "androidx-composeMaterial",
-    "androidx-composeAnimationGraphics",
+    #"androidx-composeAnimationGraphics",
     "google-accompanistInsets",
     "google-accompanistAnimatedNavigation",
     "google-accompanistPager",
@@ -334,3 +334,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.41.0" }
 littlerobots = { id = "nl.littlerobots.version-catalog-update", version = "0.6.1" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+jetbrains-compose = { id = "org.jetbrains.compose", version = "1.4.0" }

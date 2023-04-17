@@ -121,7 +121,6 @@ include(":ui:screen:main:base")
 include(":ui:screen:main:detail")
 include(":ui:screen:auth:welcome")
 
-include(":kmm:")
 include(":kmm:shared")
 
 include(":kmm:service:network:api")
@@ -146,4 +145,6 @@ include(":kmm:service:content:review:api")
 include(":kmm:service:content:review:implementation")
 include(":kmm:service:content:video:api")
 include(":kmm:service:content:video:implementation")
+
 include(":kmm:domain")
+include(":kmm:ui")
