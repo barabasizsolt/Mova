@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
         maven { url = uri("https://plugins.gradle.org/m2/") }
@@ -15,8 +16,10 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.jetbrains.compose) apply false
 }
 
 tasks.register("clean", Delete::class) {
@@ -25,3 +28,4 @@ tasks.register("clean", Delete::class) {
 
 apply(from = "gradle/config/android-library.gradle")
 apply(from = "gradle/config/java-library.gradle")
+apply(from = "gradle/config/multiplatform-library.gradle")
