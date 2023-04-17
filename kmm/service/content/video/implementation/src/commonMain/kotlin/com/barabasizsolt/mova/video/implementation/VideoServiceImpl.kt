@@ -1,8 +1,8 @@
-package com.barabasizsolt.video.implementation
+package com.barabasizsolt.mova.video.implementation
 
-import com.barabasizsolt.category.Category
-import com.barabasizsolt.video.api.VideoService
-import com.barabasizsolt.video.model.Video
+import category.Category
+import com.barabasizsolt.mova.video.api.VideoService
+import video.model.Video
 
 class VideoServiceImpl(private val remoteSource: VideoRemoteSource) : VideoService {
 

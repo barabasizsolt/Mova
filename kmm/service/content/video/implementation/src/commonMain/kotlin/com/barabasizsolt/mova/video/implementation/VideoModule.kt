@@ -1,14 +1,9 @@
-package com.barabasizsolt.video.di
+package com.barabasizsolt.mova.video.implementation
 
-import com.barabasizsolt.api.RetrofitClient
-import com.barabasizsolt.video.api.VideoService
-import com.barabasizsolt.video.implementation.VideoNetworkService
-import com.barabasizsolt.video.implementation.VideoRemoteSource
-import com.barabasizsolt.video.implementation.VideoServiceImpl
+import com.barabasizsolt.mova.video.api.VideoService
 import org.koin.dsl.module
 
 fun createVideoModule() = module {
-    factory { get<RetrofitClient>().sessionless.create(VideoNetworkService::class.java) }
-    factory { VideoRemoteSource(networkService = get()) }
+    factory { VideoRemoteSource(baseHttpClient = get()) }
     single<VideoService> { VideoServiceImpl(remoteSource = get()) }
 }

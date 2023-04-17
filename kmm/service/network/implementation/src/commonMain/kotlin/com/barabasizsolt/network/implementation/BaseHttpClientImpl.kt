@@ -14,7 +14,6 @@ class BaseHttpClientImpl(
     private val hostUrl: String,
     private val apiKey: String
 ) : BaseHttpClient {
-
     override val client: HttpClient
         get() = HttpClient(engineFactory = CIO) {
             install(
