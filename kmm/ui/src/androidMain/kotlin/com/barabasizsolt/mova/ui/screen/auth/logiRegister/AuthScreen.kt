@@ -40,7 +40,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -58,13 +57,15 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import com.barabasizsolt.mova.ui.R
-import com.barabasizsolt.mova.ui.catalog.AuthInputField
-import com.barabasizsolt.mova.ui.catalog.AuthScreenDelimiter
+import com.barabasizsolt.mova.ui.screen.auth.catalog.AuthInputField
+import com.barabasizsolt.mova.ui.screen.auth.catalog.AuthScreenDelimiter
 import com.barabasizsolt.mova.ui.catalog.MovaButton
 import com.barabasizsolt.mova.ui.catalog.MovaSnackBar
-import com.barabasizsolt.mova.ui.catalog.SocialAuthFooter
-import com.barabasizsolt.mova.ui.catalog.SocialLoginOption
+import com.barabasizsolt.mova.ui.screen.auth.catalog.SocialAuthFooter
+import com.barabasizsolt.mova.ui.screen.auth.catalog.SocialLoginOption
 import com.barabasizsolt.mova.ui.theme.AppTheme
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -226,11 +227,12 @@ private fun ScreenContent(
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun AuthScreenLogo(
     modifier: Modifier = Modifier
 ) = Image(
-    painter = painterResource(id = R.drawable.mova_logo),
+    painter = painterResource(res = "drawable/mova_logo.png"),
     contentDescription = null,
     contentScale = ContentScale.Crop,
     modifier = modifier.size(size = 100.dp)
@@ -309,7 +311,13 @@ private fun SocialItemHolder(
     horizontalArrangement = Arrangement.Center,
     verticalAlignment = Alignment.CenterVertically
 ) {
-    SocialLoginOption(onClick = onFacebookClicked, iconId = "drawable/facebook_ic.xml")
+    SocialLoginOption(
+        onClick = onFacebookClicked,
+        iconPath = "drawable/facebook_ic.xml"
+    )
     Spacer(modifier = Modifier.width(width = AppTheme.dimens.contentPadding * 2))
-    SocialLoginOption(onClick = onGoogleClicked, iconId = "drawable/google_ic.xml")
+    SocialLoginOption(
+        onClick = onGoogleClicked,
+        iconPath = "drawable/google_ic.xml"
+    )
 }

@@ -54,7 +54,7 @@ import com.barabasizsolt.mova.ui.catalog.SearchableItem
 import com.barabasizsolt.mova.ui.catalog.WatchableWithRating
 import com.barabasizsolt.mova.ui.screen.base.BaseScreenState
 import com.barabasizsolt.mova.ui.screen.base.UserAction
-import com.barabasizsolt.mova.ui.screen.main.base.BaseScreen
+import com.barabasizsolt.mova.ui.screen.base.BaseScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import com.barabasizsolt.mova.ui.util.imeBottomInsetDp
 import com.barabasizsolt.mova.ui.util.statusBarInsetDp

@@ -30,8 +30,4 @@ kotlin {
 
 android {
     namespace = "com.barabasizsolt.mova.video.implementation"
-    compileSdk = 33
-    defaultConfig {
-        minSdk = 24
-    }
 }

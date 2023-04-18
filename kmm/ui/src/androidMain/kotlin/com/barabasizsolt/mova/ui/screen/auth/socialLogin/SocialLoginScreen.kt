@@ -26,18 +26,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.mova.ui.R
-import com.barabasizsolt.mova.ui.catalog.AuthScreenDelimiter
+import com.barabasizsolt.mova.ui.screen.auth.catalog.AuthScreenDelimiter
 import com.barabasizsolt.mova.ui.catalog.MovaButton
 import com.barabasizsolt.mova.ui.catalog.MovaSnackBar
-import com.barabasizsolt.mova.ui.catalog.SocialAuthFooter
-import com.barabasizsolt.mova.ui.catalog.SocialLoginOption
+import com.barabasizsolt.mova.ui.screen.auth.catalog.SocialAuthFooter
+import com.barabasizsolt.mova.ui.screen.auth.catalog.SocialLoginOption
 import com.barabasizsolt.mova.ui.theme.AppTheme
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun SocialLoginScreen(screenState: SocialLoginScreenState) {
@@ -140,11 +141,12 @@ private fun ScreenContent(
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun SocialLoginScreenLogo(
     modifier: Modifier = Modifier
 ) = Image(
-    painter = painterResource(id = R.drawable.social_logo),
+    painter = painterResource(res = "drawable/social_logo.png"),
     contentDescription = null,
     contentScale = ContentScale.Crop,
     modifier = modifier.size(size = 260.dp)
@@ -168,7 +170,7 @@ private fun GoogleLoginOption(
 ) = SocialLoginOption(
     onClick = onClick,
     text = stringResource(id = R.string.continue_with_google),
-    iconId = "drawable/google_ic.xml",
+    iconPath = "drawable/google_ic.xml",
     modifier = modifier.fillMaxWidth()
 )
 
@@ -176,10 +178,13 @@ private fun GoogleLoginOption(
 private fun FacebookLoginOption(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
-) = SocialLoginOption(
-    onClick = onClick,
-    text = stringResource(id = R.string.continue_with_facebook),
-    iconId = "drawable/facebook_ic.xml",
-    modifier = modifier.fillMaxWidth()
-)
+) {
+
+    SocialLoginOption(
+        onClick = onClick,
+        text = stringResource(id = R.string.continue_with_facebook),
+        iconPath = "drawable/facebook_ic.xml",
+        modifier = modifier.fillMaxWidth()
+    )
+}
 

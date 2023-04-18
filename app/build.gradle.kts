@@ -72,20 +72,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":ui:navigation"))
-    implementation(project(":ui:theme"))
-    implementation(project(":domain:domain-di"))
-    implementation(project(":domain:domain-usecase"))
-    implementation(project(":kmm:service:network:network-di"))
-    implementation(project(":kmm:service:auth:auth-di"))
+    implementation(project(":kmm:shared"))
     implementation(project(":kmm:service:auth:firebase:firebase-api"))
     implementation(project(":kmm:service:activityprovider:activityprovider-api"))
     implementation(project(":kmm:service:activityprovider:activityprovider-di"))
-
-    implementation(project(":kmm:service:network:implementation"))
-
-    // Kotlin
-    implementation(libs.kotlinx.coroutines)
 
     // AndroidX
     implementation(libs.bundles.androidx.core)

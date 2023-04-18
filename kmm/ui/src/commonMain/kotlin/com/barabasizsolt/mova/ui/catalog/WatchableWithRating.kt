@@ -24,7 +24,7 @@ fun WatchableWithRating(
     aspectRatio: Float = 0.7f,
     onClick: (Int) -> Unit
 ) = Box(modifier = modifier) {
-    MovaImage(
+    CommonMovaImage(
         imageUrl = item.posterPath.getImageKey(imageType = ImageType.ORIGINAL),
         contentScale = ContentScale.Crop,
         modifier = Modifier

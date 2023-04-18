@@ -9,11 +9,11 @@ import androidx.compose.ui.Modifier
 import com.barabasizsolt.mova.domain.usecase.auth.LogOutUseCase
 import com.barabasizsolt.mova.ui.catalog.MovaButton
 import com.barabasizsolt.mova.ui.theme.AppTheme
-import org.koin.androidx.compose.inject
+import org.koin.compose.koinInject
 
 @Composable
 fun ProfileScreen() {
-    val logOutUseCase by inject<LogOutUseCase>()
+    val logOutUseCase = koinInject<LogOutUseCase>()
 
     Box(modifier = Modifier.fillMaxSize()) {
         MovaButton(

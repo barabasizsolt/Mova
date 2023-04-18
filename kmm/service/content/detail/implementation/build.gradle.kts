@@ -29,8 +29,4 @@ kotlin {
 
 android {
     namespace = "com.barabasizsolt.mova.detail.implementation"
-    compileSdk = 33
-    defaultConfig {
-        minSdk = 24
-    }
 }

@@ -40,7 +40,7 @@ fun MediumPersonCard(
     aspectRatio: Float = 0.7f,
     onClick: () -> Unit
 ) = Box {
-    MovaImage(
+    CommonMovaImage(
         imageUrl = item.posterPath.getImageKey(imageType = ImageType.ORIGINAL),
         contentScale = ContentScale.Crop,
         modifier = modifier
@@ -72,7 +72,7 @@ fun PersonCard(
 ) {
     val names = person.name.split(" ", limit = 2)
 
-    MovaImage(
+    CommonMovaImage(
         imageUrl = person.posterPath.getImageKey(imageType = ImageType.ORIGINAL),
         modifier = Modifier
             .size(size = personCardSize.size)

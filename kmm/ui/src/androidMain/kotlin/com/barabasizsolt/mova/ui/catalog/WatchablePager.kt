@@ -91,7 +91,7 @@ private fun PagerItem(
     Box(modifier = modifier
         .fillMaxWidth()
         .clickable { onClick() }) {
-        MovaImage(
+        CommonMovaImage(
             imageUrl = item.posterPath?.getImageKey(imageType = ImageType.ORIGINAL).orEmpty(),
             contentScale = ContentScale.Crop,
             modifier = Modifier

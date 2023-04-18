@@ -2,7 +2,7 @@ package com.barabasizsolt.mova
 
 import android.app.Application
 import com.barabasizsolt.api.AuthenticationService
-import com.barabasizsolt.mova.di.createAppModule
+import com.barabasizsolt.mova.shared.createAndroidAppModule
 import com.barabasizsolt.mova.tooling.setupBeagle
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -24,7 +24,12 @@ class MainApplication : Application() {
         startKoin {
             androidLogger(level = Level.DEBUG)
             androidContext(androidContext = this@MainApplication)
-            modules(modules = createAppModule())
+            modules(
+                modules = createAndroidAppModule(
+                    host = BuildConfig.HOST,
+                    apiKey = BuildConfig.API_KEY
+                )
+            )
             authService.initialize(context = this@MainApplication)
         }
     }

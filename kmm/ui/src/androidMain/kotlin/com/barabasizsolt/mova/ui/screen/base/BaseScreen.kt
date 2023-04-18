@@ -1,4 +1,4 @@
-package com.barabasizsolt.mova.ui.screen.main.base
+package com.barabasizsolt.mova.ui.screen.base
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background

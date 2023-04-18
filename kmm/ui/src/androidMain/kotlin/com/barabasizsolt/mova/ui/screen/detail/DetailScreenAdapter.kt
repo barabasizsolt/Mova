@@ -12,13 +12,13 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.barabasizsolt.mova.ui.screen.detail.catalog.ContentHeader
+import com.barabasizsolt.detail.catalog.ContentTabs
+import com.barabasizsolt.detail.catalog.Review
 import com.barabasizsolt.mova.domain.model.ContentItem
 import com.barabasizsolt.mova.domain.model.toContentItem
 import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.catalog.WatchableWithRating
-import com.barabasizsolt.mova.ui.screen.detail.catalog.ContentHeader
-import com.barabasizsolt.mova.ui.screen.detail.catalog.ContentTabs
-import com.barabasizsolt.mova.ui.screen.detail.catalog.Review
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import com.barabasizsolt.mova.ui.util.ListItemDiff
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.customui.DefaultPlayerUiController

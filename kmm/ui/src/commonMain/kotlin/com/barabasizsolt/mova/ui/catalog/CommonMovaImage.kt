@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 
 @Composable
-fun MovaImage(
+fun CommonMovaImage(
     modifier: Modifier = Modifier,
     imageUrl: String?,
     alignment: Alignment = Alignment.Center,

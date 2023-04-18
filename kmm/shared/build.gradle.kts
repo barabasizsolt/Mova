@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.library)
+    alias(libs.plugins.jetbrains.compose)
 }
 
 kotlin {
@@ -47,6 +48,7 @@ kotlin {
             export(project(":kmm:service:content:video:implementation"))
 
             export(project(":kmm:domain"))
+
             export(project(":kmm:ui"))
         }
     }
@@ -54,6 +56,14 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(libs.koin.core)
+
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.components.resources)
+
                 api(project(":kmm:service:network:api"))
                 implementation(project(":kmm:service:network:implementation"))
                 api(project(":kmm:service:content:movie:api"))
@@ -78,6 +88,8 @@ kotlin {
                 implementation(project(":kmm:service:content:video:implementation"))
 
                 implementation(project(":kmm:domain"))
+
+                implementation(project(":kmm:ui"))
             }
         }
         val commonTest by getting {
@@ -88,7 +100,9 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                implementation(project(":kmm:ui"))
+                implementation(project(":kmm:service:activityprovider:activityprovider-api"))
+                implementation(project(":kmm:service:activityprovider:activityprovider-implementation"))
+                implementation(project(":kmm:service:activityprovider:activityprovider-di"))
             }
         }
 
@@ -114,13 +128,6 @@ kotlin {
         }
     }
 }
-
-//kotlinInject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlininject" }
-//kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlininject" }
-//dependencies {
-//    add("kspIosX64", libs.kotlinInject.compiler)
-//    add("kspIosArm64", libs.kotlinInject.compiler)
-//}
 
 android {
     namespace = "com.barabasizsolt.mova.shared"

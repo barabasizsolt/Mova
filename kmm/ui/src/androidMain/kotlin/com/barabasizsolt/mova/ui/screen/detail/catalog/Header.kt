@@ -1,4 +1,4 @@
-package com.barabasizsolt.detail.catalog
+package com.barabasizsolt.mova.ui.screen.detail.catalog
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -35,7 +34,7 @@ import com.barabasizsolt.mova.domain.model.ContentItem
 import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.catalog.GradientOverlay
 import com.barabasizsolt.mova.ui.catalog.MovaFilledButton
-import com.barabasizsolt.mova.ui.catalog.MovaImage
+import com.barabasizsolt.mova.ui.catalog.CommonMovaImage
 import com.barabasizsolt.mova.ui.catalog.MovaOutlinedButton
 import com.barabasizsolt.mova.ui.catalog.PeopleCarousel
 import com.barabasizsolt.mova.ui.catalog.PersonCardSize
@@ -45,6 +44,8 @@ import com.barabasizsolt.mova.ui.util.ExpandingText
 import com.barabasizsolt.mova.ui.util.ImageType
 import com.barabasizsolt.mova.ui.util.getImageKey
 import com.barabasizsolt.mova.ui.util.withShadow
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun ContentHeader(
@@ -63,7 +64,7 @@ fun ContentHeader(
 
 @Composable
 private fun BoxScope.ContentGradientImage(posterPath: String?) {
-    MovaImage(
+    CommonMovaImage(
         imageUrl = posterPath?.getImageKey(imageType = ImageType.ORIGINAL).orEmpty(),
         contentScale = ContentScale.Crop,
         modifier = Modifier
@@ -130,14 +131,15 @@ private fun ContentGeneralInfo(item: DetailScreenListItem.HeaderItem) = LazyRow(
     items(items = item.spokenLanguages) { ContentInfoItem(value = it) }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun ContentRating(rating: String) = Row(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.smallPadding)
 ) {
     Image(
-        painter = painterResource(id = R.drawable.ic_rating),
-        contentDescription = ""
+        painter = painterResource(res = "drawable/ic_rating.xml"),
+        contentDescription = null
     )
     Text(
         text = rating,
@@ -147,13 +149,14 @@ private fun ContentRating(rating: String) = Row(
     )
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun ContentReleaseDate(releaseDate: String) = Row(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.smallPadding)
 ) {
     Image(
-        painter = painterResource(id = R.drawable.ic_arrow),
+        painter = painterResource(res = "drawable/ic_arrow.xml"),
         contentDescription = "",
         modifier = Modifier.size(size = 20.dp)
     )

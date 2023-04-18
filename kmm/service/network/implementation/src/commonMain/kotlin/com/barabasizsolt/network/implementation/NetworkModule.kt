@@ -4,8 +4,8 @@ import com.barabasizsolt.network.api.BaseHttpClient
 import org.koin.dsl.module
 
 fun createNetworkModule(
-    baseUrl: String,
+    host: String,
     apiKey: String
 ) = module {
-    single<BaseHttpClient> { BaseHttpClientImpl(hostUrl = baseUrl, apiKey = apiKey) }
+    single<BaseHttpClient> { BaseHttpClientImpl(hostUrl = host, apiKey = apiKey) }
 }

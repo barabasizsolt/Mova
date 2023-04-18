@@ -8,8 +8,7 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import com.barabasizsolt.activityprovider.api.ActivitySetter
 import com.barabasizsolt.api.AuthenticationService
-import com.barabasizsolt.navigation.navigation.appNav.AppNavigation
-import com.barabasizsolt.theme.MovaTheme
+import com.barabasizsolt.mova.shared.EntryPoint
 import com.pandulapeter.beagle.Beagle
 import org.koin.android.ext.android.inject
 
@@ -23,9 +22,7 @@ class MainActivity : FragmentActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            MovaTheme {
-                AppNavigation()
-            }
+            EntryPoint()
         }
     }
 

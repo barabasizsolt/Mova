@@ -8,6 +8,9 @@ plugins {
 kotlin {
     android()
     ios()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 
     sourceSets {
         val commonMain by getting {
@@ -60,4 +63,7 @@ kotlin {
 
 android {
     namespace = "com.barabasizsolt.mova.ui"
+
+    sourceSets["main"].res.srcDirs("src/androidMain/res")
+    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 }

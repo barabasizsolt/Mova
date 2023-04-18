@@ -1,4 +1,4 @@
-package com.barabasizsolt.mova.ui.catalog
+package com.barabasizsolt.mova.ui.screen.auth.catalog
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
@@ -63,7 +64,7 @@ fun SocialLoginOption(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     text: String? = null,
-    iconId: String
+    iconPath: String
 ) = OutlinedButton(
     border = BorderStroke(width = 1.dp, color = Color.LightGray.copy(alpha = if (isSystemInDarkTheme()) 0.4f else 1f)),
     shape = AppTheme.shapes.medium,
@@ -79,7 +80,7 @@ fun SocialLoginOption(
     modifier = modifier
 ) {
     Image(
-        painter = painterResource(res = iconId),
+        painter = painterResource(res = iconPath),
         contentDescription = null
     )
     if (text != null) {

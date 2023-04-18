@@ -54,7 +54,8 @@ halcyon-recylerTypedAdapter = '1.0.1' # releases page is unmaintained: https://g
 
 # Other libraries
 koin = "3.4.0" # https://insert-koin.io/docs/setup/v3
-koin-compose = "3.2.0" # https://search.maven.org/search?q=io.insert-koin
+koin-compose = "3.4.3" # https://insert-koin.io/docs/setup/v3
+koin-compose-kmm = "1.0.0" # https://insert-koin.io/docs/setup/v3
 leakcanary = "2.9.1" # https://square.github.io/leakcanary/getting_started/
 beagle = "2.9.0" # https://github.com/pandulapeter/beagle/releases
 coil = "2.2.1" # https://github.com/coil-kt/coil/releases
@@ -161,8 +162,9 @@ halcyon-recylerTypedAdapter = { module = "com.halcyonmobile.recycler-extension:t
 
 # Other Libraries
 # Koin
-koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
+koin-compose-kmm = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose-kmm" }
 # LeakCanary
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 # Beagle

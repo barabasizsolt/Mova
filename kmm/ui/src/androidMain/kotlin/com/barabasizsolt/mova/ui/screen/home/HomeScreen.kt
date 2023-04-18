@@ -15,7 +15,7 @@ import com.barabasizsolt.mova.ui.catalog.PeopleCarousel
 import com.barabasizsolt.mova.ui.catalog.WatchablePager
 import com.barabasizsolt.mova.ui.catalog.WatchableWithRatingCarousel
 import com.barabasizsolt.mova.ui.screen.base.UserAction
-import com.barabasizsolt.mova.ui.screen.main.base.BaseScreen
+import com.barabasizsolt.mova.ui.screen.base.BaseScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import movie.model.Movie
 

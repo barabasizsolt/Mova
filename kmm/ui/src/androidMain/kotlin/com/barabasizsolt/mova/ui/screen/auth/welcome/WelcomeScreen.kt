@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,12 +30,15 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun WelcomeScreen(screenState: WelcomeScreenState) {
     Box {
         Image(
-            painter = painterResource(id = R.drawable.grid),
+            painter = painterResource(res = "drawable/grid.png"),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
