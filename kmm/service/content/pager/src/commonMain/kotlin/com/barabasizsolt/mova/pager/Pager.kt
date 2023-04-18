@@ -36,7 +36,6 @@ class Pager(initialValue: Int = 1) {
             val oldContent = flow.value.take(n = flow.value.size - 1)
             paginationResult(
                 function = {
-                    println("<<CTR: $counter")
                     getRemoteContent(counter).let {
                         val newContent = oldContent + it.appendTailItem()
                         flow.value = newContent

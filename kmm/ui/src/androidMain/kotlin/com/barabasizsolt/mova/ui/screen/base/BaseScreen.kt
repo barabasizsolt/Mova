@@ -20,8 +20,6 @@ import com.barabasizsolt.mova.ui.catalog.ErrorContent
 import com.barabasizsolt.mova.ui.catalog.LoadingContent
 import com.barabasizsolt.mova.ui.catalog.MovaSnackBar
 import com.barabasizsolt.mova.ui.catalog.ScrollUpWrapper
-import com.barabasizsolt.mova.ui.screen.base.BaseScreenState
-import com.barabasizsolt.mova.ui.screen.base.UserAction
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshState

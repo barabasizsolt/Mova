@@ -17,8 +17,7 @@ data class MovieDTO(
     @SerialName(value = "poster_path") val posterPath: String?,
     @SerialName(value = "release_date") val releaseDate: String?,
     @SerialName(value = "vote_average") val voteAverage: Double?,
-    @SerialName(value = "vote_count") val voteCount: Int?,
-    @SerialName(value = "video") val video: Boolean?,
+    @SerialName(value = "vote_count") val voteCount: Int?
 )
 
 fun MovieDTO.toModel() : Movie? {

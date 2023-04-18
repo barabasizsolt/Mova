@@ -22,6 +22,8 @@ class BaseHttpClientImpl(
                     json(
                         json = Json {
                             ignoreUnknownKeys = true /*Ignore the undefined DTO properties in the Json*/
+                            isLenient = true
+                            prettyPrint = true
                         }
                     )
                 }

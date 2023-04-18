@@ -9,8 +9,8 @@ import kotlinx.serialization.Serializable
 data class MovieListDTO(
     @SerialName(value = "page") val page: Int?,
     @SerialName(value = "results") val results: List<MovieDTO>?,
-    @SerialName(value = "total_pages") val totalPages: Int?,
-    @SerialName(value = "total_results") val totalResults: Int?,
+    //@SerialName(value = "total_pages") val totalPages: Int?,
+    //@SerialName(value = "total_results") val totalResults: Int?,
 )
 
 fun MovieListDTO.toModel() : List<Movie> {
