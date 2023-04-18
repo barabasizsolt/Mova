@@ -3,6 +3,7 @@ package com.barabasizsolt.mova.explore.implementation
 import com.barabasizsolt.network.api.BaseHttpClient
 import com.barabasizsolt.network.api.get
 import io.ktor.client.request.parameter
+import io.ktor.http.parametersOf
 import movie.dto.MovieListDTO
 import movie.dto.toModel
 import movie.model.Movie
@@ -19,9 +20,9 @@ class ExploreRemoteSource(private val baseHttpClient: BaseHttpClient) {
     ) = baseHttpClient.get<MovieListDTO>(
         urlString = "discover/movie",
         block = {
-            parameter(key = "region", value = region)
-            parameter(key = "with_genres", value = withGenres)
-            parameter(key = "sort_by", value = sortBy)
+            parametersOf(name = "region", values = region)
+            parametersOf(name = "with_genres", values = withGenres.map { it.toString() })
+            parametersOf(name = "sort_by", values = sortBy)
             parameter(key = "page", value = page)
         }
     ).toModel()
@@ -33,8 +34,8 @@ class ExploreRemoteSource(private val baseHttpClient: BaseHttpClient) {
     ) = baseHttpClient.get<TvSeriesDiscoverDTO>(
         urlString = "discover/tv",
         block = {
-            parameter(key = "with_genres", value = withGenres)
-            parameter(key = "sort_by", value = sortBy)
+            parametersOf(name = "with_genres", values = withGenres.map { it.toString() })
+            parametersOf(name = "sort_by", values = sortBy)
             parameter(key = "page", value = page)
         }
     ).toModel()
