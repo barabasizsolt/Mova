@@ -30,7 +30,8 @@ fun DetailScreen(screenState: DetailScreenState) {
         onPlayButtonClicked = { /* TODO: Implement it */ },
         onAddToFavouriteButtonClicked = { /* TODO: Implement it */ },
         onTabIndexChange = screenState::onTabIndexChange,
-        onMovieClicked = screenState::onMovieClicked
+        onMovieClicked = screenState::onMovieClicked,
+        isDark = isSystemInDarkTheme()
     )
 
     LaunchedEffect(

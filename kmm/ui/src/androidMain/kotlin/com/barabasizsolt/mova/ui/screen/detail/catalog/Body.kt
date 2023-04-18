@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.barabasizsolt.mova.ui.catalog.CommonMovaImage
+import com.barabasizsolt.mova.ui.catalog.MovaImage
 import com.barabasizsolt.mova.ui.catalog.PersonCardSize
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import com.barabasizsolt.mova.ui.util.ExpandingText
@@ -171,7 +172,7 @@ private fun ReviewAuthor(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
 ) {
-    CommonMovaImage(
+    MovaImage(
         imageUrl = if (authorAvatarPath?.substring(startIndex = 1)?.isValidUrl() == true)
             authorAvatarPath.substring(startIndex = 1)
         else

@@ -10,7 +10,6 @@ import com.barabasizsolt.mova.filter.api.toFilterItemWithValue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
-//import java.util.Locale
 
 class FilterServiceImpl : FilterService {
     override val categories: List<FilterItem>
@@ -25,9 +24,7 @@ class FilterServiceImpl : FilterService {
     override val regions: List<FilterItem>
         get() = listOf(
             FilterItem(name = "All Regions", value = FilterItemValue.WithoutValue)
-        )
-    /*TODO: Make it work on KMM*/
-    //+ Locale.getISOCountries().map { locale -> locale.convertToFilterItem() }
+        ) + getRegions()
 
     private val _selectedRegions = MutableStateFlow(value = regions.firstItemToList())
     override val selectedRegions: Flow<List<FilterItem>> = _selectedRegions
@@ -70,10 +67,4 @@ class FilterServiceImpl : FilterService {
     override fun onSortOptionChange(selectedSortOptions: List<FilterItem>) {
         _selectedSortOptions.value = selectedSortOptions
     }
-
-    /*TODO: Make it work on KMM*/
-//    private fun String.convertToFilterItem(): FilterItem {
-//        val locale = Locale("", this)
-//        return FilterItem(name = locale.displayName, value = locale.country.toFilterItemWithValue())
-//    }
 }

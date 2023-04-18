@@ -35,6 +35,7 @@ import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.catalog.GradientOverlay
 import com.barabasizsolt.mova.ui.catalog.MovaFilledButton
 import com.barabasizsolt.mova.ui.catalog.CommonMovaImage
+import com.barabasizsolt.mova.ui.catalog.MovaImage
 import com.barabasizsolt.mova.ui.catalog.MovaOutlinedButton
 import com.barabasizsolt.mova.ui.catalog.PeopleCarousel
 import com.barabasizsolt.mova.ui.catalog.PersonCardSize
@@ -64,7 +65,7 @@ fun ContentHeader(
 
 @Composable
 private fun BoxScope.ContentGradientImage(posterPath: String?) {
-    CommonMovaImage(
+    MovaImage(
         imageUrl = posterPath?.getImageKey(imageType = ImageType.ORIGINAL).orEmpty(),
         contentScale = ContentScale.Crop,
         modifier = Modifier

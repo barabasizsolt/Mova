@@ -16,7 +16,6 @@
         android:paddingEnd="20dp"
         android:paddingBottom="8dp"
         android:textSize="16sp"
-        android:textColor="@android:color/white"
         android:hint="Movie Video's Name"
         android:textStyle="bold" />
 

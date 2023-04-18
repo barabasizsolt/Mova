@@ -1,5 +1,6 @@
 package com.barabasizsolt.mova.ui.screen.detail
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +28,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
-
 enum class ItemViewType {
     HEADER, TAB, SIMILAR_MOVIE, VIDEO, REVIEW, EMPTY
 }
@@ -37,13 +37,15 @@ fun rememberDetailScreenAdapter(
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit,
     onTabIndexChange: (Int) -> Unit,
-    onMovieClicked: (Int) -> Unit
+    onMovieClicked: (Int) -> Unit,
+    isDark: Boolean
 ) = remember {
     DetailScreenAdapter(
         onPlayButtonClicked = onPlayButtonClicked,
         onAddToFavouriteButtonClicked = onAddToFavouriteButtonClicked,
         onTabIndexChange = onTabIndexChange,
-        onMovieClicked = onMovieClicked
+        onMovieClicked = onMovieClicked,
+        isDark = isDark
     )
 }
 
@@ -51,7 +53,8 @@ class DetailScreenAdapter(
     private val onPlayButtonClicked: () -> Unit,
     private val onAddToFavouriteButtonClicked: () -> Unit,
     private val onTabIndexChange: (Int) -> Unit,
-    private val onMovieClicked: (Int) -> Unit
+    private val onMovieClicked: (Int) -> Unit,
+    private val isDark: Boolean
 ) : ListAdapter<DetailScreenListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
 
     override fun getItemViewType(position: Int): Int = when(getItem(position)) {
@@ -78,7 +81,8 @@ class DetailScreenAdapter(
             onMovieClicked = onMovieClicked
         )
         ItemViewType.VIDEO.ordinal -> VideoViewHolder.create(
-            parent = viewGroup
+            parent = viewGroup,
+            isDark = isDark
         )
         ItemViewType.REVIEW.ordinal -> ReviewViewHolder.create(
             composeView = ComposeView(viewGroup.context)
@@ -186,7 +190,8 @@ class DetailScreenAdapter(
     }
 
     class VideoViewHolder private constructor(
-        private val view: View
+        private val view: View,
+        private val isDark: Boolean
     ) : RecyclerView.ViewHolder(view) {
 
         private val textView: TextView = view.findViewById(R.id.title)
@@ -199,6 +204,7 @@ class DetailScreenAdapter(
         */
         fun bind(listItem: DetailScreenListItem.VideoItem) {
             textView.text = listItem.video.name
+            textView.setTextColor(if (isDark) Color.WHITE else Color.BLACK)
             youTubePlayerView.addYouTubePlayerListener(
                 youTubePlayerListener = object : AbstractYouTubePlayerListener() {
                     override fun onReady(youTubePlayer: YouTubePlayer) {
@@ -209,8 +215,9 @@ class DetailScreenAdapter(
         }
 
         companion object {
-            fun create(parent: ViewGroup) = VideoViewHolder(
-                view = LayoutInflater.from(parent.context).inflate(R.layout.layout_movie_video, parent, false)
+            fun create(parent: ViewGroup, isDark: Boolean) = VideoViewHolder(
+                view = LayoutInflater.from(parent.context).inflate(R.layout.layout_movie_video, parent, false),
+                isDark = isDark
             ).also {
                 val listener =  object : AbstractYouTubePlayerListener() {
                     override fun onReady(youTubePlayer: YouTubePlayer) {
