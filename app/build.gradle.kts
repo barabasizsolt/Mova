@@ -31,7 +31,7 @@ android {
     buildTypes {
         debug {
             isDebuggable = true
-            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "HOST", "\"api.themoviedb.org\"")
             buildConfigField("String", "API_KEY", "\"93697a6983d40e793bc6b81401c77e1c\"")
             buildConfigField("String", "CLIENT_ID", "\"mova-mobile-client\"")
         }
@@ -40,7 +40,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
 
-            buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "HOST", "\"api.themoviedb.org\"")
             buildConfigField("String", "API_KEY", "\"93697a6983d40e793bc6b81401c77e1c\"")
             buildConfigField("String", "CLIENT_ID", "\"mova-mobile-client\"")
 
@@ -70,18 +70,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":ui:navigation"))
-    implementation(project(":ui:theme"))
-    implementation(project(":domain:domain-di"))
-    implementation(project(":domain:domain-usecase"))
-    implementation(project(":service:network:network-di"))
-    implementation(project(":service:auth:auth-di"))
-    implementation(project(":service:auth:firebase:firebase-api"))
-    implementation(project(":service:activityprovider:activityprovider-api"))
-    implementation(project(":service:activityprovider:activityprovider-di"))
-
-    // Kotlin
-    implementation(libs.kotlinx.coroutines)
+    implementation(project(":kmm:shared"))
+    implementation(project(":kmm:service:auth:firebase:firebase-api"))
+    implementation(project(":kmm:service:activityprovider:activityprovider-api"))
+    implementation(project(":kmm:service:activityprovider:activityprovider-di"))
 
     // AndroidX
     implementation(libs.bundles.androidx.core)
@@ -89,10 +81,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.bundles.androidx.lifecycle)
 
-    implementation(libs.androidx.navigationCompose)
     implementation(libs.bundles.androidx.compose)
-    implementation(libs.androidx.preferenceDataStore)
-    implementation(libs.androidx.profileInstaller)
 
     // Google
     implementation(libs.google.android.material)
@@ -100,34 +89,6 @@ dependencies {
     // Koin Libraries
     implementation(libs.koin.core)
     implementation(libs.koin.compose)
-
-    // Coil Image
-    implementation(libs.bundles.coil)
-
-    // Voyager
-    implementation(libs.bundles.voyager)
-
-    // State Machine
-    implementation(libs.statemachine)
-
-    // Test libraries
-    testImplementation(libs.test.junit4)
-    testImplementation(libs.bundles.test.junit5)
-    testRuntimeOnly(libs.test.junit5.jupiterEngine)
-    // Kotlin
-    testImplementation(libs.test.kotlin.coroutines)
-    // Robolectric
-    testImplementation(libs.bundles.test.robolectric)
-    testRuntimeOnly(libs.test.junit5.vintageEngine)
-    // Other libraries
-    testImplementation(libs.test.mockitoKotlin)
-    testImplementation(libs.test.jraska.livedata)
-    testImplementation(libs.test.square.okhttp.webserver)
-
-    // Android Test libraries
-    androidTestImplementation(libs.bundles.test.android)
-    // Kotlin
-    androidTestImplementation(libs.test.kotlin.coroutines)
 
     // Beagle
     debugImplementation(libs.beagle.uiDrawer)

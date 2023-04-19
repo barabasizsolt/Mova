@@ -53,14 +53,15 @@ halcyon-errorHandler = '1.0.0' # https://github.com/halcyonmobile/error-handler/
 halcyon-recylerTypedAdapter = '1.0.1' # releases page is unmaintained: https://github.com/halcyonmobile/recycler-typed-adapter/releases
 
 # Other libraries
-koin = "3.2.1" # https://insert-koin.io/docs/setup/v3
-koin-compose = "3.2.0" # https://search.maven.org/search?q=io.insert-koin
+koin = "3.4.0" # https://insert-koin.io/docs/setup/v3
+koin-compose = "3.4.3" # https://insert-koin.io/docs/setup/v3
+koin-compose-kmm = "1.0.1" # https://insert-koin.io/docs/setup/v3
 leakcanary = "2.9.1" # https://square.github.io/leakcanary/getting_started/
 beagle = "2.9.0" # https://github.com/pandulapeter/beagle/releases
 coil = "2.2.1" # https://github.com/coil-kt/coil/releases
 square-okhttp = "4.9.1" # https://square.github.io/okhttp/changelog/
-square-moshi = "1.12.0" # https://github.com/square/moshi/blob/master/CHANGELOG.md
-square-moshiCodegen = "1.13.0" # https://github.com/square/moshi/blob/master/CHANGELOG.md
+square-moshi = "1.14.0" # https://github.com/square/moshi/blob/master/CHANGELOG.md
+square-moshiCodegen = "1.14.0" # https://github.com/square/moshi/blob/master/CHANGELOG.md
 square-retrofit = "2.9.0" # https://github.com/square/retrofit/blob/master/CHANGELOG.md
 moshi-wrapped = "2.2" # https://github.com/serj-lotutovici/moshi-lazy-adapters
 timber = "5.0.0" # https://github.com/JakeWharton/timber/blob/master/CHANGELOG.md
@@ -70,6 +71,10 @@ exoPlayer = "2.18.1" # https://github.com/google/ExoPlayer
 statemachine = "0.2.0" # https://github.com/Tinder/StateMachine/releases
 voyager = "1.0.0-rc02" # https://github.com/adrielcafe/voyager/releases
 youtube-player = "12.0.0" # https://github.com/PierfrancescoSoffritti/android-youtube-player
+kotlinx-serialization = "1.5.0" # https://github.com/Kotlin/kotlinx.serialization
+ktor = "2.2.4" # https://github.com/ktorio/ktor
+napier = "2.6.1" # https://github.com/AAkira/Napier
+kmm-imageloader = "1.4.0" # https://github.com/qdsfdhvh/compose-imageloader
 
 # Test libraries
 test-junit5Bom = "5.8.2"
@@ -86,6 +91,7 @@ test-androidx-macro = "1.1.0" # https://androidx.tech/artifacts/benchmark/benchm
 # Kotlin
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 # Android tools
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "androidBuildTools" }
@@ -158,8 +164,9 @@ halcyon-recylerTypedAdapter = { module = "com.halcyonmobile.recycler-extension:t
 
 # Other Libraries
 # Koin
-koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
+koin-compose-kmm = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose-kmm" }
 # LeakCanary
 leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 # Beagle
@@ -171,6 +178,8 @@ beagle-okHttpNoop = { module = "io.github.pandulapeter.beagle:log-okhttp-noop", 
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 coilGif = { module = "io.coil-kt:coil-gif", version.ref = "coil" }
 coilSvg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
+# Image loader
+kmm-imageloader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "kmm-imageloader" }
 # Voyager
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-bottomSheet = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
@@ -199,6 +208,16 @@ ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlin
 # YouTube Player
 youtube-player = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "youtube-player" }
 youtube-player-customui = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:custom-ui", version.ref = "youtube-player" }
+# Ktor
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-client-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 
 # Test
 test-junit4 = { module = "junit:junit", version.ref = "test-junit4" }
@@ -231,17 +250,17 @@ test-square-okhttp-webserver = { module = "com.squareup.okhttp3:mockwebserver", 
 [bundles]
 androidx-core = [
     "androidx-core",
-    "androidx-coreSplashscreen",
+    "androidx-coreSplashscreen"
 ]
 androidx-lifecycle = [
     "androidx-lifecycleLivedata",
     "androidx-lifecycleViewModel",
     "androidx-lifecycleRuntime",
-    "androidx-lifecycleCommon",
+    "androidx-lifecycleCommon"
 ]
 androidx-room = [
     "androidx-room",
-    "androidx-roomRuntime",
+    "androidx-roomRuntime"
 ]
 androidx-compose = [
     "androidx-composeUi",
@@ -277,7 +296,7 @@ exoPlayer = [
 ]
 test-junit5 = [
     "test-junit5-jupiterEngine",
-    "test-junit5-jupiterParams",
+    "test-junit5-jupiterParams"
 ]
 test-robolectric = [
     "test-junit4",
@@ -286,7 +305,7 @@ test-robolectric = [
     "test-androidx-runner",
     "test-androidx-junit",
     "test-androidx-espressoCore",
-    "test-androidx-espressoIntents",
+    "test-androidx-espressoIntents"
 ]
 test-android = [
     "test-junit4",
@@ -294,15 +313,33 @@ test-android = [
     "test-androidx-runner",
     "test-androidx-junit",
     "test-androidx-espressoCore",
-    "test-androidx-espressoIntents",
+    "test-androidx-espressoIntents"
+]
+ktor-common = [
+    "ktor-client-core",
+    "ktor-serialization",
+    "ktor-client-negotiation",
+    "ktor-client-cio",
+    "ktor-logging",
+    "napier"
+]
+ktor-android = [
+    "ktor-client-android",
+    "ktor-client-okhttp"
+]
+ktor-ios = [
+    "ktor-client-ios"
 ]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidBuildTools" }
 android-library = { id = "com.android.library", version.ref = "androidBuildTools" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.41.0" }
 littlerobots = { id = "nl.littlerobots.version-catalog-update", version = "0.6.1" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+jetbrains-compose = { id = "org.jetbrains.compose", version = "1.4.0" }
