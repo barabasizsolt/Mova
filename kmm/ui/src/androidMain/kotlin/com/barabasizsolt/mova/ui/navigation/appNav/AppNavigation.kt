@@ -10,9 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.barabasizsolt.api.AuthenticationState
 import com.barabasizsolt.mova.ui.navigation.Route
 import com.barabasizsolt.mova.ui.navigation.authNavigation
@@ -22,7 +20,6 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.navigation
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
