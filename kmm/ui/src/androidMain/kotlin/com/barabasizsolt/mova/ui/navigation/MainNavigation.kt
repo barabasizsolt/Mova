@@ -1,9 +1,9 @@
 package com.barabasizsolt.mova.ui.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
-import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.barabasizsolt.mova.domain.usecase.screen.seeall.SeeAllContentType
@@ -21,7 +21,9 @@ import com.barabasizsolt.mova.ui.screen.profile.ProfileScreen
 import com.barabasizsolt.mova.ui.screen.seeall.SeeAllScreen
 import com.barabasizsolt.mova.ui.screen.seeall.SeeAllScreenState
 import com.barabasizsolt.mova.ui.screen.seeall.rememberSeeAllScreenState
+import com.google.accompanist.navigation.animation.composable
 
+@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
     navigation(
         startDestination = Route.Main.HOME,

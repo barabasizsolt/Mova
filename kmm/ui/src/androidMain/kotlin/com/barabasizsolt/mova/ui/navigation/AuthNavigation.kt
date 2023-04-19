@@ -1,8 +1,8 @@
 package com.barabasizsolt.mova.ui.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.barabasizsolt.mova.ui.screen.auth.logiRegister.AuthScreen
 import com.barabasizsolt.mova.ui.screen.auth.logiRegister.ScreenType
@@ -13,7 +13,9 @@ import com.barabasizsolt.mova.ui.screen.auth.socialLogin.rememberSocialLoginScre
 import com.barabasizsolt.mova.ui.screen.auth.welcome.WelcomeScreen
 import com.barabasizsolt.mova.ui.screen.auth.welcome.WelcomeScreenState
 import com.barabasizsolt.mova.ui.screen.auth.welcome.rememberWelcomeScreenState
+import com.google.accompanist.navigation.animation.composable
 
+@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.authNavigation(navController: NavHostController) {
     navigation(
         startDestination = Route.Authentication.WELCOME,
