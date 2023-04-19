@@ -55,9 +55,12 @@ import com.barabasizsolt.mova.movie.implementation.createMovieModule
 import com.barabasizsolt.mova.people.implementation.createPeopleModule
 import com.barabasizsolt.mova.review.implementation.createReviewModule
 import com.barabasizsolt.mova.video.implementation.createVideoModule
+import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun createDomainModules() = buildList {
+expect fun createDomainModules(): List<Module>
+
+fun createCommonDomainModules() = buildList {
     addAll(createServiceModules())
     add(createUseCaseModules())
 }

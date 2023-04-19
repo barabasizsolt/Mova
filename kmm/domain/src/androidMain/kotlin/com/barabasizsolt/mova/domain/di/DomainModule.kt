@@ -1,3 +1,5 @@
+@file:JvmName("AndroidDomainModule")
+
 package com.barabasizsolt.mova.domain.di
 
 import com.barabasizsolt.firebase.di.createAuthenticationModule
@@ -9,12 +11,13 @@ import com.barabasizsolt.mova.domain.usecase.auth.LoginWithFacebookAccountUseCas
 import com.barabasizsolt.mova.domain.usecase.auth.LoginWithGoogleAccountUseCase
 import com.barabasizsolt.mova.domain.usecase.auth.RegisterWithEmailAndPasswordUseCase
 import com.barabasizsolt.mova.domain.usecase.auth.ResetPasswordUseCase
+import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun createAndroidDomainModules() = buildList {
+actual fun createDomainModules() : List<Module> = buildList {
     add(createAuthenticationModule())
     add(createAuthUseCaseModule())
-} + createDomainModules()
+} + createCommonDomainModules()
 
 private fun createAuthUseCaseModule() = module {
     // Auth

@@ -1,5 +1,6 @@
 package com.barabasizsolt.mova.shared
 
+import com.barabasizsolt.mova.domain.di.createDomainModules
 import com.barabasizsolt.mova.ui.uiModule
 import com.barabasizsolt.network.implementation.createNetworkModule
 
@@ -9,6 +10,6 @@ actual fun createAppModule(
     isDebugBuild: Boolean
 ) = buildList {
     add(createNetworkModule(host = host, apiKey = apiKey, isDebugBuild = isDebugBuild))
-    //addAll(createAndroidDomainModules())
+    addAll(createDomainModules())
     add(uiModule)
 }
