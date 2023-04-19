@@ -62,7 +62,7 @@ private fun ScreenContent(
     contentPadding = PaddingValues(bottom = AppTheme.dimens.screenPadding),
     state = gridState
 ) {
-    item {
+    item(key = "HomeScreen.Pager") {
         WatchablePager(
             pagerContent = upcomingMovies,
             genres = genres,
@@ -71,7 +71,7 @@ private fun ScreenContent(
             onAddToFavouriteButtonClicked = { /*TODO: Implement it*/ }
         )
     }
-    item {
+    item(key = "HomeScreen.PopularMovies") {
         WatchableWithRatingCarousel(
             header = stringResource(id = R.string.popular_movies),
             buttonText = stringResource(id = R.string.more_popular_movies),
@@ -80,7 +80,7 @@ private fun ScreenContent(
             onHeaderClick = onSeeAllPopularMoviesClicked,
         )
     }
-    item {
+    item(key = "HomeScreen.People") {
         PeopleCarousel(
             header = stringResource(id = R.string.popular_people),
             items = popularPeople,
@@ -88,7 +88,7 @@ private fun ScreenContent(
             onHeaderClick = onSeeAllPopularPeopleClicked,
         )
     }
-    item {
+    item(key = "HomeScreen.NowPlayingMovies") {
         WatchableWithRatingCarousel(
             header = stringResource(id = R.string.now_playing_movies),
             buttonText = stringResource(id = R.string.more_now_playing_movies),
@@ -97,7 +97,7 @@ private fun ScreenContent(
             onHeaderClick = onSeeAllNowPlayingMoviesClicked,
         )
     }
-    item {
+    item(key = "HomeScreen.TopRatedMovies") {
         WatchableWithRatingCarousel(
             header = stringResource(id = R.string.top_rated_movies),
             buttonText = stringResource(id = R.string.more_top_rated_movies),
