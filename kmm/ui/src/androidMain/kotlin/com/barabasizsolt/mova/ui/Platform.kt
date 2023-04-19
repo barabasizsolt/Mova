@@ -12,7 +12,7 @@ import org.koin.compose.koinInject
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-class AndroidPlatform() : Platform {
+class AndroidPlatform : Platform {
 
     override val name: String = "Android ${android.os.Build.VERSION.SDK_INT}"
 }
