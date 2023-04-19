@@ -81,10 +81,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.bundles.androidx.lifecycle)
 
-    //implementation(libs.androidx.navigationCompose)
     implementation(libs.bundles.androidx.compose)
-    //implementation(libs.androidx.preferenceDataStore)
-    //implementation(libs.androidx.profileInstaller)
 
     // Google
     implementation(libs.google.android.material)
