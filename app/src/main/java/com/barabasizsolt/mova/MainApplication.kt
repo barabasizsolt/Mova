@@ -27,7 +27,8 @@ class MainApplication : Application() {
             modules(
                 modules = createAndroidAppModule(
                     host = BuildConfig.HOST,
-                    apiKey = BuildConfig.API_KEY
+                    apiKey = BuildConfig.API_KEY,
+                    isDebugBuild = BuildConfig.DEBUG
                 )
             )
             authService.initialize(context = this@MainApplication)

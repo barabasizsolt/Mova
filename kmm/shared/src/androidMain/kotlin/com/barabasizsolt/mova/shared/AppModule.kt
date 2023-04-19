@@ -6,9 +6,10 @@ import com.barabasizsolt.network.implementation.createNetworkModule
 
 fun createAndroidAppModule(
     host: String,
-    apiKey: String
+    apiKey: String,
+    isDebugBuild: Boolean
 ) = buildList {
     add(activityProviderModule)
-    add(createNetworkModule(host = host, apiKey = apiKey))
+    add(createNetworkModule(host = host, apiKey = apiKey, isDebugBuild = isDebugBuild))
     addAll(createAndroidDomainModules())
 }

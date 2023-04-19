@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 @Serializable
 data class MovieDTO(
-    @SerialName(value = "id") val id: Int?,
+    @SerialName(value = "id") val id: Long?,
     @SerialName(value = "adult") val adult: Boolean?,
     @SerialName(value = "backdrop_path") val backdropPath: String?,
     @SerialName(value = "genre_ids") val genreIds: List<Int>?,
@@ -16,8 +16,7 @@ data class MovieDTO(
     @SerialName(value = "popularity") val popularity: Double?,
     @SerialName(value = "poster_path") val posterPath: String?,
     @SerialName(value = "release_date") val releaseDate: String?,
-    @SerialName(value = "vote_average") val voteAverage: Double?,
-    @SerialName(value = "vote_count") val voteCount: Int?
+    @SerialName(value = "vote_average") val voteAverage: Double?
 )
 
 fun MovieDTO.toModel() : Movie? {

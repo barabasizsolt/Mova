@@ -5,7 +5,8 @@ import org.koin.dsl.module
 
 fun createNetworkModule(
     host: String,
-    apiKey: String
+    apiKey: String,
+    isDebugBuild: Boolean
 ) = module {
-    single<BaseHttpClient> { BaseHttpClientImpl(hostUrl = host, apiKey = apiKey) }
+    single<BaseHttpClient> { BaseHttpClientImpl(hostUrl = host, apiKey = apiKey, isDebugBuild = isDebugBuild) }
 }
