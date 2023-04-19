@@ -18,6 +18,7 @@ kotlin {
                 implementation(libs.kotlinx.coroutines)
                 implementation(libs.koin.core)
                 implementation(libs.google.accompanistSwipeRefresh)
+                implementation(libs.kmm.imageloader)
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -39,8 +40,8 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                implementation(libs.koin.compose)
                 implementation(libs.bundles.androidx.compose)
+                implementation(libs.koin.compose)
 
                 implementation(libs.bundles.androidx.core)
                 implementation(libs.androidx.appcompat)
@@ -56,6 +57,7 @@ kotlin {
                 //implementation(libs.beagle.uiDrawer)
 
                 implementation(project(":kmm:service:auth:firebase:firebase-api"))
+                implementation(project(":kmm:service:activityprovider:activityprovider-api"))
             }
         }
     }

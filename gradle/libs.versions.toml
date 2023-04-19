@@ -55,7 +55,7 @@ halcyon-recylerTypedAdapter = '1.0.1' # releases page is unmaintained: https://g
 # Other libraries
 koin = "3.4.0" # https://insert-koin.io/docs/setup/v3
 koin-compose = "3.4.3" # https://insert-koin.io/docs/setup/v3
-koin-compose-kmm = "1.0.0" # https://insert-koin.io/docs/setup/v3
+koin-compose-kmm = "1.0.1" # https://insert-koin.io/docs/setup/v3
 leakcanary = "2.9.1" # https://square.github.io/leakcanary/getting_started/
 beagle = "2.9.0" # https://github.com/pandulapeter/beagle/releases
 coil = "2.2.1" # https://github.com/coil-kt/coil/releases
@@ -74,6 +74,7 @@ youtube-player = "12.0.0" # https://github.com/PierfrancescoSoffritti/android-yo
 kotlinx-serialization = "1.5.0" # https://github.com/Kotlin/kotlinx.serialization
 ktor = "2.2.4" # https://github.com/ktorio/ktor
 napier = "2.6.1" # https://github.com/AAkira/Napier
+kmm-imageloader = "1.4.0" # https://github.com/qdsfdhvh/compose-imageloader
 
 # Test libraries
 test-junit5Bom = "5.8.2"
@@ -177,6 +178,8 @@ beagle-okHttpNoop = { module = "io.github.pandulapeter.beagle:log-okhttp-noop", 
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 coilGif = { module = "io.coil-kt:coil-gif", version.ref = "coil" }
 coilSvg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
+# Image loader
+kmm-imageloader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "kmm-imageloader" }
 # Voyager
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-bottomSheet = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }

@@ -2,7 +2,7 @@ package com.barabasizsolt.mova
 
 import android.app.Application
 import com.barabasizsolt.api.AuthenticationService
-import com.barabasizsolt.mova.shared.createAndroidAppModule
+import com.barabasizsolt.mova.shared.createAppModule
 import com.barabasizsolt.mova.tooling.setupBeagle
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -25,7 +25,7 @@ class MainApplication : Application() {
             androidLogger(level = Level.DEBUG)
             androidContext(androidContext = this@MainApplication)
             modules(
-                modules = createAndroidAppModule(
+                modules = createAppModule(
                     host = BuildConfig.HOST,
                     apiKey = BuildConfig.API_KEY,
                     isDebugBuild = BuildConfig.DEBUG
