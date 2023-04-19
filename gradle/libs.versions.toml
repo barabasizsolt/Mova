@@ -343,3 +343,4 @@ github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0
 littlerobots = { id = "nl.littlerobots.version-catalog-update", version = "0.6.1" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 jetbrains-compose = { id = "org.jetbrains.compose", version = "1.4.0" }
+cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
