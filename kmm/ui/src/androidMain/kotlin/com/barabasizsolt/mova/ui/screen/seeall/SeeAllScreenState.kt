@@ -66,9 +66,7 @@ class SeeAllScreenState(
                 ) {
                     is Result.Failure -> when {
                         userAction is UserAction.SwipeRefresh -> State.ShowSnackBar
-                        watchableItems.isNotEmpty() -> State.Normal.also {
-                            println("<<ERR: ${result.exception}")
-                        }
+                        watchableItems.isNotEmpty() -> State.Normal
                         else -> State.Error(message = result.exception.message.orEmpty())
                     }
                     is Result.Success -> State.Normal
