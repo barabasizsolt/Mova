@@ -20,10 +20,10 @@ kotlin {
         version = "1.0"
         summary = "Kotlin Multiplatform shared module for Mova's app."
         homepage = "https://github.com/barabasizsolt/Mova"
-        name = "MovaCocoaPod"
+        name = "shared"
 
         framework {
-            baseName = "MovaFramework"
+            baseName = "shared"
             isStatic = false
             transitiveExport = false // This is default.
             embedBitcode(BITCODE)

@@ -1,24 +1,24 @@
 Pod::Spec.new do |spec|
-    spec.name                     = 'MovaCocoaPod'
+    spec.name                     = 'shared'
     spec.version                  = '1.0'
     spec.homepage                 = 'https://github.com/barabasizsolt/Mova'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
     spec.summary                  = 'Kotlin Multiplatform shared module for Mova's app.'
-    spec.vendored_frameworks      = 'build/cocoapods/framework/MovaFramework.framework'
+    spec.vendored_frameworks      = 'build/cocoapods/framework/shared.framework'
     spec.libraries                = 'c++'
                 
                 
                 
     spec.pod_target_xcconfig = {
         'KOTLIN_PROJECT_PATH' => ':kmm:shared',
-        'PRODUCT_MODULE_NAME' => 'MovaFramework',
+        'PRODUCT_MODULE_NAME' => 'shared',
     }
                 
     spec.script_phases = [
         {
-            :name => 'Build MovaCocoaPod',
+            :name => 'Build shared',
             :execution_position => :before_compile,
             :shell_path => '/bin/sh',
             :script => <<-SCRIPT
