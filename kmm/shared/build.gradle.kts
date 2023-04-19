@@ -18,7 +18,7 @@ kotlin {
 
     cocoapods {
         version = "1.0"
-        summary = "Kotlin Multiplatform shared module for Mova's app."
+        summary = "Kotlin Multiplatform shared module for Mova app."
         homepage = "https://github.com/barabasizsolt/Mova"
         name = "shared"
 
