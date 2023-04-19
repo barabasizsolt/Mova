@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import com.barabasizsolt.mova.ui.catalog.CommonMovaImage
 import com.barabasizsolt.mova.ui.catalog.MovaImage
 import com.barabasizsolt.mova.ui.catalog.PersonCardSize
 import com.barabasizsolt.mova.ui.theme.AppTheme

@@ -34,7 +34,6 @@ import com.barabasizsolt.mova.domain.model.ContentItem
 import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.catalog.GradientOverlay
 import com.barabasizsolt.mova.ui.catalog.MovaFilledButton
-import com.barabasizsolt.mova.ui.catalog.CommonMovaImage
 import com.barabasizsolt.mova.ui.catalog.MovaImage
 import com.barabasizsolt.mova.ui.catalog.MovaOutlinedButton
 import com.barabasizsolt.mova.ui.catalog.PeopleCarousel
