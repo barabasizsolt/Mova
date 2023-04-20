@@ -29,23 +29,6 @@ kotlin {
             isStatic = true
             transitiveExport = false // This is default.
             embedBitcode(BITCODE)
-
-            export(project(":kmm:service:network:api"))
-            export(project(":kmm:service:content:movie:api"))
-            export(project(":kmm:service:content:model:all"))
-            export(project(":kmm:service:content:pager"))
-            export(project(":kmm:service:content:cast-crew:api"))
-            export(project(":kmm:service:content:detail:api"))
-            export(project(":kmm:service:content:explore:api"))
-            export(project(":kmm:service:content:filter:api"))
-            export(project(":kmm:service:content:genre:api"))
-            export(project(":kmm:service:content:people:api"))
-            export(project(":kmm:service:content:review:api"))
-            export(project(":kmm:service:content:video:api"))
-
-            export(project(":kmm:domain"))
-
-            export(project(":kmm:ui"))
         }
 
         xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = NativeBuildType.DEBUG
