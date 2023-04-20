@@ -19,6 +19,8 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.google.accompanistSwipeRefresh)
                 implementation(libs.kmm.imageloader)
+                implementation(libs.voyager.navigator)
+                implementation(libs.voyager.tab)
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -41,7 +43,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(libs.bundles.androidx.compose)
-                implementation(libs.koin.compose)
+                implementation(libs.koin.compose.kmm)
 
                 implementation(libs.bundles.androidx.core)
                 implementation(libs.androidx.appcompat)
