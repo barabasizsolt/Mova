@@ -1,5 +1,3 @@
-package com.barabasizsolt.mova.shared
-
 import org.koin.core.module.Module
 
 expect fun createAppModule(

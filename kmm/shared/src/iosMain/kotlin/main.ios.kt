@@ -6,10 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.window.ComposeUIViewController
 import com.barabasizsolt.mova.ui.theme.MovaTheme
 
 @Composable
-actual fun EntryPoint() {
+fun MainViewController() = ComposeUIViewController {
     MovaTheme {
         Box {
             Text(

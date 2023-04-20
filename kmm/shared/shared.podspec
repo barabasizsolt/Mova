@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
     spec.summary                  = 'Kotlin Multiplatform shared module for Mova app.'
     spec.vendored_frameworks      = 'build/cocoapods/framework/shared.framework'
     spec.libraries                = 'c++'
-                
+    spec.ios.deployment_target = '14.1'
                 
                 
     spec.pod_target_xcconfig = {
