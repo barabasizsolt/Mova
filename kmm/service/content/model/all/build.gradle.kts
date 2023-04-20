@@ -15,10 +15,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.kotlinx.coroutines)
                 implementation(libs.kotlinx.serialization)
 
-                implementation(project(":kmm:service:network:api"))
+                //implementation(project(":kmm:service:network:api"))
                 implementation(project(":kmm:service:content:pager"))
             }
         }

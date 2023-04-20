@@ -1,7 +1,7 @@
 package genre.dto
 
+import DataLayerException
 import genre.model.Genre
-import com.barabasizsolt.network.api.DataLayerException
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

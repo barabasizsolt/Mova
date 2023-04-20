@@ -1,16 +1,14 @@
 package movie.dto
 
+import DataLayerException
 import movie.model.Movie
-import com.barabasizsolt.network.api.DataLayerException
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class MovieListDTO(
     @SerialName(value = "page") val page: Int?,
-    @SerialName(value = "results") val results: List<MovieDTO>?,
-    //@SerialName(value = "total_pages") val totalPages: Int?,
-    //@SerialName(value = "total_results") val totalResults: Int?,
+    @SerialName(value = "results") val results: List<MovieDTO>?
 )
 
 fun MovieListDTO.toModel() : List<Movie> {
