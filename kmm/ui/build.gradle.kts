@@ -17,8 +17,8 @@ kotlin {
             dependencies {
                 implementation(libs.kotlinx.coroutines)
                 implementation(libs.koin.core)
-                //implementation(libs.google.accompanistSwipeRefresh)
-                //implementation(libs.kmm.imageloader)
+                implementation(libs.google.accompanistSwipeRefresh)
+                implementation(libs.kmm.imageloader)
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -27,8 +27,8 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
                 implementation(compose.materialIconsExtended)
-                //implementation(compose.animation)
-                //implementation(compose.animationGraphics)
+                implementation(compose.animation)
+                implementation(compose.animationGraphics)
 
                 implementation(project(":kmm:domain"))
                 implementation(project(":kmm:service:content:model:all"))
