@@ -30,61 +30,75 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.screen.auth.catalog.AuthScreenDelimiter
 import com.barabasizsolt.mova.ui.catalog.MovaButton
 import com.barabasizsolt.mova.ui.catalog.MovaSnackBar
 import com.barabasizsolt.mova.ui.screen.auth.catalog.SocialAuthFooter
 import com.barabasizsolt.mova.ui.screen.auth.catalog.SocialLoginOption
+import com.barabasizsolt.mova.ui.screen.auth.loginRegister.AuthScreen
+import com.barabasizsolt.mova.ui.screen.auth.loginRegister.ScreenType
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-@Composable
-fun SocialLoginScreen(screenState: SocialLoginScreenState) {
-    val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        val data = result.data
-        if (result.resultCode == Activity.RESULT_OK && data != null) {
-            screenState.loginWithGoogle(intent = data)
-        }
-    }
-    val snackBarHostState = remember { SnackbarHostState() }
-    val dismissText = stringResource(id = R.string.dismiss)
+object SocialLoginScreen : Screen, KoinComponent {
 
-    Box {
-        ScreenContent(
-            loginWithFacebook = screenState::loginWithFacebook,
-            getIntentForGoogleLogin = screenState::getIntentForGoogleLogin,
-            onSignInClicked = screenState::onSignInClicked,
-            onSignUpClicked = screenState::onSignUpClicked,
-            isLoading = screenState.state is SocialLoginScreenState.State.Loading,
-            activityResultLauncher = loginWithGoogleAccountLauncher
-        )
-        MovaSnackBar(
-            snackBarHostState = snackBarHostState,
-            onDismiss = {
-                snackBarHostState.currentSnackbarData?.dismiss()
-                screenState.resetState()
-            },
-            modifier = Modifier.systemBarsPadding()
-        )
-    }
+    @Composable
+    override fun Content() {
+        val screenState: SocialLoginScreenState by inject()
+        val navigator: Navigator = LocalNavigator.currentOrThrow
 
-    LaunchedEffect(
-        key1 = screenState.state,
-        block = {
-            if (screenState.state is SocialLoginScreenState.State.Error) {
-                snackBarHostState.showSnackbar(
-                    message = (screenState.state as SocialLoginScreenState.State.Error).message,
-                    actionLabel = dismissText,
-                    duration = SnackbarDuration.Long
-                )
-                screenState.resetState()
+        val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            val data = result.data
+            if (result.resultCode == Activity.RESULT_OK && data != null) {
+                screenState.loginWithGoogle(intent = data)
             }
         }
-    )
+        val snackBarHostState = remember { SnackbarHostState() }
+        val dismissText = stringResource(id = R.string.dismiss)
+
+        Box {
+            ScreenContent(
+                loginWithFacebook = screenState::loginWithFacebook,
+                getIntentForGoogleLogin = screenState::getIntentForGoogleLogin,
+                onSignInClicked = { navigator.push(item = AuthScreen(screenType = ScreenType.LOGIN.name)) },
+                onSignUpClicked = { navigator.push(item = AuthScreen(screenType = ScreenType.REGISTER.name)) },
+                isLoading = screenState.state is SocialLoginScreenState.State.Loading,
+                activityResultLauncher = loginWithGoogleAccountLauncher
+            )
+            MovaSnackBar(
+                snackBarHostState = snackBarHostState,
+                onDismiss = {
+                    snackBarHostState.currentSnackbarData?.dismiss()
+                    screenState.resetState()
+                },
+                modifier = Modifier.systemBarsPadding()
+            )
+        }
+
+        LaunchedEffect(
+            key1 = screenState.state,
+            block = {
+                if (screenState.state is SocialLoginScreenState.State.Error) {
+                    snackBarHostState.showSnackbar(
+                        message = (screenState.state as SocialLoginScreenState.State.Error).message,
+                        actionLabel = dismissText,
+                        duration = SnackbarDuration.Long
+                    )
+                    screenState.resetState()
+                }
+            }
+        )
+    }
 }
 
 @Composable

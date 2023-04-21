@@ -18,16 +18,3 @@ class IOSPlatform: Platform {
 actual val uiModule: Module = module {
     single <Platform> { IOSPlatform() }
 }
-
-@Composable
-actual fun getImageLoader(): ImageLoader = ImageLoader {
-    logger = DebugLogger(LogPriority.VERBOSE)
-    components {
-        setupDefaultComponents(imageScope = imageScope)
-    }
-    interceptor {
-        memoryCacheConfig {
-            maxSizePercent(percent = 0.25)
-        }
-    }
-}

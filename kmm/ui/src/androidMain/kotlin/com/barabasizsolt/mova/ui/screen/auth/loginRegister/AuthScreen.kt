@@ -1,4 +1,4 @@
-package com.barabasizsolt.mova.ui.screen.auth.logiRegister
+package com.barabasizsolt.mova.ui.screen.auth.loginRegister
 
 import android.app.Activity
 import android.content.Intent
@@ -56,6 +56,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.screen.auth.catalog.AuthInputField
 import com.barabasizsolt.mova.ui.screen.auth.catalog.AuthScreenDelimiter
@@ -66,71 +70,80 @@ import com.barabasizsolt.mova.ui.screen.auth.catalog.SocialLoginOption
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun AuthScreen(screenState: AuthScreenState) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val snackBarHostState = remember { SnackbarHostState() }
-    val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        val data = result.data
-        if (result.resultCode == Activity.RESULT_OK && data != null) {
-            screenState.authenticateWithGoogle(intent = data)
-        }
-    }
-    val dismissText = stringResource(id = R.string.dismiss)
+class AuthScreen(private val screenType: String) : Screen, KoinComponent {
 
-    Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
-        ScreenContent(
-            screenTitle = screenState.screenProperty?.screenTitle.orEmpty(),
-            authButtonText = screenState.screenProperty?.authButtonText.orEmpty(),
-            authFooterText = screenState.screenProperty?.authFooterText.orEmpty(),
-            authFooterQuestion = screenState.screenProperty?.authFooterQuestion.orEmpty(),
-            email = screenState.email,
-            onEmailChange = screenState::onEmailChange,
-            password = screenState.password,
-            onPasswordChange = screenState::onPasswordChange,
-            authenticate = screenState::authenticate,
-            getIntentForGoogleLogin = screenState::getIntentForGoogleLogin,
-            authenticateWithFacebook = screenState::authenticateWithFacebook,
-            changeAuthScreen = screenState::changeAuthScreen,
-            isLoading = screenState.state is AuthScreenState.State.Loading,
-            isEnabled = screenState.isAuthEnabled,
-            activityResultLauncher = loginWithGoogleAccountLauncher,
-            keyboardController = keyboardController
-        )
+    val screenState: AuthScreenState by inject { parametersOf(screenType) }
 
-        MovaSnackBar(
-            snackBarHostState = snackBarHostState,
-            onDismiss = {
-                snackBarHostState.currentSnackbarData?.dismiss()
-                screenState.resetState()
-            },
-            modifier = Modifier.systemBarsPadding()
-        )
-    }
+    @OptIn(ExperimentalComposeUiApi::class)
+    @Composable
+    override fun Content() {
+        val navigator: Navigator = LocalNavigator.currentOrThrow
 
-    LaunchedEffect(
-        key1 = screenState.state,
-        block = {
-            if (screenState.state is AuthScreenState.State.Error) {
-                snackBarHostState.showSnackbar(
-                    message = (screenState.state as AuthScreenState.State.Error).message,
-                    actionLabel = dismissText
-                )
-                screenState.resetState()
+        val keyboardController = LocalSoftwareKeyboardController.current
+        val snackBarHostState = remember { SnackbarHostState() }
+        val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            val data = result.data
+            if (result.resultCode == Activity.RESULT_OK && data != null) {
+                screenState.authenticateWithGoogle(intent = data)
             }
         }
-    )
+        val dismissText = stringResource(id = R.string.dismiss)
 
-    /*TODO: Add later*/
-//    BeagleModules(modules = createBeagleModules { user ->
-//        screenState.onEmailChange(user.email)
-//        screenState.onPasswordChange(user.password)
-//        screenState.authenticate()
-//    })
+        Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
+            ScreenContent(
+                screenTitle = screenState.screenProperty?.screenTitle.orEmpty(),
+                authButtonText = screenState.screenProperty?.authButtonText.orEmpty(),
+                authFooterText = screenState.screenProperty?.authFooterText.orEmpty(),
+                authFooterQuestion = screenState.screenProperty?.authFooterQuestion.orEmpty(),
+                email = screenState.email,
+                onEmailChange = screenState::onEmailChange,
+                password = screenState.password,
+                onPasswordChange = screenState::onPasswordChange,
+                authenticate = screenState::authenticate,
+                getIntentForGoogleLogin = screenState::getIntentForGoogleLogin,
+                authenticateWithFacebook = screenState::authenticateWithFacebook,
+                changeAuthScreen = screenState::changeAuthScreen,
+                isLoading = screenState.state is AuthScreenState.State.Loading,
+                isEnabled = screenState.isAuthEnabled,
+                activityResultLauncher = loginWithGoogleAccountLauncher,
+                keyboardController = keyboardController
+            )
+
+            MovaSnackBar(
+                snackBarHostState = snackBarHostState,
+                onDismiss = {
+                    snackBarHostState.currentSnackbarData?.dismiss()
+                    screenState.resetState()
+                },
+                modifier = Modifier.systemBarsPadding()
+            )
+        }
+
+        LaunchedEffect(
+            key1 = screenState.state,
+            block = {
+                if (screenState.state is AuthScreenState.State.Error) {
+                    snackBarHostState.showSnackbar(
+                        message = (screenState.state as AuthScreenState.State.Error).message,
+                        actionLabel = dismissText
+                    )
+                    screenState.resetState()
+                }
+            }
+        )
+        /*TODO: Add later*/
+//        BeagleModules(modules = createBeagleModules { user ->
+//            screenState.onEmailChange(user.email)
+//            screenState.onPasswordChange(user.password)
+//            screenState.authenticate()
+//        })
+    }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)

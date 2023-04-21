@@ -9,7 +9,3 @@ interface Platform {
 }
 
 expect val uiModule: Module
-
-/*TODO: Workaround to get the ImageLoader in Theme*/
-@Composable
-expect fun getImageLoader(): ImageLoader

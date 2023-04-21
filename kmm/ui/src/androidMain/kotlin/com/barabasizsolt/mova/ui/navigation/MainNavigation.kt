@@ -61,9 +61,9 @@ fun NavGraphBuilder.mainNavigation(navController: NavHostController) {
             FavouritesScreen()
         }
 
-        composable(route = Route.Main.PROFILE) {
-            ProfileScreen()
-        }
+//        composable(route = Route.Main.PROFILE) {
+//            ProfileScreen()
+//        }
 
         composable(route = Route.Main.SEE_ALL) { backstackEntry ->
             val contentType = backstackEntry.arguments?.getString("contentType") as String

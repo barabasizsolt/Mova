@@ -19,9 +19,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.catalog.GradientOverlay
 import com.barabasizsolt.mova.ui.catalog.MovaButton
+import com.barabasizsolt.mova.ui.screen.auth.socialLogin.SocialLoginScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import com.barabasizsolt.mova.ui.util.withShadow
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -32,25 +37,33 @@ import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import org.koin.core.component.KoinComponent
 
-@OptIn(ExperimentalResourceApi::class)
-@Composable
-fun WelcomeScreen(screenState: WelcomeScreenState) {
-    Box {
-        Image(
-            painter = painterResource(res = "drawable/grid.png"),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
-        GradientOverlay(colors = listOf(Color.Transparent, Color.Black))
-        WelcomeScreenPager(
-            modifier = Modifier
-                .align(alignment = Alignment.BottomCenter)
-                .navigationBarsPadding()
-                .padding(bottom = AppTheme.dimens.screenPadding * 3),
-            onGetStartedClicked = screenState::navigateToAuth
-        )
+object WelcomeScreen: Screen, KoinComponent {
+
+    @OptIn(ExperimentalResourceApi::class)
+    @Composable
+    override fun Content() {
+        val navigator: Navigator = LocalNavigator.currentOrThrow
+
+        Box {
+            Image(
+                painter = painterResource(res = "drawable/grid.png"),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+            GradientOverlay(colors = listOf(Color.Transparent, Color.Black))
+            WelcomeScreenPager(
+                modifier = Modifier
+                    .align(alignment = Alignment.BottomCenter)
+                    .navigationBarsPadding()
+                    .padding(bottom = AppTheme.dimens.screenPadding * 3),
+                onGetStartedClicked = {
+                    navigator.push(item = SocialLoginScreen)
+                }
+            )
+        }
     }
 }
 

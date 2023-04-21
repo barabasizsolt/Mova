@@ -93,6 +93,8 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.compose)
 
+    implementation(libs.voyager.navigator)
+
     // Beagle
     debugImplementation(libs.beagle.uiDrawer)
     debugImplementation(libs.beagle.okHttp)
