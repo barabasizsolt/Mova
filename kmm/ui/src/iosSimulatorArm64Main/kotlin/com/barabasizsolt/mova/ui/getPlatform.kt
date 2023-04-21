@@ -27,7 +27,7 @@ actual fun getImageLoader(): ImageLoader = ImageLoader {
     }
     interceptor {
         memoryCacheConfig {
-            maxSizePercent(percent = 0.25)
+            maxSizePercent(percent = 0.75)
         }
     }
 }

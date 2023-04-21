@@ -43,7 +43,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(libs.bundles.androidx.compose)
-                implementation(libs.koin.compose.kmm)
+                implementation(libs.koin.compose)
 
                 implementation(libs.bundles.androidx.core)
                 implementation(libs.androidx.appcompat)
