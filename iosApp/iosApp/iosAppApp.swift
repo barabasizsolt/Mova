@@ -1,14 +1,11 @@
-//
-//  iosAppApp.swift
-//  iosApp
-//
-//  Created by Barabási Zsolt on 20.04.2023.
-//
-
 import SwiftUI
+import shared
 
 @main
 struct iosAppApp: App {
+    init() {
+        KoinKt.doInitKoin()
+    }
     var body: some Scene {
         WindowGroup {
             ContentView()
