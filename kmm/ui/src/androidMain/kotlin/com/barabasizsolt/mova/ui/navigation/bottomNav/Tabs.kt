@@ -18,20 +18,13 @@ object HomeTab : Tab {
         @Composable
         get()  {
             val icon = rememberVectorPainter(Icons.Default.Home)
-            return remember {
-                TabOptions(
-                    index = 0u,
-                    title = "Home",
-                    icon = icon
-                )
-            }
+            return remember { TabOptions(index = 0u, title = "Home", icon = icon) }
         }
 
     @Composable
     override fun Content() {
         Navigator(screen = HomeScreen)
     }
-
 }
 
 object ExploreTab : Tab {
@@ -40,18 +33,11 @@ object ExploreTab : Tab {
         @Composable
         get()  {
             val icon = rememberVectorPainter(Icons.Default.Search)
-            return remember {
-                TabOptions(
-                    index = 1u,
-                    title = "Explore",
-                    icon = icon
-                )
-            }
+            return remember { TabOptions(index = 1u, title = "Explore", icon = icon) }
         }
 
     @Composable
     override fun Content() {
         Navigator(screen = ExploreScreen)
     }
-
 }

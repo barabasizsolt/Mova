@@ -2,6 +2,7 @@ package com.barabasizsolt.mova.ui
 
 import com.barabasizsolt.mova.ui.screen.auth.loginRegister.AuthScreenState
 import com.barabasizsolt.mova.ui.screen.auth.socialLogin.SocialLoginScreenState
+import com.barabasizsolt.mova.ui.screen.detail.DetailScreenState
 import com.barabasizsolt.mova.ui.screen.explore.ExploreScreenState
 import com.barabasizsolt.mova.ui.screen.explore.FilterScreenState
 import com.barabasizsolt.mova.ui.screen.home.HomeScreenState
@@ -70,6 +71,13 @@ actual val uiModule: Module = module {
             contentType = params[0],
             getSeeAllScreenUseCase = get(),
             getSeeAllScreenFlowUseCase = get()
+        )
+    }
+    // [DetailScreenState]
+    factory { params ->
+        DetailScreenState(
+            id = params[0],
+            getMovieDetailsUseCase = get()
         )
     }
 }

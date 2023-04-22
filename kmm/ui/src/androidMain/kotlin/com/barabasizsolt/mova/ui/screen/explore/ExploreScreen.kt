@@ -39,8 +39,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import category.Category
 import com.barabasizsolt.mova.domain.model.ContentItem
 import com.barabasizsolt.mova.filter.api.FilterItem
@@ -54,6 +57,7 @@ import com.barabasizsolt.mova.ui.catalog.WatchableWithRating
 import com.barabasizsolt.mova.ui.screen.base.BaseScreenState
 import com.barabasizsolt.mova.ui.screen.base.UserAction
 import com.barabasizsolt.mova.ui.screen.base.BaseScreen
+import com.barabasizsolt.mova.ui.screen.detail.DetailScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import com.barabasizsolt.mova.ui.util.imeBottomInsetDp
 import com.barabasizsolt.mova.ui.util.statusBarInsetDp
@@ -68,6 +72,8 @@ object ExploreScreen : Screen, KoinComponent {
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {
+        val navigator: Navigator = LocalNavigator.currentOrThrow
+
         val movieListState: LazyGridState = rememberLazyGridState()
         val movieSearchState: LazyGridState = rememberLazyGridState()
         val tvListState: LazyGridState = rememberLazyGridState()
@@ -128,7 +134,7 @@ object ExploreScreen : Screen, KoinComponent {
                             onClick = {
                                 shouldShowScrollUp = it
                             },
-                            onMovieClicked = { /*TODO: Implement it*/ },
+                            onMovieClicked = { id -> navigator.push(item = DetailScreen(id = id)) },
                             scope = scope,
                             gridState = gridState
                         )

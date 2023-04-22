@@ -21,6 +21,7 @@ import com.barabasizsolt.mova.ui.catalog.WatchablePager
 import com.barabasizsolt.mova.ui.catalog.WatchableWithRatingCarousel
 import com.barabasizsolt.mova.ui.screen.base.UserAction
 import com.barabasizsolt.mova.ui.screen.base.BaseScreen
+import com.barabasizsolt.mova.ui.screen.detail.DetailScreen
 import com.barabasizsolt.mova.ui.screen.seeall.SeeAllScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import movie.model.Movie
@@ -51,7 +52,7 @@ object HomeScreen : Screen, KoinComponent {
                     onSeeAllTopRatedMoviesClicked = { navigator.push(item = SeeAllScreen(contentType = SeeAllContentType.TOP_RATED_MOVIES.name)) },
                     gridState = gridState,
                     genres = screenState.homeContent.genres,
-                    onItemClicked = { /*TODO: Implement it*/ }
+                    onItemClicked = { id -> navigator.push(item = DetailScreen(id = id)) }
                 )
             }
         )
