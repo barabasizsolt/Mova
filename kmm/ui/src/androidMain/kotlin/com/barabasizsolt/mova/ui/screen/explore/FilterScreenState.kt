@@ -1,10 +1,10 @@
 package com.barabasizsolt.mova.ui.screen.explore
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import category.Category
 import com.barabasizsolt.mova.domain.usecase.helper.genre.GetGenresFlowUseCase
 import com.barabasizsolt.mova.filter.api.FilterItem
@@ -18,24 +18,14 @@ import com.barabasizsolt.mova.ui.screen.base.UserAction
 import com.barabasizsolt.mova.ui.util.Event
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.get
-
-@Composable
-fun rememberFilterScreenState(
-    getGenresFlowUseCase: GetGenresFlowUseCase = get(),
-    filterService: FilterService = get()
-): FilterScreenState = remember {
-    FilterScreenState(
-        getGenresFlowUseCase = getGenresFlowUseCase,
-        filterService = filterService
-    )
-}
 
 class FilterScreenState(
     private val getGenresFlowUseCase: GetGenresFlowUseCase,
     private val filterService: FilterService
-) : BaseScreenState() {
+) : BaseScreenState(), ScreenModel {
     private var job: Job? = null
 
     val categories = filterService.categories
@@ -59,10 +49,10 @@ class FilterScreenState(
         private set
 
     init {
-        filterService.selectedCategory.observe { selectedCategory = it }
-        filterService.selectedRegions.observe { selectedRegions = it }
-        filterService.selectedGenres.observe { selectedGenres = it }
-        filterService.selectedSortOptions.observe { selectedSortOptions = it }
+        filterService.selectedCategory.onEach { selectedCategory = it }.launchIn(scope = coroutineScope)
+        filterService.selectedRegions.onEach { selectedRegions = it }.launchIn(scope = coroutineScope)
+        filterService.selectedGenres.onEach { selectedGenres = it }.launchIn(scope = coroutineScope)
+        filterService.selectedSortOptions.onEach { selectedSortOptions = it }.launchIn(scope = coroutineScope)
         getScreenData(userAction = UserAction.Normal)
     }
 
@@ -72,7 +62,7 @@ class FilterScreenState(
 
     private fun restartGenresCollection() {
         job?.cancel()
-        job = scope.launch {
+        job = coroutineScope.launch {
             getGenresFlowUseCase(
                 genreType = when (selectedCategory.wrappedItem as Category) {
                     Category.MOVIE -> GenreType.MOVIE

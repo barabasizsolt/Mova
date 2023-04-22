@@ -1,12 +1,11 @@
 package com.barabasizsolt.mova.ui.screen.explore
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import category.Category
 import com.barabasizsolt.mova.domain.model.ContentItem
 import com.barabasizsolt.mova.domain.usecase.helper.genre.GetGenresUseCase
@@ -27,38 +26,8 @@ import com.barabasizsolt.mova.ui.util.Event
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.cancellable
-import org.koin.androidx.compose.get
-
-@Composable
-fun rememberExploreScreenState(
-    discoverContentUseCase: DiscoverContentUseCase = get(),
-    discoverContentFlowUseCase: DiscoverContentFlowUseCase = get(),
-    searchContentUseCase: SearchContentUseCase = get(),
-    searchContentFlowUseCase: SearchContentFlowUseCase = get(),
-    deleteContentUseCase: DeleteContentUseCase = get(),
-    getGenresUseCase: GetGenresUseCase = get(),
-    filterService: FilterService = get()
-): ExploreScreenState = rememberSaveable(
-    saver = ExploreScreenState.getSaver(
-        discoverContentUseCase = discoverContentUseCase,
-        discoverContentFlowUseCase = discoverContentFlowUseCase,
-        searchContentUseCase = searchContentUseCase,
-        searchContentFlowUseCase = searchContentFlowUseCase,
-        deleteContentUseCase = deleteContentUseCase,
-        getGenresUseCase = getGenresUseCase,
-        filterService = filterService
-    )
-) {
-    ExploreScreenState(
-        discoverContentUseCase = discoverContentUseCase,
-        discoverContentFlowUseCase = discoverContentFlowUseCase,
-        searchContentUseCase = searchContentUseCase,
-        searchContentFlowUseCase = searchContentFlowUseCase,
-        deleteContentUseCase = deleteContentUseCase,
-        getGenresUseCase = getGenresUseCase,
-        filterService = filterService
-    )
-}
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class ExploreScreenState(
     private val discoverContentUseCase: DiscoverContentUseCase,
@@ -68,7 +37,7 @@ class ExploreScreenState(
     private val deleteContentUseCase: DeleteContentUseCase,
     private val getGenresUseCase: GetGenresUseCase,
     private val filterService: FilterService
-) : BaseScreenState() {
+) : BaseScreenState(), ScreenModel {
     private var discoverJob: Job? = null
     private var searchJob: Job? = null
 
@@ -99,21 +68,21 @@ class ExploreScreenState(
         private set
 
     init {
-        filterService.selectedCategory.observe {
+        filterService.selectedCategory.onEach {
             selectedCategory = it
             restartDiscoverContentCollection()
             restartSearchContentCollection()
             getScreenData(userAction = UserAction.Normal)
-        }
-        filterService.selectedRegions.observe {
+        }.launchIn(scope = coroutineScope)
+        filterService.selectedRegions.onEach {
             selectedRegions = it
-        }
-        filterService.selectedGenres.observe {
+        }.launchIn(scope = coroutineScope)
+        filterService.selectedGenres.onEach {
             selectedGenres = it
-        }
-        filterService.selectedSortOptions.observe {
+        }.launchIn(scope = coroutineScope)
+        filterService.selectedSortOptions.onEach {
             selectedSortOptions = it
-        }
+        }.launchIn(scope = coroutineScope)
         restartDiscoverContentCollection()
         restartSearchContentCollection()
         getScreenData(userAction = UserAction.Normal)
@@ -128,7 +97,7 @@ class ExploreScreenState(
                 UserAction.Normal -> State.Normal
                 UserAction.TryAgain -> State.TryAgainLoading
             }
-            scope.launch {
+            coroutineScope.launch {
                 delay(timeMillis = delay)
                 if (query.isEmpty()) {
                     discoverContent(userAction = userAction)
@@ -138,7 +107,7 @@ class ExploreScreenState(
             }
         }
 
-        scope.launch {
+        coroutineScope.launch {
             when(getGenresUseCase()) {
                 is Result.Failure, is Result.Success -> Unit
             }
@@ -147,8 +116,9 @@ class ExploreScreenState(
 
     private fun restartDiscoverContentCollection() {
         discoverJob?.cancel()
-        discoverJob = scope.launch {
+        discoverJob = coroutineScope.launch {
             discoverContentFlowUseCase(category = selectedCategory.wrappedItem as Category).cancellable().collect {
+                println("<<IT: $it")
                 discoverContent = it
             }
         }
@@ -156,7 +126,7 @@ class ExploreScreenState(
 
     private fun restartSearchContentCollection() {
         searchJob?.cancel()
-        searchJob = scope.launch {
+        searchJob = coroutineScope.launch {
             searchContentFlowUseCase(category = selectedCategory.wrappedItem as Category).cancellable().collect {
                 searchContent = it
             }
@@ -164,6 +134,7 @@ class ExploreScreenState(
     }
 
     fun onQueryChange(query: String) {
+        println("<<Q: $query")
         when (selectedCategory.wrappedItem as Category) {
             Category.MOVIE -> movieQuery = query
             Category.TV -> tvQuery = query
@@ -180,7 +151,7 @@ class ExploreScreenState(
         if (query.isEmpty()) {
             state = State.SearchLoading
         }
-        scope.launch {
+        coroutineScope.launch {
             delay(timeMillis = 100L)
             discoverContent(userAction = UserAction.SwipeRefresh)
             state = State.Normal
@@ -191,7 +162,7 @@ class ExploreScreenState(
         restartDiscoverContentCollection()
         restartSearchContentCollection()
         state = State.SearchLoading
-        scope.launch {
+        coroutineScope.launch {
             delay(timeMillis = 100L)
             when (selectedCategory.wrappedItem as Category) {
                 Category.MOVIE -> movieQuery = ""
@@ -264,37 +235,6 @@ class ExploreScreenState(
         userAction is UserAction.TryAgain ->
             State.Normal
         else -> State.Error(message = errorMessage)
-    }
-
-    companion object {
-        private const val MOVIE_QUERY_KEY: String = "com.barabasizsolt.explore.query.movie"
-        private const val TV_QUERY_KEY: String = "com.barabasizsolt.explore.query.tv"
-
-        fun getSaver(
-            discoverContentUseCase: DiscoverContentUseCase,
-            discoverContentFlowUseCase: DiscoverContentFlowUseCase,
-            searchContentUseCase: SearchContentUseCase,
-            searchContentFlowUseCase: SearchContentFlowUseCase,
-            deleteContentUseCase: DeleteContentUseCase,
-            getGenresUseCase: GetGenresUseCase,
-            filterService: FilterService
-        ): Saver<ExploreScreenState, *> = getBaseSaver(
-            save = { mapOf(MOVIE_QUERY_KEY to it.movieQuery, TV_QUERY_KEY to it.tvQuery) },
-            restore = {
-                ExploreScreenState(
-                    discoverContentUseCase = discoverContentUseCase,
-                    discoverContentFlowUseCase = discoverContentFlowUseCase,
-                    searchContentUseCase = searchContentUseCase,
-                    searchContentFlowUseCase = searchContentFlowUseCase,
-                    deleteContentUseCase = deleteContentUseCase,
-                    getGenresUseCase = getGenresUseCase,
-                    filterService = filterService
-                ).apply {
-                    movieQuery = it[MOVIE_QUERY_KEY] as String
-                    tvQuery = it[TV_QUERY_KEY] as String
-                }
-            }
-        )
     }
 
     sealed class Action {

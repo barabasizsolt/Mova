@@ -50,9 +50,10 @@ import org.koin.core.component.inject
 
 object SocialLoginScreen : Screen, KoinComponent {
 
+    private val screenState: SocialLoginScreenState by inject()
+
     @Composable
     override fun Content() {
-        val screenState: SocialLoginScreenState by inject()
         val navigator: Navigator = LocalNavigator.currentOrThrow
 
         val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(

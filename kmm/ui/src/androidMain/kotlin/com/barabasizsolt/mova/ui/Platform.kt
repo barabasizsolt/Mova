@@ -2,6 +2,10 @@ package com.barabasizsolt.mova.ui
 
 import com.barabasizsolt.mova.ui.screen.auth.loginRegister.AuthScreenState
 import com.barabasizsolt.mova.ui.screen.auth.socialLogin.SocialLoginScreenState
+import com.barabasizsolt.mova.ui.screen.explore.ExploreScreenState
+import com.barabasizsolt.mova.ui.screen.explore.FilterScreenState
+import com.barabasizsolt.mova.ui.screen.home.HomeScreenState
+import com.barabasizsolt.mova.ui.screen.seeall.SeeAllScreenState
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -14,7 +18,8 @@ actual val uiModule: Module = module {
     single <Platform> { AndroidPlatform() }
 
     // State holder
-    // [SocialLoginScreen]
+
+    // [SocialLoginScreenState]
     factory {
         SocialLoginScreenState(
             getIntentForGoogleAccountLogin = get(),
@@ -22,6 +27,7 @@ actual val uiModule: Module = module {
             loginWithFacebookAccountUseCase = get()
         )
     }
+    // [AuthScreenState]
     factory { params ->
         AuthScreenState(
             screenType = params[0],
@@ -30,6 +36,40 @@ actual val uiModule: Module = module {
             loginWithFacebookAccountUseCase = get(),
             getIntentForGoogleAccountLogin = get(),
             registerWithEmailAndPassword = get()
+        )
+    }
+    // [HomeScreenState]
+    factory {
+        HomeScreenState(
+            getHomeScreen = get(),
+            getHomeScreenFlow = get()
+        )
+    }
+    // [ExploreScreenState]
+    factory {
+        ExploreScreenState(
+            discoverContentUseCase = get(),
+            discoverContentFlowUseCase = get(),
+            searchContentUseCase = get(),
+            searchContentFlowUseCase = get(),
+            deleteContentUseCase = get(),
+            getGenresUseCase = get(),
+            filterService = get()
+        )
+    }
+    // [FilterScreenState]
+    factory {
+        FilterScreenState(
+            getGenresFlowUseCase = get(),
+            filterService = get()
+        )
+    }
+    // [SeeAllScreenState]
+    factory { params ->
+        SeeAllScreenState(
+            contentType = params[0],
+            getSeeAllScreenUseCase = get(),
+            getSeeAllScreenFlowUseCase = get()
         )
     }
 }

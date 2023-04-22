@@ -95,10 +95,5 @@ fun BaseScreen(
                 }
             }
         )
-
-        DisposableEffect(
-            key1 = Unit,
-            effect = { onDispose { screenState.onClear() } }
-        )
     }
 }

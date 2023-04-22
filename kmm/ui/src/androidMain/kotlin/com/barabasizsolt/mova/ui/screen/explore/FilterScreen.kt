@@ -18,9 +18,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -32,6 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import category.Category
 import com.barabasizsolt.mova.filter.api.FilterItem
 import com.barabasizsolt.mova.ui.R
@@ -39,107 +39,113 @@ import com.barabasizsolt.mova.ui.catalog.MovaButton
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.qualifier.named
 
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun FilterScreen(
-    screenState: FilterScreenState,
-    bottomSheetScaffoldState: BottomSheetScaffoldState
-) {
-    val isDark: Boolean = isSystemInDarkTheme()
-    val scope: CoroutineScope = rememberCoroutineScope()
-    val genreListState = rememberLazyListState()
+object FilterScreen : Screen, KoinComponent {
 
-    BackHandler(enabled = bottomSheetScaffoldState.bottomSheetState.isExpanded) {
-        scope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
-    }
+    private val screenState: FilterScreenState by inject()
 
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
-        contentPadding = PaddingValues(vertical = AppTheme.dimens.screenPadding),
-        modifier = Modifier.background(color = AppTheme.colors.background)
-    ) {
-        item {
-            Text(
-                text = stringResource(id = R.string.sort_filter),
-                color = AppTheme.colors.secondary,
-                style = AppTheme.typography.h6,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
+    @Composable
+    override fun Content() {
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+
+        val isDark: Boolean = isSystemInDarkTheme()
+        val scope: CoroutineScope = rememberCoroutineScope()
+        val genreListState = rememberLazyListState()
+
+        BackHandler(enabled = bottomSheetNavigator.isVisible) {
+            bottomSheetNavigator.hide()
         }
-        item {
-            Divider(
-                modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding),
-                color = if (isDark) Color.DarkGray else Color.LightGray
-            )
-        }
-        item {
-            SingleSelectionFilterCarousel(
-                header = stringResource(id = R.string.categories),
-                selectedItem = screenState.selectedCategory,
-                items = screenState.categories,
-                onClick = { position: FilterItem ->
-                    screenState.onCategorySelected(position)
-                    scope.launch {
-                        genreListState.scrollToItem(index = 0, scrollOffset = 0)
-                    }
-                }
-            )
-        }
-        if (screenState.selectedCategory.wrappedItem as Category == Category.MOVIE) {
+
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
+            contentPadding = PaddingValues(vertical = AppTheme.dimens.screenPadding),
+            modifier = Modifier.background(color = AppTheme.colors.background)
+        ) {
             item {
-                MultiSelectionFilterCarousel(
-                    header = stringResource(id = R.string.regions),
-                    selectedItems = screenState.selectedRegions,
-                    items = screenState.regions,
-                    onClick = { positions -> screenState.onRegionSelected(positions) }
+                Text(
+                    text = stringResource(id = R.string.sort_filter),
+                    color = AppTheme.colors.secondary,
+                    style = AppTheme.typography.h6,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
-        }
-        item {
-            MultiSelectionFilterCarousel(
-                header = stringResource(id = R.string.genres),
-                selectedItems = screenState.selectedGenres,
-                items = screenState.genres,
-                listState = genreListState,
-                onClick = { positions -> screenState.onGenreSelected(positions) }
-            )
-        }
-        item {
-            MultiSelectionFilterCarousel(
-                header = stringResource(id = R.string.sort),
-                selectedItems = screenState.selectedSortOptions,
-                items = screenState.sortOptions,
-                onClick = { positions -> screenState.onSortingCriteriaSelected(positions) }
-            )
-        }
-        item {
-            Divider(
-                modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding),
-                color = if (isDark) Color.DarkGray else Color.LightGray
-            )
-        }
-        item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = AppTheme.dimens.screenPadding),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
-            ) {
-                ResetButton(
-                    onClick = screenState::onResetButtonClicked,
-                    isDark = isDark,
-                    modifier = Modifier.weight(weight = 1f)
+            item {
+                Divider(
+                    modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding),
+                    color = if (isDark) Color.DarkGray else Color.LightGray
                 )
-                ApplyButton(
-                    onClick = {
-                        screenState.onApplyButtonClicked()
-                        scope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
-                    },
-                    modifier = Modifier.weight(weight = 1f)
+            }
+            item {
+                SingleSelectionFilterCarousel(
+                    header = stringResource(id = R.string.categories),
+                    selectedItem = screenState.selectedCategory,
+                    items = screenState.categories,
+                    onClick = { position: FilterItem ->
+                        screenState.onCategorySelected(position)
+                        scope.launch {
+                            genreListState.scrollToItem(index = 0, scrollOffset = 0)
+                        }
+                    }
                 )
+            }
+            if (screenState.selectedCategory.wrappedItem as Category == Category.MOVIE) {
+                item {
+                    MultiSelectionFilterCarousel(
+                        header = stringResource(id = R.string.regions),
+                        selectedItems = screenState.selectedRegions,
+                        items = screenState.regions,
+                        onClick = { positions -> screenState.onRegionSelected(positions) }
+                    )
+                }
+            }
+            item {
+                MultiSelectionFilterCarousel(
+                    header = stringResource(id = R.string.genres),
+                    selectedItems = screenState.selectedGenres,
+                    items = screenState.genres,
+                    listState = genreListState,
+                    onClick = { positions -> screenState.onGenreSelected(positions) }
+                )
+            }
+            item {
+                MultiSelectionFilterCarousel(
+                    header = stringResource(id = R.string.sort),
+                    selectedItems = screenState.selectedSortOptions,
+                    items = screenState.sortOptions,
+                    onClick = { positions -> screenState.onSortingCriteriaSelected(positions) }
+                )
+            }
+            item {
+                Divider(
+                    modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding),
+                    color = if (isDark) Color.DarkGray else Color.LightGray
+                )
+            }
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.dimens.screenPadding),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
+                ) {
+                    ResetButton(
+                        onClick = screenState::onResetButtonClicked,
+                        isDark = isDark,
+                        modifier = Modifier.weight(weight = 1f)
+                    )
+                    ApplyButton(
+                        onClick = {
+                            screenState.onApplyButtonClicked()
+                            bottomSheetNavigator.hide()
+                        },
+                        modifier = Modifier.weight(weight = 1f)
+                    )
+                }
             }
         }
     }

@@ -15,10 +15,9 @@ import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import com.barabasizsolt.api.AuthenticationState
 import com.barabasizsolt.mova.ui.navigation.Route
-import com.barabasizsolt.mova.ui.navigation.bottomNav.BottomNavHolder
+import com.barabasizsolt.mova.ui.navigation.bottomNav.BottomNavScreen
 import com.barabasizsolt.mova.ui.navigation.mainNavigation
 import com.barabasizsolt.mova.ui.screen.auth.welcome.WelcomeScreen
-import com.barabasizsolt.mova.ui.screen.profile.ProfileScreen
 import com.barabasizsolt.mova.ui.screen.splash.SplashScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -36,7 +35,7 @@ fun TemporaryAppNavigation() {
                 navigator.popUntilRoot()
                 when (appNavigationState.authState) {
                     AuthenticationState.Logged -> {
-                        navigator.replace(item = ProfileScreen)
+                        navigator.replace(item = BottomNavScreen)
                     }
                     AuthenticationState.NotLogged -> {
                         navigator.replace(item = WelcomeScreen)
@@ -65,12 +64,11 @@ fun AppNavigation() {
                 composable(route = Route.Splash.route) {
                     Spacer(modifier = Modifier.fillMaxSize())
                 }
-                //authNavigation(navController = navController)
                 mainNavigation(navController = navController)
             },
             modifier = Modifier.weight(weight = 1f)
         )
-        BottomNavHolder(navController = navController, navBackStackEntry = navBackStackEntry)
+        //BottomNavHolder(navController = navController, navBackStackEntry = navBackStackEntry)
     }
 
     LaunchedEffect(

@@ -9,37 +9,54 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.barabasizsolt.mova.domain.model.ContentItem
+import com.barabasizsolt.mova.domain.usecase.screen.seeall.SeeAllContentType
 import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.catalog.PeopleCarousel
 import com.barabasizsolt.mova.ui.catalog.WatchablePager
 import com.barabasizsolt.mova.ui.catalog.WatchableWithRatingCarousel
 import com.barabasizsolt.mova.ui.screen.base.UserAction
 import com.barabasizsolt.mova.ui.screen.base.BaseScreen
+import com.barabasizsolt.mova.ui.screen.seeall.SeeAllScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import movie.model.Movie
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-@Composable
-fun HomeScreen(screenState: HomeScreenState) = BaseScreen(
-    screenState = screenState,
-    onSnackBarDismissed = { screenState.getScreenData(userAction = UserAction.Normal) },
-    content = { gridState, _ ->
-        ScreenContent(
-            upcomingMovies = screenState.homeContent.upcomingMovies,
-            popularMovies = screenState.homeContent.popularMovies,
-            onSeeAllPopularMoviesClicked = screenState::onSeeAllPopularMoviesClicked,
-            popularPeople = screenState.homeContent.popularPeople,
-            onSeeAllPopularPeopleClicked = screenState::onSeeAllPopularPeopleClicked,
-            nowPlayingMovies = screenState.homeContent.nowPlayingMovies,
-            onSeeAllNowPlayingMoviesClicked = screenState::onSeeAllNowPlayingMoviesClicked,
-            topRatedMovies = screenState.homeContent.topRatedMovies,
-            onSeeAllTopRatedMoviesClicked = screenState::onSeeAllTopRatedMoviesClicked,
-            gridState = gridState,
-            genres = screenState.homeContent.genres,
-            onItemClicked = screenState::onMovieClicked
+object HomeScreen : Screen, KoinComponent {
+
+    private val screenState: HomeScreenState by inject()
+
+    @Composable
+    override fun Content() {
+        val navigator: Navigator = LocalNavigator.currentOrThrow
+
+        BaseScreen(
+            screenState = screenState,
+            onSnackBarDismissed = { screenState.getScreenData(userAction = UserAction.Normal) },
+            content = { gridState, _ ->
+                ScreenContent(
+                    upcomingMovies = screenState.homeContent.upcomingMovies,
+                    popularMovies = screenState.homeContent.popularMovies,
+                    onSeeAllPopularMoviesClicked = { navigator.push(item = SeeAllScreen(contentType = SeeAllContentType.POPULAR_MOVIES.name)) },
+                    popularPeople = screenState.homeContent.popularPeople,
+                    onSeeAllPopularPeopleClicked = { navigator.push(item = SeeAllScreen(contentType = SeeAllContentType.POPULAR_PEOPLE.name)) },
+                    nowPlayingMovies = screenState.homeContent.nowPlayingMovies,
+                    onSeeAllNowPlayingMoviesClicked = { navigator.push(item = SeeAllScreen(contentType = SeeAllContentType.NOW_PLAYING_MOVIES.name)) },
+                    topRatedMovies = screenState.homeContent.topRatedMovies,
+                    onSeeAllTopRatedMoviesClicked = { navigator.push(item = SeeAllScreen(contentType = SeeAllContentType.TOP_RATED_MOVIES.name)) },
+                    gridState = gridState,
+                    genres = screenState.homeContent.genres,
+                    onItemClicked = { /*TODO: Implement it*/ }
+                )
+            }
         )
     }
-)
+}
 
 @Composable
 private fun ScreenContent(

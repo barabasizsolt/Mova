@@ -5,6 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import com.barabasizsolt.mova.domain.model.DetailScreenContent
 import com.barabasizsolt.mova.domain.usecase.screen.detail.GetMovieDetailsUseCase
 import com.barabasizsolt.mova.ui.screen.base.BaseScreenState
@@ -28,7 +30,7 @@ fun rememberDetailScreenState(
 class DetailScreenState(
     val id: Int,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase
-) : BaseScreenState() {
+) : BaseScreenState(), ScreenModel {
 
     var action by mutableStateOf<Event<Action>?>(value = null)
         private set
@@ -48,7 +50,7 @@ class DetailScreenState(
             UserAction.SwipeRefresh -> State.SwipeRefresh
             else -> State.Loading
         }
-        scope.launch {
+        coroutineScope.launch {
             state = when (val result = getMovieDetailsUseCase(id = id)) {
                 is Result.Failure -> {
                     State.Error(message = result.exception.message.toString())

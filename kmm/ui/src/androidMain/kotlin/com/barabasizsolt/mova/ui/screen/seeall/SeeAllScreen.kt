@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
@@ -17,6 +16,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.barabasizsolt.mova.domain.model.ContentItem
 import com.barabasizsolt.mova.domain.usecase.screen.seeall.SeeAllContentType
 import com.barabasizsolt.mova.ui.R
@@ -29,27 +32,37 @@ import com.barabasizsolt.mova.ui.screen.base.BaseScreenState
 import com.barabasizsolt.mova.ui.screen.base.UserAction
 import com.barabasizsolt.mova.ui.screen.base.BaseScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
-import com.barabasizsolt.mova.ui.util.navigationBarInsetDp
 import com.barabasizsolt.mova.ui.util.statusBarInsetDp
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 
-@Composable
-fun SeeAllScreen(screenState: SeeAllScreenState) = BaseScreen(
-    screenState = screenState,
-    onSnackBarDismissed = { screenState.getScreenData(userAction = UserAction.Normal) },
-    snackBarModifier = Modifier.systemBarsPadding(),
-    content = { gridState, _ ->
-        ScreenContent(
-            items = screenState.watchableItems,
-            onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
-            onRetryClick = { screenState.getScreenData(userAction = UserAction.TryAgain) },
-            onUpClicked = screenState::onUpClicked,
-            contentType = screenState.contentType,
-            gridState = gridState,
-            isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
-            onMovieClicked = screenState::onMovieClicked
+class SeeAllScreen(private val contentType: String) : Screen, KoinComponent {
+
+    private val screenState: SeeAllScreenState by inject { parametersOf(contentType) }
+
+    @Composable
+    override fun Content() {
+        val navigator: Navigator = LocalNavigator.currentOrThrow
+
+        BaseScreen(
+            screenState = screenState,
+            onSnackBarDismissed = { screenState.getScreenData(userAction = UserAction.Normal) },
+            content = { gridState, _ ->
+                ScreenContent(
+                    items = screenState.watchableItems,
+                    onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
+                    onRetryClick = { screenState.getScreenData(userAction = UserAction.TryAgain) },
+                    onUpClicked = { navigator.pop() },
+                    contentType = screenState.contentType,
+                    gridState = gridState,
+                    isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
+                    onMovieClicked = { /*TODO: Implement it*/ }
+                )
+            }
         )
     }
-)
+}
 
 @Composable
 private fun ScreenContent(
@@ -69,7 +82,7 @@ private fun ScreenContent(
     contentPadding = PaddingValues(
         start = AppTheme.dimens.screenPadding,
         end = AppTheme.dimens.screenPadding,
-        bottom = AppTheme.dimens.screenPadding + navigationBarInsetDp,
+        bottom = AppTheme.dimens.screenPadding,
         top = AppTheme.dimens.screenPadding + statusBarInsetDp
     )
 ) {
@@ -131,10 +144,7 @@ private fun LazyGridScope.content(
                 .fillMaxWidth())
             LaunchedEffect(
                 key1 = Unit,
-                block = {
-                    println("<<HERE")
-                    onLoadMoreItem()
-                }
+                block = { onLoadMoreItem() }
             )
         }
         is ContentItem.ItemError -> ErrorItem(
