@@ -22,12 +22,9 @@ import com.barabasizsolt.mova.filter.api.FilterService
 import com.barabasizsolt.mova.pager.RefreshType
 import com.barabasizsolt.mova.ui.screen.base.BaseScreenState
 import com.barabasizsolt.mova.ui.screen.base.UserAction
-import com.barabasizsolt.mova.ui.util.Event
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 class ExploreScreenState(
     private val discoverContentUseCase: DiscoverContentUseCase,
@@ -63,29 +60,22 @@ class ExploreScreenState(
             Category.TV -> tvQuery
         }
     }
-
-    var action by mutableStateOf<Event<Action>?>(value = null)
-        private set
+    private var isInitialized: Boolean = false
 
     init {
-        filterService.selectedCategory.onEach {
-            selectedCategory = it
-            restartDiscoverContentCollection()
-            restartSearchContentCollection()
-            getScreenData(userAction = UserAction.Normal)
-        }.launchIn(scope = coroutineScope)
-        filterService.selectedRegions.onEach {
-            selectedRegions = it
-        }.launchIn(scope = coroutineScope)
-        filterService.selectedGenres.onEach {
-            selectedGenres = it
-        }.launchIn(scope = coroutineScope)
-        filterService.selectedSortOptions.onEach {
-            selectedSortOptions = it
-        }.launchIn(scope = coroutineScope)
-        restartDiscoverContentCollection()
-        restartSearchContentCollection()
-        getScreenData(userAction = UserAction.Normal)
+        coroutineScope.launch {
+            launch {
+                filterService.selectedCategory.collect {
+                    selectedCategory = it
+                    restartDiscoverContentCollection()
+                    restartSearchContentCollection()
+                    getScreenData(userAction = if (isInitialized) UserAction.Normal else UserAction.Search.also { isInitialized = true })
+                }
+            }
+            launch { filterService.selectedRegions.collect { selectedRegions = it } }
+            launch { filterService.selectedGenres.collect { selectedGenres = it } }
+            launch { filterService.selectedSortOptions.collect { selectedSortOptions = it } }
+        }
     }
 
     override fun getScreenData(userAction: UserAction, delay: Long) {
@@ -118,7 +108,6 @@ class ExploreScreenState(
         discoverJob?.cancel()
         discoverJob = coroutineScope.launch {
             discoverContentFlowUseCase(category = selectedCategory.wrappedItem as Category).cancellable().collect {
-                println("<<IT: $it")
                 discoverContent = it
             }
         }
@@ -134,7 +123,6 @@ class ExploreScreenState(
     }
 
     fun onQueryChange(query: String) {
-        println("<<Q: $query")
         when (selectedCategory.wrappedItem as Category) {
             Category.MOVIE -> movieQuery = query
             Category.TV -> tvQuery = query
@@ -172,10 +160,6 @@ class ExploreScreenState(
             searchContent(userAction = UserAction.SwipeRefresh, query = query)
             state = State.Normal
         }
-    }
-
-    fun onMovieClicked(id: Int) {
-        action = Event(data = Action.OnMovieClicked(id = id))
     }
 
     private suspend fun discoverContent(userAction: UserAction) {
@@ -235,9 +219,5 @@ class ExploreScreenState(
         userAction is UserAction.TryAgain ->
             State.Normal
         else -> State.Error(message = errorMessage)
-    }
-
-    sealed class Action {
-        data class OnMovieClicked(val id: Int) : Action()
     }
 }

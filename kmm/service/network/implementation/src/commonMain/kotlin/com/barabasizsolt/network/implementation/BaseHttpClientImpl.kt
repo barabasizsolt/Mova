@@ -12,6 +12,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.URLProtocol
 import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
 class BaseHttpClientImpl(
@@ -19,6 +20,7 @@ class BaseHttpClientImpl(
     private val apiKey: String,
     private val isDebugBuild: Boolean
 ) : BaseHttpClient {
+    @OptIn(ExperimentalSerializationApi::class)
     override val client: HttpClient
         get() = HttpClient {
             install(
@@ -28,7 +30,7 @@ class BaseHttpClientImpl(
                         json = Json {
                             ignoreUnknownKeys = true /*Ignore the undefined DTO properties in the Json*/
                             isLenient = true
-                            prettyPrint = true
+                            explicitNulls = false
                         }
                     )
                 }

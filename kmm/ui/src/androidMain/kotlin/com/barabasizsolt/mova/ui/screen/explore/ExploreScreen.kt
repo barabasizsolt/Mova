@@ -28,7 +28,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,8 +41,6 @@ import androidx.compose.ui.draw.clip
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import cafe.adriel.voyager.navigator.tab.Tab
-import cafe.adriel.voyager.navigator.tab.TabOptions
 import category.Category
 import com.barabasizsolt.mova.domain.model.ContentItem
 import com.barabasizsolt.mova.filter.api.FilterItem
@@ -83,15 +80,6 @@ object ExploreScreen : Screen, KoinComponent {
         }
 
         var shouldShowScrollUp by remember { mutableStateOf(value = false) }
-        //var shouldShowScrollUp by rememberSaveable { mutableStateOf(value = !bottomSheetNavigator.isVisible) }
-//        LaunchedEffect(
-//            key1 = bottomSheetNavigator.lastEvent,
-//            block = {
-//                if (!bottomSheetNavigator.isVisible) {
-//                    shouldShowScrollUp = true
-//                }
-//            }
-//        )
 
         BaseScreen(
             screenState = screenState,
@@ -108,11 +96,12 @@ object ExploreScreen : Screen, KoinComponent {
                         bottomEnd = CornerSize(size = 0.dp)
                     )
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(color = AppTheme.colors.primary)
-                    ) {
+                    LaunchedEffect(
+                        key1 = it.isVisible,
+                        block = { shouldShowScrollUp = !it.isVisible }
+                    )
+
+                    Box(modifier = Modifier.fillMaxSize().background(color = AppTheme.colors.primary)) {
                         ScreenContent(
                             query = screenState.query,
                             onQueryChange = screenState::onQueryChange,
@@ -126,7 +115,7 @@ object ExploreScreen : Screen, KoinComponent {
                                 addAll(elements = screenState.selectedGenres)
                                 addAll(elements = screenState.selectedSortOptions)
                             },
-                            isLoading = screenState.state in listOf(BaseScreenState.State.SwipeRefresh, BaseScreenState.State.SearchLoading),
+                            isLoading = screenState.state in listOf(BaseScreenState.State.SearchLoading),
                             isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
                             onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
                             onRetryClick = {
@@ -139,7 +128,7 @@ object ExploreScreen : Screen, KoinComponent {
                             onClick = {
                                 shouldShowScrollUp = it
                             },
-                            onMovieClicked = screenState::onMovieClicked,
+                            onMovieClicked = { /*TODO: Implement it*/ },
                             scope = scope,
                             gridState = gridState
                         )
@@ -328,14 +317,12 @@ private inline fun LazyGridScope.searchableItemsIndexed(
     crossinline onRetryClick: () -> Unit,
     noinline key: ((index: Int, item: ContentItem) -> Any)? = null,
     noinline span: (LazyGridItemSpanScope.(index: Int, item: ContentItem) -> GridItemSpan)? = null,
-    crossinline contentType: (index: Int, item: ContentItem) -> Any? = { _, _ -> null },
     crossinline itemContent: @Composable LazyGridItemScope.(index: Int, item: ContentItem) -> Unit
 ) = itemsIndexed(
     items = items,
     key = key,
     span = span,
-    contentType = contentType
-) { index, item ->
+) { index, item: ContentItem ->
     when (item) {
         is ContentItem.ItemTail -> when {
             item.loadMore -> {
@@ -360,7 +347,7 @@ private inline fun LazyGridScope.searchableItemsIndexed(
 private fun searchableItemSpan(baseLineSpan: Int): (LazyGridItemSpanScope.(index: Int, item: ContentItem) -> GridItemSpan) = { _, item ->
     GridItemSpan(
         currentLineSpan = when (item) {
-            is ContentItem.ItemTail, is ContentItem.ItemError -> 6
+            is ContentItem.ItemTail, is ContentItem.ItemError -> 2
             else -> baseLineSpan
         }
     )

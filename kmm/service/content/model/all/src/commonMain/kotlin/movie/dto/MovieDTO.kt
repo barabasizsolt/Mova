@@ -23,14 +23,12 @@ fun MovieDTO.toModel() : Movie? {
     if (
         id == null ||
         adult == null ||
-        backdropPath == null ||
         genreIds == null ||
         originalLanguage == null ||
         originalTitle == null ||
         title == null ||
         overview == null ||
         popularity == null ||
-        releaseDate == null ||
         voteAverage == null
     ) {
         return null
@@ -38,7 +36,7 @@ fun MovieDTO.toModel() : Movie? {
     return Movie(
         id = id.toString(),
         adult = adult,
-        backdropPath = backdropPath,
+        backdropPath = backdropPath.orEmpty(),
         genreIds = genreIds,
         originalLanguage = originalLanguage,
         originalTitle = originalTitle,
@@ -46,7 +44,7 @@ fun MovieDTO.toModel() : Movie? {
         overview = overview,
         popularity = popularity.toString(),
         posterPath = posterPath,
-        releaseDate = releaseDate,
+        releaseDate = releaseDate.orEmpty(),
         voteAverage = voteAverage.toString().take(n = 3)
         /*TODO: Fix this*/ // String.format("%.1f", voteAverage)
     )

@@ -13,7 +13,7 @@ class ReviewRemoteSource(private val baseHttpClient: BaseHttpClient) {
         page: Int
     ) = baseHttpClient.get<ReviewListDTO>(
         urlString = "movie/$id/reviews",
-        block = { parameter(key = "page", value = page) }
+        block = { url { parameters.append(name = "page", page.toString()) } }
     ).toModel()
 
     suspend fun getReviewsForTv(
@@ -21,6 +21,6 @@ class ReviewRemoteSource(private val baseHttpClient: BaseHttpClient) {
         page: Int
     ) = baseHttpClient.get<ReviewListDTO>(
         urlString = "tv/$id/reviews",
-        block = { parameter(key = "page", value = page) }
+        block = { url { parameters.append(name = "page", page.toString()) } }
     ).toModel()
 }

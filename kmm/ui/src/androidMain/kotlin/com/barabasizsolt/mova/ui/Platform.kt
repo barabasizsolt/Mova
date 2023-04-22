@@ -58,7 +58,7 @@ actual val uiModule: Module = module {
         )
     }
     // [FilterScreenState]
-    factory {
+    single {
         FilterScreenState(
             getGenresFlowUseCase = get(),
             filterService = get()
