@@ -3,7 +3,6 @@ package com.barabasizsolt.mova.ui.catalog
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
@@ -18,6 +17,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.Dp
+import com.barabasizsolt.mova.ui.getPlatform
 import com.barabasizsolt.mova.ui.theme.AppTheme
 
 @Composable
@@ -40,8 +40,7 @@ fun ScrollUpWrapper(
             visible = isVisible && shouldShow,
             modifier = Modifier
                 .align(alignment = Alignment.TopCenter)
-                .padding(top = scrollUpTopPadding)
-                .statusBarsPadding()
+                .padding(top = scrollUpTopPadding + getPlatform().statusBarInsetDp)
         ) {
             ScrollToTopItem(
                 text = "Scroll Up",
