@@ -67,6 +67,7 @@ class ExploreScreenState(
             launch {
                 filterService.selectedCategory.collect {
                     selectedCategory = it
+                    /*TODO: Keep this order*/
                     restartSearchContentCollection()
                     restartDiscoverContentCollection()
                     getScreenData(userAction = if (isInitialized) UserAction.Normal else UserAction.Search.also { isInitialized = true })
