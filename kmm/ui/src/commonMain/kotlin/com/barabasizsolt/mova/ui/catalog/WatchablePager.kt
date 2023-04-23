@@ -1,7 +1,7 @@
 package com.barabasizsolt.mova.ui.catalog
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -22,22 +24,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import com.barabasizsolt.mova.ui.util.ImageType
 import com.barabasizsolt.mova.ui.util.getImageKey
 import com.barabasizsolt.mova.ui.util.withShadow
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.delay
 import movie.model.Movie
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WatchablePager(
     modifier: Modifier = Modifier,
@@ -51,8 +47,8 @@ fun WatchablePager(
     LaunchedEffect(Unit) {
         while (true) {
             delay(timeMillis = 5000)
-            if (pagerState.pageCount > 0) {
-                pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % (pagerState.pageCount))
+            if (pagerContent.isNotEmpty()) {
+                pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % (pagerContent.size))
             }
         }
     }
@@ -60,7 +56,7 @@ fun WatchablePager(
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         HorizontalPager(
             modifier = modifier.fillMaxWidth(),
-            count = pagerContent.size,
+            pageCount = pagerContent.size,
             state = pagerState
         ) { page ->
             PagerItem(
@@ -73,14 +69,15 @@ fun WatchablePager(
         }
         HorizontalPagerIndicator(
             pagerState = pagerState,
-            activeColor = AppTheme.colors.secondary,
-            inactiveColor = if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray
+            indicatorCount = pagerContent.size,
+            itemCount = pagerContent.size,
+            modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
         )
     }
 }
 
 @Composable
-private fun PagerItem(
+fun PagerItem(
     modifier: Modifier = Modifier,
     item: Movie,
     genres: Map<Long, String>,
@@ -118,7 +115,7 @@ private fun PagerItem(
 }
 
 @Composable
-private fun PagerItemInfo(
+fun PagerItemInfo(
     modifier: Modifier = Modifier,
     item: Movie,
     genres: Map<Long, String>,
@@ -158,7 +155,7 @@ private fun PagerItemInfo(
 }
 
 @Composable
-private fun PagerGenreItem(
+fun PagerGenreItem(
     modifier: Modifier = Modifier,
     text: String,
     shouldShowSeparator: Boolean
@@ -172,7 +169,7 @@ private fun PagerGenreItem(
 )
 
 @Composable
-private fun PagerItemButtons(
+fun PagerItemButtons(
     modifier: Modifier = Modifier,
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit
@@ -182,12 +179,12 @@ private fun PagerItemButtons(
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2)
 ) {
     MovaFilledButton(
-        text = stringResource(id = R.string.trailer),
+        text = "Trailer",
         icon = Icons.Filled.PlayCircle,
         onClick = onPlayButtonClicked
     )
     MovaOutlinedButton(
-        text = stringResource(id = R.string.favourites),
+        text = "Favourites",
         icon = Icons.Filled.Favorite,
         contentColor = AppTheme.colors.secondary,
         onClick = onAddToFavouriteButtonClicked
