@@ -5,7 +5,6 @@ import com.barabasizsolt.mova.ui.theme.MovaTheme
 @Composable
 fun EntryPoint() {
     MovaTheme {
-        //AppNavigation()
         AppNavigation()
     }
 }

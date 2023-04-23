@@ -41,8 +41,6 @@ import androidx.compose.ui.draw.clip
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
-import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import category.Category
 import com.barabasizsolt.mova.domain.model.ContentItem
@@ -95,49 +93,50 @@ object ExploreScreen : Screen, KoinComponent {
             scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 5,
             shouldShowScrollUp = shouldShowScrollUp,
             content = { gridState, scope ->
-                BottomSheetNavigator(
-                    sheetShape = AppTheme.shapes.medium.copy(
-                        bottomStart = CornerSize(size = 0.dp),
-                        bottomEnd = CornerSize(size = 0.dp)
-                    )
-                ) {
-                    LaunchedEffect(
-                        key1 = it.isVisible,
-                        block = { shouldShowScrollUp = !it.isVisible }
-                    )
+//                BottomSheetNavigator(
+//                    sheetShape = AppTheme.shapes.medium.copy(
+//                        bottomStart = CornerSize(size = 0.dp),
+//                        bottomEnd = CornerSize(size = 0.dp)
+//                    )
+//                ) {
+//
+//                }
+//                LaunchedEffect(
+//                    key1 = it.isVisible,
+//                    block = { shouldShowScrollUp = !it.isVisible }
+//                )
 
-                    Box(modifier = Modifier.fillMaxSize().background(color = AppTheme.colors.primary)) {
-                        ScreenContent(
-                            query = screenState.query,
-                            onQueryChange = screenState::onQueryChange,
-                            discoverItems = screenState.discoverContent,
-                            searchItems = screenState.searchContent,
-                            filterItems = buildList {
-                                add(element = screenState.selectedCategory)
-                                if ((screenState.selectedCategory.wrappedItem as Category) == Category.MOVIE) {
-                                    addAll(elements = screenState.selectedRegions)
-                                }
-                                addAll(elements = screenState.selectedGenres)
-                                addAll(elements = screenState.selectedSortOptions)
-                            },
-                            isLoading = screenState.state in listOf(BaseScreenState.State.SearchLoading),
-                            isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
-                            onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
-                            onRetryClick = {
-                                if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
-                                    screenState.clearSearchContent()
-                                    // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
-                                }
-                                screenState.getScreenData(userAction = UserAction.TryAgain)
-                            },
-                            onClick = { shouldShow ->
-                                shouldShowScrollUp = shouldShow
-                            },
-                            onMovieClicked = { id -> navigator.push(item = DetailScreen(id = id)) },
-                            scope = scope,
-                            gridState = gridState
-                        )
-                    }
+                Box(modifier = Modifier.fillMaxSize().background(color = AppTheme.colors.primary)) {
+                    ScreenContent(
+                        query = screenState.query,
+                        onQueryChange = screenState::onQueryChange,
+                        discoverItems = screenState.discoverContent,
+                        searchItems = screenState.searchContent,
+                        filterItems = buildList {
+                            add(element = screenState.selectedCategory)
+                            if ((screenState.selectedCategory.wrappedItem as Category) == Category.MOVIE) {
+                                addAll(elements = screenState.selectedRegions)
+                            }
+                            addAll(elements = screenState.selectedGenres)
+                            addAll(elements = screenState.selectedSortOptions)
+                        },
+                        isLoading = screenState.state in listOf(BaseScreenState.State.SearchLoading),
+                        isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
+                        onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
+                        onRetryClick = {
+                            if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
+                                screenState.clearSearchContent()
+                                // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
+                            }
+                            screenState.getScreenData(userAction = UserAction.TryAgain)
+                        },
+                        onClick = { shouldShow ->
+                            shouldShowScrollUp = shouldShow
+                        },
+                        onMovieClicked = { id -> navigator.push(item = DetailScreen(id = id)) },
+                        scope = scope,
+                        gridState = gridState
+                    )
                 }
             }
         )
@@ -208,7 +207,7 @@ private fun SearchBar(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
 ) {
-    val bottomSheetNavigator = LocalBottomSheetNavigator.current
+    //val bottomSheetNavigator = LocalBottomSheetNavigator.current
     MovaSearchField(
         value = query,
         onValueChange = onQueryChange,
@@ -216,15 +215,15 @@ private fun SearchBar(
     )
     FilterIcon(
         onClick = {
-            scope.launch {
-                if (bottomSheetNavigator.isVisible) {
-                    onClick(true)
-                    bottomSheetNavigator.hide()
-                } else {
-                    onClick(false)
-                    bottomSheetNavigator.show(screen = FilterScreen)
-                }
-            }
+//            scope.launch {
+//                if (bottomSheetNavigator.isVisible) {
+//                    onClick(true)
+//                    bottomSheetNavigator.hide()
+//                } else {
+//                    onClick(false)
+//                    bottomSheetNavigator.show(screen = FilterScreen)
+//                }
+//            }
         }
     )
 }

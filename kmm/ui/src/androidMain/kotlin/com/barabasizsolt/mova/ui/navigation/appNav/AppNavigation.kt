@@ -12,7 +12,7 @@ import com.barabasizsolt.mova.ui.screen.splash.SplashScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-fun AppNavigation() {
+actual fun AppNavigation() {
     val appNavigationState: AppNavigationState = rememberAppNavigationState()
 
     Navigator(screen = SplashScreen) { navigator ->
@@ -37,7 +37,7 @@ fun AppNavigation() {
 }
 
 @Composable
-private fun SetStatusBarColor() {
+fun SetStatusBarColor() {
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(color = Color.Transparent, darkIcons = false)
     systemUiController.setNavigationBarColor(color = Color.Transparent, darkIcons = false)

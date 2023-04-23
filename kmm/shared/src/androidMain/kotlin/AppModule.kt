@@ -12,5 +12,5 @@ actual fun createAppModule(
     add(activityProviderModule)
     add(createNetworkModule(host = host, apiKey = apiKey, isDebugBuild = isDebugBuild))
     addAll(createDomainModules())
-    add(uiModule)
+    addAll(uiModule)
 }

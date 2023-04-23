@@ -29,7 +29,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import category.Category
 import com.barabasizsolt.mova.filter.api.FilterItem
 import com.barabasizsolt.mova.ui.catalog.MovaButton
@@ -45,7 +44,7 @@ object FilterScreen : Screen, KoinComponent {
 
     @Composable
     override fun Content() {
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        //val bottomSheetNavigator = LocalBottomSheetNavigator.current
 
         val isDark: Boolean = isSystemInDarkTheme()
         val scope: CoroutineScope = rememberCoroutineScope()
@@ -133,7 +132,7 @@ object FilterScreen : Screen, KoinComponent {
                     ApplyButton(
                         onClick = {
                             screenState.onApplyButtonClicked()
-                            bottomSheetNavigator.hide()
+                            //bottomSheetNavigator.hide()
                         },
                         modifier = Modifier.weight(weight = 1f)
                     )

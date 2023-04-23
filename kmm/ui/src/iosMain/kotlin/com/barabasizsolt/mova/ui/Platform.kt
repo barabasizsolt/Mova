@@ -12,17 +12,25 @@ class IOSPlatform: Platform {
     override val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
 
     override val navigationBarInsetDp: Dp
+        @Composable
         get() = 0.dp
 
     override val statusBarInsetDp: Dp
+        @Composable
         get() = 0.dp
 
     override val imeBottomInsetDp: Dp
+        @Composable
         get() = 0.dp
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()
 
-actual val uiModule: Module = module {
-    single <Platform> { IOSPlatform() }
+actual val uiModule: List<Module> = buildList {
+    add(
+        element = module {
+            single <Platform> { IOSPlatform() }
+        }
+    )
+    add(element = commonUiModule)
 }

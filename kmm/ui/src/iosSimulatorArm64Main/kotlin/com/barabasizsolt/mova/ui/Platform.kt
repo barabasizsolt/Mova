@@ -12,21 +12,21 @@ class IosSimulatorPlatform: Platform {
     override val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
 
     override val navigationBarInsetDp: Dp
+        @Composable
         get() = 0.dp
 
     override val statusBarInsetDp: Dp
+        @Composable
         get() = 0.dp
 
     override val imeBottomInsetDp: Dp
+        @Composable
         get() = 0.dp
 }
 
 actual fun getPlatform(): Platform = IosSimulatorPlatform()
 
-actual val uiModule: Module = module {
-    single <Platform> { IosSimulatorPlatform() }
-}
-
-@Composable
-actual fun BackHandler(enabled: Boolean, block: () -> Unit) {
+actual val uiModule: List<Module> = buildList {
+    add(element = module { single <Platform> { IosSimulatorPlatform() } })
+    add(element = commonUiModule)
 }
