@@ -29,7 +29,7 @@ import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 
 /*TODO: remember the scroll position*/
-class DetailScreen(private val id: Int) : Screen, KoinComponent {
+actual class DetailScreen actual constructor(private val id: Int) : Screen, KoinComponent {
 
     private val screenState: DetailScreenState by inject { parametersOf(id) }
 
@@ -73,25 +73,4 @@ class DetailScreen(private val id: Int) : Screen, KoinComponent {
             )
         }
     }
-}
-
-@Composable
-fun EmptyTabItem(modifier: Modifier = Modifier) = Card(
-    modifier = modifier
-        .fillMaxWidth()
-        .padding(horizontal = AppTheme.dimens.screenPadding),
-    backgroundColor = AppTheme.colors.secondary,
-    elevation = if (isSystemInDarkTheme()) 16.dp else 0.dp,
-    shape = AppTheme.shapes.medium
-) {
-    Text(
-        text = stringResource(id = R.string.no_result_found),
-        textAlign = TextAlign.Center,
-        style = AppTheme.typography.body2,
-        color = AppTheme.colors.primary,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(all = AppTheme.dimens.screenPadding)
-    )
 }

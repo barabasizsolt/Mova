@@ -8,19 +8,17 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.barabasizsolt.mova.domain.model.ContentItem
 import com.barabasizsolt.mova.domain.usecase.screen.seeall.SeeAllContentType
-import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.catalog.PeopleCarousel
 import com.barabasizsolt.mova.ui.catalog.WatchablePager
 import com.barabasizsolt.mova.ui.catalog.WatchableWithRatingCarousel
-import com.barabasizsolt.mova.ui.screen.base.UserAction
 import com.barabasizsolt.mova.ui.screen.base.BaseScreen
+import com.barabasizsolt.mova.ui.screen.base.UserAction
 import com.barabasizsolt.mova.ui.screen.detail.DetailScreen
 import com.barabasizsolt.mova.ui.screen.seeall.SeeAllScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
@@ -59,6 +57,7 @@ object HomeScreen : Screen, KoinComponent {
     }
 }
 
+
 @Composable
 private fun ScreenContent(
     upcomingMovies: List<Movie>,
@@ -91,8 +90,8 @@ private fun ScreenContent(
     }
     item(key = "HomeScreen.PopularMovies") {
         WatchableWithRatingCarousel(
-            header = stringResource(id = R.string.popular_movies),
-            buttonText = stringResource(id = R.string.more_popular_movies),
+            header = "Popular Movies",
+            buttonText = "More Popular Movies",
             items = popularMovies,
             onItemClick = onItemClicked,
             onHeaderClick = onSeeAllPopularMoviesClicked,
@@ -100,7 +99,7 @@ private fun ScreenContent(
     }
     item(key = "HomeScreen.People") {
         PeopleCarousel(
-            header = stringResource(id = R.string.popular_people),
+            header = "Popular People",
             items = popularPeople,
             onItemClick = { /*TODO: Implement it*/ },
             onHeaderClick = onSeeAllPopularPeopleClicked,
@@ -108,8 +107,8 @@ private fun ScreenContent(
     }
     item(key = "HomeScreen.NowPlayingMovies") {
         WatchableWithRatingCarousel(
-            header = stringResource(id = R.string.now_playing_movies),
-            buttonText = stringResource(id = R.string.more_now_playing_movies),
+            header = "Now Playing Movies",
+            buttonText = "More Now Playing Movies",
             items = nowPlayingMovies,
             onItemClick = onItemClicked,
             onHeaderClick = onSeeAllNowPlayingMoviesClicked,
@@ -117,8 +116,8 @@ private fun ScreenContent(
     }
     item(key = "HomeScreen.TopRatedMovies") {
         WatchableWithRatingCarousel(
-            header = stringResource(id = R.string.top_rated_movies),
-            buttonText = stringResource(id = R.string.more_top_rated_movies),
+            header = "Top Rated Movies",
+            buttonText = "More Top Rated Movies",
             items = topRatedMovies,
             onItemClick = onItemClicked,
             onHeaderClick = onSeeAllTopRatedMoviesClicked,

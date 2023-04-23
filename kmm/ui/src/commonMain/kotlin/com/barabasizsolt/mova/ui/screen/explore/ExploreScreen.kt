@@ -130,8 +130,8 @@ object ExploreScreen : Screen, KoinComponent {
                                 }
                                 screenState.getScreenData(userAction = UserAction.TryAgain)
                             },
-                            onClick = {
-                                shouldShowScrollUp = it
+                            onClick = { shouldShow ->
+                                shouldShowScrollUp = shouldShow
                             },
                             onMovieClicked = { id -> navigator.push(item = DetailScreen(id = id)) },
                             scope = scope,

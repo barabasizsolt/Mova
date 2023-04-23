@@ -15,7 +15,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 fun AppNavigation() {
     val appNavigationState: AppNavigationState = rememberAppNavigationState()
 
-    Navigator(SplashScreen) { navigator ->
+    Navigator(screen = SplashScreen) { navigator ->
         LaunchedEffect(
             key1 = appNavigationState.authState,
             block = {

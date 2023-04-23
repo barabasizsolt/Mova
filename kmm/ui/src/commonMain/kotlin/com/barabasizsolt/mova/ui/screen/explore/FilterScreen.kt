@@ -1,6 +1,5 @@
 package com.barabasizsolt.mova.ui.screen.explore
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,14 +32,12 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import category.Category
 import com.barabasizsolt.mova.filter.api.FilterItem
-import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.catalog.MovaButton
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.koin.core.qualifier.named
 
 object FilterScreen : Screen, KoinComponent {
 
@@ -55,10 +51,6 @@ object FilterScreen : Screen, KoinComponent {
         val scope: CoroutineScope = rememberCoroutineScope()
         val genreListState = rememberLazyListState()
 
-        BackHandler(enabled = bottomSheetNavigator.isVisible) {
-            bottomSheetNavigator.hide()
-        }
-
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
             contentPadding = PaddingValues(vertical = AppTheme.dimens.screenPadding),
@@ -66,7 +58,7 @@ object FilterScreen : Screen, KoinComponent {
         ) {
             item {
                 Text(
-                    text = stringResource(id = R.string.sort_filter),
+                    text = "Sort & Filter",
                     color = AppTheme.colors.secondary,
                     style = AppTheme.typography.h6,
                     textAlign = TextAlign.Center,
@@ -81,7 +73,7 @@ object FilterScreen : Screen, KoinComponent {
             }
             item {
                 SingleSelectionFilterCarousel(
-                    header = stringResource(id = R.string.categories),
+                    header = "Categories",
                     selectedItem = screenState.selectedCategory,
                     items = screenState.categories,
                     onClick = { position: FilterItem ->
@@ -95,7 +87,7 @@ object FilterScreen : Screen, KoinComponent {
             if (screenState.selectedCategory.wrappedItem as Category == Category.MOVIE) {
                 item {
                     MultiSelectionFilterCarousel(
-                        header = stringResource(id = R.string.regions),
+                        header = "Regions",
                         selectedItems = screenState.selectedRegions,
                         items = screenState.regions,
                         onClick = { positions -> screenState.onRegionSelected(positions) }
@@ -104,7 +96,7 @@ object FilterScreen : Screen, KoinComponent {
             }
             item {
                 MultiSelectionFilterCarousel(
-                    header = stringResource(id = R.string.genres),
+                    header = "Genres",
                     selectedItems = screenState.selectedGenres,
                     items = screenState.genres,
                     listState = genreListState,
@@ -113,7 +105,7 @@ object FilterScreen : Screen, KoinComponent {
             }
             item {
                 MultiSelectionFilterCarousel(
-                    header = stringResource(id = R.string.sort),
+                    header = "Sort",
                     selectedItems = screenState.selectedSortOptions,
                     items = screenState.sortOptions,
                     onClick = { positions -> screenState.onSortingCriteriaSelected(positions) }
@@ -151,12 +143,16 @@ object FilterScreen : Screen, KoinComponent {
     }
 }
 
+
+
+
+
 @Composable
 private fun ApplyButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) = MovaButton(
-    text = stringResource(id = R.string.apply),
+    text = "Apply",
     onClick = onClick,
     modifier = modifier
 )
@@ -167,7 +163,7 @@ private fun ResetButton(
     isDark: Boolean,
     onClick: () -> Unit
 ) = MovaButton(
-    text = stringResource(id = R.string.reset),
+    text = "Reset",
     onClick = onClick,
     contentColor = if (isDark) Color.White else AppTheme.colors.secondary,
     backgroundColor = if (isDark) Color.DarkGray else Color.LightGray,

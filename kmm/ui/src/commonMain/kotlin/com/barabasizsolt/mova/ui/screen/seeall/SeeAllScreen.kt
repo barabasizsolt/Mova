@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -22,16 +21,15 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.barabasizsolt.mova.domain.model.ContentItem
 import com.barabasizsolt.mova.domain.usecase.screen.seeall.SeeAllContentType
-import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.catalog.ErrorItem
 import com.barabasizsolt.mova.ui.catalog.LoadingContent
 import com.barabasizsolt.mova.ui.catalog.MediumPersonCard
 import com.barabasizsolt.mova.ui.catalog.MovaHeader
 import com.barabasizsolt.mova.ui.catalog.WatchableWithRating
 import com.barabasizsolt.mova.ui.getPlatform
+import com.barabasizsolt.mova.ui.screen.base.BaseScreen
 import com.barabasizsolt.mova.ui.screen.base.BaseScreenState
 import com.barabasizsolt.mova.ui.screen.base.UserAction
-import com.barabasizsolt.mova.ui.screen.base.BaseScreen
 import com.barabasizsolt.mova.ui.screen.detail.DetailScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
 import org.koin.core.component.KoinComponent
@@ -122,11 +120,11 @@ private fun LazyGridScope.content(
     when (item) {
         is ContentItem.ItemHeader -> MovaHeader(
             text = when (contentType) {
-                SeeAllContentType.POPULAR_MOVIES.name -> stringResource(id = R.string.popular_movies)
-                SeeAllContentType.POPULAR_PEOPLE.name -> stringResource(id = R.string.popular_people)
-                SeeAllContentType.NOW_PLAYING_MOVIES.name -> stringResource(id = R.string.now_playing_movies)
-                SeeAllContentType.TOP_RATED_MOVIES.name -> stringResource(id = R.string.top_rated_movies)
-                else -> stringResource(id = R.string.all_content)
+                SeeAllContentType.POPULAR_MOVIES.name -> "Popular Movies"
+                SeeAllContentType.POPULAR_PEOPLE.name -> "Popular People"
+                SeeAllContentType.NOW_PLAYING_MOVIES.name -> "Now Playing Movies"
+                SeeAllContentType.TOP_RATED_MOVIES.name -> "Top Rated Playing Movies"
+                else -> "All Content"
             },
             onClick = onHeaderClick,
             modifier = Modifier.padding(bottom = AppTheme.dimens.contentPadding)

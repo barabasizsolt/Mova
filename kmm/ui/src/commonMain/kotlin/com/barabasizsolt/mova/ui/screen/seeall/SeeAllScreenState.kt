@@ -8,13 +8,13 @@ import cafe.adriel.voyager.core.model.coroutineScope
 import com.barabasizsolt.mova.domain.model.ContentItem
 import com.barabasizsolt.mova.domain.usecase.screen.seeall.GetSeeAllScreenFlowUseCase
 import com.barabasizsolt.mova.domain.usecase.screen.seeall.GetSeeAllScreenUseCase
+import com.barabasizsolt.mova.domain.util.Result
 import com.barabasizsolt.mova.pager.RefreshType
 import com.barabasizsolt.mova.ui.screen.base.BaseScreenState
 import com.barabasizsolt.mova.ui.screen.base.UserAction
-import kotlinx.coroutines.launch
-import com.barabasizsolt.mova.domain.util.Result
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class SeeAllScreenState(
     val contentType: String,

@@ -1,5 +1,6 @@
 package com.barabasizsolt.mova.ui
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.koin.core.module.Module
@@ -24,4 +25,8 @@ actual fun getPlatform(): Platform = IosSimulatorPlatform()
 
 actual val uiModule: Module = module {
     single <Platform> { IosSimulatorPlatform() }
+}
+
+@Composable
+actual fun BackHandler(enabled: Boolean, block: () -> Unit) {
 }

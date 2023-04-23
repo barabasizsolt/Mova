@@ -11,6 +11,7 @@ import com.barabasizsolt.mova.ui.screen.base.BaseScreenState
 import com.barabasizsolt.mova.ui.screen.base.UserAction
 import kotlinx.coroutines.launch
 import com.barabasizsolt.mova.domain.util.Result
+import com.barabasizsolt.mova.ui.screen.detail.catalog.getTabs
 
 class DetailScreenState(
     val id: Int,
@@ -21,7 +22,7 @@ class DetailScreenState(
     private var details by mutableStateOf(value = DetailScreenContent.MovieDetails.createEmptyMovieDetailContent())
     var tabIndex by mutableStateOf(value = 0)
         private set
-    private val tabs: List<String> = listOf("Similar", "Trailers", "Reviews")
+    val tabs: List<String> = getTabs()
 
     init {
         getScreenData(userAction = UserAction.Normal)

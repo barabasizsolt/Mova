@@ -12,10 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import com.barabasizsolt.mova.domain.usecase.auth.LogOutUseCase
 import com.barabasizsolt.mova.ui.catalog.MovaButton
 import com.barabasizsolt.mova.ui.theme.AppTheme
-import org.koin.compose.koinInject
 
 actual object ProfileScreen : Tab {
 
@@ -34,12 +32,10 @@ actual object ProfileScreen : Tab {
 
     @Composable
     override fun Content() {
-        val logOutUseCase = koinInject<LogOutUseCase>()
-
         Box(modifier = Modifier.fillMaxSize()) {
             MovaButton(
                 text = "Logout",
-                onClick = { logOutUseCase() },
+                onClick = { },
                 modifier = Modifier
                     .align(alignment = Alignment.Center)
                     .padding(horizontal = AppTheme.dimens.screenPadding)

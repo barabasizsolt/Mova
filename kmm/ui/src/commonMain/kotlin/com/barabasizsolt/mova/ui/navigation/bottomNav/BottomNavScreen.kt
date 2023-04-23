@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -64,7 +63,7 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
         selected = tabNavigator.current == tab,
         selectedContentColor = AppTheme.colors.secondary,
         unselectedContentColor = Color.Gray,
-        modifier = Modifier.navigationBarsPadding(),
+        modifier = Modifier.padding(bottom = getPlatform().navigationBarInsetDp),
         onClick = { tabNavigator.current = tab }
     )
 }

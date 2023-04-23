@@ -14,7 +14,6 @@ import com.barabasizsolt.mova.domain.usecase.screen.explore.discover.DiscoverCon
 import com.barabasizsolt.mova.domain.usecase.screen.explore.search.DeleteContentUseCase
 import com.barabasizsolt.mova.domain.usecase.screen.explore.search.SearchContentFlowUseCase
 import com.barabasizsolt.mova.domain.usecase.screen.explore.search.SearchContentUseCase
-import kotlinx.coroutines.launch
 import com.barabasizsolt.mova.domain.util.Result
 import com.barabasizsolt.mova.filter.api.FilterItem
 import com.barabasizsolt.mova.filter.api.FilterItemValue
@@ -25,6 +24,7 @@ import com.barabasizsolt.mova.ui.screen.base.UserAction
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.launch
 
 class ExploreScreenState(
     private val discoverContentUseCase: DiscoverContentUseCase,

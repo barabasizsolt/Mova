@@ -1,5 +1,6 @@
 package com.barabasizsolt.mova.ui
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.koin.core.module.Module

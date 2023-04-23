@@ -1,4 +1,4 @@
-package com.barabasizsolt.detail.catalog
+package com.barabasizsolt.mova.ui.screen.detail.catalog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme

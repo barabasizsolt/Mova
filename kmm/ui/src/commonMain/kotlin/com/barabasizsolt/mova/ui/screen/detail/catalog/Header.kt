@@ -26,12 +26,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.mova.domain.model.ContentItem
-import com.barabasizsolt.mova.ui.R
 import com.barabasizsolt.mova.ui.catalog.GradientOverlay
 import com.barabasizsolt.mova.ui.catalog.MovaFilledButton
 import com.barabasizsolt.mova.ui.catalog.MovaImage
@@ -214,13 +212,13 @@ private fun Buttons(
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2)
 ) {
     MovaFilledButton(
-        text = stringResource(id = R.string.trailer),
+        text = "Trailer",
         icon = Icons.Filled.PlayCircle,
         onClick = onPlayButtonClicked,
         modifier = Modifier.weight(weight = 1f)
     )
     MovaOutlinedButton(
-        text = stringResource(id = R.string.favourites),
+        text = "Favourites",
         icon = Icons.Filled.Favorite,
         contentColor = AppTheme.colors.secondary,
         onClick = onAddToFavouriteButtonClicked,

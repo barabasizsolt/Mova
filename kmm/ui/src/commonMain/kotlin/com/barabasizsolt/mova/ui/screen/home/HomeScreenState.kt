@@ -9,13 +9,13 @@ import com.barabasizsolt.mova.domain.model.HomeScreenContent
 import com.barabasizsolt.mova.domain.model.isEmpty
 import com.barabasizsolt.mova.domain.usecase.screen.home.GetHomeScreenFlowUseCase
 import com.barabasizsolt.mova.domain.usecase.screen.home.GetHomeScreenUseCase
+import com.barabasizsolt.mova.domain.util.Result
 import com.barabasizsolt.mova.pager.RefreshType
 import com.barabasizsolt.mova.ui.screen.base.BaseScreenState
 import com.barabasizsolt.mova.ui.screen.base.UserAction
-import kotlinx.coroutines.launch
-import com.barabasizsolt.mova.domain.util.Result
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class HomeScreenState(
     private val getHomeScreen: GetHomeScreenUseCase,
