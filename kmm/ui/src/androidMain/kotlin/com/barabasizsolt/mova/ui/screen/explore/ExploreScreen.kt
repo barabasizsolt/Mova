@@ -54,13 +54,12 @@ import com.barabasizsolt.mova.ui.catalog.MovaSearchField
 import com.barabasizsolt.mova.ui.catalog.NotFoundItem
 import com.barabasizsolt.mova.ui.catalog.SearchableItem
 import com.barabasizsolt.mova.ui.catalog.WatchableWithRating
+import com.barabasizsolt.mova.ui.getPlatform
 import com.barabasizsolt.mova.ui.screen.base.BaseScreenState
 import com.barabasizsolt.mova.ui.screen.base.UserAction
 import com.barabasizsolt.mova.ui.screen.base.BaseScreen
 import com.barabasizsolt.mova.ui.screen.detail.DetailScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
-import com.barabasizsolt.mova.ui.util.imeBottomInsetDp
-import com.barabasizsolt.mova.ui.util.statusBarInsetDp
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -202,7 +201,7 @@ private fun SearchBar(
 ) = Row(
     modifier = modifier
         .padding(
-            top = statusBarInsetDp + AppTheme.dimens.screenPadding,
+            top = getPlatform().statusBarInsetDp + AppTheme.dimens.screenPadding,
             start = AppTheme.dimens.screenPadding,
             end = AppTheme.dimens.screenPadding
         ),
@@ -248,7 +247,7 @@ private fun ContentBody(
     contentPadding = PaddingValues(
         start = AppTheme.dimens.screenPadding,
         end = AppTheme.dimens.screenPadding,
-        bottom = AppTheme.dimens.screenPadding + imeBottomInsetDp
+        bottom = AppTheme.dimens.screenPadding + getPlatform().imeBottomInsetDp
     ),
     modifier = modifier.fillMaxSize(),
     state = gridState

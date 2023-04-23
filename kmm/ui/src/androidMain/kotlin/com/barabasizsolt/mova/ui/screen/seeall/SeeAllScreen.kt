@@ -28,11 +28,12 @@ import com.barabasizsolt.mova.ui.catalog.LoadingContent
 import com.barabasizsolt.mova.ui.catalog.MediumPersonCard
 import com.barabasizsolt.mova.ui.catalog.MovaHeader
 import com.barabasizsolt.mova.ui.catalog.WatchableWithRating
+import com.barabasizsolt.mova.ui.getPlatform
 import com.barabasizsolt.mova.ui.screen.base.BaseScreenState
 import com.barabasizsolt.mova.ui.screen.base.UserAction
 import com.barabasizsolt.mova.ui.screen.base.BaseScreen
+import com.barabasizsolt.mova.ui.screen.detail.DetailScreen
 import com.barabasizsolt.mova.ui.theme.AppTheme
-import com.barabasizsolt.mova.ui.util.statusBarInsetDp
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
@@ -57,7 +58,7 @@ class SeeAllScreen(private val contentType: String) : Screen, KoinComponent {
                     contentType = screenState.contentType,
                     gridState = gridState,
                     isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
-                    onMovieClicked = { /*TODO: Implement it*/ }
+                    onMovieClicked = { id -> navigator.push(item = DetailScreen(id = id)) }
                 )
             }
         )
@@ -83,7 +84,7 @@ private fun ScreenContent(
         start = AppTheme.dimens.screenPadding,
         end = AppTheme.dimens.screenPadding,
         bottom = AppTheme.dimens.screenPadding,
-        top = AppTheme.dimens.screenPadding + statusBarInsetDp
+        top = AppTheme.dimens.screenPadding + getPlatform().statusBarInsetDp
     )
 ) {
     content(
