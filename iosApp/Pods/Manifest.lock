@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../kmm/shared"
 
 SPEC CHECKSUMS:
-  shared: 446de559aacd3dbe21cb1264db41b4f6b4369674
+  shared: 2575e0f1c26c88c2161cc80618897f4698c5f507
 
 PODFILE CHECKSUM: dbe65dc9a9d33ff0e488cfbedb16b5ab5ef3426f
 

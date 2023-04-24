@@ -77,6 +77,4 @@ include(":kmm:service:content:video:implementation")
 
 include(":kmm:domain")
 
-include(":kmm:ui")
-
 include(":kmm:shared")

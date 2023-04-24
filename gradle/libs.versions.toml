@@ -75,6 +75,7 @@ kotlinx-serialization = "1.5.0" # https://github.com/Kotlin/kotlinx.serializatio
 ktor = "2.2.4" # https://github.com/ktorio/ktor
 napier = "2.6.1" # https://github.com/AAkira/Napier
 kmm-imageloader = "1.4.0" # https://github.com/qdsfdhvh/compose-imageloader
+moko-resource = "0.21.2" # https://github.com/icerockdev/moko-resources
 
 # Test libraries
 test-junit5Bom = "5.8.2"
@@ -219,6 +220,11 @@ ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", versi
 ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 
+# Moko Resources
+moko-generator = { module = "dev.icerock.moko:resources-generator", version.ref = "moko-resource" }
+moko-resource = { module = "dev.icerock.moko:resources", version.ref = "moko-resource" }
+moko-resource-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resource" }
+
 # Test
 test-junit4 = { module = "junit:junit", version.ref = "test-junit4" }
 test-junit5Bom = { module = "org.junit:junit-bom", version.ref = "test-junit5Bom" }
@@ -345,3 +351,4 @@ littlerobots = { id = "nl.littlerobots.version-catalog-update", version = "0.6.1
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 jetbrains-compose = { id = "org.jetbrains.compose", version = "1.4.0" }
 cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+moko = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resource" }
