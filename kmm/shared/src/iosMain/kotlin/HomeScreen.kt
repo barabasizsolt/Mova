@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -24,14 +23,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.barabasizsolt.mova.domain.model.ContentItem
-import com.barabasizsolt.mova.ui.catalog.ErrorContent
-import com.barabasizsolt.mova.ui.catalog.ErrorItem
-import com.barabasizsolt.mova.ui.catalog.LoadingContent
-import com.barabasizsolt.mova.ui.catalog.MovaHeader
-import com.barabasizsolt.mova.ui.catalog.MovaSnackBar
-import com.barabasizsolt.mova.ui.catalog.WatchableWithRating
-import com.barabasizsolt.mova.ui.screen.base.UserAction
-import com.barabasizsolt.mova.ui.theme.AppTheme
+import platform.CoreGraphics.CGRectGetHeight
+import platform.UIKit.UIScreen
+import ui.catalog.ErrorContent
+import ui.catalog.ErrorItem
+import ui.catalog.LoadingContent
+import ui.catalog.MovaHeader
+import ui.catalog.MovaSnackBar
+import ui.catalog.WatchableWithRating
+import ui.screen.base.UserAction
+import ui.theme.AppTheme
 
 @Composable
 fun HomeScreen(
@@ -132,16 +133,14 @@ private fun LazyGridScope.content(
 ) { _, item ->
     when (item) {
         is ContentItem.ItemHeader -> MovaHeader(
-            text = "Now Playing Movies",
+            text = "Bounds: ${UIScreen.mainScreen.bounds.let { bounds ->
+                CGRectGetHeight(bounds)
+            }}",
             onClick = {},
             modifier = Modifier.padding(bottom = AppTheme.dimens.contentPadding)
         )
         is ContentItem.Watchable ->
             WatchableWithRating(item = item, onClick = {})
-//        Text(
-//            item.title,
-//            Modifier.fillMaxWidth().padding(20.dp)
-//        )
         is ContentItem.ItemTail -> if (item.loadMore) {
             LoadingContent(modifier = Modifier
                 .height(height = 80.dp)

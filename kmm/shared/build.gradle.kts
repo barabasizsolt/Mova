@@ -7,11 +7,12 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.cocoapods)
+    alias(libs.plugins.moko)
 }
 
-val dummy = Attribute.of("dummy", String::class.java)
 kotlin {
     android()
+    ios()
     iosX64()
     iosArm64()
     iosSimulatorArm64()
@@ -29,8 +30,11 @@ kotlin {
             isStatic = true
             transitiveExport = false // This is default.
             embedBitcode(BITCODE)
+            //binaryOption("bundleId", "com.barabasizsolt.mova.shared")
         }
-        //extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
+
+        extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
+        extraSpecAttributes["exclude_files"] = "['src/commonMain/resources/MR/**']"
 
         xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = NativeBuildType.DEBUG
         xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = NativeBuildType.RELEASE
@@ -64,44 +68,66 @@ kotlin {
 
                 implementation(project(":kmm:domain"))
 
-                implementation(project(":kmm:ui"))
-
+                implementation(libs.kotlinx.coroutines)
                 implementation(libs.koin.core)
+                implementation(libs.google.accompanistSwipeRefresh)
+                implementation(libs.kmm.imageloader)
+                implementation(libs.voyager.navigator)
+                implementation(libs.voyager.tab)
+                //implementation(libs.voyager.bottomSheet)
+
+                implementation(libs.moko.resource)
+                implementation(libs.moko.resource.compose)
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material)
+                implementation(compose.ui)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
+                implementation(compose.materialIconsExtended)
+                implementation(compose.animation)
+                implementation(compose.animationGraphics)
             }
         }
 
         val androidMain by getting {
             dependencies {
+                implementation(libs.bundles.androidx.compose)
+                implementation(libs.koin.compose)
+
+                implementation(libs.bundles.androidx.core)
+                implementation(libs.androidx.appcompat)
+                implementation(libs.google.android.material)
+                implementation(libs.andoridx.activityCompose)
+
+                implementation(libs.bundles.coil)
+
+                implementation(libs.youtube.player)
+                implementation(libs.youtube.player.customui)
+
+                //implementation(libs.beagle.noop)
+                //implementation(libs.beagle.uiDrawer)
+
                 implementation(project(":kmm:service:activityprovider:activityprovider-api"))
                 implementation(project(":kmm:service:activityprovider:activityprovider-implementation"))
                 implementation(project(":kmm:service:activityprovider:activityprovider-di"))
+
+                implementation(project(":kmm:service:auth:firebase:firebase-api"))
+                implementation(project(":kmm:service:activityprovider:activityprovider-api"))
             }
-        }
-
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-
-        val iosMain by creating {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
         }
     }
 }
 
 android {
     namespace = "com.barabasizsolt.mova.shared"
+
+    sourceSets["main"].res.srcDirs("src/androidMain/res")
+    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+    sourceSets["main"].resources.exclude("src/commonMain/resources/MR")
+}
+
+multiplatformResources {
+    multiplatformResourcesPackage = "com.barabasizsolt.mova.shared"
 }
