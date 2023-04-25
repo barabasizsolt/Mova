@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.cocoapods)
-    alias(libs.plugins.moko)
 }
 
 kotlin {
@@ -74,9 +73,6 @@ kotlin {
                 implementation(libs.voyager.tab)
                 //implementation(libs.voyager.bottomSheet)
 
-                implementation(libs.moko.resource)
-                implementation(libs.moko.resource.compose)
-
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material)
@@ -133,9 +129,4 @@ android {
 
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
-    sourceSets["main"].resources.exclude("src/commonMain/resources/MR")
-}
-
-multiplatformResources {
-    multiplatformResourcesPackage = "com.barabasizsolt.mova.shared"
 }
