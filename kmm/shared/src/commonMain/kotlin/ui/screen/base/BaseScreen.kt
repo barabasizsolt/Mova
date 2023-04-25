@@ -1,11 +1,20 @@
 package ui.screen.base
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.PullRefreshState
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -16,12 +25,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import ui.catalog.ErrorContent
 import ui.catalog.LoadingContent
 import ui.catalog.MovaSnackBar
 import ui.catalog.ScrollUpWrapper
+import ui.getPlatform
 import ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -33,6 +45,8 @@ internal fun BaseScreen(
     onSnackBarDismissed: (() -> Unit)? = null,
     scrollUpTopPadding: Dp = AppTheme.dimens.screenPadding,
     shouldShowScrollUp: Boolean = true,
+    shouldShowBackButton: Boolean = false,
+    onBackPressed: () -> Unit = {},
     content: @Composable (LazyGridState, CoroutineScope) -> Unit
 ) {
     val snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }
@@ -62,6 +76,18 @@ internal fun BaseScreen(
             }
         }
 
+        if (shouldShowBackButton) {
+            BackButton(
+                modifier = Modifier
+                    .align(alignment = Alignment.TopStart)
+                    .padding(
+                        horizontal = AppTheme.dimens.screenPadding,
+                        vertical = getPlatform().statusBarInsetDp + AppTheme.dimens.screenPadding
+                    ),
+                onBackPressed = onBackPressed
+            )
+        }
+
         MovaSnackBar(
             snackBarHostState = snackBarHostState,
             onDismiss = {
@@ -85,4 +111,24 @@ internal fun BaseScreen(
             }
         )
     }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun BackButton(
+    modifier: Modifier = Modifier,
+    onBackPressed: () -> Unit
+) = Card(
+    modifier = modifier.size(size = 40.dp),
+    shape = CircleShape,
+    backgroundColor = AppTheme.colors.secondary,
+    onClick = onBackPressed,
+    border = BorderStroke(2.dp, Color.White)
+) {
+    Icon(
+        imageVector = Icons.Default.ArrowBackIosNew,
+        contentDescription = null,
+        tint = Color.White,
+        modifier = Modifier.padding(all = 10.dp)
+    )
 }

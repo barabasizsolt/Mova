@@ -10,6 +10,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -23,6 +24,8 @@ import ui.theme.AppTheme
 internal actual class DetailScreen actual constructor(private val id: Int) : Screen, KoinComponent {
 
     private val screenState: DetailScreenState by inject { parametersOf(id) }
+    override val key: ScreenKey
+        get() = id.toString()
 
     @Composable
     override fun Content() {
@@ -37,11 +40,15 @@ internal actual class DetailScreen actual constructor(private val id: Int) : Scr
         )
 
         LaunchedEffect(
-            key1 = screenState.tabIndex,
+            key1 = screenState.screenDetailList,
             block = { detailScreenAdapter.submitList(screenState.screenDetailList) }
         )
 
-        BaseScreen(screenState = screenState) { _, _ ->
+        BaseScreen(
+            screenState = screenState,
+            shouldShowBackButton = true,
+            onBackPressed = { navigator.pop() }
+        ) { _, _ ->
             AndroidView(
                 factory = { context ->
                     val recyclerView = RecyclerView(context).apply {

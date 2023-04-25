@@ -2,6 +2,7 @@ package ui.screen.detail
 
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -14,12 +15,17 @@ internal actual class DetailScreen actual constructor(private val id: Int) : Scr
 
     private val screenState: DetailScreenState by inject { parametersOf(id) }
 
+    override val key: ScreenKey
+        get() = id.toString()
+
     @Composable
     override fun Content() {
         val navigator: Navigator = LocalNavigator.currentOrThrow
 
         BaseScreen(
             screenState = screenState,
+            shouldShowBackButton = true,
+            onBackPressed = { navigator.pop() },
             content = { gridState, _ ->
                 ScreenContent(
                     items = screenState.screenDetailList,

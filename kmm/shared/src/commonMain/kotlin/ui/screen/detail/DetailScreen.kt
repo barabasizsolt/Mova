@@ -41,7 +41,7 @@ internal fun ScreenContent(
     onTabIndexChange: (Int) -> Unit,
     onMovieClicked: (Int) -> Unit,
 ) = LazyVerticalGrid(
-    modifier = modifier.fillMaxSize().background(color = AppTheme.colors.surface),
+    modifier = modifier.fillMaxSize().background(color = AppTheme.colors.primary),
     columns = GridCells.Fixed(count = 2),
     state = gridState,
     verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2),
@@ -52,12 +52,8 @@ internal fun ScreenContent(
             items = items,
             span = { item ->
                 when (item) {
-                    is DetailScreenListItem.HeaderItem -> GridItemSpan(currentLineSpan = 2)
-                    is DetailScreenListItem.ReviewItem -> GridItemSpan(currentLineSpan = 2)
-                    is DetailScreenListItem.SimilarMovieItem -> GridItemSpan(currentLineSpan = 2)
-                    is DetailScreenListItem.TabsItem -> GridItemSpan(currentLineSpan = 2)
-                    is DetailScreenListItem.VideoItem -> GridItemSpan(currentLineSpan = 2)
-                    is DetailScreenListItem.EmptyItem -> GridItemSpan(currentLineSpan = 2)
+                    is DetailScreenListItem.SimilarMovieItem -> GridItemSpan(currentLineSpan = 1)
+                    else -> GridItemSpan(currentLineSpan = 2)
                 }
             }
         ) { item ->

@@ -52,7 +52,7 @@ internal fun ContentTabs(
     TabRow(
         selectedTabIndex = selectedTab,
         indicator = { tabPositions -> TabRowIndicator(tabPosition = tabPositions[selectedTab]) },
-        backgroundColor = Color.Transparent,
+        backgroundColor = AppTheme.colors.primary,
         divider = { TabRowDivider(isDark = isDark) },
         tabs = {
             tabs.forEachIndexed { index, title ->
