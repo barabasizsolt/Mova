@@ -23,20 +23,12 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -58,6 +50,7 @@ import ui.screen.base.BaseScreen
 import ui.screen.base.BaseScreenState
 import ui.screen.base.UserAction
 import ui.screen.detail.DetailScreen
+import ui.screen.detail.catalog.ContentTabs
 import ui.theme.AppTheme
 
 internal object ExploreScreen : Screen, KoinComponent {
@@ -65,7 +58,6 @@ internal object ExploreScreen : Screen, KoinComponent {
     private val screenState: ExploreScreenState by inject()
     private val filterScreenState: FilterScreenState by inject()
 
-    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {
         val navigator: Navigator = LocalNavigator.currentOrThrow
@@ -81,30 +73,14 @@ internal object ExploreScreen : Screen, KoinComponent {
             else -> Unit
         }
 
-        var shouldShowScrollUp by remember { mutableStateOf(value = false) }
-
         BaseScreen(
             screenState = screenState,
             gridState = when (screenState.selectedCategory.wrappedItem as Category) {
                 Category.MOVIE -> if (screenState.query.isEmpty()) movieListState else movieSearchState
                 Category.TV -> if (screenState.query.isEmpty()) tvListState else tvSearchState
             },
-            scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 5,
-            shouldShowScrollUp = shouldShowScrollUp,
-            content = { gridState, scope ->
-//                BottomSheetNavigator(
-//                    sheetShape = AppTheme.shapes.medium.copy(
-//                        bottomStart = CornerSize(size = 0.dp),
-//                        bottomEnd = CornerSize(size = 0.dp)
-//                    )
-//                ) {
-//
-//                }
-//                LaunchedEffect(
-//                    key1 = it.isVisible,
-//                    block = { shouldShowScrollUp = !it.isVisible }
-//                )
-
+            scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 8,
+            content = { gridState, _ ->
                 Box(modifier = Modifier.fillMaxSize().background(color = AppTheme.colors.primary)) {
                     ScreenContent(
                         query = screenState.query,
@@ -129,11 +105,11 @@ internal object ExploreScreen : Screen, KoinComponent {
                             }
                             screenState.getScreenData(userAction = UserAction.TryAgain)
                         },
-                        onClick = { shouldShow ->
-                            shouldShowScrollUp = shouldShow
-                        },
                         onMovieClicked = { id -> navigator.push(item = DetailScreen(id = id)) },
-                        scope = scope,
+                        onClick = { navigator.push(item = FilterScreen) },
+                        onTabIndexChange = { position ->
+                            filterScreenState.onCategorySelected(filterScreenState.categories[position])
+                        },
                         gridState = gridState
                     )
                 }
@@ -153,17 +129,19 @@ private fun ScreenContent(
     isTryAgainLoading: Boolean,
     onLoadMoreItem: () -> Unit,
     onRetryClick: () -> Unit,
-    scope: CoroutineScope,
-    onClick: (Boolean) -> Unit,
+    onClick: () -> Unit,
     onMovieClicked: (Int) -> Unit,
+    onTabIndexChange: (Int) -> Unit,
     gridState: LazyGridState
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding)) {
+    Column(
+        //verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding)
+    ) {
         SearchBar(
             query = query,
             onQueryChange = onQueryChange ,
-            scope = scope,
-            onClick = onClick
+            onClick = onClick,
+            modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding)
         )
         if (isLoading) {
             LoadingBody(
@@ -173,6 +151,12 @@ private fun ScreenContent(
             if (query.isEmpty()) {
                 FilterItemCarousel(
                     filterItems = filterItems,
+                    modifier = Modifier.padding(bottom = AppTheme.dimens.smallPadding)
+                )
+                ContentTabs(
+                    tabs = listOf("Movie", "Tv Series"),
+                    onTabIndexChange = onTabIndexChange,
+                    modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding)
                 )
             }
             ContentBody(
@@ -194,8 +178,7 @@ private fun SearchBar(
     modifier: Modifier = Modifier,
     query: String,
     onQueryChange: (String) -> Unit,
-    scope: CoroutineScope,
-    onClick: (Boolean) -> Unit
+    onClick: () -> Unit
 ) = Row(
     modifier = modifier
         .padding(
@@ -206,25 +189,12 @@ private fun SearchBar(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
 ) {
-    //val bottomSheetNavigator = LocalBottomSheetNavigator.current
     MovaSearchField(
         value = query,
         onValueChange = onQueryChange,
         modifier = Modifier.weight(weight = 1f)
     )
-    FilterIcon(
-        onClick = {
-//            scope.launch {
-//                if (bottomSheetNavigator.isVisible) {
-//                    onClick(true)
-//                    bottomSheetNavigator.hide()
-//                } else {
-//                    onClick(false)
-//                    bottomSheetNavigator.show(screen = FilterScreen)
-//                }
-//            }
-        }
-    )
+    FilterIcon(onClick = onClick)
 }
 
 @Composable

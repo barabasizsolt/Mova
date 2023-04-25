@@ -71,7 +71,6 @@ kotlin {
                 implementation(libs.kmm.imageloader)
                 implementation(libs.voyager.navigator)
                 implementation(libs.voyager.tab)
-                //implementation(libs.voyager.bottomSheet)
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)

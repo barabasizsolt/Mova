@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,7 +21,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,13 +29,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import category.Category
 import com.barabasizsolt.mova.filter.api.FilterItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import ui.catalog.BackButton
 import ui.catalog.MovaButton
+import ui.getPlatform
 import ui.theme.AppTheme
 
 internal object FilterScreen : Screen, KoinComponent {
@@ -44,98 +46,102 @@ internal object FilterScreen : Screen, KoinComponent {
 
     @Composable
     override fun Content() {
-        //val bottomSheetNavigator = LocalBottomSheetNavigator.current
-
         val isDark: Boolean = isSystemInDarkTheme()
-        val scope: CoroutineScope = rememberCoroutineScope()
         val genreListState = rememberLazyListState()
+        val navigator = LocalNavigator.currentOrThrow
 
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding),
-            contentPadding = PaddingValues(vertical = AppTheme.dimens.screenPadding),
-            modifier = Modifier.background(color = AppTheme.colors.background)
-        ) {
-            item {
-                Text(
-                    text = "Sort & Filter",
-                    color = AppTheme.colors.secondary,
-                    style = AppTheme.typography.h6,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+        Box(modifier = Modifier.fillMaxSize().background(color = AppTheme.colors.primary)) {
+            BackButton(
+                modifier = Modifier
+                    .align(alignment = Alignment.TopStart)
+                    .padding(
+                        start = AppTheme.dimens.screenPadding,
+                        top = AppTheme.dimens.screenPadding + getPlatform().statusBarInsetDp
+                    )
+            ) {
+                navigator.pop()
             }
-            item {
-                Divider(
-                    modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding),
-                    color = if (isDark) Color.DarkGray else Color.LightGray
-                )
-            }
-            item {
-                SingleSelectionFilterCarousel(
-                    header = "Categories",
-                    selectedItem = screenState.selectedCategory,
-                    items = screenState.categories,
-                    onClick = { position: FilterItem ->
-                        screenState.onCategorySelected(position)
-                        scope.launch {
-                            genreListState.scrollToItem(index = 0, scrollOffset = 0)
-                        }
-                    }
-                )
-            }
-            if (screenState.selectedCategory.wrappedItem as Category == Category.MOVIE) {
+
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(
+                    space = AppTheme.dimens.screenPadding,
+                    alignment = Alignment.Bottom
+                ),
+                contentPadding = PaddingValues(
+                    top = AppTheme.dimens.screenPadding + getPlatform().statusBarInsetDp,
+                    bottom = AppTheme.dimens.screenPadding
+                ),
+                modifier = Modifier.align(alignment = Alignment.BottomCenter)
+            ) {
                 item {
-                    MultiSelectionFilterCarousel(
-                        header = "Regions",
-                        selectedItems = screenState.selectedRegions,
-                        items = screenState.regions,
-                        onClick = { positions -> screenState.onRegionSelected(positions) }
+                    Text(
+                        text = "Sort & Filter",
+                        color = AppTheme.colors.secondary,
+                        style = AppTheme.typography.h6,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
-            }
-            item {
-                MultiSelectionFilterCarousel(
-                    header = "Genres",
-                    selectedItems = screenState.selectedGenres,
-                    items = screenState.genres,
-                    listState = genreListState,
-                    onClick = { positions -> screenState.onGenreSelected(positions) }
-                )
-            }
-            item {
-                MultiSelectionFilterCarousel(
-                    header = "Sort",
-                    selectedItems = screenState.selectedSortOptions,
-                    items = screenState.sortOptions,
-                    onClick = { positions -> screenState.onSortingCriteriaSelected(positions) }
-                )
-            }
-            item {
-                Divider(
-                    modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding),
-                    color = if (isDark) Color.DarkGray else Color.LightGray
-                )
-            }
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = AppTheme.dimens.screenPadding),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
-                ) {
-                    ResetButton(
-                        onClick = screenState::onResetButtonClicked,
-                        isDark = isDark,
-                        modifier = Modifier.weight(weight = 1f)
+                item {
+                    Divider(
+                        modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding),
+                        color = if (isDark) Color.DarkGray else Color.LightGray
                     )
-                    ApplyButton(
-                        onClick = {
-                            screenState.onApplyButtonClicked()
-                            //bottomSheetNavigator.hide()
-                        },
-                        modifier = Modifier.weight(weight = 1f)
+                }
+                if (screenState.selectedCategory.wrappedItem as Category == Category.MOVIE) {
+                    item {
+                        MultiSelectionFilterCarousel(
+                            header = "Regions",
+                            selectedItems = screenState.selectedRegions,
+                            items = screenState.regions,
+                            onClick = { positions -> screenState.onRegionSelected(positions) }
+                        )
+                    }
+                }
+                item {
+                    MultiSelectionFilterCarousel(
+                        header = "Genres",
+                        selectedItems = screenState.selectedGenres,
+                        items = screenState.genres,
+                        listState = genreListState,
+                        onClick = { positions -> screenState.onGenreSelected(positions) }
                     )
+                }
+                item {
+                    MultiSelectionFilterCarousel(
+                        header = "Sort",
+                        selectedItems = screenState.selectedSortOptions,
+                        items = screenState.sortOptions,
+                        onClick = { positions -> screenState.onSortingCriteriaSelected(positions) }
+                    )
+                }
+                item {
+                    Divider(
+                        modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding),
+                        color = if (isDark) Color.DarkGray else Color.LightGray
+                    )
+                }
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = AppTheme.dimens.screenPadding),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding)
+                    ) {
+                        ResetButton(
+                            onClick = screenState::onResetButtonClicked,
+                            isDark = isDark,
+                            modifier = Modifier.weight(weight = 1f)
+                        )
+                        ApplyButton(
+                            onClick = {
+                                screenState.onApplyButtonClicked()
+                                navigator.pop()
+                            },
+                            modifier = Modifier.weight(weight = 1f)
+                        )
+                    }
                 }
             }
         }
@@ -167,32 +173,6 @@ private fun ResetButton(
     contentColor = if (isDark) Color.White else AppTheme.colors.secondary,
     backgroundColor = if (isDark) Color.DarkGray else Color.LightGray,
     modifier = modifier
-)
-
-@Composable
-private fun SingleSelectionFilterCarousel(
-    modifier: Modifier = Modifier,
-    header: String,
-    selectedItem: FilterItem,
-    items: List<FilterItem>,
-    listState: LazyListState = rememberLazyListState(),
-    onClick: (FilterItem) -> Unit
-) = BaseFilterCarousel(
-    modifier = modifier,
-    header = header,
-    items = items,
-    listState = listState,
-    rowContent = { _, item ->
-        FilterItem(
-            text = item.name,
-            isSelected = item == selectedItem,
-            onClick = {
-                if (selectedItem != item) {
-                    onClick(item)
-                }
-            }
-        )
-    }
 )
 
 @Composable
