@@ -24,6 +24,7 @@ import ui.theme.AppTheme
 internal actual class DetailScreen actual constructor(private val id: Int) : Screen, KoinComponent {
 
     private val screenState: DetailScreenState by inject { parametersOf(id) }
+
     override val key: ScreenKey
         get() = id.toString()
 

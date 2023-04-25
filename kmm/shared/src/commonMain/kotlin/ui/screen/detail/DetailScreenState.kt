@@ -55,10 +55,17 @@ internal class DetailScreenState(
         screenDetailList = buildList {
             add(element = details.toHeaderItem())
             add(element = DetailScreenListItem.TabsItem(tabs = tabs))
-            when (index) {
-                0 -> addAll(elements = details.toSimilarMoviesItem())
-                1 -> addAll(elements = details.toVideosItem())
-                2 ->  addAll(elements = details.toReviewsItem())
+            if (tabs.size == 3) {
+                when (index) {
+                    0 -> addAll(elements = details.toSimilarMoviesItem())
+                    1 -> addAll(elements = details.toVideosItem())
+                    2 ->  addAll(elements = details.toReviewsItem())
+                }
+            } else {
+                when (index) {
+                    0 -> addAll(elements = details.toSimilarMoviesItem())
+                    1 ->  addAll(elements = details.toReviewsItem())
+                }
             }
         }
         tabIndex = index

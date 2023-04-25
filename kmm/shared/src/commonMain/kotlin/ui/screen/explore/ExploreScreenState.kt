@@ -51,6 +51,9 @@ internal class ExploreScreenState(
         private set
     var selectedSortOptions by mutableStateOf<List<FilterItem>>(value = emptyList())
         private set
+    val tabs: List<String> = listOf("Movies", "Tv Series")
+    var selectedTabIndex: Int = 0
+        private set
 
     private var movieQuery by mutableStateOf(value = "")
     private var tvQuery by mutableStateOf(value = "")
@@ -161,6 +164,10 @@ internal class ExploreScreenState(
             searchContent(userAction = UserAction.SwipeRefresh, query = query)
             state = State.Normal
         }
+    }
+
+    fun onTabChange(index: Int) {
+        selectedTabIndex = index
     }
 
     private suspend fun discoverContent(userAction: UserAction) {

@@ -42,12 +42,13 @@ import ui.util.isValidUrl
 
 @Composable
 internal fun ContentTabs(
+    initTabIndex: Int = 0,
     tabs: List<String>,
     onTabIndexChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isDark = isSystemInDarkTheme()
-    var selectedTab by rememberSaveable { mutableStateOf(value = 0)  }
+    var selectedTab by rememberSaveable { mutableStateOf(value = initTabIndex)  }
 
     TabRow(
         selectedTabIndex = selectedTab,
@@ -127,7 +128,7 @@ private fun TabRowDivider(
 )
 
 @Composable
-fun Review(
+internal fun Review(
     modifier: Modifier = Modifier,
     review: Review
 ) = Column(

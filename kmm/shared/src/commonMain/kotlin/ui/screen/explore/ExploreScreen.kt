@@ -107,8 +107,11 @@ internal object ExploreScreen : Screen, KoinComponent {
                         },
                         onMovieClicked = { id -> navigator.push(item = DetailScreen(id = id)) },
                         onClick = { navigator.push(item = FilterScreen) },
+                        initTabIndex = screenState.selectedTabIndex,
+                        tabs = screenState.tabs,
                         onTabIndexChange = { position ->
-                            filterScreenState.onCategorySelected(filterScreenState.categories[position])
+                            screenState.onTabChange(index = position)
+                            filterScreenState.onCategorySelected(category = filterScreenState.categories[position])
                         },
                         gridState = gridState
                     )
@@ -131,12 +134,12 @@ private fun ScreenContent(
     onRetryClick: () -> Unit,
     onClick: () -> Unit,
     onMovieClicked: (Int) -> Unit,
+    tabs: List<String>,
+    initTabIndex: Int,
     onTabIndexChange: (Int) -> Unit,
     gridState: LazyGridState
 ) {
-    Column(
-        //verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.screenPadding)
-    ) {
+    Column {
         SearchBar(
             query = query,
             onQueryChange = onQueryChange ,
@@ -154,7 +157,8 @@ private fun ScreenContent(
                     modifier = Modifier.padding(bottom = AppTheme.dimens.smallPadding)
                 )
                 ContentTabs(
-                    tabs = listOf("Movie", "Tv Series"),
+                    tabs = tabs,
+                    initTabIndex = initTabIndex,
                     onTabIndexChange = onTabIndexChange,
                     modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding)
                 )

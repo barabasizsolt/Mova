@@ -32,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-//import dev.icerock.moko.resources.compose.painterResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import ui.theme.AppTheme
 
@@ -65,7 +64,6 @@ internal fun SocialLoginOption(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     text: String? = null,
-    //resource: ImageResource
     path: String
 ) = OutlinedButton(
     border = BorderStroke(width = 1.dp, color = Color.LightGray.copy(alpha = if (isSystemInDarkTheme()) 0.4f else 1f)),

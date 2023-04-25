@@ -23,13 +23,7 @@ internal actual object ProfileScreen : Tab {
         @Composable
         get()  {
             val icon = rememberVectorPainter(Icons.Default.Person)
-            return remember {
-                TabOptions(
-                    index = 3u,
-                    title = "Profile",
-                    icon = icon
-                )
-            }
+            return remember { TabOptions(index = 3u, title = "Profile", icon = icon) }
         }
 
     @Composable
