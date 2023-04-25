@@ -66,6 +66,7 @@ internal class ExploreScreenState(
     private var isInitialized: Boolean = false
 
     init {
+        state = State.SearchLoading
         coroutineScope.launch {
             launch {
                 filterService.selectedCategory.collect {
@@ -83,7 +84,7 @@ internal class ExploreScreenState(
     }
 
     override fun getScreenData(userAction: UserAction, delay: Long) {
-        if (state !in listOf(State.Loading, State.SwipeRefresh, State.SearchLoading)) {
+        if (state !in listOf(State.Loading, State.SwipeRefresh)) {
             state = when (userAction) {
                 UserAction.SwipeRefresh -> State.SwipeRefresh
                 UserAction.Search -> State.SearchLoading

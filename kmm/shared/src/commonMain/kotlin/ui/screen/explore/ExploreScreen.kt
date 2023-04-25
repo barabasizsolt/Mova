@@ -23,9 +23,16 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -37,6 +44,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import category.Category
 import com.barabasizsolt.mova.domain.model.ContentItem
 import com.barabasizsolt.mova.filter.api.FilterItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import ui.catalog.ErrorItem
@@ -58,6 +67,7 @@ internal object ExploreScreen : Screen, KoinComponent {
     private val screenState: ExploreScreenState by inject()
     private val filterScreenState: FilterScreenState by inject()
 
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {
         val navigator: Navigator = LocalNavigator.currentOrThrow
@@ -73,47 +83,76 @@ internal object ExploreScreen : Screen, KoinComponent {
             else -> Unit
         }
 
+        val sheetState: ModalBottomSheetState = rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden,
+            skipHalfExpanded = true
+        )
+        val scope: CoroutineScope = rememberCoroutineScope()
+
         BaseScreen(
             screenState = screenState,
             gridState = when (screenState.selectedCategory.wrappedItem as Category) {
                 Category.MOVIE -> if (screenState.query.isEmpty()) movieListState else movieSearchState
                 Category.TV -> if (screenState.query.isEmpty()) tvListState else tvSearchState
             },
-            scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 8,
+            scrollUpTopPadding =
+                AppTheme.dimens.searchBarHeight
+                        + AppTheme.dimens.screenPadding * if (screenState.query.isEmpty()) 8 else 4,
             content = { gridState, _ ->
-                ScreenContent(
-                    query = screenState.query,
-                    onQueryChange = screenState::onQueryChange,
-                    discoverItems = screenState.discoverContent,
-                    searchItems = screenState.searchContent,
-                    filterItems = buildList {
-                        add(element = screenState.selectedCategory)
-                        if ((screenState.selectedCategory.wrappedItem as Category) == Category.MOVIE) {
-                            addAll(elements = screenState.selectedRegions)
-                        }
-                        addAll(elements = screenState.selectedGenres)
-                        addAll(elements = screenState.selectedSortOptions)
+                ModalBottomSheetLayout(
+                    sheetState = sheetState,
+                    sheetContent = {
+                        FilterScreen(
+                            screenState = filterScreenState,
+                            modalBottomSheetState = sheetState
+                        )
                     },
-                    isLoading = screenState.state in listOf(BaseScreenState.State.SearchLoading),
-                    isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
-                    onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
-                    onRetryClick = {
-                        if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
-                            screenState.clearSearchContent()
-                            // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
-                        }
-                        screenState.getScreenData(userAction = UserAction.TryAgain)
-                    },
-                    onMovieClicked = { id -> navigator.push(item = DetailScreen(id = id)) },
-                    onClick = { navigator.push(item = FilterScreen) },
-                    initTabIndex = screenState.selectedTabIndex,
-                    tabs = screenState.tabs,
-                    onTabIndexChange = { position ->
-                        screenState.onTabChange(index = position)
-                        filterScreenState.onCategorySelected(category = filterScreenState.categories[position])
-                    },
-                    gridState = gridState
-                )
+                    sheetShape = AppTheme.shapes.medium.copy(
+                        bottomStart = CornerSize(size = 0.dp),
+                        bottomEnd = CornerSize(size = 0.dp)
+                    ),
+                    sheetContentColor = AppTheme.colors.onBackground,
+                    sheetBackgroundColor = AppTheme.colors.background
+                ) {
+                    ScreenContent(
+                        query = screenState.query,
+                        onQueryChange = screenState::onQueryChange,
+                        discoverItems = screenState.discoverContent,
+                        searchItems = screenState.searchContent,
+                        filterItems = buildList {
+                            add(element = screenState.selectedCategory)
+                            if ((screenState.selectedCategory.wrappedItem as Category) == Category.MOVIE) {
+                                addAll(elements = screenState.selectedRegions)
+                            }
+                            addAll(elements = screenState.selectedGenres)
+                            addAll(elements = screenState.selectedSortOptions)
+                        },
+                        isLoading = screenState.state in listOf(BaseScreenState.State.SearchLoading),
+                        isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
+                        onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
+                        onRetryClick = {
+                            if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
+                                screenState.clearSearchContent()
+                                // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
+                            }
+                            screenState.getScreenData(userAction = UserAction.TryAgain)
+                        },
+                        onMovieClicked = { id -> navigator.push(item = DetailScreen(id = id)) },
+                        onClick = {
+                            scope.launch {
+                                if (sheetState.isVisible) sheetState.hide() else sheetState.show()
+                            }
+                        },
+                        initTabIndex = screenState.selectedTabIndex,
+                        tabs = screenState.tabs,
+                        onTabIndexChange = { position ->
+                            screenState.onTabChange(index = position)
+                            filterScreenState.onCategorySelected(category = filterScreenState.categories[position])
+                        },
+                        selectedTabIndex = screenState.selectedTabIndex,
+                        gridState = gridState
+                    )
+                }
             }
         )
     }
@@ -135,19 +174,19 @@ private fun ScreenContent(
     tabs: List<String>,
     initTabIndex: Int,
     onTabIndexChange: (Int) -> Unit,
-    gridState: LazyGridState
+    selectedTabIndex: Int,
+    gridState: LazyGridState,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         SearchBar(
             query = query,
-            onQueryChange = onQueryChange ,
+            onQueryChange = onQueryChange,
+            selectedTabIndex = selectedTabIndex,
             onClick = onClick,
             modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding)
         )
         if (isLoading) {
-            LoadingBody(
-                gridState = gridState
-            )
+            LoadingBody(gridState = gridState)
         } else {
             if (query.isEmpty()) {
                 FilterItemCarousel(
@@ -179,6 +218,7 @@ private fun ScreenContent(
 private fun SearchBar(
     modifier: Modifier = Modifier,
     query: String,
+    selectedTabIndex: Int,
     onQueryChange: (String) -> Unit,
     onClick: () -> Unit
 ) = Row(
@@ -194,6 +234,7 @@ private fun SearchBar(
     MovaSearchField(
         value = query,
         onValueChange = onQueryChange,
+        placeholderText = if (selectedTabIndex == 0) "Search Movies" else "Search Tv Series",
         modifier = Modifier.weight(weight = 1f)
     )
     FilterIcon(onClick = onClick)
@@ -233,11 +274,7 @@ private fun ContentBody(
         ) { _, item ->
             SearchableItem(
                 item = item as ContentItem.Watchable,
-                onClick = {
-                    if (item.isMovie) {
-                        onMovieClicked(item.id.toInt())
-                    }
-                }
+                onClick = { if (item.isMovie) { onMovieClicked(item.id.toInt()) } }
             )
         }
     } else {
