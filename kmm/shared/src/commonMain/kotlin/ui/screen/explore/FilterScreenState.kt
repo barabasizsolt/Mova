@@ -22,7 +22,7 @@ import ui.screen.base.BaseScreenState
 import ui.screen.base.UserAction
 import ui.util.Event
 
-class FilterScreenState(
+internal class FilterScreenState(
     private val getGenresFlowUseCase: GetGenresFlowUseCase,
     private val filterService: FilterService
 ) : BaseScreenState(), ScreenModel {

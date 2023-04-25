@@ -48,7 +48,7 @@ import ui.catalog.SocialAuthFooter
 import ui.catalog.SocialLoginOption
 import ui.theme.AppTheme
 
-object SocialLoginScreen : Screen, KoinComponent {
+internal object SocialLoginScreen : Screen, KoinComponent {
 
     private val screenState: SocialLoginScreenState by inject()
 

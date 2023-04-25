@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import ui.theme.AppTheme
 
 @Composable
-fun MovaHeader(
+internal fun MovaHeader(
     modifier: Modifier = Modifier,
     text: String,
     icon: ImageVector = Icons.Filled.ArrowBackIosNew,

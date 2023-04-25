@@ -12,7 +12,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import ui.screen.explore.ExploreScreen
 import ui.screen.home.HomeScreen
 
-object HomeTab : Tab {
+internal object HomeTab : Tab {
 
     override val options: TabOptions
         @Composable
@@ -27,7 +27,7 @@ object HomeTab : Tab {
     }
 }
 
-object ExploreTab : Tab {
+internal object ExploreTab : Tab {
 
     override val options: TabOptions
         @Composable

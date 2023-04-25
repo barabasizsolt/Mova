@@ -26,7 +26,7 @@ import ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BaseScreen(
+internal fun BaseScreen(
     snackBarModifier: Modifier = Modifier,
     screenState: BaseScreenState,
     gridState: LazyGridState = rememberLazyGridState(),

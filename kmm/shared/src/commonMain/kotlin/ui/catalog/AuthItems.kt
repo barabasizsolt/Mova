@@ -39,7 +39,7 @@ import ui.theme.AppTheme
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun AuthScreenDelimiter(
+internal fun AuthScreenDelimiter(
     text: String,
     modifier: Modifier = Modifier
 ) = Box(modifier = modifier.fillMaxWidth()) {
@@ -61,7 +61,7 @@ fun AuthScreenDelimiter(
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun SocialLoginOption(
+internal fun SocialLoginOption(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     text: String? = null,
@@ -98,7 +98,7 @@ fun SocialLoginOption(
 }
 
 @Composable
-fun AuthInputField(
+internal fun AuthInputField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
@@ -154,7 +154,7 @@ fun AuthInputField(
 }
 
 @Composable
-fun SocialAuthFooter(
+internal fun SocialAuthFooter(
     modifier: Modifier = Modifier,
     text: String,
     clickableText: String,

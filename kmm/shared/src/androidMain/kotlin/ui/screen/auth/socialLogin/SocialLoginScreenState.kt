@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class SocialLoginScreenState(
+internal class SocialLoginScreenState(
     private val getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase,
     private val loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase,
     private val loginWithFacebookAccountUseCase: LoginWithFacebookAccountUseCase

@@ -19,7 +19,7 @@ import ui.theme.AppTheme
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun NotFoundItem(modifier: Modifier = Modifier) = Column(
+internal fun NotFoundItem(modifier: Modifier = Modifier) = Column(
     modifier = modifier.fillMaxSize(),
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2)

@@ -14,7 +14,7 @@ import ui.screen.auth.socialLogin.SocialLoginScreenState
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-class AndroidPlatform : Platform {
+internal class AndroidPlatform : Platform {
 
     override val name: String = "Android"
 
@@ -37,7 +37,7 @@ class AndroidPlatform : Platform {
         }
 }
 
-actual fun getPlatform(): Platform = AndroidPlatform()
+internal actual fun getPlatform(): Platform = AndroidPlatform()
 
 actual val uiModule: List<Module> = buildList {
     add(

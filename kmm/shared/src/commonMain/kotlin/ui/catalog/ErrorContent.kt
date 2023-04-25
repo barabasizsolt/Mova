@@ -19,7 +19,7 @@ import ui.theme.AppTheme
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun ErrorContent(
+internal fun ErrorContent(
     modifier: Modifier = Modifier,
     onRetry: () -> Unit
 ) {

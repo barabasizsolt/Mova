@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import ui.theme.AppTheme
 
 @Composable
-fun MovaSearchField(
+internal fun MovaSearchField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit

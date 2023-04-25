@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import ui.screen.base.BaseScreenState
 import ui.screen.base.UserAction
 
-class HomeScreenState(
+internal class HomeScreenState(
     private val getHomeScreen: GetHomeScreenUseCase,
     getHomeScreenFlow: GetHomeScreenFlowUseCase,
 ) : BaseScreenState(), ScreenModel {

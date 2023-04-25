@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import ui.theme.AppTheme
 
 @Composable
-fun LoadingContent(modifier: Modifier = Modifier) {
+internal fun LoadingContent(modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize()) {
         CircularProgressIndicator(
             modifier = Modifier.align(alignment = Alignment.Center),

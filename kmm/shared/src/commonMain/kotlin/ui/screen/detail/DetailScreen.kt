@@ -28,10 +28,10 @@ import ui.screen.detail.catalog.ContentTabs
 import ui.screen.detail.catalog.Review
 import ui.theme.AppTheme
 
-expect class DetailScreen(id: Int) : Screen, KoinComponent
+internal expect class DetailScreen(id: Int) : Screen, KoinComponent
 
 @Composable
-fun ScreenContent(
+internal fun ScreenContent(
     modifier: Modifier = Modifier,
     items: List<DetailScreenListItem>,
     gridState: LazyGridState,
@@ -96,7 +96,7 @@ fun ScreenContent(
 )
 
 @Composable
-fun EmptyTabItem(modifier: Modifier = Modifier) = Card(
+internal fun EmptyTabItem(modifier: Modifier = Modifier) = Card(
     modifier = modifier
         .fillMaxWidth()
         .padding(horizontal = AppTheme.dimens.screenPadding),

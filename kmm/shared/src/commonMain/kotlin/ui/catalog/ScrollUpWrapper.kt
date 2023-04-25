@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.Dp
 import ui.theme.AppTheme
 
 @Composable
-fun ScrollUpWrapper(
+internal fun ScrollUpWrapper(
     modifier: Modifier = Modifier,
     gridState: LazyGridState,
     content: @Composable () -> Unit,

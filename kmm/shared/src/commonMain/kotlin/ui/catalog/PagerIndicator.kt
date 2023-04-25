@@ -29,7 +29,7 @@ import ui.theme.AppTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HorizontalPagerIndicator(
+internal fun HorizontalPagerIndicator(
     modifier: Modifier = Modifier,
     pagerState: PagerState,
     indicatorCount: Int,

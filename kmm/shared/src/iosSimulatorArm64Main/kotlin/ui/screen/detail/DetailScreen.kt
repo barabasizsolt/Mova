@@ -10,7 +10,7 @@ import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 import ui.screen.base.BaseScreen
 
-actual class DetailScreen actual constructor(private val id: Int) : Screen, KoinComponent {
+internal actual class DetailScreen actual constructor(private val id: Int) : Screen, KoinComponent {
 
     private val screenState: DetailScreenState by inject { parametersOf(id) }
 

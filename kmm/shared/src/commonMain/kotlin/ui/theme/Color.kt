@@ -29,7 +29,7 @@ data class AppColor(
     val onError: Color
 )
 
-fun lightColors(
+internal fun lightColors(
     primary: Color = Color.White,
     primaryVariant: Color = Color.White,
     secondary: Color = Color.Red,
@@ -57,7 +57,7 @@ fun lightColors(
     onError = onError
 )
 
-fun darkColors(
+internal fun darkColors(
     primary: Color = Color.Black,
     primaryVariant: Color = Color.Black,
     secondary: Color = Color.Red,

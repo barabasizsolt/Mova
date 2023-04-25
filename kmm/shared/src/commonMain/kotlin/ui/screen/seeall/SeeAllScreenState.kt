@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import ui.screen.base.BaseScreenState
 import ui.screen.base.UserAction
 
-class SeeAllScreenState(
+internal class SeeAllScreenState(
     val contentType: String,
     private val getSeeAllScreenUseCase: GetSeeAllScreenUseCase,
     getSeeAllScreenFlowUseCase: GetSeeAllScreenFlowUseCase

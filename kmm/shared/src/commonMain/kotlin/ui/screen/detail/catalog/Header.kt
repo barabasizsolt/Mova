@@ -46,7 +46,7 @@ import ui.util.getImageKey
 import ui.util.withShadow
 
 @Composable
-fun ContentHeader(
+internal fun ContentHeader(
     item: DetailScreenListItem.HeaderItem,
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit,

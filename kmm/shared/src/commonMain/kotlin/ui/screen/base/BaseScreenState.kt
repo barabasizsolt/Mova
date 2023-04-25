@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-abstract class BaseScreenState {
+internal abstract class BaseScreenState {
 
     var state by mutableStateOf<State>(value = State.Normal)
         protected set

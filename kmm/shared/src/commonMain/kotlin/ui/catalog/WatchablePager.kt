@@ -35,7 +35,7 @@ import ui.util.withShadow
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun WatchablePager(
+internal fun WatchablePager(
     modifier: Modifier = Modifier,
     pagerContent: List<Movie>,
     genres: Map<Long, String>,
@@ -77,7 +77,7 @@ fun WatchablePager(
 }
 
 @Composable
-fun PagerItem(
+internal fun PagerItem(
     modifier: Modifier = Modifier,
     item: Movie,
     genres: Map<Long, String>,
@@ -115,7 +115,7 @@ fun PagerItem(
 }
 
 @Composable
-fun PagerItemInfo(
+internal fun PagerItemInfo(
     modifier: Modifier = Modifier,
     item: Movie,
     genres: Map<Long, String>,
@@ -155,7 +155,7 @@ fun PagerItemInfo(
 }
 
 @Composable
-fun PagerGenreItem(
+internal fun PagerGenreItem(
     modifier: Modifier = Modifier,
     text: String,
     shouldShowSeparator: Boolean
@@ -169,7 +169,7 @@ fun PagerGenreItem(
 )
 
 @Composable
-fun PagerItemButtons(
+internal fun PagerItemButtons(
     modifier: Modifier = Modifier,
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit

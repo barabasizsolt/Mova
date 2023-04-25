@@ -7,7 +7,7 @@ import review.model.Review
 import ui.util.ListItem
 import video.model.Video
 
-sealed class DetailScreenListItem : ListItem {
+internal sealed class DetailScreenListItem : ListItem {
 
     data class HeaderItem(
         val title: String,
@@ -61,7 +61,7 @@ sealed class DetailScreenListItem : ListItem {
     }
 }
 
-fun DetailScreenContent.MovieDetails.toHeaderItem(): DetailScreenListItem.HeaderItem = DetailScreenListItem.HeaderItem(
+internal fun DetailScreenContent.MovieDetails.toHeaderItem(): DetailScreenListItem.HeaderItem = DetailScreenListItem.HeaderItem(
     title = title,
     posterPath = posterPath,
     backdropPath = backdropPath,
@@ -76,7 +76,7 @@ fun DetailScreenContent.MovieDetails.toHeaderItem(): DetailScreenListItem.Header
     castCrew = castCrew
 )
 
-fun DetailScreenContent.MovieDetails.toSimilarMoviesItem(): List<DetailScreenListItem> = if (similarMovies.isEmpty()) {
+internal fun DetailScreenContent.MovieDetails.toSimilarMoviesItem(): List<DetailScreenListItem> = if (similarMovies.isEmpty()) {
     listOf(DetailScreenListItem.EmptyItem())
 } else {
     similarMovies.mapIndexed { index, movie ->
@@ -88,7 +88,7 @@ fun DetailScreenContent.MovieDetails.toSimilarMoviesItem(): List<DetailScreenLis
     }
 }
 
-fun DetailScreenContent.MovieDetails.toVideosItem(): List<DetailScreenListItem> = if (videos.isEmpty()) {
+internal fun DetailScreenContent.MovieDetails.toVideosItem(): List<DetailScreenListItem> = if (videos.isEmpty()) {
     listOf(DetailScreenListItem.EmptyItem())
 } else {
     videos.mapIndexed { index, video ->
@@ -99,7 +99,7 @@ fun DetailScreenContent.MovieDetails.toVideosItem(): List<DetailScreenListItem> 
     }
 }
 
-fun DetailScreenContent.MovieDetails.toReviewsItem(): List<DetailScreenListItem> = if (reviews.isEmpty()) {
+internal fun DetailScreenContent.MovieDetails.toReviewsItem(): List<DetailScreenListItem> = if (reviews.isEmpty()) {
     listOf(DetailScreenListItem.EmptyItem())
 } else {
     reviews.mapIndexed { index, review ->

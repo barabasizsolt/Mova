@@ -11,7 +11,7 @@ import platform.UIKit.UIScreen
 import ui.theme.AppTheme
 import ui.util.isXFamilyDevice
 
-class IosSimulatorPlatform: Platform {
+internal class IosSimulatorPlatform: Platform {
 
     override val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
 
@@ -32,7 +32,7 @@ class IosSimulatorPlatform: Platform {
         get() = 0.dp
 }
 
-actual fun getPlatform(): Platform = IosSimulatorPlatform()
+internal actual fun getPlatform(): Platform = IosSimulatorPlatform()
 
 actual val uiModule: List<Module> = buildList {
     add(element = module { single <Platform> { IosSimulatorPlatform() } })

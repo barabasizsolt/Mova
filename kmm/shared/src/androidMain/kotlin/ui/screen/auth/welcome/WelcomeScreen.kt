@@ -39,7 +39,7 @@ import ui.screen.auth.socialLogin.SocialLoginScreen
 import ui.theme.AppTheme
 import ui.util.withShadow
 
-object WelcomeScreen: Screen, KoinComponent {
+internal object WelcomeScreen: Screen, KoinComponent {
 
     @OptIn(ExperimentalResourceApi::class)
     @Composable

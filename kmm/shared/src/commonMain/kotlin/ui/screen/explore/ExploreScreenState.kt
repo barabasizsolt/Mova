@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import ui.screen.base.BaseScreenState
 import ui.screen.base.UserAction
 
-class ExploreScreenState(
+internal class ExploreScreenState(
     private val discoverContentUseCase: DiscoverContentUseCase,
     private val discoverContentFlowUseCase: DiscoverContentFlowUseCase,
     private val searchContentUseCase: SearchContentUseCase,

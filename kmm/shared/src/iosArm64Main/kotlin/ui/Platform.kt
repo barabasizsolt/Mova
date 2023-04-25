@@ -11,7 +11,7 @@ import platform.UIKit.UIScreen
 import ui.theme.AppTheme
 import ui.util.isXFamilyDevice
 
-class IosArm64MainPlatform: Platform {
+internal class IosArm64MainPlatform: Platform {
 
     override val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
 
@@ -32,7 +32,7 @@ class IosArm64MainPlatform: Platform {
         get() = 0.dp
 }
 
-actual fun getPlatform(): Platform = IosArm64MainPlatform()
+internal actual fun getPlatform(): Platform = IosArm64MainPlatform()
 
 actual val uiModule: List<Module> = buildList {
     add(element = module { single <Platform> { IosArm64MainPlatform() } })

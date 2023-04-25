@@ -12,7 +12,6 @@ plugins {
 
 kotlin {
     android()
-    ios()
     iosX64()
     iosArm64()
     iosSimulatorArm64()
@@ -28,9 +27,8 @@ kotlin {
         framework {
             baseName = "shared"
             isStatic = true
-            transitiveExport = false // This is default.
+            transitiveExport = false
             embedBitcode(BITCODE)
-            //binaryOption("bundleId", "com.barabasizsolt.mova.shared")
         }
 
         extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
@@ -116,6 +114,16 @@ kotlin {
                 implementation(project(":kmm:service:auth:firebase:firebase-api"))
                 implementation(project(":kmm:service:activityprovider:activityprovider-api"))
             }
+        }
+
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
         }
     }
 }

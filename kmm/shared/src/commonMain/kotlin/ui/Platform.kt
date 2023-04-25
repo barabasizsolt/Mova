@@ -10,14 +10,14 @@ import ui.screen.explore.FilterScreenState
 import ui.screen.home.HomeScreenState
 import ui.screen.seeall.SeeAllScreenState
 
-interface Platform {
+internal interface Platform {
     val name: String
     @get:Composable val navigationBarInsetDp: Dp
     @get:Composable val statusBarInsetDp: Dp
     @get:Composable val imeBottomInsetDp: Dp
 }
 
-expect fun getPlatform(): Platform
+internal expect fun getPlatform(): Platform
 
 expect val uiModule: List<Module>
 

@@ -15,7 +15,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.barabasizsolt.mova.ui.catalog.MovaButton
 import com.barabasizsolt.mova.ui.theme.AppTheme
 
-actual object ProfileScreen : Tab {
+internal actual object ProfileScreen : Tab {
 
     override val options: TabOptions
         @Composable

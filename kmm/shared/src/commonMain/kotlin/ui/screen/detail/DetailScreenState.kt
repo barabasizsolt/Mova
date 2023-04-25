@@ -13,7 +13,7 @@ import ui.screen.base.BaseScreenState
 import ui.screen.base.UserAction
 import ui.screen.detail.catalog.getTabs
 
-class DetailScreenState(
+internal class DetailScreenState(
     val id: Int,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase
 ) : BaseScreenState(), ScreenModel {

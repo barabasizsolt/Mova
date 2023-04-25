@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import ui.theme.AppTheme
 
 @Composable
-fun ErrorItem(
+internal fun ErrorItem(
     modifier: Modifier = Modifier,
     isLoading: Boolean,
     onRetryClick: () -> Unit

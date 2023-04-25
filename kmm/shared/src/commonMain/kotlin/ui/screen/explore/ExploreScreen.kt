@@ -60,7 +60,7 @@ import ui.screen.base.UserAction
 import ui.screen.detail.DetailScreen
 import ui.theme.AppTheme
 
-object ExploreScreen : Screen, KoinComponent {
+internal object ExploreScreen : Screen, KoinComponent {
 
     private val screenState: ExploreScreenState by inject()
     private val filterScreenState: FilterScreenState by inject()

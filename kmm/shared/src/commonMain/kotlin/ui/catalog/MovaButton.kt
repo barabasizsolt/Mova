@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import ui.theme.AppTheme
 
 @Composable
-fun MovaFilledButton(
+internal fun MovaFilledButton(
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
     iconSize: Dp = 24.dp,
@@ -54,7 +54,7 @@ fun MovaFilledButton(
 )
 
 @Composable
-fun MovaOutlinedButton(
+internal fun MovaOutlinedButton(
     modifier: Modifier = Modifier,
     shape: Shape = CircleShape,
     icon: ImageVector? = null,
@@ -87,7 +87,7 @@ fun MovaOutlinedButton(
 )
 
 @Composable
-fun MovaButton(
+internal fun MovaButton(
     modifier: Modifier = Modifier,
     text: String,
     backgroundColor: Color = AppTheme.colors.secondary,

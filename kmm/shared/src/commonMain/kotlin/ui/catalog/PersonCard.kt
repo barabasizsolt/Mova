@@ -34,7 +34,7 @@ enum class PersonCardSize(val size: Dp) {
 }
 
 @Composable
-fun MediumPersonCard(
+internal fun MediumPersonCard(
     modifier: Modifier = Modifier,
     item: ContentItem.Person,
     aspectRatio: Float = 0.7f,
@@ -60,7 +60,7 @@ fun MediumPersonCard(
 }
 
 @Composable
-fun PersonCard(
+internal fun PersonCard(
     modifier: Modifier = Modifier,
     person: ContentItem.Person,
     personCardSize: PersonCardSize,

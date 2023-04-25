@@ -16,7 +16,7 @@ import ui.theme.AppTheme
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun FilterIcon(
+internal fun FilterIcon(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) = Box(

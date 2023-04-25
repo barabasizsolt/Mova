@@ -27,7 +27,7 @@ import com.barabasizsolt.mova.domain.model.ContentItem
 import ui.theme.AppTheme
 
 @Composable
-fun WatchableWithRatingCarousel(
+internal fun WatchableWithRatingCarousel(
     modifier: Modifier = Modifier,
     header: String,
     buttonText: String? = null,
@@ -56,7 +56,7 @@ fun WatchableWithRatingCarousel(
 )
 
 @Composable
-fun PeopleCarousel(
+internal fun PeopleCarousel(
     modifier: Modifier = Modifier,
     header: String? = null,
     buttonText: String? = null,

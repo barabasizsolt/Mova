@@ -74,7 +74,7 @@ import ui.catalog.SocialAuthFooter
 import ui.catalog.SocialLoginOption
 import ui.theme.AppTheme
 
-class AuthScreen(private val screenType: String) : Screen, KoinComponent {
+internal class AuthScreen(private val screenType: String) : Screen, KoinComponent {
 
     private val screenState: AuthScreenState by inject { parametersOf(screenType) }
 

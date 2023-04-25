@@ -26,7 +26,7 @@ import ui.screen.detail.DetailScreen
 import ui.screen.seeall.SeeAllScreen
 import ui.theme.AppTheme
 
-object HomeScreen : Screen, KoinComponent {
+internal object HomeScreen : Screen, KoinComponent {
 
     private val screenState: HomeScreenState by inject()
 

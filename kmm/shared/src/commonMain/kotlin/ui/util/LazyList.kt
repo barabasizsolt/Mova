@@ -9,7 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
 @Composable
-fun LazyGridState.isScrollingUp(): Boolean {
+internal fun LazyGridState.isScrollingUp(): Boolean {
     var previousIndex by remember(key1 = this) { mutableStateOf(firstVisibleItemIndex) }
     var previousScrollOffset by remember(key1 = this) { mutableStateOf(firstVisibleItemScrollOffset) }
     return remember(key1 = this) {

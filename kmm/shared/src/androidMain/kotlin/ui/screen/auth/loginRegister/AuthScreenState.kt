@@ -21,7 +21,7 @@ enum class ScreenType {
     LOGIN, REGISTER
 }
 
-class AuthScreenState(
+internal class AuthScreenState(
     private val screenType: String,
     private val loginWithEmailAndPassword: LoginWithEmailAndPasswordUseCase,
     private val registerWithEmailAndPassword: RegisterWithEmailAndPasswordUseCase,

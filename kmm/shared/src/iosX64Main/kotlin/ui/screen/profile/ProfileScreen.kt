@@ -15,19 +15,13 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import ui.catalog.MovaButton
 import ui.theme.AppTheme
 
-actual object ProfileScreen : Tab {
+internal actual object ProfileScreen : Tab {
 
     override val options: TabOptions
         @Composable
         get()  {
             val icon = rememberVectorPainter(Icons.Default.Person)
-            return remember {
-                TabOptions(
-                    index = 3u,
-                    title = "Profile",
-                    icon = icon
-                )
-            }
+            return remember { TabOptions(index = 3u, title = "Profile", icon = icon) }
         }
 
     @Composable

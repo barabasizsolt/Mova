@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun BoxScope.GradientOverlay(
+internal fun BoxScope.GradientOverlay(
     modifier: Modifier = Modifier,
     alignment: Alignment = Alignment.BottomCenter,
     maxHeightFraction: Float = 1f,

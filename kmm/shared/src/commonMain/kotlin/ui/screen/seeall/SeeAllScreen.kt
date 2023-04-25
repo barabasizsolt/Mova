@@ -35,7 +35,7 @@ import ui.screen.base.UserAction
 import ui.screen.detail.DetailScreen
 import ui.theme.AppTheme
 
-class SeeAllScreen(private val contentType: String) : Screen, KoinComponent {
+internal class SeeAllScreen(private val contentType: String) : Screen, KoinComponent {
 
     private val screenState: SeeAllScreenState by inject { parametersOf(contentType) }
 

@@ -13,7 +13,7 @@ import ui.theme.AppTheme
 import ui.util.isXFamilyDevice
 import ui.Platform
 
-class IOSPlatform: Platform {
+internal class IOSPlatform: Platform {
 
     override val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
 

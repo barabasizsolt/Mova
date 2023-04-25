@@ -20,7 +20,7 @@ import ui.screen.base.BaseScreen
 import ui.theme.AppTheme
 
 /*TODO: remember the scroll position*/
-actual class DetailScreen actual constructor(private val id: Int) : Screen, KoinComponent {
+internal actual class DetailScreen actual constructor(private val id: Int) : Screen, KoinComponent {
 
     private val screenState: DetailScreenState by inject { parametersOf(id) }
 

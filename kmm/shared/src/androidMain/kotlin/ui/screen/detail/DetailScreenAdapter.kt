@@ -33,7 +33,7 @@ enum class ItemViewType {
 }
 
 @Composable
-fun rememberDetailScreenAdapter(
+internal fun rememberDetailScreenAdapter(
     onPlayButtonClicked: () -> Unit,
     onAddToFavouriteButtonClicked: () -> Unit,
     onTabIndexChange: (Int) -> Unit,
@@ -49,7 +49,7 @@ fun rememberDetailScreenAdapter(
     )
 }
 
-class DetailScreenAdapter(
+internal class DetailScreenAdapter(
     private val onPlayButtonClicked: () -> Unit,
     private val onAddToFavouriteButtonClicked: () -> Unit,
     private val onTabIndexChange: (Int) -> Unit,

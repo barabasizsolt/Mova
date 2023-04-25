@@ -16,7 +16,7 @@ import com.barabasizsolt.mova.domain.model.ContentItem
 import ui.theme.AppTheme
 
 @Composable
-fun SearchableItem(
+internal fun SearchableItem(
     modifier: Modifier = Modifier,
     item: ContentItem.Watchable,
     onClick: () -> Unit

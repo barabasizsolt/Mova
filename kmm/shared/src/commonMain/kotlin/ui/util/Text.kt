@@ -27,7 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 
-fun TextStyle.withShadow() = this.copy(
+internal fun TextStyle.withShadow() = this.copy(
     shadow = Shadow(
         color = Color.Black,
         offset = Offset(x = 4f, y = 4f),
@@ -36,7 +36,7 @@ fun TextStyle.withShadow() = this.copy(
 )
 
 @Composable
-fun ExpandingText(
+internal fun ExpandingText(
     modifier: Modifier = Modifier,
     text: String,
     color: Color = Color.Unspecified,

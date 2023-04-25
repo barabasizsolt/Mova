@@ -18,7 +18,7 @@ import ui.util.ImageType
 import ui.util.getImageKey
 
 @Composable
-fun WatchableWithRating(
+internal fun WatchableWithRating(
     modifier: Modifier = Modifier,
     item: ContentItem.Watchable,
     aspectRatio: Float = 0.7f,

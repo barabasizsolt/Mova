@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 
-object AppTheme {
+internal object AppTheme {
     internal val dimens: AppDimens
         @Composable
         @ReadOnlyComposable
@@ -30,7 +30,7 @@ object AppTheme {
 }
 
 @Composable
-fun MovaTheme(
+internal fun MovaTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
     colors: AppColor = if (isDarkTheme) darkColors else lightColors,
     typography: AppTypography = if (isDarkTheme) darkTypography else lightTypography,

@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import ui.theme.AppTheme
 
 @Composable
-fun BoxScope.MovaSnackBar(
+internal fun BoxScope.MovaSnackBar(
     snackBarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = { }

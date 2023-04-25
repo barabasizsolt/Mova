@@ -41,7 +41,7 @@ import ui.util.getImageKey
 import ui.util.isValidUrl
 
 @Composable
-fun ContentTabs(
+internal fun ContentTabs(
     tabs: List<String>,
     onTabIndexChange: (Int) -> Unit,
     modifier: Modifier = Modifier

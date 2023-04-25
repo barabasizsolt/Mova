@@ -23,7 +23,7 @@ import cafe.adriel.voyager.navigator.tab.TabNavigator
 import ui.screen.profile.ProfileScreen
 import ui.theme.AppTheme
 
-object BottomNavScreen : Screen {
+internal object BottomNavScreen : Screen {
 
     @Composable
     override fun Content() {

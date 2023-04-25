@@ -38,7 +38,7 @@ import org.koin.core.component.inject
 import ui.catalog.MovaButton
 import ui.theme.AppTheme
 
-object FilterScreen : Screen, KoinComponent {
+internal object FilterScreen : Screen, KoinComponent {
 
     private val screenState: FilterScreenState by inject()
 
