@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -65,7 +66,8 @@ internal fun ScreenContent(
                 )
                 is DetailScreenListItem.TabsItem -> ContentTabs(
                     tabs = tabs,
-                    onTabIndexChange = onTabIndexChange
+                    onTabIndexChange = onTabIndexChange,
+                    modifier = Modifier.offset(y = -AppTheme.dimens.contentPadding)
                 )
                 is DetailScreenListItem.SimilarMovieItem -> WatchableWithRating(
                     item = item.movie.toContentItem() as ContentItem.Watchable,
