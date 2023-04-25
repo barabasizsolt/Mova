@@ -1,7 +1,7 @@
 package detail.movie.dto
 
+import DataLayerException
 import detail.movie.model.MovieDetail
-import com.barabasizsolt.network.api.DataLayerException
 import genre.dto.GenreDTO
 import genre.dto.toModel
 import kotlinx.serialization.SerialName

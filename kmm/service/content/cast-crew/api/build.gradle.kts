@@ -14,7 +14,6 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.kotlinx.coroutines)
 
                 implementation(project(":kmm:service:content:model:all"))
             }

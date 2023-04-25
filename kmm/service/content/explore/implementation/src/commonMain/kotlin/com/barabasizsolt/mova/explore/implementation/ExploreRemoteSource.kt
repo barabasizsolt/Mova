@@ -2,8 +2,6 @@ package com.barabasizsolt.mova.explore.implementation
 
 import com.barabasizsolt.network.api.BaseHttpClient
 import com.barabasizsolt.network.api.get
-import io.ktor.client.request.parameter
-import io.ktor.http.parametersOf
 import movie.dto.MovieListDTO
 import movie.dto.toModel
 import movie.model.Movie
@@ -20,10 +18,12 @@ class ExploreRemoteSource(private val baseHttpClient: BaseHttpClient) {
     ) = baseHttpClient.get<MovieListDTO>(
         urlString = "discover/movie",
         block = {
-            parametersOf(name = "region", values = region)
-            parametersOf(name = "with_genres", values = withGenres.map { it.toString() })
-            parametersOf(name = "sort_by", values = sortBy)
-            parameter(key = "page", value = page)
+            url {
+                parameters.append(name = "page", page.toString())
+                if (region.isNotEmpty()) { parameters.appendAll(name = "region", region) }
+                if (withGenres.isNotEmpty()) { parameters.appendAll(name = "with_genres", withGenres.map { it.toString() }) }
+                if (sortBy.isNotEmpty()) { parameters.appendAll(name = "sort_by", sortBy) }
+            }
         }
     ).toModel()
 
@@ -34,9 +34,11 @@ class ExploreRemoteSource(private val baseHttpClient: BaseHttpClient) {
     ) = baseHttpClient.get<TvSeriesDiscoverDTO>(
         urlString = "discover/tv",
         block = {
-            parametersOf(name = "with_genres", values = withGenres.map { it.toString() })
-            parametersOf(name = "sort_by", values = sortBy)
-            parameter(key = "page", value = page)
+            url {
+                parameters.append(name = "page", page.toString())
+                if (withGenres.isNotEmpty()) { parameters.appendAll(name = "with_genres", withGenres.map { it.toString() }) }
+                if (sortBy.isNotEmpty()) { parameters.appendAll(name = "sort_by", sortBy) }
+            }
         }
     ).toModel()
 
@@ -46,8 +48,10 @@ class ExploreRemoteSource(private val baseHttpClient: BaseHttpClient) {
     ): List<Movie> = baseHttpClient.get<MovieListDTO>(
         urlString = "search/movie",
         block = {
-            parameter(key = "query", value = query)
-            parameter(key = "page", value = page)
+           url {
+               parameters.append(name = "page", page.toString())
+               parameters.append(name = "query", query)
+           }
         }
     ).toModel()
 
@@ -57,8 +61,10 @@ class ExploreRemoteSource(private val baseHttpClient: BaseHttpClient) {
     ) = baseHttpClient.get<TvSeriesDiscoverDTO>(
         urlString = "search/tv",
         block = {
-            parameter(key = "query", value = query)
-            parameter(key = "page", value = page)
+            url {
+                parameters.append(name = "page", page.toString())
+                parameters.append(name = "query", query)
+            }
         }
     ).toModel()
 }

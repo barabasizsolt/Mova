@@ -1,5 +1,6 @@
 package com.barabasizsolt.mova
 
+import EntryPoint
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
@@ -8,7 +9,6 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import com.barabasizsolt.activityprovider.api.ActivitySetter
 import com.barabasizsolt.api.AuthenticationService
-import com.barabasizsolt.mova.shared.EntryPoint
 import com.pandulapeter.beagle.Beagle
 import org.koin.android.ext.android.inject
 

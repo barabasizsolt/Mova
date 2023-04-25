@@ -1,6 +1,6 @@
 [versions]
 # Kotlin
-kotlin = "1.7.10" # https://kotlinlang.org/docs/releases.html#release-details
+kotlin = "1.8.20" # https://kotlinlang.org/docs/releases.html#release-details
 kotlinx-coroutines = "1.6.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
 
 # Android tools
@@ -26,9 +26,9 @@ androidx-datastore = "1.0.0"
 androidx-profileInstaller = "1.2.0"
 
 # Compose
-androidx-compose = "1.2.1" # https://developer.android.com/jetpack/androidx/releases/compose
+androidx-compose = "1.4.2" # https://developer.android.com/jetpack/androidx/releases/compose
 # Note: match the Compose Compiler version with the compatible Kotlin version, link: https://developer.android.com/jetpack/androidx/releases/compose-kotlin
-androidx-composeCompiler = "1.3.1" # https://developer.android.com/jetpack/androidx/releases/compose
+androidx-composeCompiler = "1.4.6" # https://developer.android.com/jetpack/androidx/releases/compose
 
 # Material Components
 google-android-material = "1.6.1" # https://github.com/material-components/material-components-android/releases
@@ -45,7 +45,7 @@ google-play-services = "20.2.0"
 firebase-facebook = "15.0.2"
 
 # Accompanist
-google-accompanist = "0.30.0" # https://github.com/google/accompanist/releases
+google-accompanist = "0.31.0-alpha" # https://github.com/google/accompanist/releases
 
 # Halcyon
 halcyon-oauth = '1.0.1' # https://github.com/halcyonmobile/retrofit-oauth2-helper/releases
@@ -53,7 +53,7 @@ halcyon-errorHandler = '1.0.0' # https://github.com/halcyonmobile/error-handler/
 halcyon-recylerTypedAdapter = '1.0.1' # releases page is unmaintained: https://github.com/halcyonmobile/recycler-typed-adapter/releases
 
 # Other libraries
-koin = "3.4.0" # https://insert-koin.io/docs/setup/v3
+koin = "3.2.0" # https://insert-koin.io/docs/setup/v3 /*TODO: Dont' update*/
 koin-compose = "3.4.3" # https://insert-koin.io/docs/setup/v3
 koin-compose-kmm = "1.0.1" # https://insert-koin.io/docs/setup/v3
 leakcanary = "2.9.1" # https://square.github.io/leakcanary/getting_started/
@@ -69,12 +69,13 @@ detekt = "1.21.0" # https://github.com/detekt/detekt
 ktlint = "11.0.0" # https://github.com/JLLeitschuh/ktlint-gradle
 exoPlayer = "2.18.1" # https://github.com/google/ExoPlayer
 statemachine = "0.2.0" # https://github.com/Tinder/StateMachine/releases
-voyager = "1.0.0-rc02" # https://github.com/adrielcafe/voyager/releases
+voyager = "1.0.0-rc04" # https://github.com/adrielcafe/voyager/releases
 youtube-player = "12.0.0" # https://github.com/PierfrancescoSoffritti/android-youtube-player
 kotlinx-serialization = "1.5.0" # https://github.com/Kotlin/kotlinx.serialization
 ktor = "2.2.4" # https://github.com/ktorio/ktor
 napier = "2.6.1" # https://github.com/AAkira/Napier
 kmm-imageloader = "1.4.0" # https://github.com/qdsfdhvh/compose-imageloader
+moko-resource = "0.21.2" # https://github.com/icerockdev/moko-resources
 
 # Test libraries
 test-junit5Bom = "5.8.2"
@@ -219,6 +220,11 @@ ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", versi
 ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 
+# Moko Resources
+moko-generator = { module = "dev.icerock.moko:resources-generator", version.ref = "moko-resource" }
+moko-resource = { module = "dev.icerock.moko:resources", version.ref = "moko-resource" }
+moko-resource-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resource" }
+
 # Test
 test-junit4 = { module = "junit:junit", version.ref = "test-junit4" }
 test-junit5Bom = { module = "org.junit:junit-bom", version.ref = "test-junit5Bom" }
@@ -338,8 +344,11 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlin-native = { id = "org.jetbrains.kotlin.platform.native", version = "1.3.41" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.41.0" }
 littlerobots = { id = "nl.littlerobots.version-catalog-update", version = "0.6.1" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 jetbrains-compose = { id = "org.jetbrains.compose", version = "1.4.0" }
+cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+moko = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resource" }

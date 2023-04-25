@@ -1,6 +1,6 @@
 package review.dto
 
-import com.barabasizsolt.network.api.DataLayerException
+import DataLayerException
 import review.model.Review
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

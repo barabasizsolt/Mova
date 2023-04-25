@@ -2,7 +2,7 @@ package com.barabasizsolt.mova
 
 import android.app.Application
 import com.barabasizsolt.api.AuthenticationService
-import com.barabasizsolt.mova.shared.createAppModule
+import createAppModule
 import com.barabasizsolt.mova.tooling.setupBeagle
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext

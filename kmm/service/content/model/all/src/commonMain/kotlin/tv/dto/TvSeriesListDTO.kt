@@ -1,6 +1,6 @@
 package tv.dto
 
-import com.barabasizsolt.network.api.DataLayerException
+import DataLayerException
 import tv.modell.TvSeries
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

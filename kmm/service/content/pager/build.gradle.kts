@@ -2,7 +2,6 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -16,7 +15,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(libs.kotlinx.coroutines)
-                implementation(libs.koin.core)
             }
         }
     }

@@ -1,6 +1,6 @@
 package people.dto
 
-import com.barabasizsolt.network.api.DataLayerException
+import DataLayerException
 import people.model.People
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

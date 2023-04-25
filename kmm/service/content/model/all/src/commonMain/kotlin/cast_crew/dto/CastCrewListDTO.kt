@@ -1,7 +1,7 @@
 package cast_crew.dto
 
+import DataLayerException
 import cast_crew.model.CastCrew
-import com.barabasizsolt.network.api.DataLayerException
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

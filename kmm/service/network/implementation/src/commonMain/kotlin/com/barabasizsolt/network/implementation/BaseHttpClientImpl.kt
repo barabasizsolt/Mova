@@ -4,7 +4,6 @@ import com.barabasizsolt.network.api.BaseHttpClient
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -13,6 +12,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.URLProtocol
 import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
 class BaseHttpClientImpl(
@@ -20,8 +20,9 @@ class BaseHttpClientImpl(
     private val apiKey: String,
     private val isDebugBuild: Boolean
 ) : BaseHttpClient {
+    @OptIn(ExperimentalSerializationApi::class)
     override val client: HttpClient
-        get() = HttpClient(engineFactory = CIO) {
+        get() = HttpClient {
             install(
                 plugin = ContentNegotiation,
                 configure = {
@@ -29,7 +30,7 @@ class BaseHttpClientImpl(
                         json = Json {
                             ignoreUnknownKeys = true /*Ignore the undefined DTO properties in the Json*/
                             isLenient = true
-                            prettyPrint = true
+                            explicitNulls = false
                         }
                     )
                 }

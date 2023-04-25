@@ -15,7 +15,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(libs.kotlinx.coroutines)
-                //implementation(project(":kmm:service:content:model:movie"))
                 implementation(project(":kmm:service:content:pager"))
             }
         }

@@ -11,7 +11,7 @@ class PeopleRemoteSource(private val baseHttpClient: BaseHttpClient) {
     suspend fun getPopularPeople(page: Int) =
         baseHttpClient.get<PeopleListDTO>(
             urlString = "person/popular",
-            block = { parameter(key = "page", value = page) }
+            block = { url { parameters.append(name = "page", page.toString()) } }
         ).toModel()
 
 }

@@ -1,6 +1,6 @@
 package video.dto
 
-import com.barabasizsolt.network.api.DataLayerException
+import DataLayerException
 import video.model.Video
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
