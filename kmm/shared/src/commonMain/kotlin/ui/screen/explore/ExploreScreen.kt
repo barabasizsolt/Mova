@@ -81,41 +81,39 @@ internal object ExploreScreen : Screen, KoinComponent {
             },
             scrollUpTopPadding = AppTheme.dimens.searchBarHeight + AppTheme.dimens.screenPadding * 8,
             content = { gridState, _ ->
-                Box(modifier = Modifier.fillMaxSize().background(color = AppTheme.colors.primary)) {
-                    ScreenContent(
-                        query = screenState.query,
-                        onQueryChange = screenState::onQueryChange,
-                        discoverItems = screenState.discoverContent,
-                        searchItems = screenState.searchContent,
-                        filterItems = buildList {
-                            add(element = screenState.selectedCategory)
-                            if ((screenState.selectedCategory.wrappedItem as Category) == Category.MOVIE) {
-                                addAll(elements = screenState.selectedRegions)
-                            }
-                            addAll(elements = screenState.selectedGenres)
-                            addAll(elements = screenState.selectedSortOptions)
-                        },
-                        isLoading = screenState.state in listOf(BaseScreenState.State.SearchLoading),
-                        isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
-                        onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
-                        onRetryClick = {
-                            if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
-                                screenState.clearSearchContent()
-                                // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
-                            }
-                            screenState.getScreenData(userAction = UserAction.TryAgain)
-                        },
-                        onMovieClicked = { id -> navigator.push(item = DetailScreen(id = id)) },
-                        onClick = { navigator.push(item = FilterScreen) },
-                        initTabIndex = screenState.selectedTabIndex,
-                        tabs = screenState.tabs,
-                        onTabIndexChange = { position ->
-                            screenState.onTabChange(index = position)
-                            filterScreenState.onCategorySelected(category = filterScreenState.categories[position])
-                        },
-                        gridState = gridState
-                    )
-                }
+                ScreenContent(
+                    query = screenState.query,
+                    onQueryChange = screenState::onQueryChange,
+                    discoverItems = screenState.discoverContent,
+                    searchItems = screenState.searchContent,
+                    filterItems = buildList {
+                        add(element = screenState.selectedCategory)
+                        if ((screenState.selectedCategory.wrappedItem as Category) == Category.MOVIE) {
+                            addAll(elements = screenState.selectedRegions)
+                        }
+                        addAll(elements = screenState.selectedGenres)
+                        addAll(elements = screenState.selectedSortOptions)
+                    },
+                    isLoading = screenState.state in listOf(BaseScreenState.State.SearchLoading),
+                    isTryAgainLoading = screenState.state is BaseScreenState.State.TryAgainLoading,
+                    onLoadMoreItem = { screenState.getScreenData(userAction = UserAction.Normal) },
+                    onRetryClick = {
+                        if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
+                            screenState.clearSearchContent()
+                            // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
+                        }
+                        screenState.getScreenData(userAction = UserAction.TryAgain)
+                    },
+                    onMovieClicked = { id -> navigator.push(item = DetailScreen(id = id)) },
+                    onClick = { navigator.push(item = FilterScreen) },
+                    initTabIndex = screenState.selectedTabIndex,
+                    tabs = screenState.tabs,
+                    onTabIndexChange = { position ->
+                        screenState.onTabChange(index = position)
+                        filterScreenState.onCategorySelected(category = filterScreenState.categories[position])
+                    },
+                    gridState = gridState
+                )
             }
         )
     }
@@ -139,7 +137,7 @@ private fun ScreenContent(
     onTabIndexChange: (Int) -> Unit,
     gridState: LazyGridState
 ) {
-    Column {
+    Column(modifier = Modifier.fillMaxSize()) {
         SearchBar(
             query = query,
             onQueryChange = onQueryChange ,
