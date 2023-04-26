@@ -21,6 +21,7 @@ import ui.theme.AppTheme
 internal fun MovaSearchField(
     modifier: Modifier = Modifier,
     value: String,
+    placeholderText: String,
     onValueChange: (String) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
@@ -29,7 +30,7 @@ internal fun MovaSearchField(
         value = value,
         onValueChange = onValueChange,
         leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null) },
-        placeholder = { Text(text = "Search", style = AppTheme.typography.body1) },
+        placeholder = { Text(text = placeholderText, style = AppTheme.typography.body1) },
         textStyle = AppTheme.typography.body1,
         shape = AppTheme.shapes.medium,
         singleLine = true,

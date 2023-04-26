@@ -83,25 +83,34 @@ internal class FilterScreenState(
     }
 
     fun onRegionSelected(regions: List<FilterItem>) {
-        filterService.onRegionsChange(selectedRegions = regions)
+        selectedRegions = regions
     }
 
     fun onGenreSelected(genres: List<FilterItem>) {
-        filterService.onGenresChange(selectedGenres = genres)
+        selectedGenres = genres
     }
 
     fun onSortingCriteriaSelected(sortOptions: List<FilterItem>) {
-        filterService.onSortOptionChange(selectedSortOptions = sortOptions)
+        selectedSortOptions = sortOptions
     }
 
     fun onResetButtonClicked() {
-        filterService.onRegionsChange(selectedRegions = regions.firstItemToList())
-        filterService.onGenresChange(selectedGenres = genres.firstItemToList())
-        filterService.onSortOptionChange(selectedSortOptions = sortOptions.firstItemToList())
+        selectedRegions = regions.firstItemToList().also {
+            filterService.onRegionsChange(selectedRegions = it)
+        }
+        selectedGenres = genres.firstItemToList().also {
+            filterService.onGenresChange(selectedGenres = it)
+        }
+        selectedSortOptions = sortOptions.firstItemToList().also {
+            filterService.onSortOptionChange(selectedSortOptions = it)
+        }
         action = Event(data = Action.OnResetButtonClicked)
     }
 
     fun onApplyButtonClicked() {
+        filterService.onRegionsChange(selectedRegions = selectedRegions)
+        filterService.onGenresChange(selectedGenres = selectedGenres)
+        filterService.onSortOptionChange(selectedSortOptions = selectedSortOptions)
         action = Event(data = Action.OnApplyButtonClicked)
     }
 
