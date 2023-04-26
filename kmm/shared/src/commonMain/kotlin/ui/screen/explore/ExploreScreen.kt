@@ -175,7 +175,7 @@ private fun ScreenContent(
     initTabIndex: Int,
     onTabIndexChange: (Int) -> Unit,
     selectedTabIndex: Int,
-    gridState: LazyGridState,
+    gridState: LazyGridState
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         SearchBar(
