@@ -25,7 +25,7 @@ kotlin {
 
         framework {
             baseName = "shared"
-            isStatic = false
+            isStatic = true
             transitiveExport = false
             embedBitcode(BITCODE)
         }
