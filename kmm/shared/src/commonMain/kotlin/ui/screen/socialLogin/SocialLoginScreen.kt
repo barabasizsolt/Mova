@@ -26,6 +26,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
 import ui.catalog.AuthScreenDelimiter
+import ui.catalog.BackButton
 import ui.catalog.MovaButton
 import ui.catalog.MovaSnackBar
 import ui.catalog.SocialAuthFooter
@@ -33,7 +34,7 @@ import ui.catalog.SocialLoginOption
 import ui.getPlatform
 import ui.theme.AppTheme
 
-expect object SocialLoginScreen : Screen, KoinComponent
+internal expect object SocialLoginScreen : Screen, KoinComponent
 
 @Composable
 internal fun SocialLoginWrapper(
@@ -43,7 +44,8 @@ internal fun SocialLoginWrapper(
     onSignInClicked: () -> Unit,
     onSignUpClicked: () -> Unit,
     onDismiss: () -> Unit,
-    isLoading: Boolean
+    isLoading: Boolean,
+    onBackPressed: () -> Unit,
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -55,6 +57,17 @@ internal fun SocialLoginWrapper(
             onSignUpClicked = onSignUpClicked,
             isLoading = isLoading
         )
+
+        BackButton(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .padding(
+                    horizontal = AppTheme.dimens.screenPadding,
+                    vertical = getPlatform().statusBarInsetDp + AppTheme.dimens.screenPadding
+                ),
+            onBackPressed = onBackPressed
+        )
+
         MovaSnackBar(
             snackBarHostState = snackBarHostState,
             onDismiss = {

@@ -2,16 +2,19 @@ package ui.screen.auth
 
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 
-actual class AuthScreen actual constructor(private val screenType: String)  : Screen, KoinComponent {
+internal actual class AuthScreen actual constructor(private val screenType: String)  : Screen, KoinComponent {
 
     private val screenState: AuthScreenState by inject { parametersOf(screenType) }
 
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
 
         AuthScreenWrapper(
             state = screenState.state,
@@ -29,7 +32,8 @@ actual class AuthScreen actual constructor(private val screenType: String)  : Sc
             changeAuthScreen = screenState::changeAuthScreen,
             isLoading = screenState.state is BaseAuthScreenState.State.Loading,
             isEnabled = screenState.isAuthEnabled,
-            onDismiss = screenState::resetState
+            onDismiss = screenState::resetState,
+            onBackPressed = { navigator.pop() }
         )
     }
 }

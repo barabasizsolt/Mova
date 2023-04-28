@@ -41,6 +41,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -52,6 +53,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
 import ui.catalog.AuthInputField
 import ui.catalog.AuthScreenDelimiter
+import ui.catalog.BackButton
 import ui.catalog.MovaButton
 import ui.catalog.MovaSnackBar
 import ui.catalog.SocialAuthFooter
@@ -59,7 +61,7 @@ import ui.catalog.SocialLoginOption
 import ui.getPlatform
 import ui.theme.AppTheme
 
-expect class AuthScreen(screenType: String) : Screen, KoinComponent
+internal expect class AuthScreen(screenType: String) : Screen, KoinComponent
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -79,7 +81,8 @@ internal fun AuthScreenWrapper(
     changeAuthScreen: () -> Unit,
     isLoading: Boolean,
     isEnabled: Boolean,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onBackPressed: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val snackBarHostState = remember { SnackbarHostState() }
@@ -101,6 +104,16 @@ internal fun AuthScreenWrapper(
             isLoading = isLoading,
             isEnabled = isEnabled,
             keyboardController = keyboardController
+        )
+
+        BackButton(
+            modifier = Modifier
+                .align(alignment = Alignment.TopStart)
+                .padding(
+                    horizontal = AppTheme.dimens.screenPadding,
+                    vertical = getPlatform().statusBarInsetDp + AppTheme.dimens.screenPadding
+                ),
+            onBackPressed = onBackPressed
         )
 
         MovaSnackBar(
@@ -257,7 +270,8 @@ private fun EmailInput(
     leadingIcon = Icons.Default.Email,
     keyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Email,
-        imeAction = ImeAction.Next
+        imeAction = ImeAction.Next,
+        capitalization = KeyboardCapitalization.None
     ),
     modifier = modifier
 )

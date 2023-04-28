@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.activity.compose.setContent
+import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import com.barabasizsolt.activityprovider.api.ActivitySetter
 import com.barabasizsolt.mova.auth.api.AndroidAuthenticationService
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pandulapeter.beagle.Beagle
 import org.koin.android.ext.android.inject
 
@@ -22,6 +24,9 @@ class MainActivity : FragmentActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
+            val systemUiController = rememberSystemUiController()
+            systemUiController.setStatusBarColor(color = Color.Transparent, darkIcons = false)
+            systemUiController.setNavigationBarColor(color = Color.Transparent, darkIcons = false)
             EntryPoint()
         }
     }

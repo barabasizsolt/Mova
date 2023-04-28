@@ -8,9 +8,8 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import ui.screen.auth.AuthScreen
 import ui.screen.auth.ScreenType
-import ui.screen.socialLogin.SocialLoginWrapper
 
-actual object SocialLoginScreen : Screen, KoinComponent {
+internal actual object SocialLoginScreen : Screen, KoinComponent {
 
     private val screenState: SocialLoginScreenState by inject()
 
@@ -25,7 +24,8 @@ actual object SocialLoginScreen : Screen, KoinComponent {
             onSignInClicked = { navigator.push(item = AuthScreen(screenType = ScreenType.LOGIN.name)) },
             onSignUpClicked = { navigator.push(item = AuthScreen(screenType = ScreenType.REGISTER.name)) },
             isLoading = screenState.state is BaseSocialLoginScreenState.State.Loading,
-            onDismiss = screenState::resetState
+            onDismiss = screenState::resetState,
+            onBackPressed = { navigator.pop() }
         )
     }
 }

@@ -4,12 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import ui.navigation.appNav.AppNavigationState
 import ui.screen.detail.DetailScreenState
 import ui.screen.explore.ExploreScreenState
 import ui.screen.explore.FilterScreenState
 import ui.screen.home.HomeScreenState
 import ui.screen.seeall.SeeAllScreenState
-import ui.screen.socialLogin.BaseSocialLoginScreenState
 
 internal interface Platform {
     val name: String
@@ -24,6 +24,7 @@ expect val uiModule: List<Module>
 
 val commonUiModule: Module = module {
     // State holder
+    single { params -> AppNavigationState(scope = params[0]) }
 
     // [HomeScreenState]
     factory {

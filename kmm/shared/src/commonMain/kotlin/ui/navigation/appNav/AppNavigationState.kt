@@ -10,24 +10,18 @@ import com.barabasizsolt.mova.auth.api.AuthenticationState
 import com.barabasizsolt.mova.domain.usecase.auth.IsLoggedInUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.get
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 @Composable
-fun rememberAppNavigationState(
+internal fun rememberAppNavigationState(
     scope: CoroutineScope = rememberCoroutineScope(),
-    isLoggedInUseCase: IsLoggedInUseCase = get(),
-): AppNavigationState = remember {
-    AppNavigationState(
-        scope = scope,
-        isLoggedInUseCase = isLoggedInUseCase
-    )
-}
+): AppNavigationState = remember { AppNavigationState(scope = scope) }
 
 
-class AppNavigationState(
-    scope: CoroutineScope,
-    private val isLoggedInUseCase: IsLoggedInUseCase
-) {
+internal class AppNavigationState(scope: CoroutineScope) : KoinComponent {
+
+    private val isLoggedInUseCase: IsLoggedInUseCase by inject()
     var authState by mutableStateOf<AuthenticationState?>(value = null)
         private set
 
