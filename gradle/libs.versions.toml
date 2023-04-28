@@ -40,6 +40,7 @@ google-firebase-bom = "30.4.1" # https://firebase.google.com/support/release-not
 google-firebase-crashlyticsGradle = "2.9.1" # https://firebase.google.com/support/release-notes/android
 google-firebase-auth = "21.0.8"
 google-play-services = "20.2.0"
+google-firebase-kmm = "1.8.0" # https://firebaseopensource.com/projects/gitliveapp/firebase-kotlin-sdk/
 
 # Firebase-Facebook
 firebase-facebook = "15.0.2"
@@ -153,6 +154,7 @@ google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-k
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 google-firebase-crashlyticsGradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "google-firebase-crashlyticsGradle" }
 google-firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "google-firebase-auth" }
+google-firebase-kmm = { module = "dev.gitlive:firebase-auth", version.ref = "google-firebase-kmm" }
 # Firebase-Facebook
 firebase-facebook = { module = "com.facebook.android:facebook-android-sdk", version.ref = "firebase-facebook" }
 

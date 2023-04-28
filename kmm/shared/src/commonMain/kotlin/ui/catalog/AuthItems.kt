@@ -112,7 +112,7 @@ internal fun AuthInputField(
    val isDark = isSystemInDarkTheme()
 
     OutlinedTextField(
-        value = value ,
+        value = value.trim(),
         onValueChange = onValueChange,
         label = label,
         placeholder = {
@@ -122,7 +122,7 @@ internal fun AuthInputField(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = AppTheme.typography.body2,
-                fontWeight = FontWeight.Normal
+                fontWeight = FontWeight.Normal,
             )
         },
         leadingIcon = {

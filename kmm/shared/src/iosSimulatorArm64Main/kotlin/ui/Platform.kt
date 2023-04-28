@@ -8,6 +8,8 @@ import org.koin.dsl.module
 import platform.CoreGraphics.CGRectGetHeight
 import platform.UIKit.UIDevice
 import platform.UIKit.UIScreen
+import ui.screen.auth.AuthScreenState
+import ui.screen.socialLogin.SocialLoginScreenState
 import ui.theme.AppTheme
 import ui.util.isXFamilyDevice
 
@@ -35,6 +37,19 @@ internal class IosSimulatorPlatform: Platform {
 internal actual fun getPlatform(): Platform = IosSimulatorPlatform()
 
 actual val uiModule: List<Module> = buildList {
-    add(element = module { single <Platform> { IosSimulatorPlatform() } })
+    add(
+        element = module {
+            single <Platform> { IosSimulatorPlatform() }
+            factory { SocialLoginScreenState() }
+            factory { params ->
+                AuthScreenState(
+                    screenType = params[0],
+                    loginWithEmailAndPassword = get(),
+                    registerWithEmailAndPassword = get(),
+
+                )
+            }
+        }
+    )
     add(element = commonUiModule)
 }

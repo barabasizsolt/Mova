@@ -30,10 +30,8 @@ include(":kmm:service")
 include(":kmm:service:content")
 
 include(":kmm:service:auth")
-include(":kmm:service:auth:firebase")
-include(":kmm:service:auth:firebase:firebase-api")
-include(":kmm:service:auth:firebase:firebase-di")
-include(":kmm:service:auth:firebase:firebase-implementation")
+include(":kmm:service:auth:api")
+include(":kmm:service:auth:implementation")
 
 include(":kmm:service:activityprovider")
 include(":kmm:service:activityprovider:activityprovider-api")

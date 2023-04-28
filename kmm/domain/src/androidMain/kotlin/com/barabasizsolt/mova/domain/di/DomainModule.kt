@@ -2,7 +2,8 @@
 
 package com.barabasizsolt.mova.domain.di
 
-import com.barabasizsolt.firebase.di.createAuthenticationModule
+import com.barabasizsolt.mova.auth.api.AndroidAuthenticationService
+import com.barabasizsolt.mova.auth.implementation.createAuthenticationModule
 import com.barabasizsolt.mova.domain.usecase.auth.GetIntentForGoogleAccountLoginUseCase
 import com.barabasizsolt.mova.domain.usecase.auth.IsLoggedInUseCase
 import com.barabasizsolt.mova.domain.usecase.auth.LogOutUseCase
@@ -15,18 +16,18 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 actual fun createDomainModules() : List<Module> = buildList {
-    add(createAuthenticationModule())
+    addAll(createAuthenticationModule())
     add(createAuthUseCaseModule())
 } + createCommonDomainModules()
 
 private fun createAuthUseCaseModule() = module {
     // Auth
-    factory { GetIntentForGoogleAccountLoginUseCase(service = get()) }
-    factory { IsLoggedInUseCase(service = get()) }
-    factory { LoginWithEmailAndPasswordUseCase(service = get()) }
-    factory { LoginWithGoogleAccountUseCase(service = get()) }
-    factory { LoginWithFacebookAccountUseCase(service = get()) }
-    factory { LogOutUseCase(service = get()) }
-    factory { RegisterWithEmailAndPasswordUseCase(service = get()) }
-    factory { ResetPasswordUseCase(service = get()) }
+    factory { GetIntentForGoogleAccountLoginUseCase(service = get() as AndroidAuthenticationService) }
+    factory { IsLoggedInUseCase(service = get() as AndroidAuthenticationService) }
+    factory { LoginWithEmailAndPasswordUseCase(service = get() as AndroidAuthenticationService) }
+    factory { LoginWithGoogleAccountUseCase(service = get() as AndroidAuthenticationService) }
+    factory { LoginWithFacebookAccountUseCase(service = get() as AndroidAuthenticationService) }
+    factory { LogOutUseCase(service = get() as AndroidAuthenticationService) }
+    factory { RegisterWithEmailAndPasswordUseCase(service = get() as AndroidAuthenticationService) }
+    factory { ResetPasswordUseCase(service = get() as AndroidAuthenticationService) }
 }

@@ -11,6 +11,7 @@
 		464A5C4229F1499700794AA4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464A5C4129F1499700794AA4 /* ContentView.swift */; };
 		464A5C4429F1499800794AA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 464A5C4329F1499800794AA4 /* Assets.xcassets */; };
 		464A5C4729F1499800794AA4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 464A5C4629F1499800794AA4 /* Preview Assets.xcassets */; };
+		466945A729FC077900958653 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 466945A629FC077900958653 /* GoogleService-Info.plist */; };
 		7FBE7B94D7BE8DC0EADC8FDE /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B90563BEC38FC0B3996EFDB7 /* Pods_iosApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -20,6 +21,7 @@
 		464A5C4129F1499700794AA4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		464A5C4329F1499800794AA4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		464A5C4629F1499800794AA4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		466945A629FC077900958653 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		960F1306346FA700CEA99E58 /* Pods-iosApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.debug.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.debug.xcconfig"; sourceTree = "<group>"; };
 		B90563BEC38FC0B3996EFDB7 /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE61ECBA7C3AB1A74FBB39D /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 		464A5C3E29F1499700794AA4 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				466945A629FC077900958653 /* GoogleService-Info.plist */,
 				464A5C3F29F1499700794AA4 /* iosAppApp.swift */,
 				464A5C4129F1499700794AA4 /* ContentView.swift */,
 				464A5C4329F1499800794AA4 /* Assets.xcassets */,
@@ -103,6 +106,7 @@
 				464A5C3929F1499700794AA4 /* Frameworks */,
 				464A5C3A29F1499700794AA4 /* Resources */,
 				6F0D434388DA23303BCC7F21 /* [CP] Copy Pods Resources */,
+				92B50C6ED63A8871B3B27032 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -153,6 +157,7 @@
 			files = (
 				464A5C4729F1499800794AA4 /* Preview Assets.xcassets in Resources */,
 				464A5C4429F1499800794AA4 /* Assets.xcassets in Resources */,
+				466945A729FC077900958653 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +201,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		92B50C6ED63A8871B3B27032 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
