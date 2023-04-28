@@ -74,7 +74,7 @@ android {
 
 dependencies {
     implementation(project(":kmm:shared"))
-    implementation(project(":kmm:service:auth:firebase:firebase-api"))
+    implementation(project(":kmm:service:auth:api"))
     implementation(project(":kmm:service:activityprovider:activityprovider-api"))
     implementation(project(":kmm:service:activityprovider:activityprovider-di"))
 

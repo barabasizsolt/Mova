@@ -1,7 +1,7 @@
 package com.barabasizsolt.mova
 
 import android.app.Application
-import com.barabasizsolt.api.AuthenticationService
+import com.barabasizsolt.mova.auth.api.AuthenticationService
 import createAppModule
 import com.barabasizsolt.mova.tooling.setupBeagle
 import org.koin.android.ext.android.inject
@@ -12,7 +12,7 @@ import org.koin.core.logger.Level
 
 class MainApplication : Application() {
 
-    private val authService: AuthenticationService by inject()
+    //private val authService: AuthenticationService by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -31,7 +31,7 @@ class MainApplication : Application() {
                     isDebugBuild = BuildConfig.DEBUG
                 )
             )
-            authService.initialize(context = this@MainApplication)
+            //authService.initialize(context = this@MainApplication)
         }
     }
 }

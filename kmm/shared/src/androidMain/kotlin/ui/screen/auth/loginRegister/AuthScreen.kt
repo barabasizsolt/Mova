@@ -57,9 +57,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import com.barabasizsolt.mova.shared.R
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
@@ -81,8 +78,6 @@ internal class AuthScreen(private val screenType: String) : Screen, KoinComponen
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
-        val navigator: Navigator = LocalNavigator.currentOrThrow
-
         val keyboardController = LocalSoftwareKeyboardController.current
         val snackBarHostState = remember { SnackbarHostState() }
         val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(
@@ -225,7 +220,9 @@ private fun ScreenContent(
         }
         item {
             SocialItemHolder(
-                onGoogleClicked = { activityResultLauncher.launch(getIntentForGoogleLogin()) },
+                onGoogleClicked = {
+                    activityResultLauncher.launch(getIntentForGoogleLogin())
+                },
                 onFacebookClicked = authenticateWithFacebook,
                 modifier = Modifier.padding(bottom = AppTheme.dimens.contentPadding * 3)
             )

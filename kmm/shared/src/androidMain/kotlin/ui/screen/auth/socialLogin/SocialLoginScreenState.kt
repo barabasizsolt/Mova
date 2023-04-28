@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
-import com.barabasizsolt.api.AuthResult
+import com.barabasizsolt.mova.auth.api.AuthResult
 import com.barabasizsolt.mova.domain.usecase.auth.GetIntentForGoogleAccountLoginUseCase
 import com.barabasizsolt.mova.domain.usecase.auth.LoginWithFacebookAccountUseCase
 import com.barabasizsolt.mova.domain.usecase.auth.LoginWithGoogleAccountUseCase

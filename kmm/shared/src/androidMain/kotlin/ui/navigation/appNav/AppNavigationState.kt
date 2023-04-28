@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.barabasizsolt.api.AuthenticationState
+import com.barabasizsolt.mova.auth.api.AuthenticationState
 import com.barabasizsolt.mova.domain.usecase.auth.IsLoggedInUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

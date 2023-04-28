@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
-import com.barabasizsolt.api.AuthResult
+import com.barabasizsolt.mova.auth.api.AuthResult
 import com.barabasizsolt.mova.domain.usecase.auth.GetIntentForGoogleAccountLoginUseCase
 import com.barabasizsolt.mova.domain.usecase.auth.LoginWithEmailAndPasswordUseCase
 import com.barabasizsolt.mova.domain.usecase.auth.LoginWithFacebookAccountUseCase
@@ -76,8 +76,8 @@ internal class AuthScreenState(
         coroutineScope.launch {
             loginWithFacebookAccountUseCase().onEach { result ->
                 state = when (result) {
-                    is AuthResult.Failure -> State.Error(message = result.error)
                     is AuthResult.Dismissed -> State.Error(message = result.error.orEmpty())
+                    is AuthResult.Failure -> State.Error(message = result.error)
                     is AuthResult.Success -> State.Normal
                 }
             }.stateIn(scope = this)

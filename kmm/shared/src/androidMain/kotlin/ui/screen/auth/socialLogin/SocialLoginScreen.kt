@@ -128,9 +128,7 @@ private fun ScreenContent(
             )
         }
         item {
-            GoogleLoginOption(
-                onClick = { activityResultLauncher.launch(getIntentForGoogleLogin()) }
-            )
+            GoogleLoginOption(onClick = { activityResultLauncher.launch(getIntentForGoogleLogin()) })
         }
         item {
             AuthScreenDelimiter(

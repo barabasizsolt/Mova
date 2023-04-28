@@ -25,7 +25,7 @@ kotlin {
 
         framework {
             baseName = "shared"
-            isStatic = true
+            isStatic = false
             transitiveExport = false
             embedBitcode(BITCODE)
         }
@@ -62,6 +62,8 @@ kotlin {
                 implementation(project(":kmm:service:content:video:implementation"))
                 api(project(":kmm:service:content:cast-crew:api"))
                 implementation(project(":kmm:service:content:cast-crew:implementation"))
+                api(project(":kmm:service:auth:api"))
+                implementation(project(":kmm:service:auth:implementation"))
 
                 implementation(project(":kmm:domain"))
 
@@ -105,9 +107,6 @@ kotlin {
                 implementation(project(":kmm:service:activityprovider:activityprovider-api"))
                 implementation(project(":kmm:service:activityprovider:activityprovider-implementation"))
                 implementation(project(":kmm:service:activityprovider:activityprovider-di"))
-
-                implementation(project(":kmm:service:auth:firebase:firebase-api"))
-                implementation(project(":kmm:service:activityprovider:activityprovider-api"))
             }
         }
 

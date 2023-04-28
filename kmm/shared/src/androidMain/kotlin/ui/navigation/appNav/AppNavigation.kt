@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
-import com.barabasizsolt.api.AuthenticationState
+import com.barabasizsolt.mova.auth.api.AuthenticationState
 import ui.screen.auth.welcome.WelcomeScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ui.navigation.bottomNav.BottomNavScreen
