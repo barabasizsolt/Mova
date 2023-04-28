@@ -1,11 +1,5 @@
-package ui.screen.auth.loginRegister
+package ui.screen.auth
 
-import android.app.Activity
-import android.content.Intent
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -16,11 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
@@ -36,10 +27,18 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -47,98 +46,85 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.SoftwareKeyboardController
-import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.core.screen.Screen
-import com.barabasizsolt.mova.shared.R
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import org.koin.core.parameter.parametersOf
 import ui.catalog.AuthInputField
 import ui.catalog.AuthScreenDelimiter
 import ui.catalog.MovaButton
 import ui.catalog.MovaSnackBar
 import ui.catalog.SocialAuthFooter
 import ui.catalog.SocialLoginOption
+import ui.getPlatform
 import ui.theme.AppTheme
 
-internal class AuthScreen(private val screenType: String) : Screen, KoinComponent {
+expect class AuthScreen(screenType: String) : Screen, KoinComponent
 
-    private val screenState: AuthScreenState by inject { parametersOf(screenType) }
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+internal fun AuthScreenWrapper(
+    state: BaseAuthScreenState.State,
+    screenTitle: String,
+    authButtonText: String,
+    authFooterText: String,
+    authFooterQuestion: String,
+    email: String,
+    onEmailChange: (String) -> Unit,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    authenticate: () -> Unit,
+    authenticateWithFacebook: () -> Unit,
+    authenticateWithGoogle: () -> Unit,
+    changeAuthScreen: () -> Unit,
+    isLoading: Boolean,
+    isEnabled: Boolean,
+    onDismiss: () -> Unit
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val snackBarHostState = remember { SnackbarHostState() }
 
-    @OptIn(ExperimentalComposeUiApi::class)
-    @Composable
-    override fun Content() {
-        val keyboardController = LocalSoftwareKeyboardController.current
-        val snackBarHostState = remember { SnackbarHostState() }
-        val loginWithGoogleAccountLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            val data = result.data
-            if (result.resultCode == Activity.RESULT_OK && data != null) {
-                screenState.authenticateWithGoogle(intent = data)
-            }
-        }
-        val dismissText = stringResource(id = R.string.dismiss)
-
-        Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
-            ScreenContent(
-                screenTitle = screenState.screenProperty?.screenTitle.orEmpty(),
-                authButtonText = screenState.screenProperty?.authButtonText.orEmpty(),
-                authFooterText = screenState.screenProperty?.authFooterText.orEmpty(),
-                authFooterQuestion = screenState.screenProperty?.authFooterQuestion.orEmpty(),
-                email = screenState.email,
-                onEmailChange = screenState::onEmailChange,
-                password = screenState.password,
-                onPasswordChange = screenState::onPasswordChange,
-                authenticate = screenState::authenticate,
-                getIntentForGoogleLogin = screenState::getIntentForGoogleLogin,
-                authenticateWithFacebook = screenState::authenticateWithFacebook,
-                changeAuthScreen = screenState::changeAuthScreen,
-                isLoading = screenState.state is AuthScreenState.State.Loading,
-                isEnabled = screenState.isAuthEnabled,
-                activityResultLauncher = loginWithGoogleAccountLauncher,
-                keyboardController = keyboardController
-            )
-
-            MovaSnackBar(
-                snackBarHostState = snackBarHostState,
-                onDismiss = {
-                    snackBarHostState.currentSnackbarData?.dismiss()
-                    screenState.resetState()
-                },
-                modifier = Modifier.systemBarsPadding()
-            )
-        }
-
-        LaunchedEffect(
-            key1 = screenState.state,
-            block = {
-                if (screenState.state is AuthScreenState.State.Error) {
-                    snackBarHostState.showSnackbar(
-                        message = (screenState.state as AuthScreenState.State.Error).message,
-                        actionLabel = dismissText
-                    )
-                    screenState.resetState()
-                }
-            }
+    Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
+        ScreenContent(
+            screenTitle = screenTitle,
+            authButtonText = authButtonText,
+            authFooterText = authFooterText,
+            authFooterQuestion = authFooterQuestion,
+            email = email,
+            onEmailChange = onEmailChange,
+            password = password,
+            onPasswordChange = onPasswordChange,
+            authenticate = authenticate,
+            authenticateWithFacebook = authenticateWithFacebook,
+            authenticateWithGoogle = authenticateWithGoogle,
+            changeAuthScreen = changeAuthScreen,
+            isLoading = isLoading,
+            isEnabled = isEnabled,
+            keyboardController = keyboardController
         )
-        /*TODO: Add later*/
-//        BeagleModules(modules = createBeagleModules { user ->
-//            screenState.onEmailChange(user.email)
-//            screenState.onPasswordChange(user.password)
-//            screenState.authenticate()
-//        })
+
+        MovaSnackBar(
+            snackBarHostState = snackBarHostState,
+            onDismiss = {
+                snackBarHostState.currentSnackbarData?.dismiss()
+                onDismiss()
+            },
+            modifier = Modifier.padding(bottom = getPlatform().navigationBarInsetDp)
+        )
     }
+
+    LaunchedEffect(
+        key1 = state,
+        block = {
+            if (state is BaseAuthScreenState.State.Error) {
+                snackBarHostState.showSnackbar(
+                    message = state.message,
+                    actionLabel = "Dismiss"
+                )
+                onDismiss()
+            }
+        }
+    )
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -153,19 +139,20 @@ private fun ScreenContent(
     password: String,
     onPasswordChange: (String) -> Unit,
     authenticate: () -> Unit,
-    getIntentForGoogleLogin: () -> Intent,
     authenticateWithFacebook: () -> Unit,
+    authenticateWithGoogle: () -> Unit,
     changeAuthScreen: () -> Unit,
     isLoading: Boolean,
     isEnabled: Boolean,
-    activityResultLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
     keyboardController: SoftwareKeyboardController?
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .imePadding(),
+            .padding(
+                top = getPlatform().statusBarInsetDp,
+                bottom = getPlatform().imeBottomInsetDp
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(all = AppTheme.dimens.screenPadding)
     ) {
@@ -214,15 +201,13 @@ private fun ScreenContent(
         }
         item {
             AuthScreenDelimiter(
-                text = stringResource(id = R.string.or_continue_with),
+                text = "or continue with",
                 modifier = Modifier.padding(vertical = AppTheme.dimens.contentPadding * 4)
             )
         }
         item {
             SocialItemHolder(
-                onGoogleClicked = {
-                    activityResultLauncher.launch(getIntentForGoogleLogin())
-                },
+                onGoogleClicked = authenticateWithGoogle,
                 onFacebookClicked = authenticateWithFacebook,
                 modifier = Modifier.padding(bottom = AppTheme.dimens.contentPadding * 3)
             )
@@ -268,7 +253,7 @@ private fun EmailInput(
 ) = AuthInputField(
     value = email,
     onValueChange = onEmailChange,
-    placeholder = stringResource(id = R.string.email),
+    placeholder = "Email",
     leadingIcon = Icons.Default.Email,
     keyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Email,
@@ -289,7 +274,7 @@ private fun PasswordInput(
     AuthInputField(
         value = password,
         onValueChange = onPasswordChange,
-        placeholder = stringResource(id = R.string.password),
+        placeholder = "Password",
         leadingIcon = Icons.Default.Lock,
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(

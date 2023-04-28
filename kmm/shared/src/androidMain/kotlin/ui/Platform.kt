@@ -9,10 +9,11 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
-import ui.screen.auth.loginRegister.AuthScreenState
-import ui.screen.auth.socialLogin.SocialLoginScreenState
+import ui.screen.auth.BaseAuthScreenState
+import ui.screen.socialLogin.SocialLoginScreenState
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import ui.screen.auth.AuthScreenState
 
 internal class AndroidPlatform : Platform {
 

@@ -9,6 +9,7 @@ import ui.screen.explore.ExploreScreenState
 import ui.screen.explore.FilterScreenState
 import ui.screen.home.HomeScreenState
 import ui.screen.seeall.SeeAllScreenState
+import ui.screen.socialLogin.BaseSocialLoginScreenState
 
 internal interface Platform {
     val name: String

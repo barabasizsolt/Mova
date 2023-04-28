@@ -1,5 +1,6 @@
-package ui.screen.auth.welcome
+package ui.welcome
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,8 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,26 +19,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.barabasizsolt.mova.shared.R
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
 import ui.catalog.GradientOverlay
+import ui.catalog.HorizontalPagerIndicator
 import ui.catalog.MovaButton
-import ui.screen.auth.socialLogin.SocialLoginScreen
+import ui.getPlatform
+import ui.screen.socialLogin.SocialLoginScreen
 import ui.theme.AppTheme
 import ui.util.withShadow
 
@@ -57,8 +55,7 @@ internal object WelcomeScreen: Screen, KoinComponent {
             WelcomeScreenPager(
                 modifier = Modifier
                     .align(alignment = Alignment.BottomCenter)
-                    .navigationBarsPadding()
-                    .padding(bottom = AppTheme.dimens.screenPadding * 3),
+                    .padding(bottom = AppTheme.dimens.screenPadding * 3 + getPlatform().navigationBarInsetDp),
                 onGetStartedClicked = {
                     navigator.push(item = SocialLoginScreen)
                 }
@@ -67,7 +64,7 @@ internal object WelcomeScreen: Screen, KoinComponent {
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun WelcomeScreenPager(
     modifier: Modifier = Modifier,
@@ -79,8 +76,8 @@ private fun WelcomeScreenPager(
     LaunchedEffect(Unit) {
         while (true) {
             delay(timeMillis = 5000)
-            if (pagerState.pageCount > 0) {
-                pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % (pagerState.pageCount))
+            if (pagerContent.isNotEmpty()) {
+                pagerState.animateScrollToPage(page = (pagerState.currentPage + 1) % (pagerContent.size))
             }
         }
     }
@@ -94,7 +91,7 @@ private fun WelcomeScreenPager(
             verticalAlignment = Alignment.Top,
             modifier = Modifier
                 .fillMaxWidth(),
-            count = pagerContent.size,
+            pageCount = pagerContent.size,
             state = pagerState,
             contentPadding = PaddingValues(horizontal = AppTheme.dimens.screenPadding)
         ) { page ->
@@ -103,10 +100,12 @@ private fun WelcomeScreenPager(
         HorizontalPagerIndicator(
             pagerState = pagerState,
             activeColor = AppTheme.colors.secondary,
-            inactiveColor = Color.White,
+            inActiveColor = Color.White,
+            indicatorCount = pagerContent.size,
+            itemCount = pagerContent.size
         )
         MovaButton(
-            text = stringResource(id = R.string.get_started),
+            text = "Get Started",
             onClick = onGetStartedClicked,
             modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
         )
@@ -146,16 +145,16 @@ private data class WelcomeScreenPagerData(val title: String, val subtitle: Strin
         @Composable
         fun getPagerData() = listOf(
             WelcomeScreenPagerData(
-                title = stringResource(id = R.string.page_title1),
-                subtitle = stringResource(id = R.string.page_subtitle1)
+                title = "Welcome to Mova",
+                subtitle = "The best movie streaming app of the century to make your day great!"
             ),
             WelcomeScreenPagerData(
-                title = stringResource(id = R.string.page_title2),
-                subtitle = stringResource(id = R.string.page_subtitle2)
+                title = "Lorem Ipsum",
+                subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
             ),
             WelcomeScreenPagerData(
-                title = stringResource(id = R.string.page_title3),
-                subtitle = stringResource(id = R.string.page_subtitle3)
+                title = "Ipsum Lorem",
+                subtitle = "Morbi tempus consequat lectus, quis tincidunt diam efficitur non."
             )
         )
     }
