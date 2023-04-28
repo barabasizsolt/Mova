@@ -43,14 +43,6 @@ kotlin {
                 implementation(project(":kmm:service:auth:implementation"))
             }
         }
-
-        val androidMain by getting {
-            dependencies {
-                //implementation(project(":kmm:service:auth:firebase:firebase-api"))
-                //implementation(project(":kmm:service:auth:firebase:firebase-implementation"))
-                //implementation(project(":kmm:service:auth:firebase:firebase-di"))
-            }
-        }
     }
 }
 
