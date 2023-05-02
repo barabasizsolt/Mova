@@ -56,7 +56,7 @@ internal fun FilterScreen(
     ) {
         item {
             Text(
-                text = "Sort & Filter",
+                text = AppTheme.strings.sortFilter,
                 color = AppTheme.colors.secondary,
                 style = AppTheme.typography.h6,
                 textAlign = TextAlign.Center,
@@ -72,7 +72,7 @@ internal fun FilterScreen(
         if (screenState.selectedCategory.wrappedItem as Category == Category.MOVIE) {
             item {
                 MultiSelectionFilterCarousel(
-                    header = "Regions",
+                    header = AppTheme.strings.regions,
                     selectedItems = screenState.selectedRegions,
                     items = screenState.regions,
                     onClick = { positions -> screenState.onRegionSelected(positions) }
@@ -81,7 +81,7 @@ internal fun FilterScreen(
         }
         item {
             MultiSelectionFilterCarousel(
-                header = "Genres",
+                header = AppTheme.strings.genres,
                 selectedItems = screenState.selectedGenres,
                 items = screenState.genres,
                 listState = genreListState,
@@ -90,7 +90,7 @@ internal fun FilterScreen(
         }
         item {
             MultiSelectionFilterCarousel(
-                header = "Sorting Criteria",
+                header = AppTheme.strings.sort,
                 selectedItems = screenState.selectedSortOptions,
                 items = screenState.sortOptions,
                 onClick = { positions -> screenState.onSortingCriteriaSelected(positions) }
@@ -136,7 +136,7 @@ private fun ApplyButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) = MovaButton(
-    text = "Apply",
+    text = AppTheme.strings.apply,
     onClick = onClick,
     modifier = modifier
 )
@@ -147,7 +147,7 @@ private fun ResetButton(
     isDark: Boolean,
     onClick: () -> Unit
 ) = MovaButton(
-    text = "Reset",
+    text = AppTheme.strings.reset,
     onClick = onClick,
     contentColor = if (isDark) Color.White else AppTheme.colors.secondary,
     backgroundColor = if (isDark) Color.DarkGray else Color.LightGray,

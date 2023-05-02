@@ -152,8 +152,9 @@ internal fun Review(
     )
 
     /*TODO: move to res*/
+    val createdAt = AppTheme.strings.createdAt
     Text(
-        text = "Created At: ${review.createdAt.substringBefore(delimiter = "T")}",
+        text = "$createdAt: ${review.createdAt.substringBefore(delimiter = "T")}",
         color = Color.Gray,
         style = AppTheme.typography.body2,
         modifier = modifier.fillMaxWidth()

@@ -149,7 +149,7 @@ private fun CardCarouselHeader(
         )
         Box(modifier = Modifier.clickable { onHeaderClick() }) {
             Text(
-                text = "See all",
+                text = AppTheme.strings.seeAll,
                 color = AppTheme.colors.secondary,
                 style = AppTheme.typography.body2,
                 fontWeight = FontWeight.Bold,

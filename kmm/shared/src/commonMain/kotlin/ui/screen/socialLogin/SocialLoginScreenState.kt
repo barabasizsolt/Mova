@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 
-internal abstract class BaseSocialLoginScreenState : ScreenModel {
+abstract class BaseSocialLoginScreenState : ScreenModel {
 
     open var state by mutableStateOf<State>(value = State.Normal)
 

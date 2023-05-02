@@ -90,8 +90,8 @@ private fun ScreenContent(
     }
     item(key = "HomeScreen.PopularMovies") {
         WatchableWithRatingCarousel(
-            header = "Popular Movies",
-            buttonText = "More Popular Movies",
+            header = AppTheme.strings.popularMovies,
+            buttonText = AppTheme.strings.morePopularMovies,
             items = popularMovies,
             onItemClick = onItemClicked,
             onHeaderClick = onSeeAllPopularMoviesClicked,
@@ -99,7 +99,7 @@ private fun ScreenContent(
     }
     item(key = "HomeScreen.People") {
         PeopleCarousel(
-            header = "Popular People",
+            header = AppTheme.strings.popularPeople,
             items = popularPeople,
             onItemClick = { /*TODO: Implement it*/ },
             onHeaderClick = onSeeAllPopularPeopleClicked,
@@ -107,8 +107,8 @@ private fun ScreenContent(
     }
     item(key = "HomeScreen.NowPlayingMovies") {
         WatchableWithRatingCarousel(
-            header = "Now Playing Movies",
-            buttonText = "More Now Playing Movies",
+            header = AppTheme.strings.nowPlayingMovies,
+            buttonText = AppTheme.strings.moreNowPlayingMovies,
             items = nowPlayingMovies,
             onItemClick = onItemClicked,
             onHeaderClick = onSeeAllNowPlayingMoviesClicked,
@@ -116,8 +116,8 @@ private fun ScreenContent(
     }
     item(key = "HomeScreen.TopRatedMovies") {
         WatchableWithRatingCarousel(
-            header = "Top Rated Movies",
-            buttonText = "More Top Rated Movies",
+            header = AppTheme.strings.topRatedMovies,
+            buttonText = AppTheme.strings.moreTopRatedMovies,
             items = topRatedMovies,
             onItemClick = onItemClicked,
             onHeaderClick = onSeeAllTopRatedMoviesClicked,

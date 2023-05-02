@@ -33,6 +33,7 @@ import ui.screen.base.BaseScreen
 import ui.screen.base.BaseScreenState
 import ui.screen.base.UserAction
 import ui.screen.detail.DetailScreen
+import ui.theme.AppString
 import ui.theme.AppTheme
 
 internal class SeeAllScreen(private val contentType: String) : Screen, KoinComponent {
@@ -119,11 +120,11 @@ private fun LazyGridScope.content(
     when (item) {
         is ContentItem.ItemHeader -> MovaHeader(
             text = when (contentType) {
-                SeeAllContentType.POPULAR_MOVIES.name -> "Popular Movies"
-                SeeAllContentType.POPULAR_PEOPLE.name -> "Popular People"
-                SeeAllContentType.NOW_PLAYING_MOVIES.name -> "Now Playing Movies"
-                SeeAllContentType.TOP_RATED_MOVIES.name -> "Top Rated Playing Movies"
-                else -> "All Content"
+                SeeAllContentType.POPULAR_MOVIES.name -> AppTheme.strings.popularMovies
+                SeeAllContentType.POPULAR_PEOPLE.name -> AppTheme.strings.popularPeople
+                SeeAllContentType.NOW_PLAYING_MOVIES.name -> AppTheme.strings.nowPlayingMovies
+                SeeAllContentType.TOP_RATED_MOVIES.name -> AppTheme.strings.topRatedMovies
+                else -> AppTheme.strings.allContent
             },
             onClick = onHeaderClick,
             modifier = Modifier.padding(bottom = AppTheme.dimens.contentPadding)

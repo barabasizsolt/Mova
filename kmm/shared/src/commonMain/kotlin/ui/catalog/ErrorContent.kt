@@ -41,13 +41,13 @@ internal fun ErrorContent(
                 colorFilter = ColorFilter.tint(color = AppTheme.colors.onBackground)
             )
             Text(
-                text = "Oops, something went wrong. Please try again later.",
+                text = AppTheme.strings.snackBarErrorMessage,
                 style = AppTheme.typography.h6,
                 color = AppTheme.colors.onPrimary,
                 textAlign = TextAlign.Center
             )
             MovaButton(
-                text = "Try again",
+                text = AppTheme.strings.snackBarActionLabel,
                 onClick = onRetry
             )
         }

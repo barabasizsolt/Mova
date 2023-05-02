@@ -2,6 +2,8 @@ package ui.screen.detail.catalog
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -24,6 +26,7 @@ import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -167,19 +170,22 @@ private fun ContentReleaseDate(releaseDate: String) = Row(
 }
 
 @Composable
-private fun ContentInfoItem(value: String) = Card(
-    shape = RoundedCornerShape(size = 10.dp),
-    backgroundColor = AppTheme.colors.background,
-    border = BorderStroke(
-        color = AppTheme.colors.secondary,
-        width = 1.dp
-    )
+private fun ContentInfoItem(value: String) = Box(
+    modifier = Modifier
+        .background(
+            color = AppTheme.colors.background.copy(alpha = 0.4f),
+            shape = RoundedCornerShape(size = 10.dp)
+        )
+        .border(
+            border = BorderStroke(color = AppTheme.colors.secondary, width = 2.dp),
+            shape = RoundedCornerShape(size = 10.dp)
+        )
 ) {
     Text(
         text = value,
         style = AppTheme.typography.caption,
         fontWeight = FontWeight.Bold,
-        color = AppTheme.colors.secondary,
+        color = AppTheme.colors.onPrimary,
         modifier = Modifier.padding(all = AppTheme.dimens.contentPadding)
     )
 }
@@ -212,13 +218,13 @@ private fun Buttons(
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2)
 ) {
     MovaFilledButton(
-        text = "Trailer",
+        text = AppTheme.strings.trailer,
         icon = Icons.Filled.PlayCircle,
         onClick = onPlayButtonClicked,
         modifier = Modifier.weight(weight = 1f)
     )
     MovaOutlinedButton(
-        text = "Favourites",
+        text = AppTheme.strings.favourites,
         icon = Icons.Filled.Favorite,
         contentColor = AppTheme.colors.secondary,
         onClick = onAddToFavouriteButtonClicked,

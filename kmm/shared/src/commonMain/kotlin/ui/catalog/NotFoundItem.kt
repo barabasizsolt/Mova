@@ -31,15 +31,13 @@ internal fun NotFoundItem(modifier: Modifier = Modifier) = Column(
         modifier = Modifier.height(height = 200.dp)
     )
     Text(
-        text = "Not Found",
-        //stringResource(id = R.string.not_found_header),
+        text = AppTheme.strings.notFound,
         style = AppTheme.typography.h5,
         color = AppTheme.colors.secondary,
         fontWeight = FontWeight.Bold
     )
     Text(
-        text = "Sorry, the keyword you entered could not be found. Try to check again or search with other keywords.",
-        //stringResource(id = R.string.not_found_text),
+        text = AppTheme.strings.notFoundText,
         style = AppTheme.typography.body2,
         textAlign = TextAlign.Center
     )

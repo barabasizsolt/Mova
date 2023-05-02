@@ -7,7 +7,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import com.barabasizsolt.mova.auth.api.AuthenticationState
 import ui.navigation.bottomNav.BottomNavScreen
 import ui.screen.splash.SplashScreen
-import ui.welcome.WelcomeScreen
+import ui.screen.welcome.WelcomeScreen
 
 @Composable
 internal fun AppNavigation() {

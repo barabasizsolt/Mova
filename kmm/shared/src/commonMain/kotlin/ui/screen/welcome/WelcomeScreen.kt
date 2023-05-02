@@ -1,4 +1,4 @@
-package ui.welcome
+package ui.screen.welcome
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -105,7 +105,7 @@ private fun WelcomeScreenPager(
             itemCount = pagerContent.size
         )
         MovaButton(
-            text = "Get Started",
+            text = AppTheme.strings.getStarted,
             onClick = onGetStartedClicked,
             modifier = Modifier.padding(horizontal = AppTheme.dimens.screenPadding)
         )
@@ -145,17 +145,17 @@ private data class WelcomeScreenPagerData(val title: String, val subtitle: Strin
         @Composable
         fun getPagerData() = listOf(
             WelcomeScreenPagerData(
-                title = "Welcome to Mova",
-                subtitle = "The best movie streaming app of the century to make your day great!"
+                title = AppTheme.strings.pageTitle1,
+                subtitle = AppTheme.strings.pageSubtitle1
             ),
             WelcomeScreenPagerData(
-                title = "Lorem Ipsum",
-                subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                title = AppTheme.strings.pageTitle2,
+                subtitle = AppTheme.strings.pageSubtitle2
             ),
             WelcomeScreenPagerData(
-                title = "Ipsum Lorem",
-                subtitle = "Morbi tempus consequat lectus, quis tincidunt diam efficitur non."
-            )
+                title = AppTheme.strings.pageTitle3,
+                subtitle = AppTheme.strings.pageSubtitle3
+            ),
         )
     }
 }

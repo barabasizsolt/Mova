@@ -67,10 +67,7 @@ internal expect class AuthScreen(screenType: String) : Screen, KoinComponent
 @Composable
 internal fun AuthScreenWrapper(
     state: BaseAuthScreenState.State,
-    screenTitle: String,
-    authButtonText: String,
-    authFooterText: String,
-    authFooterQuestion: String,
+    authScreenType: BaseAuthScreenState.AuthScreenType,
     email: String,
     onEmailChange: (String) -> Unit,
     password: String,
@@ -86,6 +83,23 @@ internal fun AuthScreenWrapper(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val snackBarHostState = remember { SnackbarHostState() }
+    val actionLabel = AppTheme.strings.dismiss
+    val screenTitle = when (authScreenType) {
+        is BaseAuthScreenState.AuthScreenType.Login -> AppTheme.strings.loginToYourAccount
+        is BaseAuthScreenState.AuthScreenType.Register -> AppTheme.strings.createYourAccount
+    }
+    val authButtonText = when (authScreenType) {
+        is BaseAuthScreenState.AuthScreenType.Login -> AppTheme.strings.signIn
+        is BaseAuthScreenState.AuthScreenType.Register -> AppTheme.strings.signUp
+    }
+    val authFooterQuestion = when (authScreenType) {
+        is BaseAuthScreenState.AuthScreenType.Login -> AppTheme.strings.noAccount
+        is BaseAuthScreenState.AuthScreenType.Register -> AppTheme.strings.alreadyHaveAnAccount
+    }
+    val authFooterText = when (authScreenType) {
+        is BaseAuthScreenState.AuthScreenType.Login -> AppTheme.strings.signUp
+        is BaseAuthScreenState.AuthScreenType.Register -> AppTheme.strings.signIn
+    }
 
     Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
         ScreenContent(
@@ -132,7 +146,7 @@ internal fun AuthScreenWrapper(
             if (state is BaseAuthScreenState.State.Error) {
                 snackBarHostState.showSnackbar(
                     message = state.message,
-                    actionLabel = "Dismiss"
+                    actionLabel = actionLabel
                 )
                 onDismiss()
             }
@@ -214,7 +228,7 @@ private fun ScreenContent(
         }
         item {
             AuthScreenDelimiter(
-                text = "or continue with",
+                text = AppTheme.strings.orContinueWith,
                 modifier = Modifier.padding(vertical = AppTheme.dimens.contentPadding * 4)
             )
         }
@@ -266,7 +280,7 @@ private fun EmailInput(
 ) = AuthInputField(
     value = email,
     onValueChange = onEmailChange,
-    placeholder = "Email",
+    placeholder = AppTheme.strings.email,
     leadingIcon = Icons.Default.Email,
     keyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Email,
@@ -288,7 +302,7 @@ private fun PasswordInput(
     AuthInputField(
         value = password,
         onValueChange = onPasswordChange,
-        placeholder = "Password",
+        placeholder = AppTheme.strings.password,
         leadingIcon = Icons.Default.Lock,
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(
