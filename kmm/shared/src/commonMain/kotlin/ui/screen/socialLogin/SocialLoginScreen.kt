@@ -48,6 +48,7 @@ internal fun SocialLoginWrapper(
     onBackPressed: () -> Unit,
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
+    val actionLabel = AppTheme.strings.dismiss
 
     Box {
         ScreenContent(
@@ -84,7 +85,7 @@ internal fun SocialLoginWrapper(
             if (state is BaseSocialLoginScreenState.State.Error) {
                 snackBarHostState.showSnackbar(
                     message = state.message,
-                    actionLabel = "Dismiss",
+                    actionLabel = actionLabel,
                     duration = SnackbarDuration.Long
                 )
                 onDismiss()
@@ -122,13 +123,13 @@ private fun ScreenContent(
         }
         item {
             AuthScreenDelimiter(
-                text = "or",
+                text = AppTheme.strings.or,
                 modifier = Modifier.padding(vertical = AppTheme.dimens.contentPadding * 4)
             )
         }
         item {
             MovaButton(
-                text = "Sign in with password",
+                text = AppTheme.strings.signInWithPassword,
                 onClick = onSignInClicked,
                 isLoading = isLoading,
                 modifier = Modifier.padding(bottom = AppTheme.dimens.screenPadding),
@@ -136,8 +137,8 @@ private fun ScreenContent(
         }
         item {
             SocialAuthFooter(
-                text = "Don't have an account?",
-                clickableText = "Sign Up",
+                text = AppTheme.strings.noAccount,
+                clickableText = AppTheme.strings.signUp,
                 onSignUpClick = onSignUpClicked
             )
         }
@@ -159,7 +160,7 @@ private fun SocialLoginScreenLogo(
 private fun SocialLoginScreenTitle(
     modifier: Modifier = Modifier
 ) = Text(
-    text = "Let's you in",
+    text = AppTheme.strings.letsYouIn,
     style = AppTheme.typography.h3,
     fontWeight = FontWeight.Bold,
     textAlign = TextAlign.Center,
@@ -172,7 +173,7 @@ private fun GoogleLoginOption(
     onClick: () -> Unit
 ) = SocialLoginOption(
     onClick = onClick,
-    text = "Continue with Google",
+    text = AppTheme.strings.continueWithGoogle,
     path = "drawable/google_ic.xml",
     modifier = modifier.fillMaxWidth()
 )
@@ -183,7 +184,7 @@ private fun FacebookLoginOption(
     onClick: () -> Unit
 ) = SocialLoginOption(
     onClick = onClick,
-    text = "Continue with Facebook",
+    text = AppTheme.strings.continueWithFacebook,
     path = "drawable/facebook_ic.xml",
     modifier = modifier.fillMaxWidth()
 )

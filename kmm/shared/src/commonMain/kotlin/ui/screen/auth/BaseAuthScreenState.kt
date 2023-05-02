@@ -24,11 +24,11 @@ internal open class BaseAuthScreenState(
 ) : ScreenModel {
 
     open var state by mutableStateOf<State>(value = State.Normal)
-    open var screenProperty by mutableStateOf(
+    open var authScreenType by mutableStateOf(
         value = when (screenType) {
-            ScreenType.LOGIN.name -> ScreenProperty.Login
-            ScreenType.REGISTER.name -> ScreenProperty.Register
-            else -> null
+            ScreenType.LOGIN.name -> AuthScreenType.Login
+            ScreenType.REGISTER.name -> AuthScreenType.Register
+            else -> AuthScreenType.Login
         }
     )
     open var email by mutableStateOf(value = "")
@@ -39,7 +39,7 @@ internal open class BaseAuthScreenState(
         if (isAuthEnabled) {
             state = State.Loading
             coroutineScope.launch {
-                if (screenProperty is ScreenProperty.Login) {
+                if (authScreenType is AuthScreenType.Login) {
                     loginWithEmailAndPassword(email = email, password = password)
                 } else {
                     registerWithEmailAndPassword(email = email, password = password)
@@ -55,7 +55,7 @@ internal open class BaseAuthScreenState(
     }
 
     fun changeAuthScreen() {
-        screenProperty = if (screenProperty is ScreenProperty.Login) ScreenProperty.Register else ScreenProperty.Login
+        authScreenType = if (authScreenType is AuthScreenType.Login) AuthScreenType.Register else AuthScreenType.Login
     }
 
     fun onEmailChange(value: String) { email = value }
@@ -71,29 +71,8 @@ internal open class BaseAuthScreenState(
         data class Error(val message: String) : State()
     }
 
-    sealed class ScreenProperty {
-        abstract val screenTitle: String
-        abstract val authButtonText: String
-        abstract val authFooterQuestion: String
-        abstract val authFooterText: String
-
-        object Login : ScreenProperty() {
-            override val screenTitle: String = "Login to Your Account"
-            override val authButtonText: String = SIGN_IN
-            override val authFooterQuestion: String = "Don't have an account?"
-            override val authFooterText: String = SIGN_UP
-        }
-
-        object Register : ScreenProperty() {
-            override val screenTitle: String = "Create Your Account"
-            override val authButtonText: String = SIGN_UP
-            override val authFooterQuestion: String = "Already have an account?"
-            override val authFooterText: String = SIGN_IN
-        }
-    }
-
-    companion object {
-        private const val SIGN_UP: String = "Sign up"
-        private const val SIGN_IN: String = "Sign in"
+    sealed class AuthScreenType {
+        object Login : AuthScreenType()
+        object Register : AuthScreenType()
     }
 }

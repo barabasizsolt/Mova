@@ -179,12 +179,12 @@ internal fun PagerItemButtons(
     horizontalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2)
 ) {
     MovaFilledButton(
-        text = "Trailer",
+        text = AppTheme.strings.trailer,
         icon = Icons.Filled.PlayCircle,
         onClick = onPlayButtonClicked
     )
     MovaOutlinedButton(
-        text = "Favourites",
+        text = AppTheme.strings.favourites,
         icon = Icons.Filled.Favorite,
         contentColor = AppTheme.colors.secondary,
         onClick = onAddToFavouriteButtonClicked

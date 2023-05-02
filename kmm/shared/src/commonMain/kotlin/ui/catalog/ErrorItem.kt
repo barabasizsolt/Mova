@@ -31,14 +31,13 @@ internal fun ErrorItem(
         verticalArrangement = Arrangement.spacedBy(space = AppTheme.dimens.contentPadding * 2)
     ) {
         Text(
-            text = "Something went wrong\nPlease Try Again!",
-            //stringResource(id = R.string.something_went_wrong),
+            text = AppTheme.strings.snackBarErrorMessage,
             textAlign = TextAlign.Center,
             style = AppTheme.typography.body1
         )
         MovaButton(
-            text = "Try Again",
-            //stringResource(id = R.string.try_again),
+            text = AppTheme.strings.snackBarActionLabel,
+
             onClick = onRetryClick,
             isLoading = isLoading
         ) 

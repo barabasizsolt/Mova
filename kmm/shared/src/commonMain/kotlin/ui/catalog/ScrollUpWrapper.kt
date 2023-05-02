@@ -42,8 +42,7 @@ internal fun ScrollUpWrapper(
                 .padding(top = scrollUpTopPadding + ui.getPlatform().statusBarInsetDp)
         ) {
             ScrollToTopItem(
-                text = "Scroll Up",
-                //stringResource(id = R.string.scroll_up),
+                text = AppTheme.strings.scrollUp,
                 onClick = { scope.launch { gridState.scrollToItem(index = 0, scrollOffset = 0) } },
             )
         }

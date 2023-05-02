@@ -103,7 +103,7 @@ internal fun EmptyTabItem(modifier: Modifier = Modifier) = Card(
     shape = AppTheme.shapes.medium
 ) {
     Text(
-        text = "No result found",
+        text = AppTheme.strings.noResultFound,
         textAlign = TextAlign.Center,
         style = AppTheme.typography.body2,
         fontWeight = FontWeight.Bold,

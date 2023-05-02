@@ -29,10 +29,7 @@ internal actual class AuthScreen actual constructor(private val screenType: Stri
 
         AuthScreenWrapper(
             state = screenState.state,
-            screenTitle = screenState.screenProperty?.screenTitle.orEmpty(),
-            authButtonText = screenState.screenProperty?.authButtonText.orEmpty(),
-            authFooterText = screenState.screenProperty?.authFooterText.orEmpty(),
-            authFooterQuestion = screenState.screenProperty?.authFooterQuestion.orEmpty(),
+            authScreenType = screenState.authScreenType,
             email = screenState.email,
             onEmailChange = screenState::onEmailChange,
             password = screenState.password,

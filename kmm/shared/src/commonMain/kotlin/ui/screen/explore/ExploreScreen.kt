@@ -234,7 +234,7 @@ private fun SearchBar(
     MovaSearchField(
         value = query,
         onValueChange = onQueryChange,
-        placeholderText = if (selectedTabIndex == 0) "Search Movies" else "Search Tv Series",
+        placeholderText = if (selectedTabIndex == 0) AppTheme.strings.searchMovies else AppTheme.strings.searchTvSeries,
         modifier = Modifier.weight(weight = 1f)
     )
     FilterIcon(onClick = onClick)

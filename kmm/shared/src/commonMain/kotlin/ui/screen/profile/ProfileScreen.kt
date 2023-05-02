@@ -28,7 +28,8 @@ internal object ProfileScreen : Tab, KoinComponent {
         @Composable
         get()  {
             val icon = rememberVectorPainter(Icons.Default.Person)
-            return remember { TabOptions(index = 3u, title = "Profile", icon = icon) }
+            val title = AppTheme.strings.profile
+            return remember { TabOptions(index = 3u, title = title, icon = icon) }
         }
 
     @Composable
@@ -37,7 +38,7 @@ internal object ProfileScreen : Tab, KoinComponent {
 
         Box(modifier = Modifier.fillMaxSize()) {
             MovaButton(
-                text = "Logout",
+                text = AppTheme.strings.logOut,
                 onClick = { scope.launch { logOutUseCase() } },
                 modifier = Modifier
                     .align(alignment = Alignment.Center)

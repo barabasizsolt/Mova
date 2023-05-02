@@ -46,6 +46,8 @@ internal fun BaseScreen(
         onRefresh = { screenState.getScreenData(userAction = UserAction.SwipeRefresh) }
     )
     val scope: CoroutineScope = rememberCoroutineScope()
+    val snackBarErrorMessage = AppTheme.strings.snackBarErrorMessage
+    val snackBarActionLabel = AppTheme.strings.snackBarActionLabel
 
     Box(modifier = Modifier.background(color = AppTheme.colors.primary)) {
         when (screenState.state) {
@@ -95,8 +97,8 @@ internal fun BaseScreen(
             block = {
                 if (screenState.state is BaseScreenState.State.ShowSnackBar) {
                     snackBarHostState.showSnackbar(
-                        message = "Oops, something went wrong.",
-                        actionLabel = "Try again"
+                        message = snackBarErrorMessage,
+                        actionLabel = snackBarActionLabel
                     )
                 }
             }
