@@ -32,7 +32,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -89,12 +93,19 @@ internal object ExploreScreen : Screen, KoinComponent {
         )
         val scope: CoroutineScope = rememberCoroutineScope()
 
+        var shouldShowScrollUp by rememberSaveable { mutableStateOf(value = !sheetState.isVisible) }
+        LaunchedEffect(
+            key1 = sheetState.currentValue,
+            block = { shouldShowScrollUp = !sheetState.isVisible }
+        )
+
         BaseScreen(
             screenState = screenState,
             gridState = when (screenState.selectedCategory.wrappedItem as Category) {
                 Category.MOVIE -> if (screenState.query.isEmpty()) movieListState else movieSearchState
                 Category.TV -> if (screenState.query.isEmpty()) tvListState else tvSearchState
             },
+            shouldShowScrollUp = shouldShowScrollUp,
             scrollUpTopPadding =
                 AppTheme.dimens.searchBarHeight
                         + AppTheme.dimens.screenPadding * if (screenState.query.isEmpty()) 8 else 4,
@@ -140,7 +151,14 @@ internal object ExploreScreen : Screen, KoinComponent {
                         onMovieClicked = { id -> navigator.push(item = DetailScreen(id = id)) },
                         onClick = {
                             scope.launch {
-                                if (sheetState.isVisible) sheetState.hide() else sheetState.show()
+                                if (sheetState.isVisible) {
+                                    shouldShowScrollUp = true
+                                    sheetState.hide()
+                                }
+                                else {
+                                    shouldShowScrollUp = false
+                                    sheetState.show()
+                                }
                             }
                         },
                         initTabIndex = screenState.selectedTabIndex,
@@ -390,3 +408,8 @@ private fun SelectedFilterItem(
         )
     }
 )
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun ModalBottomSheetState.isNotFullyVisible() =
+    this.currentValue != ModalBottomSheetValue.Expanded
