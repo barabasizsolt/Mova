@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -42,6 +43,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import category.Category
 import com.barabasizsolt.mova.domain.model.ContentItem
 import com.barabasizsolt.mova.filter.api.FilterItem
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import ui.catalog.ErrorItem
@@ -73,19 +75,27 @@ internal data class ExploreScreen(
     @Composable
     override fun Content() {
         val navigator: Navigator = LocalNavigator.currentOrThrow
-
-        when (filterScreenState.action?.consume()) {
-            is FilterScreenState.Action.OnApplyButtonClicked -> screenState.onApplyButtonClicked()
-            is FilterScreenState.Action.OnResetButtonClicked -> screenState.onResetButtonClicked()
-            else -> Unit
-        }
+        val scope = rememberCoroutineScope()
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
-
         var shouldShowScrollUp by rememberSaveable { mutableStateOf(value = !bottomSheetNavigator.isVisible) }
         LaunchedEffect(
             key1 = bottomSheetNavigator.isVisible,
             block = { shouldShowScrollUp = !bottomSheetNavigator.isVisible }
         )
+
+        when (filterScreenState.action?.consume()) {
+            is FilterScreenState.Action.OnApplyButtonClicked -> screenState.onApplyButtonClicked()
+            is FilterScreenState.Action.OnResetButtonClicked -> screenState.onResetButtonClicked().also {
+                scope.launch {
+                    when (screenState.selectedCategory.wrappedItem as Category) {
+                        Category.MOVIE -> movieGenreListState.scrollToItem(index = 0, scrollOffset = 0)
+                        Category.TV -> tvGenreListState.scrollToItem(index = 0, scrollOffset = 0)
+                    }
+                }
+            }
+            else -> Unit
+        }
+
 
         BaseScreen(
             screenState = screenState,
