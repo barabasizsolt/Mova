@@ -51,10 +51,7 @@ internal class FilterScreenState(
     init {
         filterService.selectedCategory.onEach { selectedCategory = it }.launchIn(scope = coroutineScope)
         filterService.selectedRegions.onEach { selectedRegions = it }.launchIn(scope = coroutineScope)
-        filterService.selectedGenres.onEach {
-            println("<<G: $it")
-            selectedGenres = it
-        }.launchIn(scope = coroutineScope)
+        filterService.selectedGenres.onEach { selectedGenres = it }.launchIn(scope = coroutineScope)
         filterService.selectedSortOptions.onEach { selectedSortOptions = it }.launchIn(scope = coroutineScope)
         getScreenData(userAction = UserAction.Normal)
     }
@@ -81,7 +78,6 @@ internal class FilterScreenState(
     }
 
     fun onCategorySelected(category: FilterItem) {
-        //filterService.onGenresChange(selectedGenres = selectedGenres)
         filterService.onCategoryChange(selectedCategory = category)
         restartGenresCollection()
     }
