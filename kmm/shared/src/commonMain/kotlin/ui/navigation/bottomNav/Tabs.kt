@@ -1,13 +1,20 @@
 package ui.navigation.bottomNav
 
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import ui.screen.explore.ExploreScreen
@@ -40,8 +47,34 @@ internal object ExploreTab : Tab {
             return remember { TabOptions(index = 1u, title = title, icon = icon) }
         }
 
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {
-        Navigator(screen = ExploreScreen)
+        val movieListState: LazyGridState = rememberLazyGridState()
+        val movieSearchState: LazyGridState = rememberLazyGridState()
+        val tvListState: LazyGridState = rememberLazyGridState()
+        val tvSearchState: LazyGridState = rememberLazyGridState()
+        val movieGenreListState: LazyListState = rememberLazyListState()
+        val tvGenreListState: LazyListState = rememberLazyListState()
+
+        BottomSheetNavigator(
+            sheetShape = AppTheme.shapes.medium.copy(
+                bottomStart = CornerSize(size = 0.dp),
+                bottomEnd = CornerSize(size = 0.dp)
+            ),
+            sheetContentColor = AppTheme.colors.onBackground,
+            sheetBackgroundColor = AppTheme.colors.background
+        ) {
+            Navigator(
+                screen = ExploreScreen(
+                    movieListState = movieListState,
+                    movieSearchState = movieSearchState,
+                    tvListState = tvListState,
+                    tvSearchState = tvSearchState,
+                    movieGenreListState = movieGenreListState,
+                    tvGenreListState = tvGenreListState
+                )
+            )
+        }
     }
 }

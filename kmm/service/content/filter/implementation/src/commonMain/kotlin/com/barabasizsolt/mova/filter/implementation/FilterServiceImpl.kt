@@ -27,12 +27,12 @@ class FilterServiceImpl : FilterService {
         ) + getRegions()
 
     private val _selectedRegions = MutableStateFlow(value = regions.firstItemToList())
-    override val selectedRegions: Flow<List<FilterItem>> = _selectedRegions
+    override val selectedRegions: Flow<List<FilterItem>> = combine(_selectedCategory, _selectedRegions) { _, regions -> regions }
 
     private val defaultGenres = listOf(FilterItem(name = "All Genres", value = FilterItemValue.WithoutValue))
     private val _selectedMovieGenres = MutableStateFlow(value = defaultGenres)
-    private val _selectedTveGenres = MutableStateFlow(value = defaultGenres)
-    override val selectedGenres: Flow<List<FilterItem>> = combine(_selectedCategory, _selectedMovieGenres, _selectedTveGenres) { category, movie, tv ->
+    private val _selectedTvGenres = MutableStateFlow(value = defaultGenres)
+    override val selectedGenres: Flow<List<FilterItem>> = combine(_selectedCategory, _selectedMovieGenres, _selectedTvGenres) { category, movie, tv ->
         when (category.wrappedItem as Category) {
             Category.MOVIE -> movie
             Category.TV -> tv
@@ -46,8 +46,14 @@ class FilterServiceImpl : FilterService {
             FilterItem(name = "Vote Average", value = SortOption.VOTE_AVERAGE.value.toFilterItemWithValue())
         )
 
-    private val _selectedSortOptions = MutableStateFlow(value = sortOptions.firstItemToList())
-    override val selectedSortOptions: Flow<List<FilterItem>> = _selectedSortOptions
+    private val _selectedMovieSortOptions = MutableStateFlow(value = sortOptions.firstItemToList())
+    private val _selectedTvSortOptions = MutableStateFlow(value = sortOptions.firstItemToList())
+    override val selectedSortOptions: Flow<List<FilterItem>> = combine(_selectedCategory, _selectedMovieSortOptions, _selectedTvSortOptions) { category, movie, tv ->
+        when (category.wrappedItem as Category) {
+            Category.MOVIE -> movie
+            Category.TV -> tv
+        }
+    }
 
     override fun onCategoryChange(selectedCategory: FilterItem) {
         _selectedCategory.value = selectedCategory
@@ -60,11 +66,14 @@ class FilterServiceImpl : FilterService {
     override fun onGenresChange(selectedGenres: List<FilterItem>) {
         when (_selectedCategory.value.wrappedItem as Category) {
             Category.MOVIE -> _selectedMovieGenres.value = selectedGenres
-            Category.TV -> _selectedTveGenres.value = selectedGenres
+            Category.TV -> _selectedTvGenres.value = selectedGenres
         }
     }
 
     override fun onSortOptionChange(selectedSortOptions: List<FilterItem>) {
-        _selectedSortOptions.value = selectedSortOptions
+        when (_selectedCategory.value.wrappedItem as Category) {
+            Category.MOVIE -> _selectedMovieSortOptions.value = selectedSortOptions
+            Category.TV -> _selectedTvSortOptions.value = selectedSortOptions
+        }
     }
 }
