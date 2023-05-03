@@ -151,7 +151,6 @@ internal fun Review(
         modifier = modifier.fillMaxWidth()
     )
 
-    /*TODO: move to res*/
     val createdAt = AppTheme.strings.createdAt
     Text(
         text = "$createdAt: ${review.createdAt.substringBefore(delimiter = "T")}",

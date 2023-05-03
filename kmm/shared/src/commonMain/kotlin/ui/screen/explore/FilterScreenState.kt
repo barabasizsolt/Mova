@@ -70,20 +70,8 @@ internal class FilterScreenState(
                 }
             ).cancellable().collect {
                 genres = buildList {
-                    add(
-                        FilterItem(
-                            name = "All Genres",
-                            value = FilterItemValue.WithoutValue
-                        )
-                    )
-                    addAll(
-                        it.entries.map {
-                            FilterItem(
-                                name = it.value,
-                                value = it.key.toString().toFilterItemWithValue()
-                            )
-                        }
-                    )
+                    add(FilterItem(name = "All Genres", value = FilterItemValue.WithoutValue))
+                    addAll(it.entries.map { FilterItem(name = it.value, value = it.key.toString().toFilterItemWithValue()) })
                 }
             }
         }
