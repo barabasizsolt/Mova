@@ -13,12 +13,13 @@
 <br />
 <div align="center">
 
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="screenshots/mova_logo.png" alt="Logo" height="180" width="180">
-  </a>
-
+<a href="https://github.com/othneildrew/Best-README-Template">
+  
   <a href="https://github.com/othneildrew/Best-README-Template">
     <img src="screenshots/banner_v2.png" alt="Logo">
+  </a>
+
+<img src="screenshots/mova_logo.png" alt="Logo" height="150" width="150">
   </a>
 
   <h3 align="center">Mova</h3>
@@ -90,8 +91,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<img src="screenshots/ios_01_dark.png" width="46%" /> <img src="screenshots/android_01_dark.png" width="46%" />
-<img src="screenshots/ios_01_light.png" width="46%" /> <img src="screenshots/android_01_light.png" width="46%" />
+<img src="screenshots/ios_08.png" width="46%" /> <img src="screenshots/android_08.png" width="46%" />
 
 **Mova** is a multiplatform movie showcase application that allows users to search and explore movies using **[The Movie Database API](https://developers.themoviedb.org/3/getting-started/introduction)**. It also provides authentication features, allowing users to create and manage their accounts within the app. The app is built using **[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform-ios-android-template)**, a UI toolkit from JetBrains that enables the creation of cross-platform native applications using a single codebase.
 
