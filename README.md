@@ -13,7 +13,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="screenshots/mova_logo.png" alt="Logo" width="180" height="180">
+    <img src="screenshots/banner_v2.png" alt="Logo">
   </a>
 
   <h3 align="center">Mova</h3>
