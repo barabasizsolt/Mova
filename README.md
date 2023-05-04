@@ -12,6 +12,11 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
+
+  <a href="https://github.com/othneildrew/Best-README-Template">
+    <img src="screenshots/mova_logo.png" alt="Logo" height="180" width="180">
+  </a>
+
   <a href="https://github.com/othneildrew/Best-README-Template">
     <img src="screenshots/banner_v2.png" alt="Logo">
   </a>
