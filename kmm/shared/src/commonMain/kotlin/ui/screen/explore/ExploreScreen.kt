@@ -127,7 +127,6 @@ internal data class ExploreScreen(
                     onRetryClick = {
                         if (screenState.query.isNotEmpty() && screenState.searchContent.size <= 1) {
                             screenState.clearSearchContent()
-                            // TODO [MID] here after success retry, keep the error item loading till the content will be laaded.
                         }
                         screenState.getScreenData(userAction = UserAction.TryAgain)
                     },
