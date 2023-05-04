@@ -1,0 +1,5 @@
+package com.barabasizsolt.mova.auth.implementation
+
+import com.barabasizsolt.mova.auth.api.IosArm64MainAuthenticationService
+
+class IosArm64MainAuthenticationServiceImpl : AuthenticationServiceImpl(), IosArm64MainAuthenticationService

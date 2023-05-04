@@ -1,0 +1,37 @@
+subprojects { module ->
+    plugins.withId("multiplatform") {
+        module.kotlin {
+            def sharedBaseName = "shared"
+
+            def frameworks = [
+                    iosX64(),
+                    iosArm64(),
+                    iosSimulatorArm64()
+            ]
+
+            frameworks.each { framework ->
+                framework.binaries.framework {
+                    baseName = sharedBaseName
+                }
+            }
+
+            sourceSets {
+                def commonMain = getting
+
+                def androidMain = getting
+
+                def iosX64Main = getting
+                def iosArm64Main = getting
+                def iosSimulatorArm64Main = getting
+
+                def iosMain = creating {
+                    dependsOn commonMain
+                    iosX64Main.dependsOn this
+                    iosArm64Main.dependsOn this
+                    iosSimulatorArm64Main.dependsOn this
+                }
+            }
+        }
+    }
+}
+

@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-resources.sh
+${PODS_ROOT}/../../kmm/shared/src/commonMain/resources/drawable
+${PODS_ROOT}/../../kmm/shared/src/commonMain/resources/values
