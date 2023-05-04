@@ -161,6 +161,8 @@ Before you start, use the [KDoctor](https://github.com/Kotlin/kdoctor) tool to e
 
 Otherwise, KDoctor will highlight which parts of your setup still need to be configured and will suggest a way to fix them.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Examine the project structure
 
 Open the project in Android Studio and switch the view from **Android** to **Project** to see all the files and targets belonging to the project:
@@ -199,6 +201,8 @@ The `android` module depends on and uses the `kmm/shared` module as a regular An
 
 This is an Xcode project that builds into an iOS application.
 It depends on and uses the `kmm/shared` module as a CocoaPods dependency.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Run the Application
 
@@ -264,6 +268,8 @@ To do so, you'll need the following:
 
 </details>
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ##### Finding your Team ID
 
 In the terminal, run `kdoctor --team-ids` to find your Team ID.
@@ -296,7 +302,8 @@ To run the application, set the `TEAM_ID`:
 2. Set your `TEAM_ID`.
 3. Re-open the project in Android Studio. It should show the registered iOS device in the `iosApp` run configuration.
 
-<!-- USAGE EXAMPLES -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Screenshots
 
 <img src="screenshots/ios_01.png" width="46%" /> <img src="screenshots/android_01.png" width="46%">
@@ -310,8 +317,6 @@ To run the application, set the `TEAM_ID`:
 <img src="screenshots/ios_08.png" width="46%" /> <img src="screenshots/android_08.png" width="46%">
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- ROADMAP -->
 ## Roadmap
