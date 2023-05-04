@@ -13,11 +13,9 @@
 <br />
 <div align="center">
 
-<a href="https://github.com/othneildrew/Best-README-Template">
-  
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="screenshots/banner_v2.png" alt="Logo">
-  </a>
+<a href="https://github.com/barabasizsolt/Mova">
+
+  <img src="screenshots/ios_01_dark.png" width="24%" /> <img src="screenshots/android_01_dark.png" width="24%" /> <img src="screenshots/ios_01_light.png" width="24%" /> <img src="screenshots/android_01_light.png" width="24%" />
 
 <img src="screenshots/mova_logo.png" alt="Logo" height="150" width="150">
   </a>
