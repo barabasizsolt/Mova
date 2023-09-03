@@ -37,8 +37,8 @@ android {
         }
 
         release {
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
 
             buildConfigField("String", "HOST", "\"api.themoviedb.org\"")
             buildConfigField("String", "API_KEY", "\"93697a6983d40e793bc6b81401c77e1c\"")
