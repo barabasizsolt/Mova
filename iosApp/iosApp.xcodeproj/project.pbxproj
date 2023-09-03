@@ -11,6 +11,10 @@
 		464A5C4229F1499700794AA4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464A5C4129F1499700794AA4 /* ContentView.swift */; };
 		464A5C4429F1499800794AA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 464A5C4329F1499800794AA4 /* Assets.xcassets */; };
 		464A5C4729F1499800794AA4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 464A5C4629F1499800794AA4 /* Preview Assets.xcassets */; };
+		46633D882AA4A9FE002EE766 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46633D832AA4A9FE002EE766 /* Assets.xcassets */; };
+		46633D892AA4A9FE002EE766 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46633D852AA4A9FE002EE766 /* Preview Assets.xcassets */; };
+		46633D8A2AA4A9FE002EE766 /* iosAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46633D862AA4A9FE002EE766 /* iosAppApp.swift */; };
+		46633D8B2AA4A9FE002EE766 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46633D872AA4A9FE002EE766 /* ContentView.swift */; };
 		466945A729FC077900958653 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 466945A629FC077900958653 /* GoogleService-Info.plist */; };
 		7FBE7B94D7BE8DC0EADC8FDE /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B90563BEC38FC0B3996EFDB7 /* Pods_iosApp.framework */; };
 /* End PBXBuildFile section */
@@ -21,6 +25,10 @@
 		464A5C4129F1499700794AA4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		464A5C4329F1499800794AA4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		464A5C4629F1499800794AA4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		46633D832AA4A9FE002EE766 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		46633D852AA4A9FE002EE766 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		46633D862AA4A9FE002EE766 /* iosAppApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iosAppApp.swift; sourceTree = "<group>"; };
+		46633D872AA4A9FE002EE766 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		466945A629FC077900958653 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		960F1306346FA700CEA99E58 /* Pods-iosApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.debug.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.debug.xcconfig"; sourceTree = "<group>"; };
 		B90563BEC38FC0B3996EFDB7 /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				466945A629FC077900958653 /* GoogleService-Info.plist */,
+				46633D822AA4A9FE002EE766 /* iosApp */,
 				464A5C3F29F1499700794AA4 /* iosAppApp.swift */,
 				464A5C4129F1499700794AA4 /* ContentView.swift */,
 				464A5C4329F1499800794AA4 /* Assets.xcassets */,
@@ -73,6 +82,25 @@
 			isa = PBXGroup;
 			children = (
 				464A5C4629F1499800794AA4 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		46633D822AA4A9FE002EE766 /* iosApp */ = {
+			isa = PBXGroup;
+			children = (
+				46633D832AA4A9FE002EE766 /* Assets.xcassets */,
+				46633D842AA4A9FE002EE766 /* Preview Content */,
+				46633D862AA4A9FE002EE766 /* iosAppApp.swift */,
+				46633D872AA4A9FE002EE766 /* ContentView.swift */,
+			);
+			name = iosApp;
+			sourceTree = "<group>";
+		};
+		46633D842AA4A9FE002EE766 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				46633D852AA4A9FE002EE766 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -157,6 +185,8 @@
 			files = (
 				464A5C4729F1499800794AA4 /* Preview Assets.xcassets in Resources */,
 				464A5C4429F1499800794AA4 /* Assets.xcassets in Resources */,
+				46633D892AA4A9FE002EE766 /* Preview Assets.xcassets in Resources */,
+				46633D882AA4A9FE002EE766 /* Assets.xcassets in Resources */,
 				466945A729FC077900958653 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -228,6 +258,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				464A5C4229F1499700794AA4 /* ContentView.swift in Sources */,
+				46633D8A2AA4A9FE002EE766 /* iosAppApp.swift in Sources */,
+				46633D8B2AA4A9FE002EE766 /* ContentView.swift in Sources */,
 				464A5C4029F1499700794AA4 /* iosAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
